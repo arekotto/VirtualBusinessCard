@@ -1,0 +1,599 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE223F6D259003602EA /* AppDelegate.swift */; };
+		4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE423F6D259003602EA /* SceneDelegate.swift */; };
+		4537CEE723F6D259003602EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE623F6D259003602EA /* ContentView.swift */; };
+		4537CEE923F6D25A003602EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4537CEE823F6D25A003602EA /* Assets.xcassets */; };
+		4537CEEC23F6D25A003602EA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4537CEEB23F6D25A003602EA /* Preview Assets.xcassets */; };
+		4537CEEF23F6D25A003602EA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4537CEED23F6D25A003602EA /* LaunchScreen.storyboard */; };
+		4537CEFA23F6D25A003602EA /* VirtualBusinessCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEF923F6D25A003602EA /* VirtualBusinessCardTests.swift */; };
+		4537CF0523F6D25A003602EA /* VirtualBusinessCardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CF0423F6D25A003602EA /* VirtualBusinessCardUITests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4537CEF623F6D25A003602EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4537CED723F6D259003602EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4537CEDE23F6D259003602EA;
+			remoteInfo = VirtualBusinessCard;
+		};
+		4537CF0123F6D25A003602EA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4537CED723F6D259003602EA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4537CEDE23F6D259003602EA;
+			remoteInfo = VirtualBusinessCard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualBusinessCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4537CEE223F6D259003602EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4537CEE423F6D259003602EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		4537CEE623F6D259003602EA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4537CEE823F6D25A003602EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4537CEEB23F6D25A003602EA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		4537CEEE23F6D25A003602EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		4537CEF023F6D25A003602EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4537CEF523F6D25A003602EA /* VirtualBusinessCardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualBusinessCardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4537CEF923F6D25A003602EA /* VirtualBusinessCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualBusinessCardTests.swift; sourceTree = "<group>"; };
+		4537CEFB23F6D25A003602EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4537CF0023F6D25A003602EA /* VirtualBusinessCardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualBusinessCardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4537CF0423F6D25A003602EA /* VirtualBusinessCardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualBusinessCardUITests.swift; sourceTree = "<group>"; };
+		4537CF0623F6D25A003602EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4537CEDC23F6D259003602EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4537CEF223F6D25A003602EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4537CEFD23F6D25A003602EA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4537CED623F6D259003602EA = {
+			isa = PBXGroup;
+			children = (
+				4537CEE123F6D259003602EA /* VirtualBusinessCard */,
+				4537CEF823F6D25A003602EA /* VirtualBusinessCardTests */,
+				4537CF0323F6D25A003602EA /* VirtualBusinessCardUITests */,
+				4537CEE023F6D259003602EA /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4537CEE023F6D259003602EA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */,
+				4537CEF523F6D25A003602EA /* VirtualBusinessCardTests.xctest */,
+				4537CF0023F6D25A003602EA /* VirtualBusinessCardUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4537CEE123F6D259003602EA /* VirtualBusinessCard */ = {
+			isa = PBXGroup;
+			children = (
+				4537CEE223F6D259003602EA /* AppDelegate.swift */,
+				4537CEE423F6D259003602EA /* SceneDelegate.swift */,
+				4537CEE623F6D259003602EA /* ContentView.swift */,
+				4537CEE823F6D25A003602EA /* Assets.xcassets */,
+				4537CEED23F6D25A003602EA /* LaunchScreen.storyboard */,
+				4537CEF023F6D25A003602EA /* Info.plist */,
+				4537CEEA23F6D25A003602EA /* Preview Content */,
+			);
+			path = VirtualBusinessCard;
+			sourceTree = "<group>";
+		};
+		4537CEEA23F6D25A003602EA /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				4537CEEB23F6D25A003602EA /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4537CEF823F6D25A003602EA /* VirtualBusinessCardTests */ = {
+			isa = PBXGroup;
+			children = (
+				4537CEF923F6D25A003602EA /* VirtualBusinessCardTests.swift */,
+				4537CEFB23F6D25A003602EA /* Info.plist */,
+			);
+			path = VirtualBusinessCardTests;
+			sourceTree = "<group>";
+		};
+		4537CF0323F6D25A003602EA /* VirtualBusinessCardUITests */ = {
+			isa = PBXGroup;
+			children = (
+				4537CF0423F6D25A003602EA /* VirtualBusinessCardUITests.swift */,
+				4537CF0623F6D25A003602EA /* Info.plist */,
+			);
+			path = VirtualBusinessCardUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4537CEDE23F6D259003602EA /* VirtualBusinessCard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4537CF0923F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCard" */;
+			buildPhases = (
+				4537CEDB23F6D259003602EA /* Sources */,
+				4537CEDC23F6D259003602EA /* Frameworks */,
+				4537CEDD23F6D259003602EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VirtualBusinessCard;
+			productName = VirtualBusinessCard;
+			productReference = 4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4537CEF423F6D25A003602EA /* VirtualBusinessCardTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4537CF0C23F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCardTests" */;
+			buildPhases = (
+				4537CEF123F6D25A003602EA /* Sources */,
+				4537CEF223F6D25A003602EA /* Frameworks */,
+				4537CEF323F6D25A003602EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4537CEF723F6D25A003602EA /* PBXTargetDependency */,
+			);
+			name = VirtualBusinessCardTests;
+			productName = VirtualBusinessCardTests;
+			productReference = 4537CEF523F6D25A003602EA /* VirtualBusinessCardTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		4537CEFF23F6D25A003602EA /* VirtualBusinessCardUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4537CF0F23F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCardUITests" */;
+			buildPhases = (
+				4537CEFC23F6D25A003602EA /* Sources */,
+				4537CEFD23F6D25A003602EA /* Frameworks */,
+				4537CEFE23F6D25A003602EA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4537CF0223F6D25A003602EA /* PBXTargetDependency */,
+			);
+			name = VirtualBusinessCardUITests;
+			productName = VirtualBusinessCardUITests;
+			productReference = 4537CF0023F6D25A003602EA /* VirtualBusinessCardUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4537CED723F6D259003602EA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "Arek Otto";
+				TargetAttributes = {
+					4537CEDE23F6D259003602EA = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					4537CEF423F6D25A003602EA = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = 4537CEDE23F6D259003602EA;
+					};
+					4537CEFF23F6D25A003602EA = {
+						CreatedOnToolsVersion = 11.3.1;
+						TestTargetID = 4537CEDE23F6D259003602EA;
+					};
+				};
+			};
+			buildConfigurationList = 4537CEDA23F6D259003602EA /* Build configuration list for PBXProject "VirtualBusinessCard" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4537CED623F6D259003602EA;
+			productRefGroup = 4537CEE023F6D259003602EA /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4537CEDE23F6D259003602EA /* VirtualBusinessCard */,
+				4537CEF423F6D25A003602EA /* VirtualBusinessCardTests */,
+				4537CEFF23F6D25A003602EA /* VirtualBusinessCardUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4537CEDD23F6D259003602EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4537CEEF23F6D25A003602EA /* LaunchScreen.storyboard in Resources */,
+				4537CEEC23F6D25A003602EA /* Preview Assets.xcassets in Resources */,
+				4537CEE923F6D25A003602EA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4537CEF323F6D25A003602EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4537CEFE23F6D25A003602EA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4537CEDB23F6D259003602EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
+				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,
+				4537CEE723F6D259003602EA /* ContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4537CEF123F6D25A003602EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4537CEFA23F6D25A003602EA /* VirtualBusinessCardTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4537CEFC23F6D25A003602EA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4537CF0523F6D25A003602EA /* VirtualBusinessCardUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4537CEF723F6D25A003602EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4537CEDE23F6D259003602EA /* VirtualBusinessCard */;
+			targetProxy = 4537CEF623F6D25A003602EA /* PBXContainerItemProxy */;
+		};
+		4537CF0223F6D25A003602EA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4537CEDE23F6D259003602EA /* VirtualBusinessCard */;
+			targetProxy = 4537CF0123F6D25A003602EA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		4537CEED23F6D25A003602EA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4537CEEE23F6D25A003602EA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		4537CF0723F6D25A003602EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		4537CF0823F6D25A003602EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		4537CF0A23F6D25A003602EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"VirtualBusinessCard/Preview Content\"";
+				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = VirtualBusinessCard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.thesis.VirtualBusinessCard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4537CF0B23F6D25A003602EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"VirtualBusinessCard/Preview Content\"";
+				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = VirtualBusinessCard/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.thesis.VirtualBusinessCard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4537CF0D23F6D25A003602EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
+				INFOPLIST_FILE = VirtualBusinessCardTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.thesis.VirtualBusinessCardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VirtualBusinessCard.app/VirtualBusinessCard";
+			};
+			name = Debug;
+		};
+		4537CF0E23F6D25A003602EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
+				INFOPLIST_FILE = VirtualBusinessCardTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.thesis.VirtualBusinessCardTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VirtualBusinessCard.app/VirtualBusinessCard";
+			};
+			name = Release;
+		};
+		4537CF1023F6D25A003602EA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
+				INFOPLIST_FILE = VirtualBusinessCardUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.thesis.VirtualBusinessCardUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = VirtualBusinessCard;
+			};
+			name = Debug;
+		};
+		4537CF1123F6D25A003602EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
+				INFOPLIST_FILE = VirtualBusinessCardUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.thesis.VirtualBusinessCardUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = VirtualBusinessCard;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4537CEDA23F6D259003602EA /* Build configuration list for PBXProject "VirtualBusinessCard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4537CF0723F6D25A003602EA /* Debug */,
+				4537CF0823F6D25A003602EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4537CF0923F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4537CF0A23F6D25A003602EA /* Debug */,
+				4537CF0B23F6D25A003602EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4537CF0C23F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCardTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4537CF0D23F6D25A003602EA /* Debug */,
+				4537CF0E23F6D25A003602EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4537CF0F23F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCardUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4537CF1023F6D25A003602EA /* Debug */,
+				4537CF1123F6D25A003602EA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4537CED723F6D259003602EA /* Project object */;
+}
