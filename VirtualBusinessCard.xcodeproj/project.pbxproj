@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02B7CD44FD685D207B8C17C8 /* Pods_VirtualBusinessCard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13440C087BCBA718109F0256 /* Pods_VirtualBusinessCard.framework */; };
 		4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE223F6D259003602EA /* AppDelegate.swift */; };
 		4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE423F6D259003602EA /* SceneDelegate.swift */; };
 		4537CEE723F6D259003602EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE623F6D259003602EA /* ContentView.swift */; };
@@ -15,6 +16,12 @@
 		4537CEEF23F6D25A003602EA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4537CEED23F6D25A003602EA /* LaunchScreen.storyboard */; };
 		4537CEFA23F6D25A003602EA /* VirtualBusinessCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEF923F6D25A003602EA /* VirtualBusinessCardTests.swift */; };
 		4537CF0523F6D25A003602EA /* VirtualBusinessCardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CF0423F6D25A003602EA /* VirtualBusinessCardUITests.swift */; };
+		459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58623FEA496002F03DD /* Firestoreable.swift */; };
+		459DC58A23FEA4CB002F03DD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58923FEA4CB002F03DD /* User.swift */; };
+		459DC58C23FEA515002F03DD /* User+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* User+Firestorable.swift */; };
+		459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */; };
+		6799E4CA35A9996D9352DA40 /* Pods_VirtualBusinessCard_VirtualBusinessCardUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF6E5C0B0B4ED7262BBE0E7E /* Pods_VirtualBusinessCard_VirtualBusinessCardUITests.framework */; };
+		7640067A0030D98FA9131800 /* Pods_VirtualBusinessCardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACC2C0F910F9A356B233BE29 /* Pods_VirtualBusinessCardTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		13440C087BCBA718109F0256 /* Pods_VirtualBusinessCard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VirtualBusinessCard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualBusinessCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4537CEE223F6D259003602EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4537CEE423F6D259003602EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -49,6 +57,18 @@
 		4537CF0023F6D25A003602EA /* VirtualBusinessCardUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VirtualBusinessCardUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4537CF0423F6D25A003602EA /* VirtualBusinessCardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualBusinessCardUITests.swift; sourceTree = "<group>"; };
 		4537CF0623F6D25A003602EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		459DC58623FEA496002F03DD /* Firestoreable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Firestoreable.swift; sourceTree = "<group>"; };
+		459DC58923FEA4CB002F03DD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		459DC58B23FEA515002F03DD /* User+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Firestorable.swift"; sourceTree = "<group>"; };
+		459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		68A80C5DFE3EEEF07BD31BF8 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig"; sourceTree = "<group>"; };
+		75626217CE4A4C1EBDBC583E /* Pods-VirtualBusinessCardTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCardTests.debug.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCardTests/Pods-VirtualBusinessCardTests.debug.xcconfig"; sourceTree = "<group>"; };
+		ACC2C0F910F9A356B233BE29 /* Pods_VirtualBusinessCardTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VirtualBusinessCardTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF6E5C0B0B4ED7262BBE0E7E /* Pods_VirtualBusinessCard_VirtualBusinessCardUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VirtualBusinessCard_VirtualBusinessCardUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3B62DEEF08D1DFDFFDC4A47 /* Pods-VirtualBusinessCard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard.debug.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard.debug.xcconfig"; sourceTree = "<group>"; };
+		C5B184EB2FFE323893986E0E /* Pods-VirtualBusinessCardTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCardTests.release.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCardTests/Pods-VirtualBusinessCardTests.release.xcconfig"; sourceTree = "<group>"; };
+		F8897D9D8008003DD63D246B /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		FB82197A9EBC34312E92E2F4 /* Pods-VirtualBusinessCard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard.release.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02B7CD44FD685D207B8C17C8 /* Pods_VirtualBusinessCard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,6 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7640067A0030D98FA9131800 /* Pods_VirtualBusinessCardTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -70,12 +92,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6799E4CA35A9996D9352DA40 /* Pods_VirtualBusinessCard_VirtualBusinessCardUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		095D3CD2C2F18E4F89941C7B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C3B62DEEF08D1DFDFFDC4A47 /* Pods-VirtualBusinessCard.debug.xcconfig */,
+				FB82197A9EBC34312E92E2F4 /* Pods-VirtualBusinessCard.release.xcconfig */,
+				F8897D9D8008003DD63D246B /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig */,
+				68A80C5DFE3EEEF07BD31BF8 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig */,
+				75626217CE4A4C1EBDBC583E /* Pods-VirtualBusinessCardTests.debug.xcconfig */,
+				C5B184EB2FFE323893986E0E /* Pods-VirtualBusinessCardTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		4537CED623F6D259003602EA = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +119,8 @@
 				4537CEF823F6D25A003602EA /* VirtualBusinessCardTests */,
 				4537CF0323F6D25A003602EA /* VirtualBusinessCardUITests */,
 				4537CEE023F6D259003602EA /* Products */,
+				095D3CD2C2F18E4F89941C7B /* Pods */,
+				D1AFA0C7519016C54E58256F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,12 +137,14 @@
 		4537CEE123F6D259003602EA /* VirtualBusinessCard */ = {
 			isa = PBXGroup;
 			children = (
+				459DC58823FEA4A1002F03DD /* Model */,
 				4537CEE223F6D259003602EA /* AppDelegate.swift */,
 				4537CEE423F6D259003602EA /* SceneDelegate.swift */,
 				4537CEE623F6D259003602EA /* ContentView.swift */,
 				4537CEE823F6D25A003602EA /* Assets.xcassets */,
 				4537CEED23F6D25A003602EA /* LaunchScreen.storyboard */,
 				4537CEF023F6D25A003602EA /* Info.plist */,
+				459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */,
 				4537CEEA23F6D25A003602EA /* Preview Content */,
 			);
 			path = VirtualBusinessCard;
@@ -136,6 +176,34 @@
 			path = VirtualBusinessCardUITests;
 			sourceTree = "<group>";
 		};
+		459DC58823FEA4A1002F03DD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				459DC58D23FEA6AF002F03DD /* User */,
+				459DC58623FEA496002F03DD /* Firestoreable.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		459DC58D23FEA6AF002F03DD /* User */ = {
+			isa = PBXGroup;
+			children = (
+				459DC58923FEA4CB002F03DD /* User.swift */,
+				459DC58B23FEA515002F03DD /* User+Firestorable.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		D1AFA0C7519016C54E58256F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				13440C087BCBA718109F0256 /* Pods_VirtualBusinessCard.framework */,
+				BF6E5C0B0B4ED7262BBE0E7E /* Pods_VirtualBusinessCard_VirtualBusinessCardUITests.framework */,
+				ACC2C0F910F9A356B233BE29 /* Pods_VirtualBusinessCardTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,9 +211,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4537CF0923F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCard" */;
 			buildPhases = (
+				44A17F3A804A15C0C11B3593 /* [CP] Check Pods Manifest.lock */,
 				4537CEDB23F6D259003602EA /* Sources */,
 				4537CEDC23F6D259003602EA /* Frameworks */,
 				4537CEDD23F6D259003602EA /* Resources */,
+				C3FB65EC5C8515CBE9DBDC15 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -160,6 +230,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4537CF0C23F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCardTests" */;
 			buildPhases = (
+				D21A78EE232149EEAA1BC7AA /* [CP] Check Pods Manifest.lock */,
 				4537CEF123F6D25A003602EA /* Sources */,
 				4537CEF223F6D25A003602EA /* Frameworks */,
 				4537CEF323F6D25A003602EA /* Resources */,
@@ -178,9 +249,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4537CF0F23F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCardUITests" */;
 			buildPhases = (
+				D8FBF5185E96A4718CE5EA5E /* [CP] Check Pods Manifest.lock */,
 				4537CEFC23F6D25A003602EA /* Sources */,
 				4537CEFD23F6D25A003602EA /* Frameworks */,
 				4537CEFE23F6D25A003602EA /* Resources */,
+				AF8B0460B96BFC0CE83C17BF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -241,6 +314,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4537CEEF23F6D25A003602EA /* LaunchScreen.storyboard in Resources */,
+				459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */,
 				4537CEEC23F6D25A003602EA /* Preview Assets.xcassets in Resources */,
 				4537CEE923F6D25A003602EA /* Assets.xcassets in Resources */,
 			);
@@ -262,13 +336,119 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		44A17F3A804A15C0C11B3593 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VirtualBusinessCard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AF8B0460B96BFC0CE83C17BF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C3FB65EC5C8515CBE9DBDC15 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D21A78EE232149EEAA1BC7AA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VirtualBusinessCardTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8FBF5185E96A4718CE5EA5E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4537CEDB23F6D259003602EA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
+				459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */,
+				459DC58C23FEA515002F03DD /* User+Firestorable.swift in Sources */,
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,
+				459DC58A23FEA4CB002F03DD /* User.swift in Sources */,
 				4537CEE723F6D259003602EA /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +612,7 @@
 		};
 		4537CF0A23F6D25A003602EA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C3B62DEEF08D1DFDFFDC4A47 /* Pods-VirtualBusinessCard.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -439,6 +620,7 @@
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = VirtualBusinessCard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -452,6 +634,7 @@
 		};
 		4537CF0B23F6D25A003602EA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FB82197A9EBC34312E92E2F4 /* Pods-VirtualBusinessCard.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -459,6 +642,7 @@
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = VirtualBusinessCard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -472,6 +656,7 @@
 		};
 		4537CF0D23F6D25A003602EA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 75626217CE4A4C1EBDBC583E /* Pods-VirtualBusinessCardTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -494,6 +679,7 @@
 		};
 		4537CF0E23F6D25A003602EA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5B184EB2FFE323893986E0E /* Pods-VirtualBusinessCardTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -516,6 +702,7 @@
 		};
 		4537CF1023F6D25A003602EA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F8897D9D8008003DD63D246B /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -536,6 +723,7 @@
 		};
 		4537CF1123F6D25A003602EA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 68A80C5DFE3EEEF07BD31BF8 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
