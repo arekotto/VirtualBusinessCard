@@ -7,15 +7,40 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, World!")
+        VStack {
+            Button(action: {
+            }) {
+                Text("Log out!")
+            }
+        }
+        .background(Color.green)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+struct LoginView: View {
+    var body: some View {
+        VStack {
+            Button(action: {
+            }) {
+                Text("Log in!")
+            }
+        }
+        .background(Color.yellow)
+    }
+}
+
+struct LoginView_Previews: PreviewProvider {
+    static var previews: some View {
+        LoginView()
     }
 }

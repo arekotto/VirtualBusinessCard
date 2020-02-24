@@ -8,57 +8,109 @@
 
 import UIKit
 import SwiftUI
+import Firebase
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-
+    
+    var isUserLoggedIn: Bool {
+        return Auth.auth().currentUser != nil
+    }
+    
+    private var statePresented: UIStatePresented {
+        if window?.rootViewController is UIHostingController<LoginView> {
+            return .login
+        } else {
+            return .appContent
+        }
+    }
+    
+    private var authStateListenerHandle: AuthStateDidChangeListenerHandle?
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
-        // Create the SwiftUI view that provides the window contents.
-        let contentView = ContentView()
+        authStateListenerHandle = Auth.auth().addStateDidChangeListener(authStateDidChange)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: contentView)
+            window.rootViewController = rootViewControllerBasedOnAuthState()
             self.window = window
             window.makeKeyAndVisible()
         }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
-        // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
-        // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not neccessarily discarded (see `application:didDiscardSceneSessions` instead).
+        if let handle = authStateListenerHandle {
+            Auth.auth().removeStateDidChangeListener(handle)
+        }
     }
 
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+    func sceneDidBecomeActive(_ scene: UIScene) {}
+
+    func sceneWillResignActive(_ scene: UIScene) {}
+
+    func sceneWillEnterForeground(_ scene: UIScene) {}
+
+    func sceneDidEnterBackground(_ scene: UIScene) {}
+
+    // MARK: Authentication
+
+    private func authStateDidChange(_ auth: Auth?, _ user: Firebase.User?) {
+        if let usr = user {
+            print("LOGGED IN USER " + (usr.displayName ?? usr.email ?? usr.providerID))
+            hideLogin()
+        } else {
+            displayLogin()
+        }
     }
-
-    func sceneWillResignActive(_ scene: UIScene) {
-        // Called when the scene will move from an active state to an inactive state.
-        // This may occur due to temporary interruptions (ex. an incoming phone call).
+    
+    private func hideLogin() {
+        switch statePresented {
+        case .login:
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                let rootVC = self.rootViewControllerBasedOnAuthState()
+                self.swapRootControllerWithAnimation(rootVC, animation: .transitionFlipFromRight)
+            }
+        case .appContent:
+            // No action needed
+            return
+        }
     }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
+    
+    private func displayLogin() {
+        switch statePresented {
+        case .appContent:
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                let rootVC = self.rootViewControllerBasedOnAuthState()
+                self.swapRootControllerWithAnimation(rootVC, animation: .transitionFlipFromRight)
+            }
+        case .login:
+            // No action needed
+            return
+        }
     }
-
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+    
+    private func rootViewControllerBasedOnAuthState() -> UIViewController {
+        if isUserLoggedIn {
+            return UIHostingController(rootView: ContentView())
+        } else {
+            return UIHostingController(rootView: LoginView())
+        }
     }
-
-
+    
+    private func swapRootControllerWithAnimation(_ newRoot: UIViewController, animation: UIView.AnimationOptions) {
+        UIView.transition(with: window!, duration: 0.5, options: animation, animations: {
+            self.window!.rootViewController = newRoot
+        }, completion: { completed in
+            // TODO: - REMEBER TO CHECK MEMORY LEAKSSSS
+        })
+    }
+    
+    private enum UIStatePresented {
+        case login
+        case appContent
+    }
 }
 
