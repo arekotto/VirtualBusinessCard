@@ -6,6 +6,7 @@
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
+import UIKit
 import Firebase
 
 @UIApplicationMain
@@ -13,6 +14,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         configureDependencies()
+        
+        setupUI()
         
         return true
     }
@@ -35,5 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func configureDependencies() {
         FirebaseApp.configure()
+    }
+}
+
+extension AppDelegate {
+    func setupUI() {
+        
+        
+        UINavigationBar.appearance().standardAppearance.configureWithTransparentBackground()
+        UINavigationBar.appearance().scrollEdgeAppearance?.configureWithTransparentBackground()
     }
 }

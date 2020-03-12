@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct ContentView: View {
     var body: some View {
@@ -24,23 +23,5 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-    }
-}
-
-struct LoginView: View {
-    var body: some View {
-        VStack {
-            Button(action: {
-            }) {
-                Text("Log in!")
-            }
-        }
-        .background(Color.yellow)
-    }
-}
-
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
     }
 }

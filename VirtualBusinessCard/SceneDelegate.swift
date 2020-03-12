@@ -96,7 +96,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if isUserLoggedIn {
             return UIHostingController(rootView: ContentView())
         } else {
-            return UIHostingController(rootView: LoginView())
+            return UIHostingController(rootView: GreetingsView())
         }
     }
     
