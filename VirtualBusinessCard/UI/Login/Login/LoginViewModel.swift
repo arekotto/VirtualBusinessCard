@@ -7,8 +7,7 @@
 //
 
 import Foundation
-
-import Foundation
+import SwiftUI
 import Combine
 
 class LoginViewModel: ObservableObject {
@@ -19,15 +18,21 @@ class LoginViewModel: ObservableObject {
     let passwordPlaceholder = NSLocalizedString("Password", comment: "")
     let loginButtonText = NSLocalizedString("Log In", comment: "")
 
+    @Binding var isPresented: Bool
+
     @Published var email = ""
     @Published var password = ""
+    
+    init(isPresented: Binding<Bool>) {
+        self._isPresented = isPresented
+    }
     
     func loginButtonTapped() {
         
     }
     
     func closeButtonTapped() {
-        
+        isPresented = false
     }
 }
 

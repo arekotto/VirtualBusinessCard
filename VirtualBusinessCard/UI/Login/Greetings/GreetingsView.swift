@@ -44,7 +44,7 @@ struct GreetingsView: View {
         .padding(Edge.Set.vertical, 10)
         .padding(Edge.Set.horizontal, 20)
         .sheet(isPresented: $viewModel.isShowingLogin) {
-            LoginView()
+            LoginView(viewModel: LoginViewModel(isPresented: self.$viewModel.isShowingLogin))
         }
     }
     

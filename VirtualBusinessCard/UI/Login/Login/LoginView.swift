@@ -10,8 +10,8 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @ObservedObject var viewModel = LoginViewModel()
-    
+    @ObservedObject var viewModel: LoginViewModel
+
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
@@ -32,12 +32,17 @@ struct LoginView: View {
             .padding(10)
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarItems(trailing:
-                Button(action: viewModel.closeButtonTapped) {
-                    Image(systemName: "xmark.circle.fill")
-                        .imageScale(.large)
-                        .font(.system(size: 30, weight: .medium))
+                Button(action: {
+                    self.viewModel.closeButtonTapped()
+                }) {
+                    Image(systemName: "xmark")
+                        .imageScale(.medium)
+                        .font(.system(size: 20, weight: .bold))
+                        .padding(12)
                 }
-                .accentColor(Color.accent.opacity(0.2))
+                .accentColor(Color.accent)
+                .background(Color.accent.opacity(0.2))
+                .clipShape(Circle())
                 //                .background(Color.accent)
             )
         }
@@ -48,20 +53,29 @@ struct LoginView: View {
             .font(Font.system(size: 24, weight: .semibold, design: .default))
             .multilineTextAlignment(.center)
     }
+    
+    init(viewModel: LoginViewModel) {
+        self.viewModel = viewModel
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
+    }
 }
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LoginView()
+            LoginView(viewModel: LoginViewModel(isPresented: .constant(false)))
                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
                .previewDisplayName("iPhone SE")
+                    .environment(\.colorScheme, .dark)
 
-            LoginView()
+
+            LoginView(viewModel: LoginViewModel(isPresented: .constant(false)))
                .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
                .previewDisplayName("iPhone 11")
         }
-        .environment(\.colorScheme, .dark)
     }
 }
 

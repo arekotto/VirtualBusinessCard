@@ -44,8 +44,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
     func setupUI() {
         
+  
+//        let appearance = UINavigationBarAppearance()
+//        appearance.shadowColor = .clear
+//        appearance.backgroundColor = .white
+//        UINavigationBar.appearance().standardAppearance = appearance
+//        UINavigationBar.appearance().scrollEdgeAppearance = appearance
         
-        UINavigationBar.appearance().standardAppearance.configureWithTransparentBackground()
-        UINavigationBar.appearance().scrollEdgeAppearance?.configureWithTransparentBackground()
+//        UINavigationBar.appearance().standardAppearance.configureWithTransparentBackground()
+//        UINavigationBar.appearance().scrollEdgeAppearance?.configureWithTransparentBackground()
     }
 }
