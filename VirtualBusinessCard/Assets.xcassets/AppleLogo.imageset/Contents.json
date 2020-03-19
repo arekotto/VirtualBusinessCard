@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Left Black Logo Medium.pdf",
+      "filename" : "White Logo Square.pdf",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "Black Logo Square.pdf",
       "idiom" : "universal"
     }
   ],

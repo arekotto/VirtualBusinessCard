@@ -14,9 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         configureDependencies()
-        
-        setupUI()
-        
+            
         return true
     }
 
@@ -38,20 +36,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     private func configureDependencies() {
         FirebaseApp.configure()
-    }
-}
-
-extension AppDelegate {
-    func setupUI() {
-        
-  
-//        let appearance = UINavigationBarAppearance()
-//        appearance.shadowColor = .clear
-//        appearance.backgroundColor = .white
-//        UINavigationBar.appearance().standardAppearance = appearance
-//        UINavigationBar.appearance().scrollEdgeAppearance = appearance
-        
-//        UINavigationBar.appearance().standardAppearance.configureWithTransparentBackground()
-//        UINavigationBar.appearance().scrollEdgeAppearance?.configureWithTransparentBackground()
     }
 }

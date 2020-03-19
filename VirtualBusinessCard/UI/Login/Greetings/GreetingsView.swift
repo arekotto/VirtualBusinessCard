@@ -32,11 +32,11 @@ struct GreetingsView: View {
                 .interpolation(.high)
                 .scaledToFit()
                 .padding(Edge.Set.horizontal, 30)
-                .foregroundColor(Color.accent)
+                .foregroundColor(Color.appAccent)
             Spacer()
             VStack(spacing: 20) {
                 createAccountButton
-                divider
+                OrDivider()
                 loginButton
             }
             .padding(Edge.Set.vertical, 20)
@@ -109,15 +109,6 @@ struct GreetingsView: View {
                 .frame(height: 54)
         }
         .buttonStyle(AppDefaultButtonStyle())
-    }
-    
-    var divider: some View {
-        HStack {
-            VStack { Divider().background(Color.gray).frame(height: 5) }
-            Text("OR").foregroundColor(.gray).font(.system(size: 16, weight: .light))
-            VStack { Divider().background(Color.gray) }
-        }
-        .padding(Edge.Set.horizontal, 40)
     }
 }
 
