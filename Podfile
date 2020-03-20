@@ -11,6 +11,7 @@ target 'VirtualBusinessCard' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
+  pod 'GoogleSignIn'
   pod 'SwiftMessages'
 
   target 'VirtualBusinessCardTests' do

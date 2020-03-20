@@ -9,7 +9,7 @@
 import Foundation
 import Combine
 
-class GreetingsViewModel: ObservableObject {
+final class GreetingsViewModel: AppViewModel {
     
     // MARK: Constants
     

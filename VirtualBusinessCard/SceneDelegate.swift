@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private var statePresented: UIStatePresented {
-        if window?.rootViewController is UIHostingController<LoginWithEmailView> {
+        if window?.rootViewController is UIHostingController<GreetingsView> {
             return .login
         } else {
             return .appContent

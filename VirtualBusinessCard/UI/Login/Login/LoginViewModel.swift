@@ -6,11 +6,12 @@
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
-import Foundation
 import Combine
 import SwiftUI
+import Firebase
+import GoogleSignIn
 
-class LoginViewModel: ObservableObject {
+final class LoginViewModel: AppViewModel {
 
     let titleText = NSLocalizedString("How do you want to log in?", comment: "")
 
@@ -21,12 +22,15 @@ class LoginViewModel: ObservableObject {
 
     @Binding var isPresented: Bool
     
+    @Published var navSelection: Navigation?
+
     init(isPresented: Binding<Bool>) {
         self._isPresented = isPresented
     }
     
     func didTapLoginWithGoogle() {
-        
+        GIDSignIn.sharedInstance()?.presentingViewController = UIApplication.shared.windows.last?.rootViewController
+        GIDSignIn.sharedInstance().signIn()
     }
     
     func didTapLoginWithMicrosoft() {
@@ -38,10 +42,20 @@ class LoginViewModel: ObservableObject {
     }
     
     func didTapLoginWithEmail() {
-        
+        navSelection = .loginWithEmail
     }
     
     func closeButtonTapped() {
         isPresented = false
+    }
+    
+    enum Navigation  {
+        case loginWithEmail
+        
+        func destination() -> some View {
+            switch self {
+            case .loginWithEmail: return LoginWithEmailView(viewModel: LoginWithEmailViewModel())
+            }
+        }
     }
 }

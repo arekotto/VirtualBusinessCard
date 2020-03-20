@@ -8,11 +8,7 @@
 
 import SwiftUI
 
-enum ScreenSizeType {
-    case compact
-    case medium
-    case large
-}
+
 
 struct ShrinkOnTapButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
@@ -25,17 +21,33 @@ struct AppDefaultButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-//            .font(Font.appDefault(size: 20, weight: .medium))
+            .font(Font.appDefault(size: Self.fontSize, weight: .medium))
             .foregroundColor(Color.appAccent)
             .scaleEffect(configuration.isPressed ? 0.94 : 1.0)
+    }
+    
+    static var fontSize: CGFloat {
+        switch DeviceDisplay.sizeType {
+        case .compact: return 16
+        case .standard: return 18
+        case .commodious: return 22
+        }
     }
 }
 
 struct StrongFilledRoundedButtonStyle: ButtonStyle {
     
+    static var fontSize: CGFloat {
+        switch DeviceDisplay.sizeType {
+        case .compact: return 16
+        case .standard: return 18
+        case .commodious: return 22
+        }
+    }
+    
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-//            .font(Font.appDefault(size: 20, weight: .medium, design: .default))
+            .font(Font.appDefault(size: Self.fontSize, weight: .medium))
             .background(Color.appAccent)
             .foregroundColor(Color.white)
             .cornerRadius(20)
@@ -44,6 +56,14 @@ struct StrongFilledRoundedButtonStyle: ButtonStyle {
 }
 
 struct LightFilledRoundedButtonStyle: ButtonStyle {
+    
+    static var fontSize: CGFloat {
+        switch DeviceDisplay.sizeType {
+        case .compact: return 16
+        case .standard: return 18
+        case .commodious: return 22
+        }
+    }
     
     var disabled: Bool = false
     
@@ -54,7 +74,7 @@ struct LightFilledRoundedButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         let mainColor: Color = disabled ? .appGray : .appAccent
         return configuration.label
-            .font(Font.appDefault(size: isCompactLayout ? 18 : 24, weight: .medium))
+            .font(Font.appDefault(size: Self.fontSize, weight: .medium))
             .background(mainColor.opacity(0.1))
             .foregroundColor(mainColor)
             .cornerRadius(20)

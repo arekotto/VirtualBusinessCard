@@ -17,7 +17,7 @@ private enum AppColorTheme: String {
 }
 
 extension UIColor {
-    static let accent = UIColor(named: AppColorTheme.appAccent.rawValue)!
+    static let appAccent = UIColor(named: AppColorTheme.appAccent.rawValue)!
 }
 
 extension Color {

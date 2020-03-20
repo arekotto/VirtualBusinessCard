@@ -8,17 +8,17 @@
 
 import SwiftUI
 
-struct LoginWithEmailView: View {
+struct LoginWithEmailView: AppView {
+    typealias ViewModel = LoginWithEmailViewModel
     
-    @ObservedObject var viewModel: LoginWithEmailViewModel
+    @ObservedObject var viewModel: ViewModel
 
     var body: some View {
-        NavigationView {
             VStack(spacing: 20) {
                 title
                 textFields
                 Button(action: viewModel.loginButtonTapped) {
-                    Text(viewModel.loginButtonText)
+                    Text(viewModel.text.loginButton)
                         .frame(maxWidth: .infinity)
                         .frame(height: 54)
                 }
@@ -26,25 +26,28 @@ struct LoginWithEmailView: View {
                 .disabled(viewModel.loginButtonDisabled)
                 Spacer()
             }
+            .accentColor(.appAccent)
             .padding(10)
             .navigationBarTitle("", displayMode: .inline)
-            
-        }
+            .alert(isPresented: $viewModel.isLoginErrorAlertPresented) {
+                Alert(title: Text(viewModel.text.loginAlertTitle), message: Text(viewModel.loginAlertMessage), dismissButton: .default(Text(viewModel.text.loginAlertDismiss)))
+            }
     }
     
     var title: some View {
-        Text(viewModel.titleText)
+        Text(viewModel.text.title)
             .font(Font.appDefault(size: 24, weight: .semibold, design: .default))
             .multilineTextAlignment(.center)
     }
     
     var textFields: some View {
         VStack(spacing: 2) {
-            TextField(viewModel.emailPlaceholder, text: $viewModel.email)
+            TextField(viewModel.text.emailPlaceholder, text: $viewModel.email)
                 .textFieldStyle(LoginTextFieldStyle())
                 .textContentType(.emailAddress)
                 .keyboardType(.emailAddress)
-            SecureField(viewModel.passwordPlaceholder, text: $viewModel.password)
+                .autocapitalization(.none)
+            SecureField(viewModel.text.passwordPlaceholder, text: $viewModel.password)
                 .textFieldStyle(LoginTextFieldStyle())
                 .textContentType(.password)
         }

@@ -6,30 +6,50 @@
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
 import Combine
+import Firebase
 
-class LoginWithEmailViewModel: ObservableObject {
+final class LoginWithEmailViewModel: AppViewModel {
 
-    let titleText = NSLocalizedString("Enter your email and password to continue", comment: "")
-    
-    let emailPlaceholder = NSLocalizedString("Email", comment: "")
-    let passwordPlaceholder = NSLocalizedString("Password", comment: "")
-    let loginButtonText = NSLocalizedString("Log In", comment: "")
+    let text = Text()
 
     @Published var email = ""
     @Published var password = ""
+    @Published var isLoginErrorAlertPresented = false
+    
+    var loginAlertMessage: String {
+        previousLoginAlertError?.localizedDescription ?? text.unknownLoginError
+    }
     
     var loginButtonDisabled: Bool {
         email.isEmpty || password.isEmpty
     }
     
-    func loginButtonTapped() {
-        
-    }
+    private var previousLoginAlertError: Error?
     
+    func loginButtonTapped() {
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+            if let err = error {
+                self.previousLoginAlertError = err
+                self.isLoginErrorAlertPresented = true
+            }
+        }
+    }
+}
 
+extension LoginWithEmailViewModel {
+    struct Text {
+        let title = NSLocalizedString("Enter your email and password to continue", comment: "")
+        let emailPlaceholder = NSLocalizedString("Email", comment: "")
+        let passwordPlaceholder = NSLocalizedString("Password", comment: "")
+        let loginButton = NSLocalizedString("Log In", comment: "")
+        let loginAlertTitle = NSLocalizedString("Login Unsuccessful", comment: "")
+        let loginAlertDismiss = NSLocalizedString("OK", comment: "")
+        
+        fileprivate let unknownLoginError = NSLocalizedString("Unknown error has occurred. Please try again.", comment: "")
+    }
 }
 
 

@@ -8,9 +8,10 @@
 
 import SwiftUI
 
-struct GreetingsView: View {
+struct GreetingsView: AppView {
+    typealias ViewModel = GreetingsViewModel
     
-    @ObservedObject var viewModel = GreetingsViewModel()
+    @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
         VStack(spacing: 10) {
@@ -58,54 +59,10 @@ struct GreetingsView: View {
         .buttonStyle(LightFilledRoundedButtonStyle())
     }
     
-    var loginWithGoogleButton: some View {
-        Button(action: viewModel.didTapLoginWithGoogle) {
-            HStack {
-                Image("GoogleLogo")
-                    .interpolation(.high)
-                    .resizable()
-                    .frame(width: 40, height: 40, alignment: .leading)
-                    .padding(Edge.Set.horizontal, 10)
-                Spacer()
-                Text(viewModel.loginWithGoogleButtonText)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 54)
-                Spacer()
-                Spacer()
-                    .frame(width: 40, height: 40, alignment: .leading)
-                    .padding(Edge.Set.horizontal, 10)
-            }
-            .frame(minWidth: 100, maxWidth: .infinity)
-        }
-        .buttonStyle(BorderedRoundedButtonStyle())
-    }
-    
-    var loginWithAppleButton: some View {
-        Button(action: viewModel.didTapLoginWithApple) {
-            HStack {
-                Image("AppleLogo")
-                    .interpolation(.high)
-                    .resizable()
-                    .frame(width: 40, height: 40, alignment: .leading)
-                    .padding(Edge.Set.horizontal, 10)
-                Spacer()
-                Text(viewModel.loginWithAppleButtonText)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 54)
-                Spacer()
-                Spacer()
-                    .frame(width: 40, height: 40, alignment: .leading)
-                    .padding(Edge.Set.horizontal, 10)
-            }
-            .frame(minWidth: 100, maxWidth: .infinity)
-        }
-        .buttonStyle(BorderedRoundedButtonStyle())
-    }
-    
     var loginButton: some View {
         Button(action: viewModel.didTapLogin) {
             Text(viewModel.loginButtonText)
-                .frame(maxWidth: .infinity)
+//                .frame(maxWidth: .infinity)
                 .frame(height: 54)
         }
         .buttonStyle(AppDefaultButtonStyle())
@@ -118,11 +75,11 @@ struct GreetingsView_Previews: PreviewProvider {
             GreetingsView()
                 .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
                 .previewDisplayName("iPhone SE")
+//                .environment(\.colorScheme, .dark)
             
             GreetingsView()
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
                 .previewDisplayName("iPhone 11")
         }
-        //        .environment(\.colorScheme, .dark)
     }
 }

@@ -22,7 +22,7 @@ struct LoginWithAppleButton: View {
                 Text(title)
                     .frame(alignment: .center)
                     .fixedSize()
-                    .font(Font.appDefault(size: Self.isCompactLayout ? 16 : 22, weight: .medium))
+                    .font(Font.appDefault(size: Self.fontSize, weight: .medium))
                     .lineLimit(1)
                 Spacer()
                 Spacer()
@@ -30,17 +30,31 @@ struct LoginWithAppleButton: View {
                     .aspectRatio(1, contentMode: .fit)
             }
             .frame(minWidth: 100, maxWidth: .infinity)
-            .frame(height: Self.isCompactLayout ? 44 : 56)
+            .frame(height: Self.height)
             .foregroundColor(Self.forgroundColor)
             .background(Self.backgroundColor)
-            .cornerRadius(Self.isCompactLayout ? 16 : 20)
+            .cornerRadius(Self.height / 3)
     }
 }
 
 extension LoginWithAppleButton {
+    static var fontSize: CGFloat {
+        switch DeviceDisplay.sizeType {
+        case .compact: return 16
+        case .standard: return 18
+        case .commodious: return 22
+        }
+    }
     
-    static var isCompactLayout: Bool {
-        UIScreen.main.bounds.width <= 375
+    static var height: CGFloat {
+        switch DeviceDisplay.sizeType {
+        case .compact: return 44
+        default: return 56
+        }
+    }
+    
+    static var font: Font {
+        Font.appDefault(size: fontSize, weight: .medium)
     }
     
     static var backgroundColor: Color {

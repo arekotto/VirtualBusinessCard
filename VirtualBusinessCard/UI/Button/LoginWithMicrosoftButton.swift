@@ -18,28 +18,28 @@ struct LoginWithMicrosoftButton: View {
                 .interpolation(.high)
                 .resizable()
                 .aspectRatio(1, contentMode: .fit)
-                .padding(Self.isCompactLayout ? 14 : 16)
+                .padding(Self.logoPadding)
                 .background(Color.white)
             Spacer()
             Text(title)
                 .frame(alignment: .center)
                 .fixedSize()
-                .font(Font.appDefault(size: Self.isCompactLayout ? 16 : 22, weight: .medium))
+                .font(Font.appDefault(size: Self.fontSize, weight: .medium))
                 .lineLimit(1)
                 .multilineTextAlignment(.center)
             Spacer()
             Spacer()
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
                 .aspectRatio(1, contentMode: .fit)
-                .padding(Self.isCompactLayout ? 14 : 16)
+                .padding(Self.logoPadding)
         }
         .frame(minWidth: 100, maxWidth: .infinity)
-        .frame(height: Self.isCompactLayout ? 44 : 56)
+        .frame(height: Self.height)
         .foregroundColor(.white)
         .background(Color.microsoftBlue)
-        .cornerRadius(Self.isCompactLayout ? 16 : 20)
+        .cornerRadius(Self.height / 3)
         .overlay(
-            RoundedRectangle(cornerRadius: Self.isCompactLayout ? 16 : 20)
+            RoundedRectangle(cornerRadius: Self.height / 3)
                 .stroke(Color.microsoftBlue, lineWidth: 2)
         )
     }
@@ -47,8 +47,30 @@ struct LoginWithMicrosoftButton: View {
 }
 
 extension LoginWithMicrosoftButton {
-    static var isCompactLayout: Bool {
-        UIScreen.main.bounds.width <= 375
+    static var logoPadding: CGFloat {
+        switch DeviceDisplay.sizeType {
+        case .compact: return 14
+        default: return 16
+        }
+    }
+    
+    static var fontSize: CGFloat {
+        switch DeviceDisplay.sizeType {
+        case .compact: return 16
+        case .standard: return 18
+        case .commodious: return 22
+        }
+    }
+    
+    static var height: CGFloat {
+        switch DeviceDisplay.sizeType {
+        case .compact: return 44
+        default: return 56
+        }
+    }
+    
+    static var font: Font {
+        Font.appDefault(size: fontSize, weight: .medium)
     }
 }
 
