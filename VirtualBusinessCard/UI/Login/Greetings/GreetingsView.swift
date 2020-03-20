@@ -19,11 +19,11 @@ struct GreetingsView: AppView {
                 .resizable()
                 .scaledToFit()
                 .frame(height: 30)
-            Text(viewModel.title)
+            Text(viewModel.text.title)
                 .fontWeight(.bold)
                 .font(.system(size: 24))
                 .multilineTextAlignment(.center)
-            Text(viewModel.subtitle)
+            Text(viewModel.text.subtitle)
                 .font(.system(size: 16))
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -44,15 +44,15 @@ struct GreetingsView: AppView {
         }
         .padding(Edge.Set.vertical, 10)
         .padding(Edge.Set.horizontal, 20)
-        .sheet(isPresented: $viewModel.isShowingLogin) {
-            LoginView(viewModel: LoginViewModel(isPresented: self.$viewModel.isShowingLogin))
+        .sheet(item: $viewModel.presentedSheet) {
+            self.destinationView(target: $0)
         }
     }
     
     
     var createAccountButton: some View {
         Button(action: viewModel.didTapCreateAccount) {
-            Text(viewModel.createAccountButtonText)
+            Text(viewModel.text.createAccountButtonText)
                 .frame(maxWidth: .infinity)
                 .frame(height: 54)
         }
@@ -61,12 +61,27 @@ struct GreetingsView: AppView {
     
     var loginButton: some View {
         Button(action: viewModel.didTapLogin) {
-            Text(viewModel.loginButtonText)
+            Text(viewModel.text.loginButtonText)
 //                .frame(maxWidth: .infinity)
                 .frame(height: 54)
         }
         .buttonStyle(AppDefaultButtonStyle())
     }
+    
+    func destinationView(target: ViewModel.Navigation) -> some View {
+        switch target {
+        case .login:
+            let vm = viewModel.loginViewModel()
+            return AnyView(LoginView(viewModel: vm))
+        case .createAccount:
+            let vm = viewModel.createAccountViewModel()
+            return AnyView(CreateAccountView(viewModel: vm))
+        }
+    }
+}
+
+extension GreetingsView {
+
 }
 
 struct GreetingsView_Previews: PreviewProvider {

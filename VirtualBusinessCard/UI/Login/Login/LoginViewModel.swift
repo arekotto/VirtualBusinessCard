@@ -49,13 +49,11 @@ final class LoginViewModel: AppViewModel {
         isPresented = false
     }
     
+    func loginWithEmailViewModel() -> LoginWithEmailViewModel {
+        LoginWithEmailViewModel()
+    }
+    
     enum Navigation  {
         case loginWithEmail
-        
-        func destination() -> some View {
-            switch self {
-            case .loginWithEmail: return LoginWithEmailView(viewModel: LoginWithEmailViewModel())
-            }
-        }
     }
 }

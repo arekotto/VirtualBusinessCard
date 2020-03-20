@@ -23,6 +23,8 @@
 		4558F1F52423CD4800D44526 /* AppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F42423CD4800D44526 /* AppView.swift */; };
 		4558F1F72423CD6200D44526 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F62423CD6200D44526 /* AppViewModel.swift */; };
 		4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F82423E75D00D44526 /* DeviceDisplay.swift */; };
+		4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */; };
+		4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */; };
 		459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58623FEA496002F03DD /* Firestoreable.swift */; };
 		459DC58A23FEA4CB002F03DD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58923FEA4CB002F03DD /* User.swift */; };
 		459DC58C23FEA515002F03DD /* User+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* User+Firestorable.swift */; };
@@ -83,6 +85,8 @@
 		4558F1F42423CD4800D44526 /* AppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppView.swift; sourceTree = "<group>"; };
 		4558F1F62423CD6200D44526 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		4558F1F82423E75D00D44526 /* DeviceDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDisplay.swift; sourceTree = "<group>"; };
+		4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
+		4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewModel.swift; sourceTree = "<group>"; };
 		459DC58623FEA496002F03DD /* Firestoreable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Firestoreable.swift; sourceTree = "<group>"; };
 		459DC58923FEA4CB002F03DD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		459DC58B23FEA515002F03DD /* User+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Firestorable.swift"; sourceTree = "<group>"; };
@@ -149,6 +153,7 @@
 		451C664D240806690016DA68 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				4558F1FA2424FBE500D44526 /* CreateAccount */,
 				45B5E313241FA01B00028B0A /* Login */,
 				45E64C54241938F900FECFC9 /* LoginWithEmail */,
 				451C6650240809840016DA68 /* Greetings */,
@@ -239,6 +244,15 @@
 				4558F1F22423B52000D44526 /* LoginWithGoogleButton.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		4558F1FA2424FBE500D44526 /* CreateAccount */ = {
+			isa = PBXGroup;
+			children = (
+				4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */,
+				4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */,
+			);
+			path = CreateAccount;
 			sourceTree = "<group>";
 		};
 		459DC58823FEA4A1002F03DD /* Model */ = {
@@ -544,11 +558,13 @@
 				4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */,
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
 				4558F1F72423CD6200D44526 /* AppViewModel.swift in Sources */,
+				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
 				459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */,
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
 				45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */,
 				459DC58C23FEA515002F03DD /* User+Firestorable.swift in Sources */,
+				4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
 				4558F1F52423CD4800D44526 /* AppView.swift in Sources */,
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,

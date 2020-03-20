@@ -1,22 +1,22 @@
 //
-//  LoginView.swift
+//  CreateAccountView.swift
 //  VirtualBusinessCard
 //
-//  Created by Arek Otto on 16/03/2020.
+//  Created by Arek Otto on 20/03/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
 import SwiftUI
 
-struct LoginView: AppView {
-    typealias ViewModel = LoginViewModel
+struct CreateAccountView: AppView {
+    typealias ViewModel = CreateAccountViewModel
     
     @ObservedObject var viewModel: ViewModel
     
     var body: some View {
         NavigationView {
             VStack(spacing: 10) {
-                Text(viewModel.titleText)
+                Text(viewModel.text.title)
                     .fontWeight(.bold)
                     .font(.system(size: 24))
                     .multilineTextAlignment(.center)
@@ -52,29 +52,29 @@ struct LoginView: AppView {
     
     var loginWithGoogleButton: some View {
         Button(action: viewModel.didTapLoginWithGoogle) {
-            LoginWithGoogleButton(title: viewModel.loginWithGoogleButtonText)
+            LoginWithGoogleButton(title: viewModel.text.continueWithGoogleButton)
         }
         .buttonStyle(ShrinkOnTapButtonStyle())
     }
     
     var loginWithMicrosoftButton: some View {
         Button(action: viewModel.didTapLoginWithMicrosoft) {
-            LoginWithMicrosoftButton(title: viewModel.loginWithMicrosoftButtonText)
+            LoginWithMicrosoftButton(title: viewModel.text.continueWithMicrosoftButton)
         }
         .buttonStyle(ShrinkOnTapButtonStyle())
     }
     
     var loginWithAppleButton: some View {
         Button(action: viewModel.didTapLoginWithApple) {
-            LoginWithAppleButton(title: viewModel.loginWithAppleButtonText)
+            LoginWithAppleButton(title: viewModel.text.continueWithAppleButton)
         }
         .buttonStyle(ShrinkOnTapButtonStyle())
     }
     
     var loginWithEmailButton: some View {
-        NavigationLink(destination: destinationView(for: .loginWithEmail), tag: .loginWithEmail, selection: $viewModel.navSelection) {
+        NavigationLink(destination: ViewModel.Navigation.loginWithEmail.destination(), tag: .loginWithEmail, selection: $viewModel.navSelection) {
             Button(action: viewModel.didTapLoginWithEmail) {
-                Text(viewModel.loginWithEmailButtonText)
+                Text(viewModel.text.continueWithEmailButton)
 //                    .frame(maxWidth: .infinity)
                     .frame(height: 54)
             }
@@ -82,38 +82,33 @@ struct LoginView: AppView {
         }
     }
     
-    init(viewModel: LoginViewModel) {
+    init(viewModel: CreateAccountViewModel) {
         self.viewModel = viewModel
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
-    
-    func destinationView(for target: ViewModel.Navigation) -> some View {
-        switch target {
-        case .loginWithEmail: return LoginWithEmailView(viewModel: viewModel.loginWithEmailViewModel())
-        }
-    }
 }
-struct LoginView_Previews: PreviewProvider {
+
+struct CreateAccountView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            LoginView(viewModel: LoginViewModel(isPresented: .constant(true)))
+            CreateAccountView(viewModel: CreateAccountViewModel(isPresented: .constant(true)))
                 .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
                 .previewDisplayName("iPhone SE")
                 .environment(\.colorScheme, .dark)
             
-            LoginView(viewModel: LoginViewModel(isPresented: .constant(true)))
+            CreateAccountView(viewModel: CreateAccountViewModel(isPresented: .constant(true)))
                 .previewDevice(PreviewDevice(rawValue: "iPhone 8"))
                 .previewDisplayName("iPhone 8")
             
-            LoginView(viewModel: LoginViewModel(isPresented: .constant(true)))
+            CreateAccountView(viewModel: CreateAccountViewModel(isPresented: .constant(true)))
                 .previewDevice(PreviewDevice(rawValue: "iPhone Xs"))
                 .previewDisplayName("iPhone Xs")
                 .environment(\.colorScheme, .dark)
             
-            LoginView(viewModel: LoginViewModel(isPresented: .constant(true)))
+            CreateAccountView(viewModel: CreateAccountViewModel(isPresented: .constant(true)))
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
                 .previewDisplayName("iPhone 11")
         }
