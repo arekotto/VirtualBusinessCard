@@ -29,8 +29,16 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Bluetooth access is required to share business cards.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>SOme good reason</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>SOme good reason</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

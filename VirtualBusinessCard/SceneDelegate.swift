@@ -94,7 +94,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func rootViewControllerBasedOnAuthState() -> UIViewController {
         if isUserLoggedIn {
-            return UIHostingController(rootView: ContentView())
+//            return UIHostingController(rootView: ContentView(viewModel: ContentViewModel()))
+            let vc = UITabBarController()
+            vc.setViewControllers([
+                UINavigationController(rootViewController: SendVC()),
+                UINavigationController(rootViewController: ReceiveVC())],
+            animated: false)
+            return vc
         } else {
             return UIHostingController(rootView: GreetingsView())
         }
