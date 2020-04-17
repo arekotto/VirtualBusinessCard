@@ -26,6 +26,7 @@
 		4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */; };
 		4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */; };
 		4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E994243B084000184AA4 /* ReceiveVC.swift */; };
+		4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E999243B6A7500184AA4 /* DisplayVC.swift */; };
 		459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58623FEA496002F03DD /* Firestoreable.swift */; };
 		459DC58A23FEA4CB002F03DD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58923FEA4CB002F03DD /* User.swift */; };
 		459DC58C23FEA515002F03DD /* User+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* User+Firestorable.swift */; };
@@ -35,6 +36,7 @@
 		45B5E319241FBE2800028B0A /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E318241FBE2800028B0A /* Font.swift */; };
 		45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E31A241FC35B00028B0A /* OrDivider.swift */; };
 		45B5E31D241FED0700028B0A /* LoginWithAppleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E31C241FED0700028B0A /* LoginWithAppleButton.swift */; };
+		45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD39CD2448905B00C5587C /* AnimationHelper.swift */; };
 		45D6BF7824169A41008B2498 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6BF7724169A41008B2498 /* Color.swift */; };
 		45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */; };
 		45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */; };
@@ -90,6 +92,7 @@
 		4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewModel.swift; sourceTree = "<group>"; };
 		4580E98F2437FD1400184AA4 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
 		4580E994243B084000184AA4 /* ReceiveVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveVC.swift; sourceTree = "<group>"; };
+		4580E999243B6A7500184AA4 /* DisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVC.swift; sourceTree = "<group>"; };
 		459DC58623FEA496002F03DD /* Firestoreable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Firestoreable.swift; sourceTree = "<group>"; };
 		459DC58923FEA4CB002F03DD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		459DC58B23FEA515002F03DD /* User+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Firestorable.swift"; sourceTree = "<group>"; };
@@ -99,6 +102,7 @@
 		45B5E318241FBE2800028B0A /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		45B5E31A241FC35B00028B0A /* OrDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrDivider.swift; sourceTree = "<group>"; };
 		45B5E31C241FED0700028B0A /* LoginWithAppleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithAppleButton.swift; sourceTree = "<group>"; };
+		45CD39CD2448905B00C5587C /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
 		45D6BF7724169A41008B2498 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
 		45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailViewModel.swift; sourceTree = "<group>"; };
@@ -141,15 +145,14 @@
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				4580E998243B6A4900184AA4 /* Utils */,
+				4580E997243B6A2700184AA4 /* Components */,
 				4580E996243B69B200184AA4 /* Sharing */,
 				453B5F1C2419715A009E3AB2 /* Button */,
 				451C664D240806690016DA68 /* Login */,
-				45D6BF7724169A41008B2498 /* Color.swift */,
-				45B5E318241FBE2800028B0A /* Font.swift */,
-				45B5E31A241FC35B00028B0A /* OrDivider.swift */,
 				4558F1F42423CD4800D44526 /* AppView.swift */,
 				4558F1F62423CD6200D44526 /* AppViewModel.swift */,
-				4558F1F82423E75D00D44526 /* DeviceDisplay.swift */,
+				4580E999243B6A7500184AA4 /* DisplayVC.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -265,6 +268,25 @@
 				4580E994243B084000184AA4 /* ReceiveVC.swift */,
 			);
 			path = Sharing;
+			sourceTree = "<group>";
+		};
+		4580E997243B6A2700184AA4 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				45B5E31A241FC35B00028B0A /* OrDivider.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4580E998243B6A4900184AA4 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				4558F1F82423E75D00D44526 /* DeviceDisplay.swift */,
+				45B5E318241FBE2800028B0A /* Font.swift */,
+				45CD39CD2448905B00C5587C /* AnimationHelper.swift */,
+				45D6BF7724169A41008B2498 /* Color.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		459DC58823FEA4A1002F03DD /* Model */ = {
@@ -570,6 +592,7 @@
 				4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */,
 				4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */,
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
+				4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */,
 				4558F1F72423CD6200D44526 /* AppViewModel.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
 				459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */,
@@ -589,6 +612,7 @@
 				451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */,
 				451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */,
 				45B5E315241FA07F00028B0A /* LoginView.swift in Sources */,
+				45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */,
 				4558F1F32423B52000D44526 /* LoginWithGoogleButton.swift in Sources */,
 				45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */,
 				45D6BF7824169A41008B2498 /* Color.swift in Sources */,
