@@ -25,12 +25,14 @@
 		4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F82423E75D00D44526 /* DeviceDisplay.swift */; };
 		4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */; };
 		4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */; };
+		455D6B792449F1E600B4C7D2 /* rec.wav in Resources */ = {isa = PBXBuildFile; fileRef = 455D6B782449F1E600B4C7D2 /* rec.wav */; };
 		4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E994243B084000184AA4 /* ReceiveVC.swift */; };
 		4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E999243B6A7500184AA4 /* DisplayVC.swift */; };
 		459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58623FEA496002F03DD /* Firestoreable.swift */; };
 		459DC58A23FEA4CB002F03DD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58923FEA4CB002F03DD /* User.swift */; };
 		459DC58C23FEA515002F03DD /* User+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* User+Firestorable.swift */; };
 		459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */; };
+		45AA873324499A5B004ACDDD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AA873224499A5B004ACDDD /* CardView.swift */; };
 		45B5E315241FA07F00028B0A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E314241FA07F00028B0A /* LoginView.swift */; };
 		45B5E317241FA09900028B0A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E316241FA09900028B0A /* LoginViewModel.swift */; };
 		45B5E319241FBE2800028B0A /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E318241FBE2800028B0A /* Font.swift */; };
@@ -90,6 +92,7 @@
 		4558F1F82423E75D00D44526 /* DeviceDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDisplay.swift; sourceTree = "<group>"; };
 		4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewModel.swift; sourceTree = "<group>"; };
+		455D6B782449F1E600B4C7D2 /* rec.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = rec.wav; sourceTree = "<group>"; };
 		4580E98F2437FD1400184AA4 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
 		4580E994243B084000184AA4 /* ReceiveVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveVC.swift; sourceTree = "<group>"; };
 		4580E999243B6A7500184AA4 /* DisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVC.swift; sourceTree = "<group>"; };
@@ -97,6 +100,7 @@
 		459DC58923FEA4CB002F03DD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		459DC58B23FEA515002F03DD /* User+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Firestorable.swift"; sourceTree = "<group>"; };
 		459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		45AA873224499A5B004ACDDD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		45B5E314241FA07F00028B0A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		45B5E316241FA09900028B0A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		45B5E318241FBE2800028B0A /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -145,6 +149,7 @@
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				45AA873124499A47004ACDDD /* scratch */,
 				4580E998243B6A4900184AA4 /* Utils */,
 				4580E997243B6A2700184AA4 /* Components */,
 				4580E996243B69B200184AA4 /* Sharing */,
@@ -152,7 +157,6 @@
 				451C664D240806690016DA68 /* Login */,
 				4558F1F42423CD4800D44526 /* AppView.swift */,
 				4558F1F62423CD6200D44526 /* AppViewModel.swift */,
-				4580E999243B6A7500184AA4 /* DisplayVC.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -209,6 +213,7 @@
 				4537CEE823F6D25A003602EA /* Assets.xcassets */,
 				4537CEED23F6D25A003602EA /* LaunchScreen.storyboard */,
 				4537CEF023F6D25A003602EA /* Info.plist */,
+				455D6B782449F1E600B4C7D2 /* rec.wav */,
 				459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */,
 				4537CEEA23F6D25A003602EA /* Preview Content */,
 			);
@@ -305,6 +310,15 @@
 				459DC58B23FEA515002F03DD /* User+Firestorable.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		45AA873124499A47004ACDDD /* scratch */ = {
+			isa = PBXGroup;
+			children = (
+				4580E999243B6A7500184AA4 /* DisplayVC.swift */,
+				45AA873224499A5B004ACDDD /* CardView.swift */,
+			);
+			path = scratch;
 			sourceTree = "<group>";
 		};
 		45B5E313241FA01B00028B0A /* Login */ = {
@@ -461,6 +475,7 @@
 				4537CEEF23F6D25A003602EA /* LaunchScreen.storyboard in Resources */,
 				459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */,
 				4537CEEC23F6D25A003602EA /* Preview Assets.xcassets in Resources */,
+				455D6B792449F1E600B4C7D2 /* rec.wav in Resources */,
 				4537CEE923F6D25A003602EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -603,6 +618,7 @@
 				459DC58C23FEA515002F03DD /* User+Firestorable.swift in Sources */,
 				4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
+				45AA873324499A5B004ACDDD /* CardView.swift in Sources */,
 				4558F1F52423CD4800D44526 /* AppView.swift in Sources */,
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,
 				45B5E31D241FED0700028B0A /* LoginWithAppleButton.swift in Sources */,
