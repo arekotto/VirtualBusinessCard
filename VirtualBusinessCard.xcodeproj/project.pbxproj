@@ -25,7 +25,8 @@
 		4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F82423E75D00D44526 /* DeviceDisplay.swift */; };
 		4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */; };
 		4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */; };
-		455D6B792449F1E600B4C7D2 /* rec.wav in Resources */ = {isa = PBXBuildFile; fileRef = 455D6B782449F1E600B4C7D2 /* rec.wav */; };
+		457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B4E7A24531B6800761A90 /* SceneVC.swift */; };
+		457B4E7D24531BC700761A90 /* SceneKitAssets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */; };
 		4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E994243B084000184AA4 /* ReceiveVC.swift */; };
 		4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E999243B6A7500184AA4 /* DisplayVC.swift */; };
 		459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58623FEA496002F03DD /* Firestoreable.swift */; };
@@ -92,7 +93,8 @@
 		4558F1F82423E75D00D44526 /* DeviceDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDisplay.swift; sourceTree = "<group>"; };
 		4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewModel.swift; sourceTree = "<group>"; };
-		455D6B782449F1E600B4C7D2 /* rec.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = rec.wav; sourceTree = "<group>"; };
+		457B4E7A24531B6800761A90 /* SceneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneVC.swift; sourceTree = "<group>"; };
+		457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = SceneKitAssets.scnassets; sourceTree = "<group>"; };
 		4580E98F2437FD1400184AA4 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
 		4580E994243B084000184AA4 /* ReceiveVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveVC.swift; sourceTree = "<group>"; };
 		4580E999243B6A7500184AA4 /* DisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVC.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				457B4E7924531AE900761A90 /* scene */,
 				45AA873124499A47004ACDDD /* scratch */,
 				4580E998243B6A4900184AA4 /* Utils */,
 				4580E997243B6A2700184AA4 /* Components */,
@@ -213,7 +216,6 @@
 				4537CEE823F6D25A003602EA /* Assets.xcassets */,
 				4537CEED23F6D25A003602EA /* LaunchScreen.storyboard */,
 				4537CEF023F6D25A003602EA /* Info.plist */,
-				455D6B782449F1E600B4C7D2 /* rec.wav */,
 				459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */,
 				4537CEEA23F6D25A003602EA /* Preview Content */,
 			);
@@ -264,6 +266,15 @@
 				4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */,
 			);
 			path = CreateAccount;
+			sourceTree = "<group>";
+		};
+		457B4E7924531AE900761A90 /* scene */ = {
+			isa = PBXGroup;
+			children = (
+				457B4E7A24531B6800761A90 /* SceneVC.swift */,
+				457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */,
+			);
+			path = scene;
 			sourceTree = "<group>";
 		};
 		4580E996243B69B200184AA4 /* Sharing */ = {
@@ -472,10 +483,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				457B4E7D24531BC700761A90 /* SceneKitAssets.scnassets in Resources */,
 				4537CEEF23F6D25A003602EA /* LaunchScreen.storyboard in Resources */,
 				459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */,
 				4537CEEC23F6D25A003602EA /* Preview Assets.xcassets in Resources */,
-				455D6B792449F1E600B4C7D2 /* rec.wav in Resources */,
 				4537CEE923F6D25A003602EA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -620,6 +631,7 @@
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
 				45AA873324499A5B004ACDDD /* CardView.swift in Sources */,
 				4558F1F52423CD4800D44526 /* AppView.swift in Sources */,
+				457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */,
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,
 				45B5E31D241FED0700028B0A /* LoginWithAppleButton.swift in Sources */,
 				45B5E317241FA09900028B0A /* LoginViewModel.swift in Sources */,
