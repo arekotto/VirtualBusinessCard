@@ -59,6 +59,9 @@ class SceneVC: UIViewController {
             sceneView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20)
         ])
         
+        let card = scene.rootNode.childNode(withName: "businessCard", recursively: true)!.geometry as! SCNBox
+        card.firstMaterial!.lightingModel = .blinn
+        print(card.firstMaterial!.lightingModel)
     }
     var val = CGFloat(deg2rad(20))
     @objc func action() {
