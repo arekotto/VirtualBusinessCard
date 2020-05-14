@@ -101,7 +101,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //                UINavigationController(rootViewController: ReceiveVC())],
 //            animated: false)
 //            return vc
-            return UINavigationController(rootViewController: SceneVC())
+            return UINavigationController(rootViewController: BusinessCardTVC())
         } else {
             return UIHostingController(rootView: GreetingsView())
         }

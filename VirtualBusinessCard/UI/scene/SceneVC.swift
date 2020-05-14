@@ -37,19 +37,6 @@ class SceneVC: UIViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(action))
         
-//        let lightNode = scene.rootNode.childNode(withName: "omni", recursively: true)
-        
-//        let light = lightNode!.light!
-//
-//        light.shadowMapSize = CGSize(width: 2048, height: 2048)
-//        light.shadowMode = .forward
-//        light.shadowSampleCount = 200
-//        light.shadowRadius = 50
-//        light.shadowBias  = 32
-//        light.automaticallyAdjustsShadowProjection = true
-//        
-//        light.orthographicScale=200; // bigger is softer
-        
         sceneView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -63,17 +50,9 @@ class SceneVC: UIViewController {
         card.firstMaterial!.lightingModel = .blinn
         print(card.firstMaterial!.lightingModel)
     }
-    var val = CGFloat(deg2rad(20))
+
     @objc func action() {
-        val = -val
-        print(lightNode.eulerAngles)
-        print(lightNode.rotation)
-        let moveTo = SCNAction.rotateTo(x: -1.5882496, y: 0, z: val, duration: 3)
-        self.lightNode.runAction(moveTo)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            print(self.lightNode.eulerAngles)
-            print(self.lightNode.rotation)
-        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
