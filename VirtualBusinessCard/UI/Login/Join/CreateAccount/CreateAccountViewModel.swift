@@ -37,23 +37,21 @@ final class CreateAccountViewModel: AppViewModel {
     }
     
     func didTapLoginWithEmail() {
-        navSelection = .loginWithEmail
+        navSelection = .createAccountWithEmail
     }
     
     func closeButtonTapped() {
         isPresented = false
     }
+    
+    func createAccountNameViewModel() -> CreateAccountNameViewModel {
+        CreateAccountNameViewModel(isPresented: $isPresented)
+    }
 }
 
 extension CreateAccountViewModel {
     enum Navigation  {
-        case loginWithEmail
-        
-        func destination() -> some View {
-            switch self {
-            case .loginWithEmail: return LoginWithEmailView(viewModel: LoginWithEmailViewModel())
-            }
-        }
+        case createAccountWithEmail
     }
 }
 

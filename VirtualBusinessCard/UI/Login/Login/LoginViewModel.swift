@@ -50,7 +50,7 @@ final class LoginViewModel: AppViewModel {
     }
     
     func loginWithEmailViewModel() -> LoginWithEmailViewModel {
-        LoginWithEmailViewModel()
+        LoginWithEmailViewModel(isPresented: $isPresented)
     }
     
     enum Navigation  {

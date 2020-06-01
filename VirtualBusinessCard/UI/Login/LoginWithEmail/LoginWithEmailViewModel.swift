@@ -18,6 +18,8 @@ final class LoginWithEmailViewModel: AppViewModel {
     @Published var password = ""
     @Published var isLoginErrorAlertPresented = false
     
+    @Binding var isPresented: Bool
+
     var loginAlertMessage: String {
         previousLoginAlertError?.localizedDescription ?? text.unknownLoginError
     }
@@ -27,6 +29,14 @@ final class LoginWithEmailViewModel: AppViewModel {
     }
     
     private var previousLoginAlertError: Error?
+    
+    init(isPresented: Binding<Bool>) {
+        self._isPresented = isPresented
+    }
+    
+    func closeButtonTapped() {
+        isPresented = false
+    }
     
     func loginButtonTapped() {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
@@ -41,7 +51,7 @@ final class LoginWithEmailViewModel: AppViewModel {
 
 extension LoginWithEmailViewModel {
     struct Text {
-        let title = NSLocalizedString("Enter your email and password to continue", comment: "")
+        let title = NSLocalizedString("Login with Email", comment: "")
         let emailPlaceholder = NSLocalizedString("Email", comment: "")
         let passwordPlaceholder = NSLocalizedString("Password", comment: "")
         let loginButton = NSLocalizedString("Log In", comment: "")

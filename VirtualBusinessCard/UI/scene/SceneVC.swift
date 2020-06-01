@@ -41,8 +41,8 @@ class SceneVC: UIViewController {
         
         NSLayoutConstraint.activate([
             sceneView.heightAnchor.constraint(equalToConstant: 300),
-            sceneView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            sceneView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            sceneView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            sceneView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
             sceneView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20)
         ])
         

@@ -16,10 +16,7 @@ struct LoginView: AppView {
     var body: some View {
         NavigationView {
             VStack(spacing: 10) {
-                Text(viewModel.titleText)
-                    .fontWeight(.bold)
-                    .font(.system(size: 24))
-                    .multilineTextAlignment(.center)
+                title
                 Spacer()
                 Spacer()
                 VStack(spacing: 20) {
@@ -34,20 +31,16 @@ struct LoginView: AppView {
             .padding(Edge.Set.vertical, 10)
             .padding(Edge.Set.horizontal, 20)
             .navigationBarTitle("", displayMode: .inline)
-            .navigationBarItems(trailing:
-                Button(action: {
-                    self.viewModel.closeButtonTapped()
-                }) {
-                    Image(systemName: "xmark")
-                        .imageScale(.medium)
-                        .font(.system(size: 20, weight: .bold))
-                        .padding(12)
-                }
-                .background(Color.appAccent.opacity(0.1))
-                .clipShape(Circle())
-            )
+            .navigationBarItems(trailing: closeButton)
         }
         .accentColor(Color.appAccent)
+    }
+    
+    var title: some View {
+        Text(viewModel.titleText)
+            .fontWeight(.bold)
+            .font(.system(size: 24))
+            .multilineTextAlignment(.center)
     }
     
     var loginWithGoogleButton: some View {
@@ -80,6 +73,17 @@ struct LoginView: AppView {
             }
             .buttonStyle(AppDefaultButtonStyle())
         }
+    }
+    
+    var closeButton: some View {
+        Button(action: viewModel.closeButtonTapped) {
+            Image(systemName: "xmark")
+                .imageScale(.medium)
+                .font(.system(size: 20, weight: .bold))
+                .padding(12)
+        }
+        .background(Color.appAccent.opacity(0.1))
+        .clipShape(Circle())
     }
     
     init(viewModel: LoginViewModel) {

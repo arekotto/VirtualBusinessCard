@@ -97,11 +97,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            return UIHostingController(rootView: ContentView(viewModel: ContentViewModel()))
 //            let vc = UITabBarController()
 //            vc.setViewControllers([
-//                UINavigationController(rootViewController: SendVC()),
-//                UINavigationController(rootViewController: ReceiveVC())],
+//                UINavigationController(rootViewController: SceneVC()),
+//                UINavigationController(rootViewController: BusinessCardTVC())],
 //            animated: false)
 //            return vc
-            return UINavigationController(rootViewController: BusinessCardTVC())
+            return UINavigationController(rootViewController: TestVC())
         } else {
             return UIHostingController(rootView: GreetingsView())
         }

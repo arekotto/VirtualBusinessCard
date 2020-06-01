@@ -15,29 +15,15 @@ struct CreateAccountView: AppView {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 10) {
-                Text(viewModel.text.title)
-                    .fontWeight(.bold)
-                    .font(.system(size: 24))
-                    .multilineTextAlignment(.center)
-                Spacer()
-                Spacer()
-                VStack(spacing: 20) {
-                    loginWithMicrosoftButton
-                    loginWithGoogleButton
-                    loginWithAppleButton
-                    OrDivider()
-                    loginWithEmailButton
+            VStack {
+                NavigationLink(destination: CreateAccountNameView(viewModel: viewModel.createAccountNameViewModel()), tag: .createAccountWithEmail, selection: $viewModel.navSelection) {
+                    EmptyView()
                 }
-                .padding(Edge.Set.vertical, 20)
+                bodyMain
             }
-            .padding(Edge.Set.vertical, 10)
-            .padding(Edge.Set.horizontal, 20)
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarItems(trailing:
-                Button(action: {
-                    self.viewModel.closeButtonTapped()
-                }) {
+                Button(action: viewModel.closeButtonTapped) {
                     Image(systemName: "xmark")
                         .imageScale(.medium)
                         .font(.system(size: 20, weight: .bold))
@@ -48,6 +34,27 @@ struct CreateAccountView: AppView {
             )
         }
         .accentColor(Color.appAccent)
+    }
+    
+    var bodyMain: some View {
+        VStack(spacing: 10) {
+            Text(viewModel.text.title)
+                .fontWeight(.bold)
+                .font(.system(size: 24))
+                .multilineTextAlignment(.center)
+            Spacer()
+            Spacer()
+            VStack(spacing: 20) {
+                loginWithMicrosoftButton
+                loginWithGoogleButton
+                loginWithAppleButton
+                OrDivider()
+                loginWithEmailButton
+            }
+            .padding(Edge.Set.vertical, 20)
+        }
+        .padding(Edge.Set.vertical, 10)
+        .padding(Edge.Set.horizontal, 20)
     }
     
     var loginWithGoogleButton: some View {
@@ -72,14 +79,12 @@ struct CreateAccountView: AppView {
     }
     
     var loginWithEmailButton: some View {
-        NavigationLink(destination: ViewModel.Navigation.loginWithEmail.destination(), tag: .loginWithEmail, selection: $viewModel.navSelection) {
-            Button(action: viewModel.didTapLoginWithEmail) {
-                Text(viewModel.text.continueWithEmailButton)
-//                    .frame(maxWidth: .infinity)
-                    .frame(height: 54)
-            }
-            .buttonStyle(AppDefaultButtonStyle())
+        Button(action: viewModel.didTapLoginWithEmail) {
+            Text(viewModel.text.continueWithEmailButton)
+                //                    .frame(maxWidth: .infinity)
+                .frame(height: 54)
         }
+        .buttonStyle(AppDefaultButtonStyle())
     }
     
     init(viewModel: CreateAccountViewModel) {
