@@ -10,7 +10,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-final class GreetingsViewModel: AppViewModel {
+final class GreetingsViewModel: AppSwiftUIViewModel {
     
     let text = Text()
     let appLogoName = "AppLogo"

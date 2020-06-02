@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LoginView: AppView {
+struct LoginView: AppSwiftUIView {
     typealias ViewModel = LoginViewModel
     
     @ObservedObject var viewModel: ViewModel

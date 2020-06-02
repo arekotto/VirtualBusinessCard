@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 import Firebase
 
-final class LoginWithEmailViewModel: AppViewModel {
+final class LoginWithEmailViewModel: AppSwiftUIViewModel {
 
     let text = Text()
 

@@ -2,13 +2,12 @@
 //  AppViewModel.swift
 //  VirtualBusinessCard
 //
-//  Created by Arek Otto on 19/03/2020.
+//  Created by Arek Otto on 01/06/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
-import Combine
+import Foundation
 
-protocol AppViewModel: ObservableObject {
+class AppViewModel {
     
 }
-

@@ -202,17 +202,3 @@ extension SendVC: CBPeripheralDelegate {
 
     }
 }
-
-class TestVC: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "logout", style: .done, target: self, action: #selector(logout))
-    }
-    
-    @objc func logout() {
-        try! Auth.auth().signOut()
-    }
-    
-}

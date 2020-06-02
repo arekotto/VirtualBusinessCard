@@ -8,8 +8,9 @@
 
 import Combine
 import SwiftUI
+import Firebase
 
-class CreateAccountEmailPasswordViewModel: AppViewModel {
+class CreateAccountEmailPasswordViewModel: AppSwiftUIViewModel {
     let text = Text()
     
     let namesInfo: UserNamesInfo
@@ -17,6 +18,9 @@ class CreateAccountEmailPasswordViewModel: AppViewModel {
     @Published var email = ""
     @Published var password = ""
     @Binding var isPresented: Bool
+    @Published var isErrorAlertPresented = false
+
+    @Published var createAccountErrorMessage = ""
     
     var createAccountButtonDisabled: Bool {
         email.isEmpty || password.isEmpty
@@ -28,7 +32,35 @@ class CreateAccountEmailPasswordViewModel: AppViewModel {
     }
     
     func createAccountButtonTapped() {
+        guard !email.isEmpty && !password.isEmpty else { return }
         
+        Auth.auth().createUser(withEmail: email, password: password) { result, error in
+            if let err = error {
+                print(#file, err.localizedDescription)
+                guard let errorCode = AuthErrorCode(rawValue: err._code) else {
+                    self.createAccountErrorMessage = self.text.unknownError
+                    self.isErrorAlertPresented = true
+                    return
+                }
+                switch errorCode {
+                case .networkError:
+                    self.createAccountErrorMessage = self.text.connectionProblemError
+                case .weakPassword:
+                    self.createAccountErrorMessage = self.text.passwordTooWeakError
+                case .emailAlreadyInUse:
+                    self.createAccountErrorMessage = self.text.emailAlreadyInUseError
+                default:
+                    self.createAccountErrorMessage = self.text.unknownError
+                }
+                self.isErrorAlertPresented = true
+            } else {
+                
+            }
+        }
+    }
+    
+    func dismissAlertButtonTapped() {
+        createAccountErrorMessage = ""
     }
     
     func closeButtonTapped() {
@@ -50,6 +82,14 @@ extension CreateAccountEmailPasswordViewModel {
         let emailPlaceholder = NSLocalizedString("Email", comment: "")
         let passwordPlaceholder = NSLocalizedString("Password", comment: "")
         let createAccountButton = NSLocalizedString("Join Now", comment: "")
+//        static let createAccountErrorTitle = NSLocalizedString("We Have Issues Creating Your Account", comment: "")
+        
+        let connectionProblemError = NSLocalizedString("We're having connection issues. Make sure you're connected to the Internet.", comment: "")
+        let passwordTooWeakError = NSLocalizedString("Your password needs to contain at least 6 characters.", comment: "")
+        let emailAlreadyInUseError = NSLocalizedString("This email has already been registered with a different account.", comment: "")
+        let unknownError = NSLocalizedString("We have encountered an unknown error. Please try again later.", comment: "")
+        let createAccountAlertDismiss = NSLocalizedString("OK", comment: "")
         fileprivate init() {}
+        
     }
 }

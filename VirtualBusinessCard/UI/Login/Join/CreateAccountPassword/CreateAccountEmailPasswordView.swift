@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct CreateAccountEmailPasswordView: AppView {
+struct CreateAccountEmailPasswordView: AppSwiftUIView {
     typealias ViewModel = CreateAccountEmailPasswordViewModel
     
     @ObservedObject var viewModel: ViewModel
@@ -17,6 +17,9 @@ struct CreateAccountEmailPasswordView: AppView {
         bodyContent
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(trailing: closeButton)
+        .alert(isPresented: $viewModel.isErrorAlertPresented) {
+            Alert(title: Text(""), message: Text(viewModel.createAccountErrorMessage), dismissButton: .default(Text(viewModel.text.createAccountAlertDismiss), action: viewModel.dismissAlertButtonTapped))
+        }
     }
     
     var bodyContent: some View {

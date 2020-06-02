@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct GreetingsView: AppView {
+struct GreetingsView: AppSwiftUIView {
     typealias ViewModel = GreetingsViewModel
     
     @ObservedObject var viewModel = ViewModel()

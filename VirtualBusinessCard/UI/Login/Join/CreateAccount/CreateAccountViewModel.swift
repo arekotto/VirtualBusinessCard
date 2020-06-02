@@ -11,7 +11,7 @@ import SwiftUI
 import Firebase
 import GoogleSignIn
 
-final class CreateAccountViewModel: AppViewModel {
+final class CreateAccountViewModel: AppSwiftUIViewModel {
 
     let text = Text()
     

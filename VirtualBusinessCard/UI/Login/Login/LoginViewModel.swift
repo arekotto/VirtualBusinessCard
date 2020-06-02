@@ -11,7 +11,7 @@ import SwiftUI
 import Firebase
 import GoogleSignIn
 
-final class LoginViewModel: AppViewModel {
+final class LoginViewModel: AppSwiftUIViewModel {
 
     let titleText = NSLocalizedString("How do you want to log in?", comment: "")
 

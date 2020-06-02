@@ -1,5 +1,5 @@
 //
-//  AppView.swift
+//  AppSwiftUIView.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 19/03/2020.
@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-protocol AppView: View {
-    associatedtype ViewModel: AppViewModel
+protocol AppSwiftUIView: View {
+    associatedtype ViewModel: AppSwiftUIViewModel
     
     var viewModel: ViewModel {get set}
 }

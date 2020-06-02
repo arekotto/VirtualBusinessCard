@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct CreateAccountView: AppView {
+struct CreateAccountView: AppSwiftUIView {
     typealias ViewModel = CreateAccountViewModel
     
     @ObservedObject var viewModel: ViewModel

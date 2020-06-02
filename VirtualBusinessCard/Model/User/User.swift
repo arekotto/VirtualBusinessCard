@@ -8,13 +8,14 @@
 
 import Foundation
 
+typealias UserID = String
+
 struct User: Codable {
 
     /// Corresponds and is equal to the uid property of the user object used by Firebase Auth.
-    let id: String
+    let id: UserID
     
-
-    init(id: String) {
+    init(id: UserID) {
         self.id = id
     }
 }

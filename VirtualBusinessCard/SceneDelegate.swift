@@ -18,12 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return Auth.auth().currentUser != nil
     }
     
-    private var statePresented: UIStatePresented {
-        if window?.rootViewController is UIHostingController<GreetingsView> {
-            return .login
-        } else {
-            return .appContent
-        }
+    private var statePresented: AppUIState? {
+        (window?.rootViewController as? AppUIStateRoot)?.appUIState
     }
     
     private var authStateListenerHandle: AuthStateDidChangeListenerHandle?
@@ -68,7 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func hideLogin() {
         switch statePresented {
-        case .login:
+        case .login, .none:
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 let rootVC = self.rootViewControllerBasedOnAuthState()
                 self.swapRootControllerWithAnimation(rootVC, animation: .transitionFlipFromRight)
@@ -81,7 +77,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func displayLogin() {
         switch statePresented {
-        case .appContent:
+        case .appContent, .none:
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 let rootVC = self.rootViewControllerBasedOnAuthState()
                 self.swapRootControllerWithAnimation(rootVC, animation: .transitionFlipFromRight)
@@ -101,9 +97,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //                UINavigationController(rootViewController: BusinessCardTVC())],
 //            animated: false)
 //            return vc
-            return UINavigationController(rootViewController: TestVC())
+            return MainTBC()
         } else {
-            return UIHostingController(rootView: GreetingsView())
+            return LoginHostingController(rootView: GreetingsView())
         }
     }
     
@@ -114,10 +110,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // TODO: - REMEBER TO CHECK MEMORY LEAKSSSS
         })
     }
-    
-    private enum UIStatePresented {
-        case login
-        case appContent
-    }
 }
+
 

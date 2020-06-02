@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-class CreateAccountNameViewModel: AppViewModel {
+class CreateAccountNameViewModel: AppSwiftUIViewModel {
     
     let text = Text()
     
