@@ -10,8 +10,8 @@ import SwiftUI
 
 class UserSetupHC: UIHostingController<UserSetupView> {
     
-    init(userID: UserID) {
-        super.init(rootView: UserSetupView(viewModel: UserSetupViewModel(userID: userID)))
+    init(userID: UserID, email: String) {
+        super.init(rootView: UserSetupView(viewModel: UserSetupViewModel(userID: userID, email: email)))
         rootView.viewModel.completion = { [weak self] in
             self?.dismiss(animated: true)
         }

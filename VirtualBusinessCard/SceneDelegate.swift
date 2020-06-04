@@ -58,6 +58,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             print("LOGGED IN USER " + (usr.displayName ?? usr.email ?? usr.providerID))
             hideLogin()
         } else {
+            SignUpUserInfoStorage.shared.removeAll()
             displayLogin()
         }
     }

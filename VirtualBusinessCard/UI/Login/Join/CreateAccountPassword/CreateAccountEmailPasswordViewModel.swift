@@ -33,7 +33,6 @@ class CreateAccountEmailPasswordViewModel: AppSwiftUIViewModel {
     
     func createAccountButtonTapped() {
         guard !email.isEmpty && !password.isEmpty else { return }
-        
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let err = error {
                 print(#file, err.localizedDescription)
@@ -54,7 +53,7 @@ class CreateAccountEmailPasswordViewModel: AppSwiftUIViewModel {
                 }
                 self.isErrorAlertPresented = true
             } else {
-                
+                SignUpUserInfoStorage.shared.storeInfo(firstName: self.namesInfo.firstName, lastName: self.namesInfo.lastName)
             }
         }
     }

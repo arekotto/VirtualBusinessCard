@@ -9,44 +9,73 @@
 import Firebase
 
 protocol PersonalBusinessCardsVMlDelegate: class {
-    func presentUserSetup(_ userID: String)
+    func presentUserSetup(userID: String, email: String)
 }
 
 final class PersonalBusinessCardsVM: AppViewModel {
     
     weak var delegate: PersonalBusinessCardsVMlDelegate?
     
-    var userID: UserID?
+    private var user: UserMC?
+    private var businessCards: [BusinessCard] = []
     
-    func fetchData() {
-        guard let userID = Auth.auth().currentUser?.uid else {
-            return
-        }
-        self.userID = userID
-        let userCollection = Firestore.firestore().collection(User.collectionName)
-        let userDoc = userCollection.document(userID)
-        userDoc.addSnapshotListener(userHasChanged)
+    private var userID: UserID {
+        Auth.auth().currentUser!.uid
     }
     
-    private func userHasChanged(_ doc: DocumentSnapshot?, _ error: Error?) {
-        guard let userID = userID else { return }
+    private var userPublicDocumentReference: DocumentReference {
+        Firestore.firestore().collection(UserPublic.collectionName).document(userID)
+    }
+    
+    private var userPrivateDocumentReference: DocumentReference {
+        userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
+    }
+    
+    func fetchData() {
+        userPublicDocumentReference.addSnapshotListener(userPublicDidChange)
+    }
+    
+    private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
         
-        if let error = error {
-            // TODO HANDLE ERROR
-            print(#file, error.localizedDescription)
-        } else {
-            guard doc!.exists else {
-                delegate?.presentUserSetup(userID)
-                return
-            }
-//            guard let userData = doc?.data() else { return }
-//            guard let json = try? JSONSerialization.data(withJSONObject: userData) else { return }
-//            guard let user = try? JSONDecoder().decode(User.self, from: json) else { return }
-//            self.user = user
-//            user.eventIds.forEach { id in
+        guard let doc = document else {
+            // TODO: HANDLE ERROR
+            print(#file, "Error fetching user public changed:", error?.localizedDescription ?? "No error info available.")
+            return
+        }
+        
+        guard doc.exists else {
+            let currentUser = Auth.auth().currentUser!
+            delegate?.presentUserSetup(userID: currentUser.uid, email: currentUser.email!)
+            return
+        }
+        guard let user = UserMC(userPublicDocument: doc) else {
+            print(#file, "Error mapping user public.")
+            return
+        }
+        self.user = user
+        userPrivateDocumentReference.addSnapshotListener(self.userPrivateDidChange)
+    }
+    
+    private func userPrivateDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
+        guard let doc = document else {
+            // TODO: HANDLE ERROR
+            print(#file, "Error fetching user private changed:", error?.localizedDescription ?? "No error info available.")
+            return
+        }
+        user?.setUserPrivate(document: doc)
+        user?.personalBusinessCardIDs.forEach { id in
+//            if !events.contains(where: {$0.id == id}) {
 //                eventCollection.document(id).addSnapshotListener(eventHasChanged)
 //            }
         }
     }
     
+    private func businessCardDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
+        guard let doc = document else {
+            // TODO: HANDLE ERROR
+            print(#file, "Error fetching business card changed:", error?.localizedDescription ?? "No error info available.")
+            return
+        }
+
+    }
 }

@@ -32,8 +32,8 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
 }
 
 extension PersonalBusinessCardsVC: PersonalBusinessCardsVMlDelegate {
-    func presentUserSetup(_ userID: String) {
-        let vc = UserSetupHC(userID: userID)
+    func presentUserSetup(userID: String, email: String) {
+        let vc = UserSetupHC(userID: userID, email: email)
         vc.isModalInPresentation = true
         present(vc, animated: true)
     }

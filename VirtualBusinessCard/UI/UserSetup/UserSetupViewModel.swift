@@ -14,6 +14,7 @@ final class UserSetupViewModel: AppSwiftUIViewModel {
     let text = Text()
     
     let userID: String
+    let email: String
     
     @Published var title = ""
     @Published var subtitle = ""
@@ -24,15 +25,18 @@ final class UserSetupViewModel: AppSwiftUIViewModel {
     
     @Published var isErrorAlertPresented = false
     
-    init(userID: String) {
+    init(userID: String, email: String) {
         self.userID = userID
+        self.email = email
         
         title = text.setupInProgressTitle
         subtitle = text.setupInProgressSubtitle
     }
     
     func setupUserInFirebase() {
-        InitialUserSetupTask.run(userId: userID) { result in
+        let names = SignUpUserInfoStorage.shared.getInfo()
+        let setupData = InitialUserSetupTask.SetupData(userID: userID, email: email, firstName: names.firstName ?? "", lastName: names.lastName ?? "")
+        InitialUserSetupTask.run(setupData: setupData) { result in
             // Give the previous alert some time to disappear
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 switch result {

@@ -39,6 +39,6 @@ struct UserSetupView: AppSwiftUIView {
 
 struct UserSetupView_Previews: PreviewProvider {
     static var previews: some View {
-        UserSetupView(viewModel: UserSetupViewModel(userID: ""))
+        UserSetupView(viewModel: UserSetupViewModel(userID: "", email: ""))
     }
 }

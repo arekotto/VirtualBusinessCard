@@ -23,7 +23,3 @@ extension DocumentReference {
     }
     
 }
-
-enum AppError: Error {
-    case unknown
-}
