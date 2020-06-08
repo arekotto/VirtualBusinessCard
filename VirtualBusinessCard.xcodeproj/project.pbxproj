@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -41,6 +41,12 @@
 		457B4E7D24531BC700761A90 /* SceneKitAssets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */; };
 		4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E994243B084000184AA4 /* ReceiveVC.swift */; };
 		4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E999243B6A7500184AA4 /* DisplayVC.swift */; };
+		458EF3FE248A5F7800EC76D6 /* BusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF3FD248A5F7800EC76D6 /* BusinessCardMC.swift */; };
+		458EF400248A7B4F00EC76D6 /* MockBusinessCardFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF3FF248A7B4F00EC76D6 /* MockBusinessCardFactory.swift */; };
+		458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */; };
+		458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 458EF404248B9B6D00EC76D6 /* Kingfisher */; };
+		458EF407248BA29100EC76D6 /* EditBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF406248BA29100EC76D6 /* EditBusinessCardMC.swift */; };
+		458EF40A248BC7A000EC76D6 /* ViewBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF409248BC7A000EC76D6 /* ViewBusinessCardMC.swift */; };
 		459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58623FEA496002F03DD /* Firestoreable.swift */; };
 		459DC58A23FEA4CB002F03DD /* UserPublic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58923FEA4CB002F03DD /* UserPublic.swift */; };
 		459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */; };
@@ -141,6 +147,11 @@
 		4580E98F2437FD1400184AA4 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
 		4580E994243B084000184AA4 /* ReceiveVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveVC.swift; sourceTree = "<group>"; };
 		4580E999243B6A7500184AA4 /* DisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVC.swift; sourceTree = "<group>"; };
+		458EF3FD248A5F7800EC76D6 /* BusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardMC.swift; sourceTree = "<group>"; };
+		458EF3FF248A7B4F00EC76D6 /* MockBusinessCardFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBusinessCardFactory.swift; sourceTree = "<group>"; };
+		458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		458EF406248BA29100EC76D6 /* EditBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBusinessCardMC.swift; sourceTree = "<group>"; };
+		458EF409248BC7A000EC76D6 /* ViewBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBusinessCardMC.swift; sourceTree = "<group>"; };
 		459DC58623FEA496002F03DD /* Firestoreable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Firestoreable.swift; sourceTree = "<group>"; };
 		459DC58923FEA4CB002F03DD /* UserPublic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPublic.swift; sourceTree = "<group>"; };
 		459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserPublic+Firestorable.swift"; sourceTree = "<group>"; };
@@ -187,6 +198,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */,
 				C89A3F0654015C8DABF7CBB3 /* libPods-VirtualBusinessCard.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -367,8 +379,10 @@
 		4577CC702488EE810012EDC8 /* BusinessCard */ = {
 			isa = PBXGroup;
 			children = (
+				458EF408248BC78100EC76D6 /* ModelController */,
 				4577CC712488EE9F0012EDC8 /* BusinessCard.swift */,
 				4577CC732488EED50012EDC8 /* BusinessCard+Firestoreable.swift */,
+				458EF3FF248A7B4F00EC76D6 /* MockBusinessCardFactory.swift */,
 			);
 			path = BusinessCard;
 			sourceTree = "<group>";
@@ -380,6 +394,7 @@
 				45D6BF7724169A41008B2498 /* Color.swift */,
 				45C16019248530CC00806718 /* UIView+Constrains.swift */,
 				45C160082485103600806718 /* FIRDocumentReference.swift */,
+				458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -449,6 +464,16 @@
 				4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		458EF408248BC78100EC76D6 /* ModelController */ = {
+			isa = PBXGroup;
+			children = (
+				458EF3FD248A5F7800EC76D6 /* BusinessCardMC.swift */,
+				458EF406248BA29100EC76D6 /* EditBusinessCardMC.swift */,
+				458EF409248BC7A000EC76D6 /* ViewBusinessCardMC.swift */,
+			);
+			path = ModelController;
 			sourceTree = "<group>";
 		};
 		459DC58823FEA4A1002F03DD /* Model */ = {
@@ -581,6 +606,9 @@
 			dependencies = (
 			);
 			name = VirtualBusinessCard;
+			packageProductDependencies = (
+				458EF404248B9B6D00EC76D6 /* Kingfisher */,
+			);
 			productName = VirtualBusinessCard;
 			productReference = 4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */;
 			productType = "com.apple.product-type.application";
@@ -656,6 +684,9 @@
 				Base,
 			);
 			mainGroup = 4537CED623F6D259003602EA;
+			packageReferences = (
+				458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = 4537CEE023F6D259003602EA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -808,20 +839,25 @@
 				4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */,
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
 				4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */,
+				458EF3FE248A5F7800EC76D6 /* BusinessCardMC.swift in Sources */,
 				45C160092485103600806718 /* FIRDocumentReference.swift in Sources */,
 				45C1601C2485330000806718 /* UserSetupView.swift in Sources */,
 				4558F1F72423CD6200D44526 /* AppSwiftUIViewModel.swift in Sources */,
 				45C1600F24852DCB00806718 /* AppViewController.swift in Sources */,
 				4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */,
+				458EF400248A7B4F00EC76D6 /* MockBusinessCardFactory.swift in Sources */,
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
 				45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */,
+				458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */,
+				458EF407248BA29100EC76D6 /* EditBusinessCardMC.swift in Sources */,
 				459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */,
 				4511A130246D6CC100AE3306 /* CreateAccountNameViewModel.swift in Sources */,
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
 				4577CC84248908530012EDC8 /* UserMC.swift in Sources */,
+				458EF40A248BC7A000EC76D6 /* ViewBusinessCardMC.swift in Sources */,
 				45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */,
 				45C160302486535700806718 /* ActivityIndicator.swift in Sources */,
 				459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */,
@@ -1222,6 +1258,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.14.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		458EF404248B9B6D00EC76D6 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4537CED723F6D259003602EA /* Project object */;
 }

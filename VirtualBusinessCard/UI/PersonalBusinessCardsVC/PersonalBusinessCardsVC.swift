@@ -15,6 +15,8 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
+        contentView.collectionView.delegate = self
+        contentView.collectionView.dataSource = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -31,7 +33,25 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
     
 }
 
+extension PersonalBusinessCardsVC: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.numberOfItems()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: PersonalBusinessCardsView.BusinessCardCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        cell.dataModel = viewModel.itemAt(for: indexPath)
+        return cell
+    }
+    
+    
+}
+
 extension PersonalBusinessCardsVC: PersonalBusinessCardsVMlDelegate {
+    func reloadData() {
+        contentView.collectionView.reloadData()
+    }
+    
     func presentUserSetup(userID: String, email: String) {
         let vc = UserSetupHC(userID: userID, email: email)
         vc.isModalInPresentation = true

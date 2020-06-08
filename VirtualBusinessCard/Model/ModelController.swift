@@ -13,7 +13,5 @@ protocol ModelController {
     
     var id: String { get }
     
-    func isModelEqual(to: Model) -> Bool
     func asDocument() -> [String: Any]
-    func save()
 }

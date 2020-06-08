@@ -27,3 +27,33 @@ class AppView: UIView {
 
     func configureConstraints() { }
 }
+
+protocol Reusable: class {
+    static var reuseId: String { get }
+}
+
+extension Reusable {
+    static var reuseId: String {
+        String(describing: self)
+    }
+}
+
+class AppCollectionViewCell: UICollectionViewCell {
+  
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureView()
+        configureSubviews()
+        configureConstraints()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func configureView() { }
+
+    func configureSubviews() { }
+
+    func configureConstraints() { }
+}

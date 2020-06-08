@@ -10,6 +10,7 @@ import Firebase
 
 protocol PersonalBusinessCardsVMlDelegate: class {
     func presentUserSetup(userID: String, email: String)
+    func reloadData()
 }
 
 final class PersonalBusinessCardsVM: AppViewModel {
@@ -17,7 +18,7 @@ final class PersonalBusinessCardsVM: AppViewModel {
     weak var delegate: PersonalBusinessCardsVMlDelegate?
     
     private var user: UserMC?
-    private var businessCards: [BusinessCard] = []
+    private var businessCards: [ViewBusinessCardMC] = MockBusinessCardFactory.shared.cards
     
     private var userID: UserID {
         Auth.auth().currentUser!.uid
@@ -33,6 +34,14 @@ final class PersonalBusinessCardsVM: AppViewModel {
     
     func fetchData() {
         userPublicDocumentReference.addSnapshotListener(userPublicDidChange)
+    }
+    
+    func numberOfItems() -> Int {
+        businessCards.count
+    }
+    
+    func itemAt(for indexPath: IndexPath) -> PersonalBusinessCardsView.BusinessCardCellDM {
+        PersonalBusinessCardsView.BusinessCardCellDM(imageURL: businessCards[indexPath.item].frontImage?.url)
     }
     
     private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
@@ -64,10 +73,11 @@ final class PersonalBusinessCardsVM: AppViewModel {
         }
         user?.setUserPrivate(document: doc)
         user?.personalBusinessCardIDs.forEach { id in
-//            if !events.contains(where: {$0.id == id}) {
-//                eventCollection.document(id).addSnapshotListener(eventHasChanged)
-//            }
+            //            if !events.contains(where: {$0.id == id}) {
+            //                eventCollection.document(id).addSnapshotListener(eventHasChanged)
+            //            }
         }
+        delegate?.reloadData()
     }
     
     private func businessCardDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
@@ -76,6 +86,6 @@ final class PersonalBusinessCardsVM: AppViewModel {
             print(#file, "Error fetching business card changed:", error?.localizedDescription ?? "No error info available.")
             return
         }
-
+        
     }
 }
