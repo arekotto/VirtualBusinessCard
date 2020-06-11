@@ -20,6 +20,7 @@ final class MockBusinessCardFactory {
                 id: "card1",
                 originalID: nil,
                 frontImage: .init(id: "card1front", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!),
+                textureImage: .init(id: "card1texture", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1texture.jpg?alt=media&token=66034eee-2edc-42cd-bbc4-1d83fb7c3e25")!),
                 position: .init(title: "CEO", company: "IBM"),
                 name: .init(prefix: "dr.", first: "John", middle: nil, last: "Smith"),
                 contact: .init(email: "john@ibm.com", phoneNumberPrimary: "123321123", phoneNumberSecondary: nil, fax: nil, website: "www.ibm.com"),
@@ -29,6 +30,7 @@ final class MockBusinessCardFactory {
                 id: "card2",
                 originalID: nil,
                 frontImage: .init(id: "card1front", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!),
+                textureImage: .init(id: "card1texture", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1texture.jpg?alt=media&token=66034eee-2edc-42cd-bbc4-1d83fb7c3e25")!),
 
                 position: .init(title: "CFO", company: "IBM"),
                 name: .init(prefix: "dr.", first: "John", middle: nil, last: "Smith"),
@@ -39,6 +41,7 @@ final class MockBusinessCardFactory {
                 id: "card3",
                 originalID: nil,
                 frontImage: .init(id: "card1front", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!),
+                textureImage: .init(id: "card1texture", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1texture.jpg?alt=media&token=66034eee-2edc-42cd-bbc4-1d83fb7c3e25")!),
 
                 position: .init(title: "CTO", company: "IBM"),
                 name: .init(prefix: "dr.", first: "John", middle: nil, last: "Smith"),
@@ -49,6 +52,7 @@ final class MockBusinessCardFactory {
                 id: "card4",
                 originalID: nil,
                 frontImage: .init(id: "card1front", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!),
+                textureImage: .init(id: "card1texture", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1texture.jpg?alt=media&token=66034eee-2edc-42cd-bbc4-1d83fb7c3e25")!),
 
                 position: .init(title: "Manager", company: "IBM"),
                 name: .init(prefix: "dr.", first: "John", middle: nil, last: "Smith"),
@@ -59,6 +63,7 @@ final class MockBusinessCardFactory {
                 id: "card5",
                 originalID: nil,
                 frontImage: .init(id: "card1front", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!),
+                textureImage: .init(id: "card1texture", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1texture.jpg?alt=media&token=66034eee-2edc-42cd-bbc4-1d83fb7c3e25")!),
 
                 position: .init(title: "Manager", company: "IBM"),
                 name: .init(prefix: "dr.", first: "John", middle: nil, last: "Smith"),
@@ -69,6 +74,7 @@ final class MockBusinessCardFactory {
                 id: "card6",
                 originalID: nil,
                 frontImage: .init(id: "card1front", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!),
+                textureImage: .init(id: "card1texture", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1texture.jpg?alt=media&token=66034eee-2edc-42cd-bbc4-1d83fb7c3e25")!),
 
                 position: .init(title: "Manager", company: "IBM"),
                 name: .init(prefix: "dr.", first: "John", middle: nil, last: "Smith"),

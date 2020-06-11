@@ -14,6 +14,7 @@ class MainTBC: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         viewControllers = [UINavigationController(rootViewController: personalBusinessCardsVC)]
     }
 }

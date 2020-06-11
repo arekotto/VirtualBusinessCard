@@ -7,37 +7,23 @@
 //
 
 import UIKit
-import Kingfisher
-
-struct BusinessCardDimensions {
-    
-    let size: CGSize
-    
-    init(width: CGFloat) {
-        size = CGSize(width: width, height: width * 55 / 85)
-    }
-    
-}
+import CollectionViewPagingLayout
 
 final class PersonalBusinessCardsView: AppView {
     
     let collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let screenWidth = UIScreen.main.bounds.size.width
-        let dimensions = BusinessCardDimensions(width: screenWidth * 0.8)
-        layout.itemSize = dimensions.size
-        layout.minimumInteritemSpacing = screenWidth * 0.05
+        let layout = CollectionViewPagingLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.isPagingEnabled = true
+        cv.showsHorizontalScrollIndicator = false
+        cv.clipsToBounds = false
         cv.registerReusableCell(BusinessCardCell.self)
+        cv.backgroundColor = .clear
         return cv
     }()
     
-    
     override func configureView() {
         super.configureView()
-        backgroundColor = .white
     }
     
     override func configureSubviews() {
@@ -47,48 +33,14 @@ final class PersonalBusinessCardsView: AppView {
     
     override func configureConstraints() {
         super.configureConstraints()
-        collectionView.constrainTopToSuperviewSafeArea()
+        collectionView.constrainCenterYToSuperview()
         collectionView.constrainHorizontallyToSuperview()
-        collectionView.constrainHeight(constant: 200)
+        collectionView.constrainHeight(constant: 400)
     }
     
-    class BusinessCardCell: AppCollectionViewCell, Reusable {
-        
-        var dataModel = BusinessCardCellDM(imageURL: nil) {
-            didSet {
-                if let imageURL = dataModel.imageURL {
-                    imageView.kf.indicatorType = .activity
-                    imageView.kf.setImage(
-                        with: imageURL,
-                        placeholder: UIImage(named: "placeholderImage"),
-                        options: [
-//                            .processor(processor),
-                            .scaleFactor(UIScreen.main.scale),
-                            .transition(.fade(1)),
-                            .cacheOriginalImage
-                        ])
-                }
-                
-            }
-        }
-        
-        let imageView: UIImageView = {
-            let iv = UIImageView()
-            return iv
-        }()
-        
-        override func configureSubviews() {
-            super.configureSubviews()
-            addSubview(imageView)
-        }
-        
-        override func configureConstraints() {
-            super.configureConstraints()
-            imageView.constrainToEdgesOfSuperview()
-        }
-    }
-    
-    struct BusinessCardCellDM {
-        let imageURL: URL?
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        backgroundColor = UIColor(named: "AppDefaultBackgroud")
     }
 }
+

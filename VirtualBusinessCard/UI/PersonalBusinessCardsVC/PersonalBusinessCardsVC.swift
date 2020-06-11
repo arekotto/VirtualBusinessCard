@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 import Firebase
+import CoreMotion
 
 final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView, PersonalBusinessCardsVM> {
     
@@ -17,20 +18,26 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
         viewModel.delegate = self
         contentView.collectionView.delegate = self
         contentView.collectionView.dataSource = self
+        title = viewModel.title
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         viewModel.fetchData()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "logout", style: .done, target: self, action: #selector(logout))
+        contentView.collectionView.performBatchUpdates({
+            self.contentView.collectionView.collectionViewLayout.invalidateLayout()
+        }, completion: nil)
+
     }
     
-    @objc func logout() {
-        try! Auth.auth().signOut()
-    }
-    
+    var indexOfCellBeforeDragging = 0
 }
 
 extension PersonalBusinessCardsVC: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -40,14 +47,18 @@ extension PersonalBusinessCardsVC: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PersonalBusinessCardsView.BusinessCardCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        cell.dataModel = viewModel.itemAt(for: indexPath)
+        cell.setDataModel(viewModel.itemAt(for: indexPath))
         return cell
     }
-    
-    
 }
 
 extension PersonalBusinessCardsVC: PersonalBusinessCardsVMlDelegate {
+    func didUpdateMotionData(motion: CMDeviceMotion) {
+        (contentView.collectionView.visibleCells as? [PersonalBusinessCardsView.BusinessCardCell])?.forEach { cell in
+            cell.updateMotionData(motion)
+        }
+    }
+    
     func reloadData() {
         contentView.collectionView.reloadData()
     }
@@ -57,6 +68,4 @@ extension PersonalBusinessCardsVC: PersonalBusinessCardsVMlDelegate {
         vc.isModalInPresentation = true
         present(vc, animated: true)
     }
-    
-    
 }

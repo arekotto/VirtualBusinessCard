@@ -7,12 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4510341C249267D5009C4B26 /* ImageAndTextureFetchTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510341B249267D5009C4B26 /* ImageAndTextureFetchTask.swift */; };
+		4510341E2492697E009C4B26 /* CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510341D2492697E009C4B26 /* CGSize.swift */; };
 		4511A12D246D617800AE3306 /* CreateAccountNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511A12C246D617800AE3306 /* CreateAccountNameView.swift */; };
 		4511A130246D6CC100AE3306 /* CreateAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511A12F246D6CC100AE3306 /* CreateAccountNameViewModel.swift */; };
 		4511A132246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511A131246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift */; };
 		4511A135246D760700AE3306 /* CreateAccountEmailPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511A134246D760700AE3306 /* CreateAccountEmailPasswordView.swift */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
+		452B33C2248E3FDB006E6A7D /* PersonalBusinessCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalBusinessCardsViewCell.swift */; };
+		452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C4248E4F91006E6A7D /* SettingsView.swift */; };
+		452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C6248E4FCA006E6A7D /* SettingsVM.swift */; };
+		452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C8248E4FF8006E6A7D /* SettingsVC.swift */; };
+		452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */; };
 		4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE223F6D259003602EA /* AppDelegate.swift */; };
 		4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE423F6D259003602EA /* SceneDelegate.swift */; };
 		4537CEE723F6D259003602EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE623F6D259003602EA /* ContentView.swift */; };
@@ -106,12 +113,18 @@
 		019548580A9E1A14C2A2D983 /* Pods-VirtualBusinessCard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard.debug.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard.debug.xcconfig"; sourceTree = "<group>"; };
 		01D1832817EFE0EC110AD926 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig"; sourceTree = "<group>"; };
 		324CC1D22A37317C49B8BEDB /* Pods-VirtualBusinessCard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard.release.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard.release.xcconfig"; sourceTree = "<group>"; };
+		4510341B249267D5009C4B26 /* ImageAndTextureFetchTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAndTextureFetchTask.swift; sourceTree = "<group>"; };
+		4510341D2492697E009C4B26 /* CGSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
 		4511A12C246D617800AE3306 /* CreateAccountNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountNameView.swift; sourceTree = "<group>"; };
 		4511A12F246D6CC100AE3306 /* CreateAccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountNameViewModel.swift; sourceTree = "<group>"; };
 		4511A131246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountEmailPasswordViewModel.swift; sourceTree = "<group>"; };
 		4511A134246D760700AE3306 /* CreateAccountEmailPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountEmailPasswordView.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
+		452B33C1248E3FDB006E6A7D /* PersonalBusinessCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBusinessCardsViewCell.swift; sourceTree = "<group>"; };
+		452B33C4248E4F91006E6A7D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		452B33C6248E4FCA006E6A7D /* SettingsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVM.swift; sourceTree = "<group>"; };
+		452B33C8248E4FF8006E6A7D /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualBusinessCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4537CEE223F6D259003602EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4537CEE423F6D259003602EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -200,6 +213,7 @@
 			files = (
 				458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */,
 				C89A3F0654015C8DABF7CBB3 /* libPods-VirtualBusinessCard.a in Frameworks */,
+				452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +266,7 @@
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				452B33C3248E4F7C006E6A7D /* SettingsVC */,
 				45C160242485AE7F00806718 /* PersonalBusinessCardsVC */,
 				45C160212485AD1900806718 /* MainTBC */,
 				45C1600D24852DB600806718 /* AppViewController */,
@@ -289,6 +304,16 @@
 				451C6651240809A40016DA68 /* GreetingsViewModel.swift */,
 			);
 			path = Greetings;
+			sourceTree = "<group>";
+		};
+		452B33C3248E4F7C006E6A7D /* SettingsVC */ = {
+			isa = PBXGroup;
+			children = (
+				452B33C4248E4F91006E6A7D /* SettingsView.swift */,
+				452B33C6248E4FCA006E6A7D /* SettingsVM.swift */,
+				452B33C8248E4FF8006E6A7D /* SettingsVC.swift */,
+			);
+			path = SettingsVC;
 			sourceTree = "<group>";
 		};
 		4537CED623F6D259003602EA = {
@@ -395,6 +420,7 @@
 				45C16019248530CC00806718 /* UIView+Constrains.swift */,
 				45C160082485103600806718 /* FIRDocumentReference.swift */,
 				458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */,
+				4510341D2492697E009C4B26 /* CGSize.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -462,6 +488,7 @@
 				45CD39CD2448905B00C5587C /* AnimationHelper.swift */,
 				4577CC76248903D70012EDC8 /* AppError.swift */,
 				4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */,
+				4510341B249267D5009C4B26 /* ImageAndTextureFetchTask.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -551,6 +578,7 @@
 				45C160252485AEF800806718 /* PersonalBusinessCardsVC.swift */,
 				45C160272485B0BD00806718 /* PersonalBusinessCardsVM.swift */,
 				45C1602B2486484E00806718 /* PersonalBusinessCardsView.swift */,
+				452B33C1248E3FDB006E6A7D /* PersonalBusinessCardsViewCell.swift */,
 			);
 			path = PersonalBusinessCardsVC;
 			sourceTree = "<group>";
@@ -608,6 +636,7 @@
 			name = VirtualBusinessCard;
 			packageProductDependencies = (
 				458EF404248B9B6D00EC76D6 /* Kingfisher */,
+				452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */,
 			);
 			productName = VirtualBusinessCard;
 			productReference = 4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */;
@@ -686,6 +715,7 @@
 			mainGroup = 4537CED623F6D259003602EA;
 			packageReferences = (
 				458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */,
 			);
 			productRefGroup = 4537CEE023F6D259003602EA /* Products */;
 			projectDirPath = "";
@@ -845,6 +875,7 @@
 				4558F1F72423CD6200D44526 /* AppSwiftUIViewModel.swift in Sources */,
 				45C1600F24852DCB00806718 /* AppViewController.swift in Sources */,
 				4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */,
+				452B33C2248E3FDB006E6A7D /* PersonalBusinessCardsViewCell.swift in Sources */,
 				458EF400248A7B4F00EC76D6 /* MockBusinessCardFactory.swift in Sources */,
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
@@ -852,7 +883,10 @@
 				458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */,
 				458EF407248BA29100EC76D6 /* EditBusinessCardMC.swift in Sources */,
 				459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */,
+				452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */,
+				4510341E2492697E009C4B26 /* CGSize.swift in Sources */,
 				4511A130246D6CC100AE3306 /* CreateAccountNameViewModel.swift in Sources */,
+				452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */,
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
@@ -860,6 +894,8 @@
 				458EF40A248BC7A000EC76D6 /* ViewBusinessCardMC.swift in Sources */,
 				45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */,
 				45C160302486535700806718 /* ActivityIndicator.swift in Sources */,
+				452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */,
+				4510341C249267D5009C4B26 /* ImageAndTextureFetchTask.swift in Sources */,
 				459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */,
 				4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */,
 				45C1602C2486484E00806718 /* PersonalBusinessCardsView.swift in Sources */,
@@ -1260,6 +1296,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/amirdew/CollectionViewPagingLayout";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.5;
+			};
+		};
 		458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1271,6 +1315,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */;
+			productName = CollectionViewPagingLayout;
+		};
 		458EF404248B9B6D00EC76D6 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */;

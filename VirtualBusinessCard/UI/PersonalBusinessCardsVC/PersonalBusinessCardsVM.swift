@@ -7,15 +7,36 @@
 //
 
 import Firebase
+import CoreMotion
 
 protocol PersonalBusinessCardsVMlDelegate: class {
     func presentUserSetup(userID: String, email: String)
     func reloadData()
+    func didUpdateMotionData(motion: CMDeviceMotion)
 }
 
 final class PersonalBusinessCardsVM: AppViewModel {
     
-    weak var delegate: PersonalBusinessCardsVMlDelegate?
+    weak var delegate: PersonalBusinessCardsVMlDelegate? {
+        didSet {
+            if delegate != nil {
+                motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
+                    guard let motion = motion else { return }
+                    self?.delegate?.didUpdateMotionData(motion: motion)
+                }
+            } else {
+                motionManager.stopDeviceMotionUpdates()
+            }
+        }
+    }
+    
+    let title = NSLocalizedString("Personal Cards", comment: "")
+    
+    private lazy var motionManager: CMMotionManager = {
+        let manager = CMMotionManager()
+        manager.deviceMotionUpdateInterval = 0.1
+        return manager
+    }()
     
     private var user: UserMC?
     private var businessCards: [ViewBusinessCardMC] = MockBusinessCardFactory.shared.cards
@@ -41,7 +62,8 @@ final class PersonalBusinessCardsVM: AppViewModel {
     }
     
     func itemAt(for indexPath: IndexPath) -> PersonalBusinessCardsView.BusinessCardCellDM {
-        PersonalBusinessCardsView.BusinessCardCellDM(imageURL: businessCards[indexPath.item].frontImage?.url)
+        let bc = businessCards[indexPath.item]
+        return PersonalBusinessCardsView.BusinessCardCellDM(imageURL: bc.frontImage?.url, textureImageURL: bc.textureImage?.url)
     }
     
     private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
