@@ -13,6 +13,23 @@ import CoreMotion
 
 final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView, PersonalBusinessCardsVM> {
     
+//    let newBusinessCardButton: UIBarButtonItem = {
+//        let item = UIBarButtonItem(image: , style: .plain, target: self, action: #selector(didTapNewBusinessCardButton))
+//
+//        }()
+
+    
+    let newBusinessCardButton: UIBarButtonItem = {
+        let button = UIButton(type: .system)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
+        button.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig), for: .normal)
+        let buttonItem = UIBarButtonItem(customView: button)
+        button.constrainHeight(constant: 32)
+        button.constrainWidth(constant: 32)
+        button.addTarget(self, action: #selector(didTapNewBusinessCardButton), for: .touchUpInside)
+        return buttonItem
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
@@ -21,6 +38,7 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
         title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.rightBarButtonItem = newBusinessCardButton
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -30,7 +48,7 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
+        newBusinessCardButton.customView?.tintColor = UIColor.appAccent
         contentView.collectionView.performBatchUpdates({
             self.contentView.collectionView.collectionViewLayout.invalidateLayout()
         }, completion: nil)
@@ -38,6 +56,13 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
     }
     
     var indexOfCellBeforeDragging = 0
+}
+
+@objc
+extension PersonalBusinessCardsVC {
+    func didTapNewBusinessCardButton() {
+        
+    }
 }
 
 extension PersonalBusinessCardsVC: UICollectionViewDataSource, UICollectionViewDelegate {

@@ -59,6 +59,9 @@
 		459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */; };
 		459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */; };
 		45AA873324499A5B004ACDDD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AA873224499A5B004ACDDD /* CardView.swift */; };
+		45B25F182493822C006DD0F7 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F172493822C006DD0F7 /* UIFont.swift */; };
+		45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F1924938489006DD0F7 /* UIColor.swift */; };
+		45B25F1C24938499006DD0F7 /* AppColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F1B24938499006DD0F7 /* AppColorTheme.swift */; };
 		45B5E315241FA07F00028B0A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E314241FA07F00028B0A /* LoginView.swift */; };
 		45B5E317241FA09900028B0A /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E316241FA09900028B0A /* LoginViewModel.swift */; };
 		45B5E319241FBE2800028B0A /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E318241FBE2800028B0A /* Font.swift */; };
@@ -170,6 +173,9 @@
 		459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserPublic+Firestorable.swift"; sourceTree = "<group>"; };
 		459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45AA873224499A5B004ACDDD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		45B25F172493822C006DD0F7 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		45B25F1924938489006DD0F7 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		45B25F1B24938499006DD0F7 /* AppColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorTheme.swift; sourceTree = "<group>"; };
 		45B5E314241FA07F00028B0A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		45B5E316241FA09900028B0A /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		45B5E318241FBE2800028B0A /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
@@ -421,6 +427,8 @@
 				45C160082485103600806718 /* FIRDocumentReference.swift */,
 				458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */,
 				4510341D2492697E009C4B26 /* CGSize.swift */,
+				45B25F172493822C006DD0F7 /* UIFont.swift */,
+				45B25F1924938489006DD0F7 /* UIColor.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -489,6 +497,7 @@
 				4577CC76248903D70012EDC8 /* AppError.swift */,
 				4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */,
 				4510341B249267D5009C4B26 /* ImageAndTextureFetchTask.swift */,
+				45B25F1B24938499006DD0F7 /* AppColorTheme.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -898,6 +907,7 @@
 				4510341C249267D5009C4B26 /* ImageAndTextureFetchTask.swift in Sources */,
 				459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */,
 				4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */,
+				45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */,
 				45C1602C2486484E00806718 /* PersonalBusinessCardsView.swift in Sources */,
 				4577CC77248903D70012EDC8 /* AppError.swift in Sources */,
 				45C160202485AC6900806718 /* LoginHostingController.swift in Sources */,
@@ -909,6 +919,7 @@
 				4577CC742488EED50012EDC8 /* BusinessCard+Firestoreable.swift in Sources */,
 				4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */,
 				457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */,
+				45B25F182493822C006DD0F7 /* UIFont.swift in Sources */,
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,
 				45C1603424865DB400806718 /* InitialUserSetupTask.swift in Sources */,
 				4511A12D246D617800AE3306 /* CreateAccountNameView.swift in Sources */,
@@ -936,6 +947,7 @@
 				45D6BF7824169A41008B2498 /* Color.swift in Sources */,
 				4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */,
 				45C1603624865E7A00806718 /* AppUIState.swift in Sources */,
+				45B25F1C24938499006DD0F7 /* AppColorTheme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

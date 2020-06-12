@@ -13,6 +13,7 @@ final class PersonalBusinessCardsView: AppView {
     
     let collectionView: UICollectionView = {
         let layout = CollectionViewPagingLayout()
+        layout.numberOfVisibleItems = 3
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.isPagingEnabled = true
         cv.showsHorizontalScrollIndicator = false
@@ -33,14 +34,14 @@ final class PersonalBusinessCardsView: AppView {
     
     override func configureConstraints() {
         super.configureConstraints()
-        collectionView.constrainCenterYToSuperview()
+        collectionView.constrainCenterYToSuperview(offset: -50)
         collectionView.constrainHorizontallyToSuperview()
         collectionView.constrainHeight(constant: 400)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = UIColor(named: "AppDefaultBackgroud")
+        backgroundColor = .appDefaultBackground
     }
 }
 

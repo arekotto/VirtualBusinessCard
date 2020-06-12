@@ -14,26 +14,64 @@ import CoreMotion
 extension PersonalBusinessCardsView {
     class BusinessCardCell: AppCollectionViewCell, Reusable {
         
+        static private let shareButtonTopConstraintValue: CGFloat = 60
+
         private let sceneView: BusinessCardSceneView = {
             let view = BusinessCardSceneView()
-            view.layer.shadowColor = UIColor.black.cgColor
-            view.layer.shadowOpacity = 0.3
+            view.layer.shadowOpacity = 0.4
             view.layer.shadowRadius = 12
             return view
         }()
         
+        private let shareButton: UIButton = {
+            let button = UIButton()
+            button.setTitle(NSLocalizedString("Share", comment: ""), for: .normal)
+            button.titleLabel?.font = .appDefault(size: 20, weight: .semibold, design: .rounded)
+            let imgConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .large)
+            button.setImage(UIImage(systemName: "square.and.arrow.up.fill", withConfiguration: imgConfig), for: .normal)
+            button.layer.cornerRadius = 14
+            button.layer.shadowOpacity = 0.35
+            button.layer.shadowRadius = 10
+            button.layer.shadowOffset = CGSize(width: 0, height: 6)
+            button.imageEdgeInsets = UIEdgeInsets(top: 4, left: -12, bottom: 4, right: 12)
+            return button
+        }()
+        
+        private let scalableView = UIView()
+        
+        private(set) var shareButtonTopConstraint: NSLayoutConstraint!
+        
         override func configureSubviews() {
             super.configureSubviews()
-            contentView.addSubview(sceneView)
+            [sceneView, shareButton].forEach { scalableView.addSubview($0) }
+            contentView.addSubview(scalableView)
         }
         
         override func configureConstraints() {
             super.configureConstraints()
+            
             let screenWidth = UIScreen.main.bounds.size.width
-            let dimensions = CGSize.businessCardSize(width: screenWidth * 0.7)
+            let dimensions = CGSize.businessCardSize(width: screenWidth * 0.84)
+            
+            scalableView.constrainVerticallyToSuperview()
+            scalableView.constrainCenterXToSuperview()
+            scalableView.constrainWidth(constant: dimensions.width)
+            
             sceneView.constrainHeight(constant: dimensions.height)
-            sceneView.constrainWidth(constant: dimensions.width)
-            sceneView.constrainCenter(toView: contentView)
+            sceneView.constrainHorizontallyToSuperview()
+            sceneView.constrainCenter(toView: scalableView)
+            
+            shareButtonTopConstraint = shareButton.constrainTop(to: sceneView.bottomAnchor, constant: Self.shareButtonTopConstraintValue)
+            shareButton.constrainWidthGreaterThanOrEqualTo(constant: 150)
+            shareButton.constrainHeight(constant: 50)
+            shareButton.constrainCenterXToSuperview()
+        }
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            shareButton.tintColor = .appWhite
+            shareButton.layer.shadowColor = UIColor.appAccent.cgColor
+            shareButton.backgroundColor = .appAccent
         }
         
         func setDataModel(_ dataModel: BusinessCardCellDM) {
@@ -70,8 +108,10 @@ extension PersonalBusinessCardsView.BusinessCardCell: TransformableView {
         log10(1 + progress * 9)
     }
     
-    private var scalableView: UIView { sceneView }
-    
+    static func computeShareButtonTransition(progress: CGFloat, multiplier: CGFloat = 1) -> CGFloat {
+        1 - max(min(1, progress * multiplier), 0)
+    }
+        
     private var minScale: CGFloat { 0.6 }
     
     private var scaleRatio: CGFloat { 0.4 }
@@ -86,6 +126,8 @@ extension PersonalBusinessCardsView.BusinessCardCell: TransformableView {
 
     func transform(progress: CGFloat) {
         applyScaleAndTranslation(progress: progress)
+        shareButton.alpha = Self.computeShareButtonTransition(progress: abs(progress), multiplier: 1.6)
+        shareButtonTopConstraint.constant =  Self.computeShareButtonTransition(progress: abs(progress)) * Self.shareButtonTopConstraintValue
     }
     
     private func applyScaleAndTranslation(progress: CGFloat) {

@@ -6,19 +6,7 @@
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
-
-private enum AppColorTheme: String {
-    case appAccent = "AppAccent"
-    case appGray = "AppGray"
-    case googleBlue = "GoogleBlue"
-    case microsoftBlue = "MicrosoftBlue"
-}
-
-extension UIColor {
-    static let appAccent = UIColor(named: AppColorTheme.appAccent.rawValue)!
-}
 
 extension Color {
     static let appAccent = Color(AppColorTheme.appAccent.rawValue)
