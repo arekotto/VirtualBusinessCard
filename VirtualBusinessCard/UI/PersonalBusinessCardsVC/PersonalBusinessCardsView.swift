@@ -9,7 +9,7 @@
 import UIKit
 import CollectionViewPagingLayout
 
-final class PersonalBusinessCardsView: AppView {
+final class PersonalBusinessCardsView: AppBackgroundView {
     
     let collectionView: UICollectionView = {
         let layout = CollectionViewPagingLayout()
@@ -41,7 +41,6 @@ final class PersonalBusinessCardsView: AppView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = .appDefaultBackground
     }
 }
 

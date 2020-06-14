@@ -20,6 +20,8 @@ class ViewBusinessCardMC: BusinessCardMC {
     
     var frontImage: BusinessCard.Image? { businessCard.frontImage }
     
+    var backImage: BusinessCard.Image? { businessCard.backImage }
+
     var textureImage: BusinessCard.Image? { businessCard.textureImage }
 
     var position: BusinessCard.Position { businessCard.position }

@@ -11,27 +11,41 @@ import Kingfisher
 
 struct ImageAndTextureFetchTask {
    
-    let imageURL: URL
+    let frontImageURL: URL
     let textureURL: URL
+    let backImageURL: URL?
     
-    init(imageURL: URL, textureURL: URL) {
-        self.imageURL = imageURL
+    init(frontImageURL: URL, textureURL: URL, backImageURL: URL? = nil) {
+        self.frontImageURL = frontImageURL
         self.textureURL = textureURL
+        self.backImageURL = backImageURL
     }
     
     func callAsFunction(completion: @escaping (Result<ImagesResult, Error>) -> Void) {
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         dispatchGroup.enter()
-        
-        var image: UIImage?
+
+        var frontImage: UIImage?
+        var backImage: UIImage?
         var texture: UIImage?
         
         var error: Error?
         
-        KingfisherManager.shared.retrieveImage(with: imageURL) { result in
+        if let backImageURL = self.backImageURL {
+            dispatchGroup.enter()
+            KingfisherManager.shared.retrieveImage(with: backImageURL) { result in
+                switch result {
+                case .success(let imageResult): backImage = imageResult.image
+                case .failure(let err): error = err
+                }
+                dispatchGroup.leave()
+            }
+        }
+        
+        KingfisherManager.shared.retrieveImage(with: frontImageURL) { result in
             switch result {
-            case .success(let imageResult): image = imageResult.image
+            case .success(let imageResult): frontImage = imageResult.image
             case .failure(let err): error = err
             }
             dispatchGroup.leave()
@@ -49,13 +63,14 @@ struct ImageAndTextureFetchTask {
             if let err = error {
                 completion(.failure(err))
             } else {
-                completion(.success(ImagesResult(image: image!, texture: texture!)))
+                completion(.success(ImagesResult(frontImage: frontImage!, texture: texture!, backImage: backImage)))
             }
         }
     }
     
     struct ImagesResult {
-        let image: UIImage
+        let frontImage: UIImage
         let texture: UIImage
+        let backImage: UIImage?
     }
 }

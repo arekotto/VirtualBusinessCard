@@ -25,7 +25,7 @@ class BusinessCardSceneView: AppView {
         return sceneView
     }()
     
-    private(set) lazy var lightNode = scene.rootNode.childNode(withName: "directionalLight", recursively: true)!
+    private(set) lazy var dynamicDirectionalLightNode = scene.rootNode.childNode(withName: "directionalLight", recursively: true)!
     
     private(set) lazy var businessCardNode = scene.rootNode.childNode(withName: "businessCard", recursively: true)!
     
@@ -51,15 +51,35 @@ class BusinessCardSceneView: AppView {
         super.configureConstraints()
         sceneView.constrainToEdgesOfSuperview()
     }
+}
+
+extension BusinessCardSceneView {
+    var dynamicLightingEnabled: Bool {
+        get { scene.isPaused }
+        set {
+            if newValue {
+                scene.isPaused = false
+                dynamicDirectionalLightNode.light!.intensity = 200
+            } else {
+                scene.isPaused = true
+                dynamicDirectionalLightNode.light!.intensity = 0
+            }
+        }
+    }
+    
+    convenience init(dynamicLightingEnabled: Bool) {
+        self.init()
+        self.dynamicLightingEnabled = dynamicLightingEnabled
+    }
     
     func setImage(image: UIImage, texture: UIImage?) {
         let imageMaterial = businessCardGeometryMaterial
         imageMaterial.lightingModel = .blinn
         imageMaterial.diffuse.contents = image
-//        imageMaterial.normal.contents = texture
-//        scene.isPaused = true
+        //        imageMaterial.normal.contents = texture
+        //        scene.isPaused = true
     }
-        
+    
     func updateMotionData(motion: CMDeviceMotion) {
         let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
         let rotationProportionX = deviceRotationInX / deg2rad(90)
@@ -69,8 +89,8 @@ class BusinessCardSceneView: AppView {
         
         let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
         let newZ = deviceRotationInZ / deg2rad(45) * zLightAngleHighestABS
-
+        
         let moveTo = SCNAction.rotateTo(x: CGFloat(newX), y: 0, z: CGFloat(newZ), duration: 0.1)
-        lightNode.runAction(moveTo)
+        dynamicDirectionalLightNode.runAction(moveTo)
     }
 }

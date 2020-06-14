@@ -12,10 +12,18 @@ class MainTBC: UITabBarController {
     
     let personalBusinessCardsVC = PersonalBusinessCardsVC(viewModel: PersonalBusinessCardsVM())
     
+    var allViewControllers: [UIViewController] {
+        [personalBusinessCardsVC]
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        viewControllers = [UINavigationController(rootViewController: personalBusinessCardsVC)]
+
+        viewControllers = allViewControllers.map {
+            let navigationController = UINavigationController(rootViewController: $0)
+            navigationController.navigationBar.prefersLargeTitles = true
+            return navigationController
+        }
     }
 }
 

@@ -23,9 +23,18 @@ extension Firestoreable {
 }
 
 extension Firestoreable {
+    
+    init?(queryDocumentSnapshot: QueryDocumentSnapshot) {
+        self.init(dictionary: queryDocumentSnapshot.data())
+    }
+    
     init?(documentSnapshot: DocumentSnapshot) {
         guard let userData = documentSnapshot.data() else { return nil }
-        guard let json = try? JSONSerialization.data(withJSONObject: userData) else { return nil}
+        self.init(dictionary: userData)
+    }
+    
+    init?(dictionary: [String : Any]) {
+        guard let json = try? JSONSerialization.data(withJSONObject: dictionary) else { return nil}
         guard let decodedBusinessCard = try? JSONDecoder().decode(Self.self, from: json) else { return nil }
         self = decodedBusinessCard
     }

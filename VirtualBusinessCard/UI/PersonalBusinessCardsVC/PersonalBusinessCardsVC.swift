@@ -37,8 +37,8 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
         contentView.collectionView.dataSource = self
         title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
-        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = newBusinessCardButton
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testingAdd))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,14 +54,17 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
         }, completion: nil)
 
     }
-    
-    var indexOfCellBeforeDragging = 0
 }
 
 @objc
 extension PersonalBusinessCardsVC {
     func didTapNewBusinessCardButton() {
         
+    }
+    
+    func testingAdd() {
+        let task = SampleBCUploadTask()
+        task() {_ in }
     }
 }
 
@@ -72,12 +75,20 @@ extension PersonalBusinessCardsVC: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PersonalBusinessCardsView.BusinessCardCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        cell.setDataModel(viewModel.itemAt(for: indexPath))
+        cell.setDataModel(viewModel.item(for: indexPath))
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.didSelectItem(at: indexPath)
     }
 }
 
 extension PersonalBusinessCardsVC: PersonalBusinessCardsVMlDelegate {
+    func presentBusinessCardDetails(id: BusinessCardID) {
+        show(BusinessCardDetailsVC(viewModel: BusinessCardDetailsVM()), sender: nil)
+    }
+    
     func didUpdateMotionData(motion: CMDeviceMotion) {
         (contentView.collectionView.visibleCells as? [PersonalBusinessCardsView.BusinessCardCell])?.forEach { cell in
             cell.updateMotionData(motion)
@@ -85,7 +96,9 @@ extension PersonalBusinessCardsVC: PersonalBusinessCardsVMlDelegate {
     }
     
     func reloadData() {
-        contentView.collectionView.reloadData()
+        let cv = contentView.collectionView
+        cv.reloadData()
+        cv.performBatchUpdates({cv.collectionViewLayout.invalidateLayout()})
     }
     
     func presentUserSetup(userID: String, email: String) {

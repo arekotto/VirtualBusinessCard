@@ -16,8 +16,15 @@ extension PersonalBusinessCardsView {
         
         static private let shareButtonTopConstraintValue: CGFloat = 60
 
-        private let sceneView: BusinessCardSceneView = {
+        private let frontSceneView: BusinessCardSceneView = {
             let view = BusinessCardSceneView()
+            view.layer.shadowOpacity = 0.4
+            view.layer.shadowRadius = 12
+            return view
+        }()
+        
+        private let backSceneView: BusinessCardSceneView = {
+            let view = BusinessCardSceneView(dynamicLightingEnabled: false)
             view.layer.shadowOpacity = 0.4
             view.layer.shadowRadius = 12
             return view
@@ -40,10 +47,14 @@ extension PersonalBusinessCardsView {
         private let scalableView = UIView()
         
         private(set) var shareButtonTopConstraint: NSLayoutConstraint!
+        private(set) var frontSceneXConstraint: NSLayoutConstraint!
+        private(set) var frontSceneYConstraint: NSLayoutConstraint!
+        private(set) var backSceneXConstraint: NSLayoutConstraint!
+        private(set) var backSceneYConstraint: NSLayoutConstraint!
         
         override func configureSubviews() {
             super.configureSubviews()
-            [sceneView, shareButton].forEach { scalableView.addSubview($0) }
+            [backSceneView, frontSceneView, shareButton].forEach { scalableView.addSubview($0) }
             contentView.addSubview(scalableView)
         }
         
@@ -51,17 +62,23 @@ extension PersonalBusinessCardsView {
             super.configureConstraints()
             
             let screenWidth = UIScreen.main.bounds.size.width
-            let dimensions = CGSize.businessCardSize(width: screenWidth * 0.84)
+            let dimensions = CGSize.businessCardSize(width: screenWidth * 0.75)
             
             scalableView.constrainVerticallyToSuperview()
             scalableView.constrainCenterXToSuperview()
-            scalableView.constrainWidth(constant: dimensions.width)
+            scalableView.constrainWidth(constant: screenWidth * 0.8)
             
-            sceneView.constrainHeight(constant: dimensions.height)
-            sceneView.constrainHorizontallyToSuperview()
-            sceneView.constrainCenter(toView: scalableView)
+            frontSceneView.constrainHeight(constant: dimensions.height)
+            frontSceneView.constrainWidth(constant: dimensions.width)
+            frontSceneXConstraint = frontSceneView.constrainCenterXToSuperview()
+            frontSceneYConstraint = frontSceneView.constrainCenterYToSuperview()
             
-            shareButtonTopConstraint = shareButton.constrainTop(to: sceneView.bottomAnchor, constant: Self.shareButtonTopConstraintValue)
+            backSceneView.constrainHeight(constant: dimensions.height)
+            backSceneView.constrainWidth(constant: dimensions.width)
+            backSceneXConstraint = backSceneView.constrainCenterXToSuperview()
+            backSceneYConstraint = backSceneView.constrainCenterYToSuperview()
+            
+            shareButtonTopConstraint = shareButton.constrainTop(to: frontSceneView.bottomAnchor, constant: Self.shareButtonTopConstraintValue)
             shareButton.constrainWidthGreaterThanOrEqualTo(constant: 150)
             shareButton.constrainHeight(constant: 50)
             shareButton.constrainCenterXToSuperview()
@@ -74,13 +91,18 @@ extension PersonalBusinessCardsView {
             shareButton.backgroundColor = .appAccent
         }
         
-        func setDataModel(_ dataModel: BusinessCardCellDM) {
-            if let imageURL = dataModel.imageURL, let textureURL = dataModel.textureImageURL {
-                let task = ImageAndTextureFetchTask(imageURL: imageURL, textureURL: textureURL)
+        func setDataModel(_ dm: BusinessCardCellDM) {
+            if let frontImageURL = dm.frontImageURL, let backImageURL = dm.backImageURL, let textureURL = dm.textureImageURL {
+                let task = ImageAndTextureFetchTask(frontImageURL: frontImageURL, textureURL: textureURL, backImageURL: backImageURL)
                 task { [weak self] result in
                     switch result {
-                    case .success(let imagesResult): self?.sceneView.setImage(image: imagesResult.image, texture: imagesResult.texture)
                     case .failure(let err): print(err.localizedDescription)
+                    case .success(let imagesResult):
+                        self?.frontSceneView.setImage(image: imagesResult.frontImage, texture: imagesResult.texture)
+                        if let backImage = imagesResult.backImage {
+                            self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture)
+                        }
+
                     }
                 }
             }
@@ -91,13 +113,14 @@ extension PersonalBusinessCardsView {
             let x = deviceRotationInX / deg2rad(90) * 20 - 10
             let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
             let y = deviceRotationInZ * 10 / deg2rad(45)
-            sceneView.layer.shadowOffset = CGSize(width: y, height: -x)
-            sceneView.updateMotionData(motion: motion)
+            frontSceneView.layer.shadowOffset = CGSize(width: y, height: -x)
+            frontSceneView.updateMotionData(motion: motion)
         }
     }
     
     struct BusinessCardCellDM {
-        let imageURL: URL?
+        let frontImageURL: URL?
+        let backImageURL: URL?
         let textureImageURL: URL?
     }
 }
@@ -110,6 +133,15 @@ extension PersonalBusinessCardsView.BusinessCardCell: TransformableView {
     
     static func computeShareButtonTransition(progress: CGFloat, multiplier: CGFloat = 1) -> CGFloat {
         1 - max(min(1, progress * multiplier), 0)
+    }
+    
+    static func computeShareButtonTopConstraint(progress: CGFloat) -> CGFloat {
+        computeShareButtonTransition(progress: progress) * shareButtonTopConstraintValue
+    }
+    
+    static func computeSceneCenterConstraint(progress: CGFloat) -> CGPoint {
+        let value = computeShareButtonTransition(progress: progress) * 10
+        return CGPoint(x: value, y: value)
     }
         
     private var minScale: CGFloat { 0.6 }
@@ -127,7 +159,12 @@ extension PersonalBusinessCardsView.BusinessCardCell: TransformableView {
     func transform(progress: CGFloat) {
         applyScaleAndTranslation(progress: progress)
         shareButton.alpha = Self.computeShareButtonTransition(progress: abs(progress), multiplier: 1.6)
-        shareButtonTopConstraint.constant =  Self.computeShareButtonTransition(progress: abs(progress)) * Self.shareButtonTopConstraintValue
+        shareButtonTopConstraint.constant = Self.computeShareButtonTopConstraint(progress: abs(progress))
+        let frontSceneConstraintValues = Self.computeSceneCenterConstraint(progress: abs(progress))
+        frontSceneXConstraint.constant = -frontSceneConstraintValues.x
+        frontSceneYConstraint.constant = -frontSceneConstraintValues.y
+        backSceneXConstraint.constant = frontSceneConstraintValues.x
+        backSceneYConstraint.constant = frontSceneConstraintValues.y
     }
     
     private func applyScaleAndTranslation(progress: CGFloat) {

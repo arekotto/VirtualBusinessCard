@@ -11,6 +11,7 @@ import CoreMotion
 
 protocol PersonalBusinessCardsVMlDelegate: class {
     func presentUserSetup(userID: String, email: String)
+    func presentBusinessCardDetails(id: BusinessCardID)
     func reloadData()
     func didUpdateMotionData(motion: CMDeviceMotion)
 }
@@ -39,7 +40,7 @@ final class PersonalBusinessCardsVM: AppViewModel {
     }()
     
     private var user: UserMC?
-    private var businessCards: [ViewBusinessCardMC] = MockBusinessCardFactory.shared.cards
+    private var businessCards: [ViewBusinessCardMC] = []
     
     private var userID: UserID {
         Auth.auth().currentUser!.uid
@@ -53,6 +54,10 @@ final class PersonalBusinessCardsVM: AppViewModel {
         userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
     }
     
+    private var businessCardCollectionReference: CollectionReference {
+        userPublicDocumentReference.collection(BusinessCard.collectionName)
+    }
+    
     func fetchData() {
         userPublicDocumentReference.addSnapshotListener(userPublicDidChange)
     }
@@ -61,9 +66,13 @@ final class PersonalBusinessCardsVM: AppViewModel {
         businessCards.count
     }
     
-    func itemAt(for indexPath: IndexPath) -> PersonalBusinessCardsView.BusinessCardCellDM {
+    func item(for indexPath: IndexPath) -> PersonalBusinessCardsView.BusinessCardCellDM {
         let bc = businessCards[indexPath.item]
-        return PersonalBusinessCardsView.BusinessCardCellDM(imageURL: bc.frontImage?.url, textureImageURL: bc.textureImage?.url)
+        return PersonalBusinessCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage?.url, backImageURL: bc.backImage?.url, textureImageURL: bc.textureImage?.url)
+    }
+
+    func didSelectItem(at indexPath: IndexPath) {
+        delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
     }
     
     private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
@@ -80,11 +89,16 @@ final class PersonalBusinessCardsVM: AppViewModel {
             return
         }
         guard let user = UserMC(userPublicDocument: doc) else {
-            print(#file, "Error mapping user public.")
+            print(#file, "Error mapping user public:", doc.documentID)
             return
         }
         self.user = user
-        userPrivateDocumentReference.addSnapshotListener(self.userPrivateDidChange)
+        userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
+            self?.userPrivateDidChange(snapshot, error)
+        }
+        businessCardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
+            self?.businessCardCollectionDidChange(querySnapshot: querySnapshot, error: error)
+        }
     }
     
     private func userPrivateDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
@@ -94,20 +108,27 @@ final class PersonalBusinessCardsVM: AppViewModel {
             return
         }
         user?.setUserPrivate(document: doc)
-        user?.personalBusinessCardIDs.forEach { id in
-            //            if !events.contains(where: {$0.id == id}) {
-            //                eventCollection.document(id).addSnapshotListener(eventHasChanged)
-            //            }
-        }
+//        user?.personalBusinessCardIDs.forEach { id in
+//            //            if !events.contains(where: {$0.id == id}) {
+//            //                eventCollection.document(id).addSnapshotListener(eventHasChanged)
+//            //            }
+//        }
         delegate?.reloadData()
     }
     
-    private func businessCardDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching business card changed:", error?.localizedDescription ?? "No error info available.")
+    private func businessCardCollectionDidChange(querySnapshot: QuerySnapshot?, error: Error?) {
+        guard let querySnap = querySnapshot else {
+            print(#file, error?.localizedDescription ?? "")
             return
         }
         
+        businessCards = querySnap.documents.compactMap {
+            guard let bc = BusinessCard(queryDocumentSnapshot: $0) else {
+                print(#file, "Error mapping business card:", $0.documentID)
+                return nil
+            }
+            return ViewBusinessCardMC(businessCard: bc)
+        }
+        delegate?.reloadData()
     }
 }
