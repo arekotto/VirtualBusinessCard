@@ -76,6 +76,7 @@ extension PersonalBusinessCardsVC: UICollectionViewDataSource, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PersonalBusinessCardsView.BusinessCardCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.setDataModel(viewModel.item(for: indexPath))
+        cell.tag = indexPath.item
         return cell
     }
     

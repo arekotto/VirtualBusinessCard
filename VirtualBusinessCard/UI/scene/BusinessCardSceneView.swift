@@ -55,16 +55,27 @@ class BusinessCardSceneView: AppView {
 
 extension BusinessCardSceneView {
     var dynamicLightingEnabled: Bool {
-        get { scene.isPaused }
+        get { !scene.isPaused }
         set {
+            guard newValue != dynamicLightingEnabled else { return }
             if newValue {
                 scene.isPaused = false
-                dynamicDirectionalLightNode.light!.intensity = 200
+//                dynamicDirectionalLightNode.light!.intensity = 200
             } else {
+//                dynamicDirectionalLightNode.light!.intensity = 0
                 scene.isPaused = true
-                dynamicDirectionalLightNode.light!.intensity = 0
             }
         }
+    }
+    
+    var shininess: CGFloat {
+        get { businessCardGeometryMaterial.specular.intensity }
+        set { businessCardGeometryMaterial.specular.intensity = min(max(newValue, 0), 1) }
+    }
+    
+    var illumination: CGFloat {
+        get { businessCardGeometryMaterial.selfIllumination.intensity }
+        set { businessCardGeometryMaterial.selfIllumination.intensity = min(max(newValue, 0), 0.5) }
     }
     
     convenience init(dynamicLightingEnabled: Bool) {
@@ -72,15 +83,18 @@ extension BusinessCardSceneView {
         self.dynamicLightingEnabled = dynamicLightingEnabled
     }
     
-    func setImage(image: UIImage, texture: UIImage?) {
+    func setImage(image: UIImage, texture: UIImage?, normal: CGFloat, specular: CGFloat) {
         let imageMaterial = businessCardGeometryMaterial
         imageMaterial.lightingModel = .blinn
         imageMaterial.diffuse.contents = image
-        //        imageMaterial.normal.contents = texture
-        //        scene.isPaused = true
+        imageMaterial.normal.contents = texture
+        imageMaterial.normal.intensity = normal
+        imageMaterial.specular.intensity = specular
     }
     
     func updateMotionData(motion: CMDeviceMotion) {
+        guard dynamicLightingEnabled else { return }
+        
         let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
         let rotationProportionX = deviceRotationInX / deg2rad(90)
         

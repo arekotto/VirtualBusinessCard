@@ -17,7 +17,7 @@ extension PersonalBusinessCardsView {
         static private let shareButtonTopConstraintValue: CGFloat = 60
 
         private let frontSceneView: BusinessCardSceneView = {
-            let view = BusinessCardSceneView()
+            let view = BusinessCardSceneView(dynamicLightingEnabled: false)
             view.layer.shadowOpacity = 0.4
             view.layer.shadowRadius = 12
             return view
@@ -90,38 +90,46 @@ extension PersonalBusinessCardsView {
             shareButton.layer.shadowColor = UIColor.appAccent.cgColor
             shareButton.backgroundColor = .appAccent
         }
-        
-        func setDataModel(_ dm: BusinessCardCellDM) {
-            if let frontImageURL = dm.frontImageURL, let backImageURL = dm.backImageURL, let textureURL = dm.textureImageURL {
-                let task = ImageAndTextureFetchTask(frontImageURL: frontImageURL, textureURL: textureURL, backImageURL: backImageURL)
-                task { [weak self] result in
-                    switch result {
-                    case .failure(let err): print(err.localizedDescription)
-                    case .success(let imagesResult):
-                        self?.frontSceneView.setImage(image: imagesResult.frontImage, texture: imagesResult.texture)
-                        if let backImage = imagesResult.backImage {
-                            self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture)
-                        }
-
-                    }
-                }
-            }
-        }
-        
-        func updateMotionData(_ motion: CMDeviceMotion) {
-            let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
-            let x = deviceRotationInX / deg2rad(90) * 20 - 10
-            let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
-            let y = deviceRotationInZ * 10 / deg2rad(45)
-            frontSceneView.layer.shadowOffset = CGSize(width: y, height: -x)
-            frontSceneView.updateMotionData(motion: motion)
-        }
     }
     
     struct BusinessCardCellDM {
         let frontImageURL: URL?
         let backImageURL: URL?
         let textureImageURL: URL?
+        let normal: CGFloat
+        let specular: CGFloat
+    }
+}
+
+extension PersonalBusinessCardsView.BusinessCardCell {
+    func setDataModel(_ dm: PersonalBusinessCardsView.BusinessCardCellDM) {
+        if let frontImageURL = dm.frontImageURL, let backImageURL = dm.backImageURL, let textureURL = dm.textureImageURL {
+            let task = ImageAndTextureFetchTask(frontImageURL: frontImageURL, textureURL: textureURL, backImageURL: backImageURL)
+            task { [weak self] result in
+                switch result {
+                case .failure(let err): print(err.localizedDescription)
+                case .success(let imagesResult):
+                    self?.frontSceneView.setImage(image: imagesResult.frontImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
+                    if let backImage = imagesResult.backImage {
+                        self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
+                    }
+
+                }
+            }
+        }
+    }
+    
+    func updateMotionData(_ motion: CMDeviceMotion) {
+        let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
+        let x = deviceRotationInX / deg2rad(90) * 20 - 10
+        let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
+        let y = deviceRotationInZ * 10 / deg2rad(45)
+        
+        frontSceneView.layer.shadowOffset = CGSize(width: y, height: -x)
+        frontSceneView.updateMotionData(motion: motion)
+        
+        backSceneView.layer.shadowOffset = CGSize(width: y, height: -x)
+        backSceneView.updateMotionData(motion: motion)
     }
 }
 
@@ -157,14 +165,19 @@ extension PersonalBusinessCardsView.BusinessCardCell: TransformableView {
     private var minTranslationRatio: CGPoint { CGPoint(x: -5, y: -5) }
 
     func transform(progress: CGFloat) {
+        let absProgress = abs(progress)
         applyScaleAndTranslation(progress: progress)
-        shareButton.alpha = Self.computeShareButtonTransition(progress: abs(progress), multiplier: 1.6)
-        shareButtonTopConstraint.constant = Self.computeShareButtonTopConstraint(progress: abs(progress))
-        let frontSceneConstraintValues = Self.computeSceneCenterConstraint(progress: abs(progress))
+        shareButton.alpha = Self.computeShareButtonTransition(progress: absProgress, multiplier: 1.6)
+        shareButtonTopConstraint.constant = Self.computeShareButtonTopConstraint(progress: absProgress)
+        let frontSceneConstraintValues = Self.computeSceneCenterConstraint(progress: absProgress)
         frontSceneXConstraint.constant = -frontSceneConstraintValues.x
         frontSceneYConstraint.constant = -frontSceneConstraintValues.y
         backSceneXConstraint.constant = frontSceneConstraintValues.x
         backSceneYConstraint.constant = frontSceneConstraintValues.y
+        
+        let shouldEnableLighting = absProgress < 0.8
+        backSceneView.dynamicLightingEnabled = shouldEnableLighting
+        frontSceneView.dynamicLightingEnabled = shouldEnableLighting
     }
     
     private func applyScaleAndTranslation(progress: CGFloat) {

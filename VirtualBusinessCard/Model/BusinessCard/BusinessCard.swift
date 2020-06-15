@@ -17,19 +17,19 @@ struct BusinessCard: Codable {
 
     var frontImage: Image?
     var backImage: Image?
-    var textureImage: Image?
+    var texture: Texture?
     
     var position: Position
     var name: Name
     var contact: Contact
     var address: Address
     
-    internal init(id: BusinessCardID, originalID: BusinessCardID? = nil, frontImage: BusinessCard.Image? = nil, backImage: BusinessCard.Image? = nil, textureImage: BusinessCard.Image? = nil, position: BusinessCard.Position, name: BusinessCard.Name, contact: BusinessCard.Contact, address: BusinessCard.Address) {
+    internal init(id: BusinessCardID, originalID: BusinessCardID? = nil, frontImage: BusinessCard.Image? = nil, backImage: BusinessCard.Image? = nil, texture: BusinessCard.Texture? = nil, position: BusinessCard.Position, name: BusinessCard.Name, contact: BusinessCard.Contact, address: BusinessCard.Address) {
         self.id = id
         self.originalID = originalID
         self.frontImage = frontImage
         self.backImage = backImage
-        self.textureImage = textureImage
+        self.texture = texture
         self.position = position
         self.name = name
         self.contact = contact
@@ -107,6 +107,18 @@ extension BusinessCard {
         init(id: String, url: URL) {
             self.id = id
             self.url = url
+        }
+    }
+    
+    struct Texture: Codable {
+        var image: Image
+        var specular: Double
+        var normal: Double
+        
+        init(image: BusinessCard.Image, specular: Double, normal: Double) {
+            self.image = image
+            self.specular = specular
+            self.normal = normal
         }
     }
 }

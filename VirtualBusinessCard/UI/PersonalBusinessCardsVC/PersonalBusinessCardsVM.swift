@@ -8,6 +8,7 @@
 
 import Firebase
 import CoreMotion
+import CoreGraphics
 
 protocol PersonalBusinessCardsVMlDelegate: class {
     func presentUserSetup(userID: String, email: String)
@@ -68,7 +69,7 @@ final class PersonalBusinessCardsVM: AppViewModel {
     
     func item(for indexPath: IndexPath) -> PersonalBusinessCardsView.BusinessCardCellDM {
         let bc = businessCards[indexPath.item]
-        return PersonalBusinessCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage?.url, backImageURL: bc.backImage?.url, textureImageURL: bc.textureImage?.url)
+        return PersonalBusinessCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage?.url, backImageURL: bc.backImage?.url, textureImageURL: bc.texture?.image.url, normal: CGFloat(bc.texture?.normal ?? 0), specular: CGFloat(bc.texture?.specular ?? 0))
     }
 
     func didSelectItem(at indexPath: IndexPath) {

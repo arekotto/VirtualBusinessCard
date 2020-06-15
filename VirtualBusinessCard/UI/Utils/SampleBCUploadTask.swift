@@ -16,13 +16,26 @@ struct SampleBCUploadTask {
         let userID = Auth.auth().currentUser!.uid
         let bcCollectionRef = Firestore.firestore().collection(UserPublic.collectionName).document(userID).collection(BusinessCard.collectionName)
 
+        let imageURLs = [
+            URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Back.png?alt=media&token=6a28dce4-14d4-4d6c-abb4-9577615f447d")!,
+            URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!,
+            URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard2Front.jpg?alt=media&token=fbcd38a0-3e25-4391-ad43-e82e38ce91ba")!
+        ]
+        
+        let texturesURLs = [
+            URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsamplePaperNormalMap.jpg?alt=media&token=b9d0adf0-86a4-4912-805b-99212f87b269")!,
+            URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FpaperNormalMap2.jpg?alt=media&token=5634474e-1a98-4f98-afc1-2d8fb40f5c12")!
+        ]
+        
+        let specularValues = [0.1, 0.5, 1.5]
+//        let normlas = [0.1, 0.5, 1.5]
 
-        Name.samples.forEach { person in
+        Name.samples.enumerated().forEach { idx, person in
             let docRef = bcCollectionRef.document()
             let bc = BusinessCard(id: docRef.documentID,
-                                  frontImage: .init(id: "card1front", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Back.png?alt=media&token=6a28dce4-14d4-4d6c-abb4-9577615f447d")!),
+                                  frontImage: .init(id: "card1front", url: imageURLs[idx % imageURLs.count]),
                                   backImage: .init(id: "fasfds", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!),
-                                  textureImage: .init(id: "card1texture", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1texture.jpg?alt=media&token=66034eee-2edc-42cd-bbc4-1d83fb7c3e25")!),
+                                  texture: .init(image: BusinessCard.Image(id: "test", url: texturesURLs[idx % texturesURLs.count]), specular: specularValues[idx % specularValues.count], normal: specularValues[idx % specularValues.count]),
                                   position: BusinessCard.Position(title: "Manager", company: "IBM"),
                                   name: BusinessCard.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
                                   contact: BusinessCard.Contact(email: "\(person.lastName)@ibm.com", phoneNumberPrimary: "123321123"),
