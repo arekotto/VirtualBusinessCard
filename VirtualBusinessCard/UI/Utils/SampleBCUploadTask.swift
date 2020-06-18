@@ -14,7 +14,8 @@ struct SampleBCUploadTask {
     func callAsFunction(completion: @escaping (Result<Void, Error>) -> Void) {
 
         let userID = Auth.auth().currentUser!.uid
-        let bcCollectionRef = Firestore.firestore().collection(UserPublic.collectionName).document(userID).collection(BusinessCard.collectionName)
+        let personalBCCollectionRef = Firestore.firestore().collection(UserPublic.collectionName).document(userID).collection(PersonalBusinessCard.collectionName)
+        let receivedBCCollectionRef = Firestore.firestore().collection(UserPublic.collectionName).document(userID).collection(ReceivedBusinessCard.collectionName)
 
         let imageURLs = [
             URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Back.png?alt=media&token=6a28dce4-14d4-4d6c-abb4-9577615f447d")!,
@@ -31,19 +32,32 @@ struct SampleBCUploadTask {
 //        let normlas = [0.1, 0.5, 1.5]
 
         Name.samples.enumerated().forEach { idx, person in
-            let docRef = bcCollectionRef.document()
-            let bc = BusinessCard(id: docRef.documentID,
+            let docRef = personalBCCollectionRef.document()
+            let bcData = BusinessCardData(
                                   frontImage: .init(id: "card1front", url: imageURLs[idx % imageURLs.count]),
                                   backImage: .init(id: "fasfds", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!),
-                                  texture: .init(image: BusinessCard.Image(id: "test", url: texturesURLs[idx % texturesURLs.count]), specular: specularValues[idx % specularValues.count], normal: specularValues[idx % specularValues.count]),
-                                  position: BusinessCard.Position(title: "Manager", company: "IBM"),
-                                  name: BusinessCard.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
-                                  contact: BusinessCard.Contact(email: "\(person.lastName)@ibm.com", phoneNumberPrimary: "123321123"),
-                                  address: BusinessCard.Address())
-            docRef.setData(bc.asDocument())
+                                  texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs[idx % texturesURLs.count]), specular: specularValues[idx % specularValues.count], normal: specularValues[idx % specularValues.count]),
+                                  position: BusinessCardData.Position(title: "Manager", company: "IBM"),
+                                  name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
+                                  contact: BusinessCardData.Contact(email: "\(person.lastName)@ibm.com", phoneNumberPrimary: "123321123"),
+                                  address: BusinessCardData.Address())
+            let personalBC = PersonalBusinessCard(id: docRef.documentID, creationDate: Date(), cardData: bcData)
+            docRef.setData(personalBC.asDocument())
         }
         
-        
+        (Name.samples + Name.samples).enumerated().forEach { idx, person in
+            let docRef = receivedBCCollectionRef.document()
+            let bcData = BusinessCardData(
+                                  frontImage: .init(id: "card1front", url: imageURLs[idx % imageURLs.count]),
+                                  backImage: .init(id: "fasfds", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!),
+                                  texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs[idx % texturesURLs.count]), specular: specularValues[idx % specularValues.count], normal: specularValues[idx % specularValues.count]),
+                                  position: BusinessCardData.Position(title: "Manager", company: "IBM"),
+                                  name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
+                                  contact: BusinessCardData.Contact(email: "\(person.lastName)@ibm.com", phoneNumberPrimary: "123321123"),
+                                  address: BusinessCardData.Address())
+            let personalBC = ReceivedBusinessCard(id: docRef.documentID, originalID: "some old ID", receivingDate: Date(), cardData: bcData)
+            docRef.setData(personalBC.asDocument())
+        }
     }
     
     private struct Name {

@@ -15,4 +15,5 @@ enum AppColorTheme: String {
     case microsoftBlue = "MicrosoftBlue"
     case appDefaultBackground = "AppDefaultBackground"
     case appWhite = "AppWhite"
+    case barSeparator = "BarSeparator"
 }

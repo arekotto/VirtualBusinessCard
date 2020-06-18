@@ -1,25 +1,25 @@
 //
-//  PersonalBusinessCardsVM.swift
+//  ReceivedCardsVM.swift
 //  VirtualBusinessCard
 //
-//  Created by Arek Otto on 01/06/2020.
+//  Created by Arek Otto on 15/06/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
 import Firebase
 import CoreMotion
-import CoreGraphics
+import UIKit
 
-protocol PersonalBusinessCardsVMlDelegate: class {
-    func presentUserSetup(userID: String, email: String)
+protocol ReceivedBusinessCardsVMDelegate: class {
     func presentBusinessCardDetails(id: BusinessCardID)
-    func reloadData()
+    func refreshData()
+    func refreshLayout(sizeMode: ReceivedCardsVM.CellSizeMode)
     func didUpdateMotionData(motion: CMDeviceMotion)
 }
 
-final class PersonalBusinessCardsVM: AppViewModel {
+final class ReceivedCardsVM: AppViewModel {
     
-    weak var delegate: PersonalBusinessCardsVMlDelegate? {
+    weak var delegate: ReceivedBusinessCardsVMDelegate? {
         didSet {
             if delegate != nil {
                 motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
@@ -32,7 +32,19 @@ final class PersonalBusinessCardsVM: AppViewModel {
         }
     }
     
-    let title = NSLocalizedString("My Cards", comment: "")
+    let title = NSLocalizedString("Collection", comment: "")
+        
+    private(set) var cellSizeMode = CellSizeMode.expanded
+    
+    var cellSizeControlImage: UIImage {
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
+        switch cellSizeMode {
+        case .compact:
+            return UIImage(systemName: "square.split.1x2.fill", withConfiguration: imgConfig)!
+        case .expanded:
+            return UIImage(systemName: "table.fill", withConfiguration: imgConfig)!
+        }
+    }
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -41,7 +53,7 @@ final class PersonalBusinessCardsVM: AppViewModel {
     }()
     
     private var user: UserMC?
-    private var businessCards: [PersonalBusinessCardMC] = []
+    private var businessCards = [ReceivedBusinessCardMC]()
     
     private var userID: UserID {
         Auth.auth().currentUser!.uid
@@ -56,7 +68,7 @@ final class PersonalBusinessCardsVM: AppViewModel {
     }
     
     private var businessCardCollectionReference: CollectionReference {
-        userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
+        userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
     
     func fetchData() {
@@ -69,13 +81,21 @@ final class PersonalBusinessCardsVM: AppViewModel {
         businessCards.count
     }
     
-    func item(for indexPath: IndexPath) -> PersonalBusinessCardsView.BusinessCardCellDM {
+    func item(for indexPath: IndexPath) -> ReceivedCardsView.BusinessCardCellDM {
         let bc = businessCards[indexPath.item]
-        return PersonalBusinessCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage.url, backImageURL: bc.backImage.url, textureImageURL: bc.texture.image.url, normal: CGFloat(bc.texture.normal), specular: CGFloat(bc.texture.specular))
+        return ReceivedCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage.url, backImageURL: bc.backImage.url, textureImageURL: bc.texture.image.url, normal: CGFloat(bc.texture.normal), specular: CGFloat(bc.texture.specular))
     }
 
     func didSelectItem(at indexPath: IndexPath) {
-        delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
+//        delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
+    }
+    
+    func didChangeCellSizeMode() {
+        switch cellSizeMode {
+        case .compact: cellSizeMode = .expanded
+        case .expanded: cellSizeMode = .compact
+        }
+        delegate?.refreshLayout(sizeMode: cellSizeMode)
     }
     
     private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
@@ -85,12 +105,7 @@ final class PersonalBusinessCardsVM: AppViewModel {
             print(#file, "Error fetching user public changed:", error?.localizedDescription ?? "No error info available.")
             return
         }
-        
-        guard doc.exists else {
-            let currentUser = Auth.auth().currentUser!
-            delegate?.presentUserSetup(userID: currentUser.uid, email: currentUser.email!)
-            return
-        }
+    
         guard let user = UserMC(userPublicDocument: doc) else {
             print(#file, "Error mapping user public:", doc.documentID)
             return
@@ -100,7 +115,7 @@ final class PersonalBusinessCardsVM: AppViewModel {
             self?.userPrivateDidChange(snapshot, error)
         }
         businessCardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
-            self?.personalBusinessCardCollectionDidChange(querySnapshot: querySnapshot, error: error)
+            self?.receivedBusinessCardCollectionDidChange(querySnapshot: querySnapshot, error: error)
         }
     }
     
@@ -111,22 +126,28 @@ final class PersonalBusinessCardsVM: AppViewModel {
             return
         }
         user?.setUserPrivate(document: doc)
-        delegate?.reloadData()
+        delegate?.refreshData()
     }
     
-    private func personalBusinessCardCollectionDidChange(querySnapshot: QuerySnapshot?, error: Error?) {
+    private func receivedBusinessCardCollectionDidChange(querySnapshot: QuerySnapshot?, error: Error?) {
         guard let querySnap = querySnapshot else {
             print(#file, error?.localizedDescription ?? "")
             return
         }
         
         businessCards = querySnap.documents.compactMap {
-            guard let bc = PersonalBusinessCard(queryDocumentSnapshot: $0) else {
+            guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
                 print(#file, "Error mapping business card:", $0.documentID)
                 return nil
             }
-            return PersonalBusinessCardMC(businessCard: bc)
+            return ReceivedBusinessCardMC(card: bc)
         }
-        delegate?.reloadData()
+        delegate?.refreshData()
+    }
+}
+
+extension ReceivedCardsVM {
+    enum CellSizeMode {
+        case compact, expanded
     }
 }

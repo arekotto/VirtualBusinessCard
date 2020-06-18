@@ -10,27 +10,17 @@ import Foundation
 
 typealias BusinessCardID = String
 
-//struct PersonalBusinessCard: Cobable {
-//    var card
-//}
-
 struct BusinessCardData: Codable {
-
-    let id: BusinessCardID
-    let originalID: BusinessCardID?
-
-    var frontImage: Image?
-    var backImage: Image?
-    var texture: Texture?
+    var frontImage: Image
+    var backImage: Image
+    var texture: Texture
     
     var position: Position
     var name: Name
     var contact: Contact
     var address: Address
     
-    internal init(id: BusinessCardID, originalID: BusinessCardID? = nil, frontImage: BusinessCardData.Image? = nil, backImage: BusinessCardData.Image? = nil, texture: BusinessCardData.Texture? = nil, position: BusinessCardData.Position, name: BusinessCardData.Name, contact: BusinessCardData.Contact, address: BusinessCardData.Address) {
-        self.id = id
-        self.originalID = originalID
+    internal init(frontImage: Image, backImage: Image, texture: Texture, position: Position, name: Name, contact: Contact, address: Address) {
         self.frontImage = frontImage
         self.backImage = backImage
         self.texture = texture
@@ -38,12 +28,6 @@ struct BusinessCardData: Codable {
         self.name = name
         self.contact = contact
         self.address = address
-    }
-}
-
-extension BusinessCardData: Equatable {
-    static func == (lhs: BusinessCardData, rhs: BusinessCardData) -> Bool {
-        return lhs.id == rhs.id
     }
 }
 

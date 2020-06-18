@@ -278,9 +278,18 @@ public extension UIView {
     }
 
     @discardableResult
-    func constrainHeightEqualTo(_ view: UIView, constant: CGFloat = 0) -> NSLayoutConstraint {
+    func constrainHeightEqualTo(_ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
-        let constraint = heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1, constant: constant)
+        let constraint = heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: multiplier, constant: constant)
+        constraint.isActive = true
+        return constraint
+    }
+
+    @discardableResult
+    func constrainHeightLessThan(_ view: UIView, constant: CGFloat = 0, multiplayer: CGFloat = 1, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
+        translatesAutoresizingMaskIntoConstraints = false
+        let constraint = heightAnchor.constraint(lessThanOrEqualTo: view.heightAnchor, multiplier: multiplayer, constant: constant)
+        constraint.priority = priority
         constraint.isActive = true
         return constraint
     }
@@ -293,7 +302,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainHeightGreaterThanOrEqualTo(constant: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -304,14 +313,23 @@ public extension UIView {
     }
 
     @discardableResult
-    func constrainHeightGreaterThan(_ view: UIView, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
+    func constrainHeightGreaterThan(_ view: UIView, priority: UILayoutPriority = UILayoutPriority.required, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
-        let constraint = heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: 1)
+        let constraint = heightAnchor.constraint(greaterThanOrEqualTo: view.heightAnchor, multiplier: multiplier)
         constraint.priority = priority
         constraint.isActive = true
         return constraint
     }
 
+    @discardableResult
+    func constrainWidthLessThan(_ view: UIView, constant: CGFloat = 0, multiplayer: CGFloat = 1, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
+        translatesAutoresizingMaskIntoConstraints = false
+        let constraint = widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: multiplayer, constant: constant)
+        constraint.priority = priority
+        constraint.isActive = true
+        return constraint
+    }
+    
     @discardableResult
     func constrainWidth(constant: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false

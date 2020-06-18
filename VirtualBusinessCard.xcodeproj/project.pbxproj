@@ -13,6 +13,13 @@
 		4511A130246D6CC100AE3306 /* CreateAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511A12F246D6CC100AE3306 /* CreateAccountNameViewModel.swift */; };
 		4511A132246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511A131246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift */; };
 		4511A135246D760700AE3306 /* CreateAccountEmailPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4511A134246D760700AE3306 /* CreateAccountEmailPasswordView.swift */; };
+		45139C4B249794AF00DE1E9F /* PersonalBusinessCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C4A249794AF00DE1E9F /* PersonalBusinessCard.swift */; };
+		45139C4D24979A3500DE1E9F /* ReceivedBusinessCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C4C24979A3500DE1E9F /* ReceivedBusinessCard.swift */; };
+		45139C5024979C3800DE1E9F /* ReceivedCardsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C4F24979C3800DE1E9F /* ReceivedCardsVC.swift */; };
+		45139C5224979CA300DE1E9F /* ReceivedCardsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C5124979CA300DE1E9F /* ReceivedCardsVM.swift */; };
+		45139C5424979CB600DE1E9F /* ReceivedCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C5324979CB600DE1E9F /* ReceivedCardsView.swift */; };
+		45139C562497A1B100DE1E9F /* ReceivedBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C552497A1B100DE1E9F /* ReceivedBusinessCardMC.swift */; };
+		45139C592497A49500DE1E9F /* ReceivedCardViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C582497A49500DE1E9F /* ReceivedCardViewCell.swift */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
 		452B33C2248E3FDB006E6A7D /* PersonalBusinessCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalBusinessCardsViewCell.swift */; };
@@ -29,6 +36,8 @@
 		4537CEFA23F6D25A003602EA /* VirtualBusinessCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEF923F6D25A003602EA /* VirtualBusinessCardTests.swift */; };
 		4537CF0523F6D25A003602EA /* VirtualBusinessCardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CF0423F6D25A003602EA /* VirtualBusinessCardUITests.swift */; };
 		453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453B5F1D24197171009E3AB2 /* ButtonStyle.swift */; };
+		4543D2D7249BBDCC003B1439 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D6249BBDCC003B1439 /* UIImage.swift */; };
+		4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */; };
 		4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F02423B0CE00D44526 /* LoginWithMicrosoftButton.swift */; };
 		4558F1F32423B52000D44526 /* LoginWithGoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F22423B52000D44526 /* LoginWithGoogleButton.swift */; };
 		4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F42423CD4800D44526 /* AppSwiftUIView.swift */; };
@@ -36,8 +45,7 @@
 		4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F82423E75D00D44526 /* DeviceDisplay.swift */; };
 		4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */; };
 		4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */; };
-		4577CC722488EE9F0012EDC8 /* BusinessCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC712488EE9F0012EDC8 /* BusinessCard.swift */; };
-		4577CC742488EED50012EDC8 /* BusinessCard+Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC732488EED50012EDC8 /* BusinessCard+Firestoreable.swift */; };
+		4577CC722488EE9F0012EDC8 /* BusinessCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC712488EE9F0012EDC8 /* BusinessCardData.swift */; };
 		4577CC77248903D70012EDC8 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC76248903D70012EDC8 /* AppError.swift */; };
 		4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */; };
 		4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC7C248906FE0012EDC8 /* UserPrivate.swift */; };
@@ -52,7 +60,7 @@
 		458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */; };
 		458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 458EF404248B9B6D00EC76D6 /* Kingfisher */; };
 		458EF407248BA29100EC76D6 /* EditBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF406248BA29100EC76D6 /* EditBusinessCardMC.swift */; };
-		458EF40A248BC7A000EC76D6 /* ViewBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF409248BC7A000EC76D6 /* ViewBusinessCardMC.swift */; };
+		458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF409248BC7A000EC76D6 /* PersonalBusinessCardMC.swift */; };
 		459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58623FEA496002F03DD /* Firestoreable.swift */; };
 		459DC58A23FEA4CB002F03DD /* UserPublic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58923FEA4CB002F03DD /* UserPublic.swift */; };
 		459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */; };
@@ -126,6 +134,13 @@
 		4511A12F246D6CC100AE3306 /* CreateAccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountNameViewModel.swift; sourceTree = "<group>"; };
 		4511A131246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountEmailPasswordViewModel.swift; sourceTree = "<group>"; };
 		4511A134246D760700AE3306 /* CreateAccountEmailPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountEmailPasswordView.swift; sourceTree = "<group>"; };
+		45139C4A249794AF00DE1E9F /* PersonalBusinessCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBusinessCard.swift; sourceTree = "<group>"; };
+		45139C4C24979A3500DE1E9F /* ReceivedBusinessCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedBusinessCard.swift; sourceTree = "<group>"; };
+		45139C4F24979C3800DE1E9F /* ReceivedCardsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedCardsVC.swift; sourceTree = "<group>"; };
+		45139C5124979CA300DE1E9F /* ReceivedCardsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedCardsVM.swift; sourceTree = "<group>"; };
+		45139C5324979CB600DE1E9F /* ReceivedCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedCardsView.swift; sourceTree = "<group>"; };
+		45139C552497A1B100DE1E9F /* ReceivedBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedBusinessCardMC.swift; sourceTree = "<group>"; };
+		45139C582497A49500DE1E9F /* ReceivedCardViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedCardViewCell.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
 		452B33C1248E3FDB006E6A7D /* PersonalBusinessCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBusinessCardsViewCell.swift; sourceTree = "<group>"; };
@@ -147,6 +162,8 @@
 		4537CF0423F6D25A003602EA /* VirtualBusinessCardUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VirtualBusinessCardUITests.swift; sourceTree = "<group>"; };
 		4537CF0623F6D25A003602EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		453B5F1D24197171009E3AB2 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		4543D2D6249BBDCC003B1439 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
 		4558F1F02423B0CE00D44526 /* LoginWithMicrosoftButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithMicrosoftButton.swift; sourceTree = "<group>"; };
 		4558F1F22423B52000D44526 /* LoginWithGoogleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithGoogleButton.swift; sourceTree = "<group>"; };
 		4558F1F42423CD4800D44526 /* AppSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSwiftUIView.swift; sourceTree = "<group>"; };
@@ -154,8 +171,7 @@
 		4558F1F82423E75D00D44526 /* DeviceDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceDisplay.swift; sourceTree = "<group>"; };
 		4558F1FB2424FD9E00D44526 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		4558F1FD2424FE2200D44526 /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewModel.swift; sourceTree = "<group>"; };
-		4577CC712488EE9F0012EDC8 /* BusinessCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCard.swift; sourceTree = "<group>"; };
-		4577CC732488EED50012EDC8 /* BusinessCard+Firestoreable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BusinessCard+Firestoreable.swift"; sourceTree = "<group>"; };
+		4577CC712488EE9F0012EDC8 /* BusinessCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardData.swift; sourceTree = "<group>"; };
 		4577CC76248903D70012EDC8 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpUserInfoStorage.swift; sourceTree = "<group>"; };
 		4577CC7C248906FE0012EDC8 /* UserPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrivate.swift; sourceTree = "<group>"; };
@@ -170,7 +186,7 @@
 		458EF3FD248A5F7800EC76D6 /* BusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardMC.swift; sourceTree = "<group>"; };
 		458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		458EF406248BA29100EC76D6 /* EditBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBusinessCardMC.swift; sourceTree = "<group>"; };
-		458EF409248BC7A000EC76D6 /* ViewBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewBusinessCardMC.swift; sourceTree = "<group>"; };
+		458EF409248BC7A000EC76D6 /* PersonalBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBusinessCardMC.swift; sourceTree = "<group>"; };
 		459DC58623FEA496002F03DD /* Firestoreable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Firestoreable.swift; sourceTree = "<group>"; };
 		459DC58923FEA4CB002F03DD /* UserPublic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPublic.swift; sourceTree = "<group>"; };
 		459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserPublic+Firestorable.swift"; sourceTree = "<group>"; };
@@ -277,9 +293,21 @@
 			path = CreateAccount;
 			sourceTree = "<group>";
 		};
+		45139C4E24979C2100DE1E9F /* ReceivedBusinessCardsVC */ = {
+			isa = PBXGroup;
+			children = (
+				45139C4F24979C3800DE1E9F /* ReceivedCardsVC.swift */,
+				45139C5124979CA300DE1E9F /* ReceivedCardsVM.swift */,
+				45139C5324979CB600DE1E9F /* ReceivedCardsView.swift */,
+				45139C582497A49500DE1E9F /* ReceivedCardViewCell.swift */,
+			);
+			path = ReceivedBusinessCardsVC;
+			sourceTree = "<group>";
+		};
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				45139C4E24979C2100DE1E9F /* ReceivedBusinessCardsVC */,
 				45B25F1D2493B281006DD0F7 /* BusinessCardDetailsVC */,
 				452B33C3248E4F7C006E6A7D /* SettingsVC */,
 				45C160242485AE7F00806718 /* PersonalBusinessCardsVC */,
@@ -358,9 +386,9 @@
 			children = (
 				451C664C240806610016DA68 /* UI */,
 				459DC58823FEA4A1002F03DD /* Model */,
+				4543D2D5249BBAF1003B1439 /* Resources */,
 				4537CEE223F6D259003602EA /* AppDelegate.swift */,
 				4537CEE423F6D259003602EA /* SceneDelegate.swift */,
-				4537CEE823F6D25A003602EA /* Assets.xcassets */,
 				4537CEED23F6D25A003602EA /* LaunchScreen.storyboard */,
 				4537CEF023F6D25A003602EA /* Info.plist */,
 				459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */,
@@ -406,6 +434,14 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
+		4543D2D5249BBAF1003B1439 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4537CEE823F6D25A003602EA /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		4558F1FA2424FBE500D44526 /* Join */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,8 +456,9 @@
 			isa = PBXGroup;
 			children = (
 				458EF408248BC78100EC76D6 /* ModelController */,
-				4577CC712488EE9F0012EDC8 /* BusinessCard.swift */,
-				4577CC732488EED50012EDC8 /* BusinessCard+Firestoreable.swift */,
+				4577CC712488EE9F0012EDC8 /* BusinessCardData.swift */,
+				45139C4A249794AF00DE1E9F /* PersonalBusinessCard.swift */,
+				45139C4C24979A3500DE1E9F /* ReceivedBusinessCard.swift */,
 			);
 			path = BusinessCard;
 			sourceTree = "<group>";
@@ -437,6 +474,7 @@
 				4510341D2492697E009C4B26 /* CGSize.swift */,
 				45B25F172493822C006DD0F7 /* UIFont.swift */,
 				45B25F1924938489006DD0F7 /* UIColor.swift */,
+				4543D2D6249BBDCC003B1439 /* UIImage.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -516,7 +554,8 @@
 			children = (
 				458EF3FD248A5F7800EC76D6 /* BusinessCardMC.swift */,
 				458EF406248BA29100EC76D6 /* EditBusinessCardMC.swift */,
-				458EF409248BC7A000EC76D6 /* ViewBusinessCardMC.swift */,
+				458EF409248BC7A000EC76D6 /* PersonalBusinessCardMC.swift */,
+				45139C552497A1B100DE1E9F /* ReceivedBusinessCardMC.swift */,
 			);
 			path = ModelController;
 			sourceTree = "<group>";
@@ -597,6 +636,7 @@
 			isa = PBXGroup;
 			children = (
 				45C160222485AD3000806718 /* MainTBC.swift */,
+				4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */,
 			);
 			path = MainTBC;
 			sourceTree = "<group>";
@@ -895,12 +935,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */,
+				45139C5024979C3800DE1E9F /* ReceivedCardsVC.swift in Sources */,
 				4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */,
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
 				4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */,
 				458EF3FE248A5F7800EC76D6 /* BusinessCardMC.swift in Sources */,
+				4543D2D7249BBDCC003B1439 /* UIImage.swift in Sources */,
 				45C160092485103600806718 /* FIRDocumentReference.swift in Sources */,
 				45C1601C2485330000806718 /* UserSetupView.swift in Sources */,
+				45139C562497A1B100DE1E9F /* ReceivedBusinessCardMC.swift in Sources */,
+				45139C592497A49500DE1E9F /* ReceivedCardViewCell.swift in Sources */,
 				4558F1F72423CD6200D44526 /* AppSwiftUIViewModel.swift in Sources */,
 				45C1600F24852DCB00806718 /* AppViewController.swift in Sources */,
 				45B25F212493B32C006DD0F7 /* BusinessCardDetailsVM.swift in Sources */,
@@ -921,7 +965,7 @@
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
 				45B25F1F2493B2A3006DD0F7 /* BusinessCardDetailsVC.swift in Sources */,
 				4577CC84248908530012EDC8 /* UserMC.swift in Sources */,
-				458EF40A248BC7A000EC76D6 /* ViewBusinessCardMC.swift in Sources */,
+				458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */,
 				45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */,
 				45C160302486535700806718 /* ActivityIndicator.swift in Sources */,
 				452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */,
@@ -929,6 +973,7 @@
 				459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */,
 				45B25F252493B669006DD0F7 /* AppBackgroundView.swift in Sources */,
 				4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */,
+				45139C4D24979A3500DE1E9F /* ReceivedBusinessCard.swift in Sources */,
 				45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */,
 				45C1602C2486484E00806718 /* PersonalBusinessCardsView.swift in Sources */,
 				4577CC77248903D70012EDC8 /* AppError.swift in Sources */,
@@ -937,8 +982,9 @@
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
 				45AA873324499A5B004ACDDD /* CardView.swift in Sources */,
 				45C1601A248530CC00806718 /* UIView+Constrains.swift in Sources */,
+				45139C5424979CB600DE1E9F /* ReceivedCardsView.swift in Sources */,
 				45C160282485B0BD00806718 /* PersonalBusinessCardsVM.swift in Sources */,
-				4577CC742488EED50012EDC8 /* BusinessCard+Firestoreable.swift in Sources */,
+				45139C5224979CA300DE1E9F /* ReceivedCardsVM.swift in Sources */,
 				4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */,
 				457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */,
 				45B25F232493B33B006DD0F7 /* BusinessCardDetailsView.swift in Sources */,
@@ -954,13 +1000,14 @@
 				45F41FA324600D0A002BC37F /* BusinessCardSceneView.swift in Sources */,
 				4577CC8724890B900012EDC8 /* SingletonFirestoreable.swift in Sources */,
 				4537CEE723F6D259003602EA /* ContentView.swift in Sources */,
+				45139C4B249794AF00DE1E9F /* PersonalBusinessCard.swift in Sources */,
 				451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */,
 				451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */,
 				45B5E315241FA07F00028B0A /* LoginView.swift in Sources */,
 				45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */,
 				45C1602E24864C5700806718 /* UserSetupHC.swift in Sources */,
 				4511A132246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift in Sources */,
-				4577CC722488EE9F0012EDC8 /* BusinessCard.swift in Sources */,
+				4577CC722488EE9F0012EDC8 /* BusinessCardData.swift in Sources */,
 				4558F1F32423B52000D44526 /* LoginWithGoogleButton.swift in Sources */,
 				45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */,
 				45C160232485AD3000806718 /* MainTBC.swift in Sources */,
@@ -970,6 +1017,7 @@
 				45C160262485AEF800806718 /* PersonalBusinessCardsVC.swift in Sources */,
 				45D6BF7824169A41008B2498 /* Color.swift in Sources */,
 				4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */,
+				4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */,
 				45C1603624865E7A00806718 /* AppUIState.swift in Sources */,
 				45B25F1C24938499006DD0F7 /* AppColorTheme.swift in Sources */,
 			);

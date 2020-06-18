@@ -16,6 +16,8 @@ extension PersonalBusinessCardsView {
         
         static private let shareButtonTopConstraintValue: CGFloat = 60
 
+        static private let screenWidth = UIScreen.main.bounds.size.width
+
         private let frontSceneView: BusinessCardSceneView = {
             let view = BusinessCardSceneView(dynamicLightingEnabled: false)
             view.layer.shadowOpacity = 0.4
@@ -61,12 +63,11 @@ extension PersonalBusinessCardsView {
         override func configureConstraints() {
             super.configureConstraints()
             
-            let screenWidth = UIScreen.main.bounds.size.width
-            let dimensions = CGSize.businessCardSize(width: screenWidth * 0.75)
+            let dimensions = CGSize.businessCardSize(width: Self.screenWidth * 0.75)
             
             scalableView.constrainVerticallyToSuperview()
             scalableView.constrainCenterXToSuperview()
-            scalableView.constrainWidth(constant: screenWidth * 0.8)
+            scalableView.constrainWidth(constant: Self.screenWidth * 0.8)
             
             frontSceneView.constrainHeight(constant: dimensions.height)
             frontSceneView.constrainWidth(constant: dimensions.width)
@@ -93,9 +94,9 @@ extension PersonalBusinessCardsView {
     }
     
     struct BusinessCardCellDM {
-        let frontImageURL: URL?
-        let backImageURL: URL?
-        let textureImageURL: URL?
+        let frontImageURL: URL
+        let backImageURL: URL
+        let textureImageURL: URL
         let normal: CGFloat
         let specular: CGFloat
     }
@@ -103,18 +104,16 @@ extension PersonalBusinessCardsView {
 
 extension PersonalBusinessCardsView.BusinessCardCell {
     func setDataModel(_ dm: PersonalBusinessCardsView.BusinessCardCellDM) {
-        if let frontImageURL = dm.frontImageURL, let backImageURL = dm.backImageURL, let textureURL = dm.textureImageURL {
-            let task = ImageAndTextureFetchTask(frontImageURL: frontImageURL, textureURL: textureURL, backImageURL: backImageURL)
-            task { [weak self] result in
-                switch result {
-                case .failure(let err): print(err.localizedDescription)
-                case .success(let imagesResult):
-                    self?.frontSceneView.setImage(image: imagesResult.frontImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
-                    if let backImage = imagesResult.backImage {
-                        self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
-                    }
-
+        let task = ImageAndTextureFetchTask(frontImageURL: dm.frontImageURL, textureURL: dm.textureImageURL, backImageURL: dm.backImageURL)
+        task { [weak self] result in
+            switch result {
+            case .failure(let err): print(err.localizedDescription)
+            case .success(let imagesResult):
+                self?.frontSceneView.setImage(image: imagesResult.frontImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
+                if let backImage = imagesResult.backImage {
+                    self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
                 }
+
             }
         }
     }
@@ -148,7 +147,7 @@ extension PersonalBusinessCardsView.BusinessCardCell: TransformableView {
     }
     
     static func computeSceneCenterConstraint(progress: CGFloat) -> CGPoint {
-        let value = computeShareButtonTransition(progress: progress) * 10
+        let value = computeShareButtonTransition(progress: progress) * Self.screenWidth * 0.03
         return CGPoint(x: value, y: value)
     }
         

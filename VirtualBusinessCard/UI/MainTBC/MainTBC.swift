@@ -11,22 +11,45 @@ import UIKit
 class MainTBC: UITabBarController {
     
     let personalBusinessCardsVC = PersonalBusinessCardsVC(viewModel: PersonalBusinessCardsVM())
-    
+    let receivedBusinessCardsVC = ReceivedCardsVC(viewModel: ReceivedCardsVM())
+
     var allViewControllers: [UIViewController] {
-        [personalBusinessCardsVC]
+        [personalBusinessCardsVC, receivedBusinessCardsVC]
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewControllers = allViewControllers.map {
-            let navigationController = UINavigationController(rootViewController: $0)
+            let navigationController = AppNavigationController(rootViewController: $0)
+            navigationController.title = $0.title
             navigationController.navigationBar.prefersLargeTitles = true
             return navigationController
         }
+        
+        setupTabBarStyle()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        tabBar.tintColor = .appAccent
+        tabBar.backgroundColor = .appDefaultBackground
+    }
+    
+    private func setupTabBarStyle() {
+        tabBar.shadowImage = UIImage.empty
+        tabBar.backgroundImage = UIImage.empty
+        
+        tabBar.layer.shadowColor = UIColor.black.cgColor
+        tabBar.layer.shadowOffset = CGSize(width: 0.0, height: -3.0)
+        tabBar.layer.shadowRadius = 5
+        tabBar.layer.shadowOpacity = 0.1
     }
 }
 
 extension MainTBC: AppUIStateRoot {
     var appUIState: AppUIState { .appContent }
 }
+
+
+

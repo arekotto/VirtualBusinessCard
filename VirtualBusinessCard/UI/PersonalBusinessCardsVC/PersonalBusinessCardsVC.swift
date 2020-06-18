@@ -13,12 +13,6 @@ import CoreMotion
 
 final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView, PersonalBusinessCardsVM> {
     
-//    let newBusinessCardButton: UIBarButtonItem = {
-//        let item = UIBarButtonItem(image: , style: .plain, target: self, action: #selector(didTapNewBusinessCardButton))
-//
-//        }()
-
-    
     let newBusinessCardButton: UIBarButtonItem = {
         let button = UIButton(type: .system)
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
@@ -51,8 +45,7 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
         newBusinessCardButton.customView?.tintColor = UIColor.appAccent
         contentView.collectionView.performBatchUpdates({
             self.contentView.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
-
+        })
     }
 }
 

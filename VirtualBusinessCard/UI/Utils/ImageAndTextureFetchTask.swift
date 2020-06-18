@@ -13,9 +13,9 @@ struct ImageAndTextureFetchTask {
    
     let frontImageURL: URL
     let textureURL: URL
-    let backImageURL: URL?
+    let backImageURL: URL
     
-    init(frontImageURL: URL, textureURL: URL, backImageURL: URL? = nil) {
+    init(frontImageURL: URL, textureURL: URL, backImageURL: URL) {
         self.frontImageURL = frontImageURL
         self.textureURL = textureURL
         self.backImageURL = backImageURL
@@ -25,6 +25,7 @@ struct ImageAndTextureFetchTask {
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         dispatchGroup.enter()
+        dispatchGroup.enter()
 
         var frontImage: UIImage?
         var backImage: UIImage?
@@ -32,15 +33,12 @@ struct ImageAndTextureFetchTask {
         
         var error: Error?
         
-        if let backImageURL = self.backImageURL {
-            dispatchGroup.enter()
-            KingfisherManager.shared.retrieveImage(with: backImageURL) { result in
-                switch result {
-                case .success(let imageResult): backImage = imageResult.image
-                case .failure(let err): error = err
-                }
-                dispatchGroup.leave()
+        KingfisherManager.shared.retrieveImage(with: backImageURL) { result in
+            switch result {
+            case .success(let imageResult): backImage = imageResult.image
+            case .failure(let err): error = err
             }
+            dispatchGroup.leave()
         }
         
         KingfisherManager.shared.retrieveImage(with: frontImageURL) { result in
