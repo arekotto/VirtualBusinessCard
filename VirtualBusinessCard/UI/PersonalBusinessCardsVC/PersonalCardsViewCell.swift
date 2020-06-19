@@ -11,8 +11,8 @@ import UIKit
 import CollectionViewPagingLayout
 import CoreMotion
 
-extension PersonalBusinessCardsView {
-    class BusinessCardCell: AppCollectionViewCell, Reusable {
+extension PersonalCardsView {
+    class CollectionCell: AppCollectionViewCell, Reusable {
         
         static private let shareButtonTopConstraintValue: CGFloat = 60
 
@@ -106,8 +106,8 @@ extension PersonalBusinessCardsView {
     }
 }
 
-extension PersonalBusinessCardsView.BusinessCardCell {
-    func setDataModel(_ dm: PersonalBusinessCardsView.BusinessCardCellDM) {
+extension PersonalCardsView.CollectionCell {
+    func setDataModel(_ dm: PersonalCardsView.BusinessCardCellDM) {
         let task = ImageAndTextureFetchTask(frontImageURL: dm.frontImageURL, textureURL: dm.textureImageURL, backImageURL: dm.backImageURL)
         task { [weak self] result in
             switch result {
@@ -146,7 +146,7 @@ extension PersonalBusinessCardsView.BusinessCardCell {
     }
 }
 
-extension PersonalBusinessCardsView.BusinessCardCell: TransformableView {
+extension PersonalCardsView.CollectionCell: TransformableView {
     
     static func computeTranslationCurve(progress: CGFloat) -> CGFloat {
         log10(1 + progress * 9)

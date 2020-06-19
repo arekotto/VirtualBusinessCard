@@ -1,5 +1,5 @@
 //
-//  PersonalBusinessCardsVM.swift
+//  PersonalCardsVM.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 01/06/2020.
@@ -10,7 +10,7 @@ import Firebase
 import CoreMotion
 import UIKit
 
-protocol PersonalBusinessCardsVMlDelegate: class {
+protocol PersonalCardsVMlDelegate: class {
     func presentUserSetup(userID: String, email: String)
     func presentBusinessCardDetails(id: BusinessCardID)
     func reloadData()
@@ -19,7 +19,7 @@ protocol PersonalBusinessCardsVMlDelegate: class {
 
 final class PersonalCardsVM: AppViewModel {
     
-    weak var delegate: PersonalBusinessCardsVMlDelegate? {
+    weak var delegate: PersonalCardsVMlDelegate? {
         didSet { didSetDelegate() }
     }
         

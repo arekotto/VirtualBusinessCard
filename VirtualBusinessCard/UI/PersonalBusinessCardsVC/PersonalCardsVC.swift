@@ -11,9 +11,9 @@ import SwiftUI
 import Firebase
 import CoreMotion
 
-final class PersonalCardsVC: AppViewController<PersonalBusinessCardsView, PersonalBusinessCardsVM> {
+final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsVM> {
     
-    override init(viewModel: PersonalBusinessCardsVM) {
+    override init(viewModel: PersonalCardsVM) {
         super.init(viewModel: viewModel)
         title = viewModel.title
     }
@@ -68,7 +68,7 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: PersonalBusinessCardsView.BusinessCardCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        let cell: PersonalCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.setDataModel(viewModel.item(for: indexPath))
         cell.tag = indexPath.item
         return cell
@@ -79,9 +79,9 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
 }
 
-extension PersonalCardsVC: PersonalBusinessCardsVMlDelegate {
+extension PersonalCardsVC: PersonalCardsVMlDelegate {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        let cells = contentView.collectionView.visibleCells as! [PersonalBusinessCardsView.BusinessCardCell]
+        let cells = contentView.collectionView.visibleCells as! [PersonalCardsView.CollectionCell]
         cells.forEach { cell in
             cell.updateMotionData(motion, over: timeFrame)
         }

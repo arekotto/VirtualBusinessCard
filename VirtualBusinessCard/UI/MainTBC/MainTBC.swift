@@ -10,7 +10,7 @@ import UIKit
 
 class MainTBC: UITabBarController {
     
-    let personalBusinessCardsVC = PersonalBusinessCardsVC(viewModel: PersonalBusinessCardsVM())
+    let personalBusinessCardsVC = PersonalCardsVC(viewModel: PersonalCardsVM())
     let receivedBusinessCardsVC = ReceivedCardsVC(viewModel: ReceivedCardsVM())
 
     var allViewControllers: [UIViewController] {

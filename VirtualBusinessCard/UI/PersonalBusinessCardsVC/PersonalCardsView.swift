@@ -1,5 +1,5 @@
 //
-//  PersonalBusinessCardsView.swift
+//  PersonalCardsView.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 02/06/2020.
@@ -9,7 +9,7 @@
 import UIKit
 import CollectionViewPagingLayout
 
-final class PersonalBusinessCardsView: AppBackgroundView {
+final class PersonalCardsView: AppBackgroundView {
     
     let collectionView: UICollectionView = {
         let layout = CollectionViewPagingLayout()
@@ -18,7 +18,7 @@ final class PersonalBusinessCardsView: AppBackgroundView {
         cv.isPagingEnabled = true
         cv.showsHorizontalScrollIndicator = false
         cv.clipsToBounds = false
-        cv.registerReusableCell(BusinessCardCell.self)
+        cv.registerReusableCell(CollectionCell.self)
         cv.backgroundColor = .clear
         return cv
     }()
