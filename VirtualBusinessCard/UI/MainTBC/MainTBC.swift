@@ -23,7 +23,6 @@ class MainTBC: UITabBarController {
         viewControllers = allViewControllers.map {
             let navigationController = AppNavigationController(rootViewController: $0)
             navigationController.title = $0.title
-            navigationController.navigationBar.prefersLargeTitles = true
             return navigationController
         }
         
@@ -33,7 +32,7 @@ class MainTBC: UITabBarController {
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         tabBar.tintColor = .appAccent
-        tabBar.backgroundColor = .appDefaultBackground
+        tabBar.backgroundColor = .appTabBar
     }
     
     private func setupTabBarStyle() {

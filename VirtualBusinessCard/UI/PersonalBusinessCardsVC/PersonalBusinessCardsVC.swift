@@ -13,26 +13,21 @@ import CoreMotion
 
 final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView, PersonalBusinessCardsVM> {
     
-    let newBusinessCardButton: UIBarButtonItem = {
-        let button = UIButton(type: .system)
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
-        button.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig), for: .normal)
-        let buttonItem = UIBarButtonItem(customView: button)
-        button.constrainHeight(constant: 32)
-        button.constrainWidth(constant: 32)
-        button.addTarget(self, action: #selector(didTapNewBusinessCardButton), for: .touchUpInside)
-        return buttonItem
-    }()
+    override init(viewModel: PersonalBusinessCardsVM) {
+        super.init(viewModel: viewModel)
+        title = viewModel.title
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
         contentView.collectionView.delegate = self
         contentView.collectionView.dataSource = self
-        title = viewModel.title
-        navigationItem.largeTitleDisplayMode = .always
-        navigationItem.rightBarButtonItem = newBusinessCardButton
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testingAdd))
+        setupNavigationItem()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -42,10 +37,16 @@ final class PersonalBusinessCardsVC: AppViewController<PersonalBusinessCardsView
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        newBusinessCardButton.customView?.tintColor = UIColor.appAccent
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.appAccent
         contentView.collectionView.performBatchUpdates({
             self.contentView.collectionView.collectionViewLayout.invalidateLayout()
         })
+    }
+    
+    private func setupNavigationItem() {
+        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewBusinessCardButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testingAdd))
     }
 }
 
@@ -79,14 +80,15 @@ extension PersonalBusinessCardsVC: UICollectionViewDataSource, UICollectionViewD
 }
 
 extension PersonalBusinessCardsVC: PersonalBusinessCardsVMlDelegate {
-    func presentBusinessCardDetails(id: BusinessCardID) {
-        show(BusinessCardDetailsVC(viewModel: BusinessCardDetailsVM()), sender: nil)
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        let cells = contentView.collectionView.visibleCells as! [PersonalBusinessCardsView.BusinessCardCell]
+        cells.forEach { cell in
+            cell.updateMotionData(motion, over: timeFrame)
+        }
     }
     
-    func didUpdateMotionData(motion: CMDeviceMotion) {
-        (contentView.collectionView.visibleCells as? [PersonalBusinessCardsView.BusinessCardCell])?.forEach { cell in
-            cell.updateMotionData(motion)
-        }
+    func presentBusinessCardDetails(id: BusinessCardID) {
+        show(BusinessCardDetailsVC(viewModel: BusinessCardDetailsVM()), sender: nil)
     }
     
     func reloadData() {
@@ -100,4 +102,8 @@ extension PersonalBusinessCardsVC: PersonalBusinessCardsVMlDelegate {
         vc.isModalInPresentation = true
         present(vc, animated: true)
     }
+}
+
+extension PersonalBusinessCardsVC: TabBarDisplayable {
+    var tabBarIconImage: UIImage { viewModel.tabBarIconImage }
 }

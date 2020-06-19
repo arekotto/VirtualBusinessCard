@@ -14,26 +14,15 @@ protocol ReceivedBusinessCardsVMDelegate: class {
     func presentBusinessCardDetails(id: BusinessCardID)
     func refreshData()
     func refreshLayout(sizeMode: ReceivedCardsVM.CellSizeMode)
-    func didUpdateMotionData(motion: CMDeviceMotion)
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
 
 final class ReceivedCardsVM: AppViewModel {
     
     weak var delegate: ReceivedBusinessCardsVMDelegate? {
-        didSet {
-            if delegate != nil {
-                motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
-                    guard let motion = motion else { return }
-                    self?.delegate?.didUpdateMotionData(motion: motion)
-                }
-            } else {
-                motionManager.stopDeviceMotionUpdates()
-            }
-        }
+        didSet { didSetDelegate() }
     }
     
-    let title = NSLocalizedString("Collection", comment: "")
-        
     private(set) var cellSizeMode = CellSizeMode.expanded
     
     var cellSizeControlImage: UIImage {
@@ -59,6 +48,54 @@ final class ReceivedCardsVM: AppViewModel {
         Auth.auth().currentUser!.uid
     }
     
+    private func didSetDelegate() {
+        if delegate != nil {
+            motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
+                guard let self = self, let motion = motion else { return }
+                self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
+            }
+        } else {
+            motionManager.stopDeviceMotionUpdates()
+        }
+    }
+}
+
+extension ReceivedCardsVM {
+    var title: String {
+        NSLocalizedString("Collection", comment: "")
+    }
+    
+    var tabBarIconImage: UIImage {
+        UIImage(named: "CollectionIcon")!
+    }
+    
+    func numberOfItems() -> Int {
+        businessCards.count
+    }
+    
+    func item(for indexPath: IndexPath) -> ReceivedCardsView.BusinessCardCellDM {
+        let bc = businessCards[indexPath.item]
+        return ReceivedCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage.url, backImageURL: bc.backImage.url, textureImageURL: bc.texture.image.url, normal: CGFloat(bc.texture.normal), specular: CGFloat(bc.texture.specular))
+    }
+    
+    func didSelectItem(at indexPath: IndexPath) {
+        //        delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
+    }
+    
+    func didChangeCellSizeMode() {
+        switch cellSizeMode {
+        case .compact:
+            cellSizeMode = .expanded
+            motionManager.deviceMotionUpdateInterval = 0.1
+        case .expanded:
+            motionManager.deviceMotionUpdateInterval = 0.2
+            cellSizeMode = .compact
+        }
+        delegate?.refreshLayout(sizeMode: cellSizeMode)
+    }
+}
+
+extension ReceivedCardsVM {
     private var userPublicDocumentReference: DocumentReference {
         Firestore.firestore().collection(UserPublic.collectionName).document(userID)
     }
@@ -77,27 +114,6 @@ final class ReceivedCardsVM: AppViewModel {
         }
     }
     
-    func numberOfItems() -> Int {
-        businessCards.count
-    }
-    
-    func item(for indexPath: IndexPath) -> ReceivedCardsView.BusinessCardCellDM {
-        let bc = businessCards[indexPath.item]
-        return ReceivedCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage.url, backImageURL: bc.backImage.url, textureImageURL: bc.texture.image.url, normal: CGFloat(bc.texture.normal), specular: CGFloat(bc.texture.specular))
-    }
-
-    func didSelectItem(at indexPath: IndexPath) {
-//        delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
-    }
-    
-    func didChangeCellSizeMode() {
-        switch cellSizeMode {
-        case .compact: cellSizeMode = .expanded
-        case .expanded: cellSizeMode = .compact
-        }
-        delegate?.refreshLayout(sizeMode: cellSizeMode)
-    }
-    
     private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
         
         guard let doc = document else {
@@ -105,7 +121,7 @@ final class ReceivedCardsVM: AppViewModel {
             print(#file, "Error fetching user public changed:", error?.localizedDescription ?? "No error info available.")
             return
         }
-    
+        
         guard let user = UserMC(userPublicDocument: doc) else {
             print(#file, "Error mapping user public:", doc.documentID)
             return

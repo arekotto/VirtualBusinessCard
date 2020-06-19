@@ -8,32 +8,21 @@
 
 import Firebase
 import CoreMotion
-import CoreGraphics
+import UIKit
 
 protocol PersonalBusinessCardsVMlDelegate: class {
     func presentUserSetup(userID: String, email: String)
     func presentBusinessCardDetails(id: BusinessCardID)
     func reloadData()
-    func didUpdateMotionData(motion: CMDeviceMotion)
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
 
 final class PersonalBusinessCardsVM: AppViewModel {
     
     weak var delegate: PersonalBusinessCardsVMlDelegate? {
-        didSet {
-            if delegate != nil {
-                motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
-                    guard let motion = motion else { return }
-                    self?.delegate?.didUpdateMotionData(motion: motion)
-                }
-            } else {
-                motionManager.stopDeviceMotionUpdates()
-            }
-        }
+        didSet { didSetDelegate() }
     }
-    
-    let title = NSLocalizedString("My Cards", comment: "")
-    
+        
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
         manager.deviceMotionUpdateInterval = 0.1
@@ -47,22 +36,30 @@ final class PersonalBusinessCardsVM: AppViewModel {
         Auth.auth().currentUser!.uid
     }
     
-    private var userPublicDocumentReference: DocumentReference {
-        Firestore.firestore().collection(UserPublic.collectionName).document(userID)
-    }
-    
-    private var userPrivateDocumentReference: DocumentReference {
-        userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
-    }
-    
-    private var businessCardCollectionReference: CollectionReference {
-        userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
-    }
-    
-    func fetchData() {
-        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
-            self?.userPublicDidChange(document, error)
+    private func didSetDelegate() {
+        if delegate != nil {
+            motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
+                guard let self = self, let motion = motion else { return }
+                self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
+            }
+        } else {
+            motionManager.stopDeviceMotionUpdates()
         }
+    }
+}
+
+extension PersonalBusinessCardsVM {
+    var title: String {
+        NSLocalizedString("My Cards", comment: "")
+    }
+    
+    var tabBarIconImage: UIImage {
+        UIImage(named: "PersonalCardsIcon")!
+    }
+    
+    var newBusinessCardImage: UIImage {
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
+        return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
     }
     
     func numberOfItems() -> Int {
@@ -73,9 +70,29 @@ final class PersonalBusinessCardsVM: AppViewModel {
         let bc = businessCards[indexPath.item]
         return PersonalBusinessCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage.url, backImageURL: bc.backImage.url, textureImageURL: bc.texture.image.url, normal: CGFloat(bc.texture.normal), specular: CGFloat(bc.texture.specular))
     }
-
+    
     func didSelectItem(at indexPath: IndexPath) {
         delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
+    }
+}
+
+extension PersonalBusinessCardsVM {
+    func fetchData() {
+        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
+            self?.userPublicDidChange(document, error)
+        }
+    }
+    
+    private var userPublicDocumentReference: DocumentReference {
+        Firestore.firestore().collection(UserPublic.collectionName).document(userID)
+    }
+    
+    private var userPrivateDocumentReference: DocumentReference {
+        userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
+    }
+    
+    private var businessCardCollectionReference: CollectionReference {
+        userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
     }
     
     private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {

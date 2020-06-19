@@ -11,6 +11,15 @@ import CoreMotion
 
 final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsVM> {
     
+    override init(viewModel: ReceivedCardsVM) {
+        super.init(viewModel: viewModel)
+        title = viewModel.title
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
@@ -32,7 +41,6 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
     
     private func setupNavigationItem() {
-        title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: contentView.cellSizeModeButton)
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
@@ -54,8 +62,11 @@ extension ReceivedCardsVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ReceivedCardsView.BusinessCardCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.setDataModel(viewModel.item(for: indexPath))
-        cell.tag = indexPath.item
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        (cell as! ReceivedCardsView.BusinessCardCell).setSizeMode(viewModel.cellSizeMode)
     }
 }
 
@@ -66,12 +77,19 @@ extension ReceivedCardsVC: UICollectionViewDelegate {
 }
 
 extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        let cells = contentView.collectionView.visibleCells as! [ReceivedCardsView.BusinessCardCell]
+        cells.forEach { cell in
+            cell.updateMotionData(motion, over: timeFrame)
+        }
+    }
+    
     func presentBusinessCardDetails(id: BusinessCardID) {
         
     }
     
     func didUpdateMotionData(motion: CMDeviceMotion) {
-        
+
     }
     
     func refreshData() {
@@ -87,5 +105,9 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     }
 }
 
-
+extension ReceivedCardsVC: TabBarDisplayable {
+    var tabBarIconImage: UIImage {
+        viewModel.tabBarIconImage
+    }
+}
 

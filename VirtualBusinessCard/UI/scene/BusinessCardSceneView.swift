@@ -92,7 +92,7 @@ extension BusinessCardSceneView {
         imageMaterial.specular.intensity = specular
     }
     
-    func updateMotionData(motion: CMDeviceMotion) {
+    func updateMotionData(motion: CMDeviceMotion, over timeframe: TimeInterval) {
         guard dynamicLightingEnabled else { return }
         
         let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
@@ -104,7 +104,7 @@ extension BusinessCardSceneView {
         let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
         let newZ = deviceRotationInZ / deg2rad(45) * zLightAngleHighestABS
         
-        let moveTo = SCNAction.rotateTo(x: CGFloat(newX), y: 0, z: CGFloat(newZ), duration: 0.1)
+        let moveTo = SCNAction.rotateTo(x: CGFloat(newX), y: 0, z: CGFloat(newZ), duration: timeframe)
         dynamicDirectionalLightNode.runAction(moveTo)
     }
 }

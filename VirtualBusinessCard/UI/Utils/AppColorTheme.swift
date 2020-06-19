@@ -16,4 +16,5 @@ enum AppColorTheme: String {
     case appDefaultBackground = "AppDefaultBackground"
     case appWhite = "AppWhite"
     case barSeparator = "BarSeparator"
+    case appTabBar = "AppTabBar"
 }

@@ -32,6 +32,10 @@ extension PersonalBusinessCardsView {
             return view
         }()
         
+        private var allSceneViews: [BusinessCardSceneView] {
+            [backSceneView, frontSceneView]
+        }
+        
         private let shareButton: UIButton = {
             let button = UIButton()
             button.setTitle(NSLocalizedString("Share", comment: ""), for: .normal)
@@ -118,17 +122,27 @@ extension PersonalBusinessCardsView.BusinessCardCell {
         }
     }
     
-    func updateMotionData(_ motion: CMDeviceMotion) {
+    func updateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
         let x = deviceRotationInX / deg2rad(90) * 20 - 10
         let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
         let y = deviceRotationInZ * 10 / deg2rad(45)
         
-        frontSceneView.layer.shadowOffset = CGSize(width: y, height: -x)
-        frontSceneView.updateMotionData(motion: motion)
-        
-        backSceneView.layer.shadowOffset = CGSize(width: y, height: -x)
-        backSceneView.updateMotionData(motion: motion)
+
+        animateShadow(to: CGSize(width: y, height: -x), over: timeFrame)
+
+        allSceneViews.forEach { $0.updateMotionData(motion: motion, over: timeFrame) }
+    }
+    
+    private func animateShadow(to offset: CGSize, over duration: TimeInterval) {
+        allSceneViews.forEach {
+            let animation = CABasicAnimation(keyPath: "shadowOffset")
+            animation.fromValue = $0.layer.shadowOffset
+            animation.toValue = offset
+            animation.duration = duration
+            $0.layer.add(animation, forKey: animation.keyPath)
+            $0.layer.shadowOffset = offset
+        }
     }
 }
 

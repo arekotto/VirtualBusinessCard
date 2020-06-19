@@ -42,7 +42,7 @@ class AppCollectionViewCell: UICollectionViewCell {
   
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureView()
+        configureCell()
         configureSubviews()
         configureConstraints()
     }
@@ -51,7 +51,7 @@ class AppCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configureView() { }
+    func configureCell() { }
 
     func configureSubviews() { }
 

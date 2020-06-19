@@ -14,6 +14,7 @@ extension UIColor {
     static let appGray = UIColor(named: AppColorTheme.appGray.rawValue)!
     static let appWhite = UIColor(named: AppColorTheme.appWhite.rawValue)!
     static let barSeparator = UIColor(named: AppColorTheme.barSeparator.rawValue)!
+    static let appTabBar = UIColor(named: AppColorTheme.appTabBar.rawValue)!
 }
 
 extension UIColor {
