@@ -39,6 +39,10 @@
 		4543D2D7249BBDCC003B1439 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D6249BBDCC003B1439 /* UIImage.swift */; };
 		4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */; };
 		4543D2DB249CA6F7003B1439 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4543D2DA249CA6F7003B1439 /* Colors.xcassets */; };
+		454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625DF24A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift */; };
+		454625E224A0C0EF000D1D25 /* AppCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */; };
+		454625E424A0C10C000D1D25 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E324A0C10C000D1D25 /* Reusable.swift */; };
+		454625E624A0C136000D1D25 /* AppTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E524A0C136000D1D25 /* AppTableViewCell.swift */; };
 		4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F02423B0CE00D44526 /* LoginWithMicrosoftButton.swift */; };
 		4558F1F32423B52000D44526 /* LoginWithGoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F22423B52000D44526 /* LoginWithGoogleButton.swift */; };
 		4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F42423CD4800D44526 /* AppSwiftUIView.swift */; };
@@ -97,6 +101,11 @@
 		45C160302486535700806718 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C1602F2486535700806718 /* ActivityIndicator.swift */; };
 		45C1603424865DB400806718 /* InitialUserSetupTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C1603324865DB400806718 /* InitialUserSetupTask.swift */; };
 		45C1603624865E7A00806718 /* AppUIState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C1603524865E7A00806718 /* AppUIState.swift */; };
+		45C25D60249CF05100945F29 /* GroupedCardsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D5F249CF05100945F29 /* GroupedCardsVC.swift */; };
+		45C25D62249F4CB100945F29 /* GroupedCardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D61249F4CB100945F29 /* GroupedCardsView.swift */; };
+		45C25D64249F4CD300945F29 /* GroupedCardsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */; };
+		45C25D68249F5EC900945F29 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */; };
+		45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D69249F85E500945F29 /* IndexPath.swift */; };
 		45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD39CD2448905B00C5587C /* AnimationHelper.swift */; };
 		45D6BF7824169A41008B2498 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6BF7724169A41008B2498 /* Color.swift */; };
 		45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */; };
@@ -166,6 +175,10 @@
 		4543D2D6249BBDCC003B1439 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
 		4543D2DA249CA6F7003B1439 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		454625DF24A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControlDelegate.swift; sourceTree = "<group>"; };
+		454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCollectionViewCell.swift; sourceTree = "<group>"; };
+		454625E324A0C10C000D1D25 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
+		454625E524A0C136000D1D25 /* AppTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTableViewCell.swift; sourceTree = "<group>"; };
 		4558F1F02423B0CE00D44526 /* LoginWithMicrosoftButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithMicrosoftButton.swift; sourceTree = "<group>"; };
 		4558F1F22423B52000D44526 /* LoginWithGoogleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithGoogleButton.swift; sourceTree = "<group>"; };
 		4558F1F42423CD4800D44526 /* AppSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSwiftUIView.swift; sourceTree = "<group>"; };
@@ -224,6 +237,11 @@
 		45C1602F2486535700806718 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		45C1603324865DB400806718 /* InitialUserSetupTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialUserSetupTask.swift; sourceTree = "<group>"; };
 		45C1603524865E7A00806718 /* AppUIState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUIState.swift; sourceTree = "<group>"; };
+		45C25D5F249CF05100945F29 /* GroupedCardsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedCardsVC.swift; sourceTree = "<group>"; };
+		45C25D61249F4CB100945F29 /* GroupedCardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedCardsView.swift; sourceTree = "<group>"; };
+		45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedCardsVM.swift; sourceTree = "<group>"; };
+		45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
+		45C25D69249F85E500945F29 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
 		45CD39CD2448905B00C5587C /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
 		45D6BF7724169A41008B2498 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
@@ -309,6 +327,8 @@
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				45C25D66249F5EB900945F29 /* Component */,
+				45C25D5E249CF01700945F29 /* GroupedCardsVC */,
 				45139C4E24979C2100DE1E9F /* ReceivedCardsVC */,
 				45B25F1D2493B281006DD0F7 /* BusinessCardDetailsVC */,
 				452B33C3248E4F7C006E6A7D /* SettingsVC */,
@@ -478,6 +498,7 @@
 				45B25F172493822C006DD0F7 /* UIFont.swift */,
 				45B25F1924938489006DD0F7 /* UIColor.swift */,
 				4543D2D6249BBDCC003B1439 /* UIImage.swift */,
+				45C25D69249F85E500945F29 /* IndexPath.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -548,6 +569,7 @@
 				4510341B249267D5009C4B26 /* ImageAndTextureFetchTask.swift */,
 				45B25F1B24938499006DD0F7 /* AppColorTheme.swift */,
 				45B25F262493B7AF006DD0F7 /* SampleBCUploadTask.swift */,
+				454625E324A0C10C000D1D25 /* Reusable.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -631,6 +653,8 @@
 				45C1601224852EC500806718 /* AppControl.swift */,
 				45C1601424852EF100806718 /* AppViewModel.swift */,
 				45B25F242493B669006DD0F7 /* AppBackgroundView.swift */,
+				454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */,
+				454625E524A0C136000D1D25 /* AppTableViewCell.swift */,
 			);
 			path = AppViewController;
 			sourceTree = "<group>";
@@ -653,6 +677,33 @@
 				452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */,
 			);
 			path = PersonalBusinessCardsVC;
+			sourceTree = "<group>";
+		};
+		45C25D5E249CF01700945F29 /* GroupedCardsVC */ = {
+			isa = PBXGroup;
+			children = (
+				45C25D5F249CF05100945F29 /* GroupedCardsVC.swift */,
+				45C25D61249F4CB100945F29 /* GroupedCardsView.swift */,
+				45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */,
+			);
+			path = GroupedCardsVC;
+			sourceTree = "<group>";
+		};
+		45C25D65249F5EAC00945F29 /* Control */ = {
+			isa = PBXGroup;
+			children = (
+				45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */,
+				454625DF24A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift */,
+			);
+			path = Control;
+			sourceTree = "<group>";
+		};
+		45C25D66249F5EB900945F29 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				45C25D65249F5EAC00945F29 /* Control */,
+			);
+			path = Component;
 			sourceTree = "<group>";
 		};
 		45E64C54241938F900FECFC9 /* LoginWithEmail */ = {
@@ -956,6 +1007,7 @@
 				452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */,
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
+				454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */,
 				45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */,
 				458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */,
 				458EF407248BA29100EC76D6 /* EditBusinessCardMC.swift in Sources */,
@@ -963,7 +1015,9 @@
 				452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */,
 				4510341E2492697E009C4B26 /* CGSize.swift in Sources */,
 				4511A130246D6CC100AE3306 /* CreateAccountNameViewModel.swift in Sources */,
+				454625E224A0C0EF000D1D25 /* AppCollectionViewCell.swift in Sources */,
 				452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */,
+				45C25D60249CF05100945F29 /* GroupedCardsVC.swift in Sources */,
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
@@ -973,6 +1027,7 @@
 				45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */,
 				45C160302486535700806718 /* ActivityIndicator.swift in Sources */,
 				452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */,
+				454625E424A0C10C000D1D25 /* Reusable.swift in Sources */,
 				4510341C249267D5009C4B26 /* ImageAndTextureFetchTask.swift in Sources */,
 				459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */,
 				45B25F252493B669006DD0F7 /* AppBackgroundView.swift in Sources */,
@@ -991,6 +1046,7 @@
 				45139C5224979CA300DE1E9F /* ReceivedCardsVM.swift in Sources */,
 				4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */,
 				457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */,
+				45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */,
 				45B25F232493B33B006DD0F7 /* BusinessCardDetailsView.swift in Sources */,
 				45B25F182493822C006DD0F7 /* UIFont.swift in Sources */,
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,
@@ -1009,6 +1065,8 @@
 				451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */,
 				45B5E315241FA07F00028B0A /* LoginView.swift in Sources */,
 				45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */,
+				454625E624A0C136000D1D25 /* AppTableViewCell.swift in Sources */,
+				45C25D64249F4CD300945F29 /* GroupedCardsVM.swift in Sources */,
 				45C1602E24864C5700806718 /* UserSetupHC.swift in Sources */,
 				4511A132246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift in Sources */,
 				4577CC722488EE9F0012EDC8 /* BusinessCardData.swift in Sources */,
@@ -1016,9 +1074,11 @@
 				45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */,
 				45C160232485AD3000806718 /* MainTBC.swift in Sources */,
 				45B25F272493B7AF006DD0F7 /* SampleBCUploadTask.swift in Sources */,
+				45C25D62249F4CB100945F29 /* GroupedCardsView.swift in Sources */,
 				45C1601324852EC500806718 /* AppControl.swift in Sources */,
 				4511A135246D760700AE3306 /* CreateAccountEmailPasswordView.swift in Sources */,
 				45C160262485AEF800806718 /* PersonalCardsVC.swift in Sources */,
+				45C25D68249F5EC900945F29 /* ScrollableSegmentedControl.swift in Sources */,
 				45D6BF7824169A41008B2498 /* Color.swift in Sources */,
 				4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */,
 				4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */,

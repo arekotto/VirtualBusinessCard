@@ -3,7 +3,7 @@
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 01/06/2020.
-//  Copyright © 2020 Arek Otto. All rights reserved.
+//  Copytrailing © 2020 Arek Otto. All trailings reserved.
 //
 
 import UIKit
@@ -15,43 +15,43 @@ public extension UIView {
         }
         return superview
     }
-
+    
     // MARK: - Helpers
     @discardableResult
-    @objc func constrainToEdgesOfSuperview() -> [NSLayoutConstraint] {
-        return constrainToSuperview()
+    @objc func constrainToEdgesOfSuperview(inset: CGFloat = 0) -> [NSLayoutConstraint] {
+        constrainToSuperview(topInset: inset, leadingInset: inset, bottomInset: inset, trailingInset: inset)
     }
-
+    
     @discardableResult
-    func constrainToSuperview(topInset: CGFloat = 0, leftInset: CGFloat = 0, bottomInset: CGFloat = 0, rightInset: CGFloat = 0, priority: UILayoutPriority = .required) -> [NSLayoutConstraint] {
+    func constrainToSuperview(topInset: CGFloat = 0, leadingInset: CGFloat = 0, bottomInset: CGFloat = 0, trailingInset: CGFloat = 0, priority: UILayoutPriority = .required) -> [NSLayoutConstraint] {
         var layoutConstraints: [NSLayoutConstraint] = []
         layoutConstraints.append(constrainTopToSuperview(inset: topInset, priority: priority))
-        layoutConstraints.append(constrainLeftToSuperview(inset: leftInset, priority: priority))
+        layoutConstraints.append(constrainLeadingToSuperview(inset: leadingInset, priority: priority))
         layoutConstraints.append(constrainBottomToSuperview(inset: bottomInset, priority: priority))
-        layoutConstraints.append(constrainRightToSuperview(inset: rightInset, priority: priority))
+        layoutConstraints.append(constrainTrailingToSuperview(inset: trailingInset, priority: priority))
         return layoutConstraints
     }
-
+    
     @discardableResult
-    func constrainToSuperviewSafeArea(topInset: CGFloat = 0, leftInset: CGFloat = 0, bottomInset: CGFloat = 0, rightInset: CGFloat = 0) -> [NSLayoutConstraint] {
+    func constrainToSuperviewSafeArea(topInset: CGFloat = 0, leadingInset: CGFloat = 0, bottomInset: CGFloat = 0, trailingInset: CGFloat = 0) -> [NSLayoutConstraint] {
         var layoutConstraints: [NSLayoutConstraint] = []
         layoutConstraints.append(constrainTopToSuperviewSafeArea(inset: topInset))
-        layoutConstraints.append(constrainLeftToSuperview(inset: leftInset))
+        layoutConstraints.append(constrainLeadingToSuperview(inset: leadingInset))
         layoutConstraints.append(constrainBottomToSuperviewSafeArea(inset: bottomInset))
-        layoutConstraints.append(constrainRightToSuperview(inset: rightInset))
+        layoutConstraints.append(constrainTrailingToSuperview(inset: trailingInset))
         return layoutConstraints
     }
-
+    
     @discardableResult
-    func constrainToSuperviewMargins(topInset: CGFloat = 0, leftInset: CGFloat = 0, bottomInset: CGFloat = 0, rightInset: CGFloat = 0) -> [NSLayoutConstraint] {
-        var layoutConstraints: [NSLayoutConstraint] = []
-        layoutConstraints.append(constrainTopToSuperview(inset: topInset))
-        layoutConstraints.append(constrainLeftToSuperviewMargin(inset: leftInset))
-        layoutConstraints.append(constrainBottomToSuperview(inset: bottomInset))
-        layoutConstraints.append(constrainRightToSuperviewMargin(inset: rightInset))
-        return layoutConstraints
+    func constrainToSuperviewMargins(topInset: CGFloat = 0, leadingInset: CGFloat = 0, bottomInset: CGFloat = 0, trailingInset: CGFloat = 0) -> [NSLayoutConstraint] {
+        return [
+            constrainTopToSuperview(inset: topInset),
+            constrainLeadingToSuperviewMargin(inset: leadingInset),
+            constrainBottomToSuperview(inset: bottomInset),
+            constrainTrailingToSuperviewMargin(inset: trailingInset)
+        ]
     }
-
+    
     @discardableResult
     func constrainVerticallyToSuperview(topInset: CGFloat = 0, bottomInset: CGFloat = 0, priority: UILayoutPriority = .required) -> [NSLayoutConstraint] {
         var layoutConstraints: [NSLayoutConstraint] = []
@@ -59,91 +59,83 @@ public extension UIView {
         layoutConstraints.append(constrainBottomToSuperview(inset: bottomInset, priority: priority))
         return layoutConstraints
     }
-
+    
     @discardableResult
     func constrainHorizontallyToSuperview(sideInset: CGFloat = 0, priority: UILayoutPriority = .required) -> [NSLayoutConstraint] {
         var layoutConstraints: [NSLayoutConstraint] = []
-        layoutConstraints.append(constrainRightToSuperview(inset: sideInset, priority: priority))
-        layoutConstraints.append(constrainLeftToSuperview(inset: sideInset, priority: priority))
+        layoutConstraints.append(constrainTrailingToSuperview(inset: sideInset, priority: priority))
+        layoutConstraints.append(constrainLeadingToSuperview(inset: sideInset, priority: priority))
         return layoutConstraints
     }
-
+    
     @discardableResult
-    func constrainHorizontallyToSuperview(leftInset: CGFloat, rightInset: CGFloat) -> [NSLayoutConstraint] {
+    func constrainHorizontallyToSuperview(leadingInset: CGFloat, trailingInset: CGFloat) -> [NSLayoutConstraint] {
         var layoutConstraints: [NSLayoutConstraint] = []
-        layoutConstraints.append(constrainLeftToSuperview(inset: leftInset))
-        layoutConstraints.append(constrainRightToSuperview(inset: rightInset))
+        layoutConstraints.append(constrainLeadingToSuperview(inset: leadingInset))
+        layoutConstraints.append(constrainTrailingToSuperview(inset: trailingInset))
         return layoutConstraints
     }
-
+    
     @discardableResult
     func constrainTopToSuperview(inset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-        return constrainTop(to: _superview.topAnchor, constant: inset, priority: priority)
+        constrainTop(to: _superview.topAnchor, constant: inset, priority: priority)
     }
-
+    
     @discardableResult
     func constrainTopToSuperviewBottom(inset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-        return constrainTop(to: _superview.bottomAnchor, constant: inset, priority: priority)
+        constrainTop(to: _superview.bottomAnchor, constant: inset, priority: priority)
     }
-
+    
     @discardableResult
     func constrainTopToSuperviewSafeArea(inset: CGFloat = 0) -> NSLayoutConstraint {
-        if #available(iOS 11.0, *) {
-            return constrainTop(to: _superview.safeAreaLayoutGuide.topAnchor, constant: inset)
-        } else {
-            return constrainTop(to: _superview.topAnchor, constant: inset + 20)
-        }
+        constrainTop(to: _superview.safeAreaLayoutGuide.topAnchor, constant: inset)
     }
-
+    
     @discardableResult
     func constrainBottomToSuperview(inset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-        return constrainBottom(to: _superview.bottomAnchor, constant: -inset, priority: priority)
+        constrainBottom(to: _superview.bottomAnchor, constant: -inset, priority: priority)
     }
-
+    
     @discardableResult
     func constrainBottomToSuperviewSafeArea(inset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-        if #available(iOS 11.0, *) {
-            return constrainBottom(to: _superview.safeAreaLayoutGuide.bottomAnchor, constant: -inset, priority: priority)
-        } else {
-            return constrainBottom(to: _superview.bottomAnchor, constant: -inset, priority: priority)
-        }
+        constrainBottom(to: _superview.safeAreaLayoutGuide.bottomAnchor, constant: -inset, priority: priority)
     }
-
+    
     @discardableResult
-    func constrainLeftToSuperview(inset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-        return constrainLeft(to: _superview.leftAnchor, constant: inset, priority: priority)
+    func constrainLeadingToSuperview(inset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
+        constrainLeading(to: _superview.leadingAnchor, constant: inset, priority: priority)
     }
-
+    
     @discardableResult
-    func constrainLeftToSuperviewMargin(inset: CGFloat = 0) -> NSLayoutConstraint {
-        return constrainLeft(to: _superview.layoutMarginsGuide.leftAnchor, constant: inset)
+    func constrainLeadingToSuperviewMargin(inset: CGFloat = 0) -> NSLayoutConstraint {
+        constrainLeading(to: _superview.layoutMarginsGuide.leadingAnchor, constant: inset)
     }
-
+    
     @discardableResult
-    func constrainRightToSuperview(inset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-        return constrainRight(to: _superview.rightAnchor, constant: -inset, priority: priority)
+    func constrainTrailingToSuperview(inset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
+        constrainTrailing(to: _superview.trailingAnchor, constant: -inset, priority: priority)
     }
-
+    
     @discardableResult
-    func constrainRightToSuperviewMargin(inset: CGFloat = 0) -> NSLayoutConstraint {
-        return constrainRight(to: _superview.layoutMarginsGuide.rightAnchor, constant: -inset)
+    func constrainTrailingToSuperviewMargin(inset: CGFloat = 0) -> NSLayoutConstraint {
+        constrainTrailing(to: _superview.layoutMarginsGuide.trailingAnchor, constant: -inset)
     }
-
+    
     @discardableResult
     func constrainCenterToSuperview() -> [NSLayoutConstraint] {
-        return constrainCenter(toView: _superview)
+        constrainCenter(toView: _superview)
     }
-
+    
     @discardableResult
     func constrainCenterXToSuperview(offset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-        return constrainCenterX(toView: _superview, offset: offset, priority: priority)
+        constrainCenterX(toView: _superview, offset: offset, priority: priority)
     }
-
+    
     @discardableResult
     func constrainCenterYToSuperview(offset: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
-        return constrainCenterY(toView: _superview, offset: offset, priority: priority)
+        constrainCenterY(toView: _superview, offset: offset, priority: priority)
     }
-
+    
     // MARK: - Constraints
     @discardableResult
     func constrainTop(to anchor: NSLayoutYAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
@@ -153,7 +145,7 @@ public extension UIView {
         constraint.priority = priority
         return constraint
     }
-
+    
     @discardableResult
     func constrainTopGreaterOrEqual(to anchor: NSLayoutYAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -162,7 +154,7 @@ public extension UIView {
         constraint.priority = priority
         return constraint
     }
-
+    
     @discardableResult
     func constrainBottom(to anchor: NSLayoutYAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -171,7 +163,7 @@ public extension UIView {
         constraint.priority = priority
         return constraint
     }
-
+    
     @discardableResult
     func constrainBottomGreaterOrEqual(to anchor: NSLayoutYAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -180,7 +172,7 @@ public extension UIView {
         constraint.priority = priority
         return constraint
     }
-
+    
     @discardableResult
     func constrainBottomLessOrEqual(to anchor: NSLayoutYAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -189,34 +181,43 @@ public extension UIView {
         constraint.priority = priority
         return constraint
     }
-
+    
     @discardableResult
-    func constrainLeft(to anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
+    func constrainLeading(to anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
-        let constraint = leftAnchor.constraint(equalTo: anchor, constant: constant)
+        let constraint = leadingAnchor.constraint(equalTo: anchor, constant: constant)
         constraint.isActive = true
         constraint.priority = priority
         return constraint
     }
-
+    
     @discardableResult
-    func constrainLeftGreaterOrEqual(to anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
+    func constrainLeadingGreaterOrEqual(to anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
-        let constraint = leftAnchor.constraint(greaterThanOrEqualTo: anchor, constant: constant)
+        let constraint = leadingAnchor.constraint(greaterThanOrEqualTo: anchor, constant: constant)
         constraint.isActive = true
         constraint.priority = priority
         return constraint
     }
-
+    
     @discardableResult
-    func constrainRight(to anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
+    func constrainTrailing(to anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
-        let constraint = rightAnchor.constraint(equalTo: anchor, constant: constant)
+        let constraint = trailingAnchor.constraint(equalTo: anchor, constant: constant)
         constraint.isActive = true
         constraint.priority = priority
         return constraint
     }
-
+    
+    @discardableResult
+    func constrainTrailingGreaterOrEqual(to anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
+        translatesAutoresizingMaskIntoConstraints = false
+        let constraint = trailingAnchor.constraint(greaterThanOrEqualTo: anchor, constant: constant)
+        constraint.isActive = true
+        constraint.priority = priority
+        return constraint
+    }
+    
     @discardableResult
     func constrainCenter(toView view: UIView) -> [NSLayoutConstraint] {
         var layoutConstraints: [NSLayoutConstraint] = []
@@ -224,7 +225,7 @@ public extension UIView {
         layoutConstraints.append(constrainCenterY(toView: view))
         return layoutConstraints
     }
-
+    
     @discardableResult
     func constrainCenterX(toView view: UIView, offset: CGFloat = 0, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -233,7 +234,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainCenterY(toView view: UIView, offset: CGFloat = 0, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -242,7 +243,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainCenterY(to anchor: NSLayoutYAxisAnchor, offset: CGFloat = 0) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -250,7 +251,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainCenterX(to anchor: NSLayoutXAxisAnchor, offset: CGFloat = 0) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -258,7 +259,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainHeight(constant: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -267,7 +268,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainHeight(to anchor: NSLayoutDimension, constant: CGFloat = 0, multiplier: CGFloat = 1, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -276,7 +277,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainHeightEqualTo(_ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -284,7 +285,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainHeightLessThan(_ view: UIView, constant: CGFloat = 0, multiplayer: CGFloat = 1, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -293,7 +294,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainHeightLessThanOrEqualTo(constant: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -311,7 +312,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainHeightGreaterThan(_ view: UIView, priority: UILayoutPriority = UILayoutPriority.required, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -320,7 +321,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainWidthLessThan(_ view: UIView, constant: CGFloat = 0, multiplayer: CGFloat = 1, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -338,7 +339,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainWidthEqualTo(_ to: NSLayoutDimension, constant: CGFloat = 0, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -346,7 +347,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainWidthEqualTo(_ view: UIView, constant: CGFloat = 0, multiplier: CGFloat = 1) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false
@@ -354,7 +355,7 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
-
+    
     @discardableResult
     func constrainWidthGreaterThanOrEqualTo(constant: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
         translatesAutoresizingMaskIntoConstraints = false

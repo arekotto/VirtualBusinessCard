@@ -11,10 +11,12 @@ import CoreMotion
 
 final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsVM> {
     
-    override init(viewModel: ReceivedCardsVM) {
-        super.init(viewModel: viewModel)
-        title = viewModel.title
-    }
+    private lazy var searchController: UISearchController = {
+        let controller = UISearchController()
+        controller.searchResultsUpdater = self
+        controller.obscuresBackgroundDuringPresentation = false
+        return controller
+    }()
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -26,6 +28,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         setupCollectionView()
         setupNavigationItem()
         extendedLayoutIncludesOpaqueBars = true
+        definesPresentationContext = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -41,6 +44,8 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
     
     private func setupNavigationItem() {
+        navigationItem.title = viewModel.title
+        navigationItem.searchController = searchController
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: contentView.cellSizeModeButton)
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
@@ -111,3 +116,16 @@ extension ReceivedCardsVC: TabBarDisplayable {
     }
 }
 
+extension ReceivedCardsVC: UISearchResultsUpdating, UISearchControllerDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        viewModel.didSearch(for: searchController.searchBar.text ?? "")
+    }
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        viewModel.isSearchActive = true
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        viewModel.isSearchActive = false
+    }
+}

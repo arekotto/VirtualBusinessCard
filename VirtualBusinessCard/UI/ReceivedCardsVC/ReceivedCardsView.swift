@@ -26,7 +26,7 @@ final class ReceivedCardsView: AppBackgroundView {
     
     override func configureConstraints() {
         super.configureConstraints()
-        collectionView.constrainToSuperviewSafeArea()
+        collectionView.constrainToEdgesOfSuperview()
         
         cellSizeModeButton.constrainHeight(constant: 32)
         cellSizeModeButton.constrainWidth(constant: 32)

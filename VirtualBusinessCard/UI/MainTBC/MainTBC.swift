@@ -10,11 +10,12 @@ import UIKit
 
 class MainTBC: UITabBarController {
     
-    let personalBusinessCardsVC = PersonalCardsVC(viewModel: PersonalCardsVM())
-    let receivedBusinessCardsVC = ReceivedCardsVC(viewModel: ReceivedCardsVM())
-
+    let personalCardsVC = PersonalCardsVC(viewModel: PersonalCardsVM())
+//    let receivedBusinessCardsVC = ReceivedCardsVC(viewModel: ReceivedCardsVM())
+    let groupedCardsVC = GroupedCardsVC(viewModel: GroupedCardsVM())
+    
     var allViewControllers: [UIViewController] {
-        [personalBusinessCardsVC, receivedBusinessCardsVC]
+        [personalCardsVC, groupedCardsVC]
     }
     
     override func viewDidLoad() {

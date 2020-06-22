@@ -1,18 +1,18 @@
 //
-//  AppView.swift
+//  AppCollectionViewCell.swift
 //  VirtualBusinessCard
 //
-//  Created by Arek Otto on 01/06/2020.
+//  Created by Arek Otto on 22/06/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
 import UIKit
 
-class AppView: UIView {
-
-    required init() {
-        super.init(frame: .zero)
-        configureView()
+class AppCollectionViewCell: UICollectionViewCell {
+  
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureCell()
         configureSubviews()
         configureConstraints()
     }
@@ -21,10 +21,9 @@ class AppView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configureView() { }
+    func configureCell() { }
 
     func configureSubviews() { }
 
     func configureConstraints() { }
 }
-

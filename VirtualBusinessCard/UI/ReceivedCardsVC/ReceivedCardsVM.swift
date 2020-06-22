@@ -23,26 +23,19 @@ final class ReceivedCardsVM: AppViewModel {
         didSet { didSetDelegate() }
     }
     
+    var isSearchActive = false
+    
     private(set) var cellSizeMode = CellSizeMode.expanded
     
-    var cellSizeControlImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
-        switch cellSizeMode {
-        case .compact:
-            return UIImage(systemName: "square.split.1x2.fill", withConfiguration: imgConfig)!
-        case .expanded:
-            return UIImage(systemName: "table.fill", withConfiguration: imgConfig)!
-        }
-    }
+    private var user: UserMC?
+    private var businessCards = [ReceivedBusinessCardMC]()
+    private var filteredBusinessCards = [ReceivedBusinessCardMC]()
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
         manager.deviceMotionUpdateInterval = 0.1
         return manager
     }()
-    
-    private var user: UserMC?
-    private var businessCards = [ReceivedBusinessCardMC]()
     
     private var userID: UserID {
         Auth.auth().currentUser!.uid
@@ -69,6 +62,16 @@ extension ReceivedCardsVM {
         UIImage(named: "CollectionIcon")!
     }
     
+    var cellSizeControlImage: UIImage {
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
+        switch cellSizeMode {
+        case .compact:
+            return UIImage(systemName: "square.split.1x2.fill", withConfiguration: imgConfig)!
+        case .expanded:
+            return UIImage(systemName: "table.fill", withConfiguration: imgConfig)!
+        }
+    }
+    
     func numberOfItems() -> Int {
         businessCards.count
     }
@@ -92,6 +95,10 @@ extension ReceivedCardsVM {
             cellSizeMode = .compact
         }
         delegate?.refreshLayout(sizeMode: cellSizeMode)
+    }
+    
+    func didSearch(for string: String) {
+        
     }
 }
 

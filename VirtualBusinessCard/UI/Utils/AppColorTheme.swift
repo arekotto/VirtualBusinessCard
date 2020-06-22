@@ -17,4 +17,6 @@ enum AppColorTheme: String {
     case appWhite = "AppWhite"
     case barSeparator = "BarSeparator"
     case appTabBar = "AppTabBar"
+    case scrollableSegmentedControlSelectionBackground = "ScrollableSegmentedControlSelectionBackground"
+    case scrollableSegmentedControlSelectionText = "ScrollableSegmentedControlSelectionText"
 }

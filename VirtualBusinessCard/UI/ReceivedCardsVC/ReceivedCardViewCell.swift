@@ -47,10 +47,10 @@ extension ReceivedCardsView {
                         
             let estimatedCardTargetSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.8)
 
-            frontSceneView.constrainLeftToSuperview()
+            frontSceneView.constrainLeadingToSuperview()
             frontSceneView.constrainTopToSuperview()
             
-            backSceneView.constrainRightToSuperview()
+            backSceneView.constrainTrailingToSuperview()
             backSceneView.constrainBottomToSuperview()
             
             allSceneViews.forEach {

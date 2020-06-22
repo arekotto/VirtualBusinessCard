@@ -15,6 +15,8 @@ extension UIColor {
     static let appWhite = UIColor(named: AppColorTheme.appWhite.rawValue)!
     static let barSeparator = UIColor(named: AppColorTheme.barSeparator.rawValue)!
     static let appTabBar = UIColor(named: AppColorTheme.appTabBar.rawValue)!
+    static let scrollableSegmentedControlSelectionBackground = UIColor(named:  AppColorTheme.scrollableSegmentedControlSelectionBackground.rawValue)!
+    static let scrollableSegmentedControlSelectionText = UIColor(named:  AppColorTheme.scrollableSegmentedControlSelectionText.rawValue)!
 }
 
 extension UIColor {
