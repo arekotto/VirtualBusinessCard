@@ -365,3 +365,14 @@ public extension UIView {
         return constraint
     }
 }
+
+extension UIView {
+    @discardableResult
+    func constrainSizeToBusinessCardDimensions(width: CGFloat) -> [NSLayoutConstraint] {
+        let bcSize = CGSize.businessCardSize(width: width)
+        return [
+            constrainWidth(constant: width),
+            constrainHeight(constant: bcSize.height)
+        ]
+    }
+}

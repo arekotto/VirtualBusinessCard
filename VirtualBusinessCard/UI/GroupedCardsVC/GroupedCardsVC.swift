@@ -16,18 +16,62 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         viewModel.delegate = self
         contentView.scrollableSegmentedControl.items = ["Tag", "Date", "Company"]
         contentView.scrollableSegmentedControl.delegate = self
+        contentView.tableView.dataSource = self
+        contentView.tableView.delegate = self
         setupNavigationItem()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.fetchData()
     }
     
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
     }
-    
 }
 
-extension GroupedCardsVC: GroupedCardsVMDelegate {
+extension GroupedCardsVC: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.numberOfItems()
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: GroupedCardsView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
+        cell.setDataModel(viewModel.item(for: indexPath))
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        contentView.scrollableSegmentedControl
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        50
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let isFirst = indexPath.row == 0
+        let isLast = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+
+        let tableCell = cell as! GroupedCardsView.TableCell
+        if isFirst && isLast {
+            tableCell.setRoundedCornersMode(.all)
+        } else if isFirst {
+            tableCell.setRoundedCornersMode(.top)
+        } else if isLast {
+            tableCell.setRoundedCornersMode(.bottom)
+        } else {
+            tableCell.setRoundedCornersMode(.none)
+        }
+    }
+}
+    
+extension GroupedCardsVC: GroupedCardsVMDelegate {
+    func refreshData() {
+        contentView.tableView.reloadData()
+    }
 }
 
 extension GroupedCardsVC: TabBarDisplayable {

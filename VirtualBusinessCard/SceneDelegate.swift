@@ -14,9 +14,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
-    var isUserLoggedIn: Bool {
-        return Auth.auth().currentUser != nil
-    }
+//    var isUserLoggedIn: Bool {
+//        return Auth.auth().currentUser != nil
+//    }
     
     private var statePresented: AppUIState? {
         (window?.rootViewController as? AppUIStateRoot)?.appUIState
@@ -90,7 +90,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func rootViewControllerBasedOnAuthState() -> UIViewController {
-        if isUserLoggedIn {
+        if let user = Auth.auth().currentUser {
 //            return UIHostingController(rootView: ContentView(viewModel: ContentViewModel()))
 //            let vc = UITabBarController()
 //            vc.setViewControllers([
@@ -98,7 +98,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //                UINavigationController(rootViewController: BusinessCardTVC())],
 //            animated: false)
 //            return vc
-            return MainTBC()
+            return MainTBC(userID: user.uid)
         } else {
             return LoginHostingController(rootView: GreetingsView())
         }

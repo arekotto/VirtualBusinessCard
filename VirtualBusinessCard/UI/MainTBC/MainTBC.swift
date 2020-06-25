@@ -9,13 +9,24 @@
 import UIKit
 
 class MainTBC: UITabBarController {
-    
-    let personalCardsVC = PersonalCardsVC(viewModel: PersonalCardsVM())
+        
+    private(set) lazy var personalCardsVC = PersonalCardsVC(viewModel: PersonalCardsVM(userID: userID))
 //    let receivedBusinessCardsVC = ReceivedCardsVC(viewModel: ReceivedCardsVM())
-    let groupedCardsVC = GroupedCardsVC(viewModel: GroupedCardsVM())
+    private(set) lazy var groupedCardsVC = GroupedCardsVC(viewModel: GroupedCardsVM(userID: userID))
     
     var allViewControllers: [UIViewController] {
         [personalCardsVC, groupedCardsVC]
+    }
+    
+    private let userID: UserID
+    
+    init(userID: UserID) {
+        self.userID = userID
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {

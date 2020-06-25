@@ -12,6 +12,8 @@ final class ScrollableSegmentedControl: AppControl {
     
     weak var delegate: ScrollableSegmentedControlDelegate?
     
+    let staticHeight: CGFloat?
+    
     var selectedIndex: Int? {
         mainComponent.selectedIndex
     }
@@ -22,6 +24,20 @@ final class ScrollableSegmentedControl: AppControl {
     }
     
     private let mainComponent = MainComponent()
+    
+    internal init(staticHeight: CGFloat? = nil) {
+        self.staticHeight = staticHeight
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    required init() {
+        staticHeight = nil
+        super.init()
+    }
     
     override func configureView() {
         super.configureView()
@@ -38,6 +54,9 @@ final class ScrollableSegmentedControl: AppControl {
     override func configureConstraints() {
         super.configureConstraints()
         mainComponent.constrainToSuperview()
+        if let height = self.staticHeight {
+            mainComponent.constrainHeight(constant: height)
+        }
     }
 }
 

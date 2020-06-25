@@ -31,7 +31,7 @@ class AppNavigationController: UINavigationController {
         super.viewDidLoad()
         navigationBar.prefersLargeTitles = true
         navigationBar.isTranslucent = false
-        navigationBar.shadowImage = UIColor.barSeparator.as1ptImage()
+        navigationBar.shadowImage = UIImage.empty
     }
     
     override func viewWillLayoutSubviews() {

@@ -53,6 +53,8 @@ final class ReceivedCardsVM: AppViewModel {
     }
 }
 
+// MARK: - ViewController API
+
 extension ReceivedCardsVM {
     var title: String {
         NSLocalizedString("Collection", comment: "")
@@ -101,6 +103,8 @@ extension ReceivedCardsVM {
         
     }
 }
+
+// MARK: - Firebase fetch
 
 extension ReceivedCardsVM {
     private var userPublicDocumentReference: DocumentReference {
@@ -168,6 +172,8 @@ extension ReceivedCardsVM {
         delegate?.refreshData()
     }
 }
+
+// MARK: - CellSizeMode
 
 extension ReceivedCardsVM {
     enum CellSizeMode {

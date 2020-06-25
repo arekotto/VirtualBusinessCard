@@ -19,6 +19,8 @@ protocol PersonalCardsVMlDelegate: class {
 
 final class PersonalCardsVM: AppViewModel {
     
+    let userID: UserID
+
     weak var delegate: PersonalCardsVMlDelegate? {
         didSet { didSetDelegate() }
     }
@@ -31,9 +33,9 @@ final class PersonalCardsVM: AppViewModel {
     
     private var user: UserMC?
     private var businessCards: [PersonalBusinessCardMC] = []
-    
-    private var userID: UserID {
-        Auth.auth().currentUser!.uid
+        
+    internal init(userID: UserID) {
+        self.userID = userID
     }
     
     private func didSetDelegate() {

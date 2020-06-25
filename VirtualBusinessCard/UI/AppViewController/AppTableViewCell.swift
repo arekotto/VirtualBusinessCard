@@ -27,3 +27,4 @@ class AppTableViewCell: UITableViewCell {
 
     func configureConstraints() { }
 }
+
