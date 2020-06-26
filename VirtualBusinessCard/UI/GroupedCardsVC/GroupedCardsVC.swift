@@ -14,7 +14,7 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         super.viewDidLoad()
         
         viewModel.delegate = self
-        contentView.scrollableSegmentedControl.items = ["Tag", "Date", "Company"]
+        contentView.scrollableSegmentedControl.items = viewModel.availableGroupingModes
         contentView.scrollableSegmentedControl.delegate = self
         contentView.tableView.dataSource = self
         contentView.tableView.delegate = self
@@ -82,6 +82,6 @@ extension GroupedCardsVC: TabBarDisplayable {
 
 extension GroupedCardsVC: ScrollableSegmentedControlDelegate {
     func scrollableSegmentedControl(_ control: ScrollableSegmentedControl, didSelectItemAt index: Int) {
-        print(index)
+        viewModel.didSelectGroupingMode(at: index)
     }
 }

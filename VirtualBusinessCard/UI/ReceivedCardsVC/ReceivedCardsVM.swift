@@ -79,8 +79,8 @@ extension ReceivedCardsVM {
     }
     
     func item(for indexPath: IndexPath) -> ReceivedCardsView.BusinessCardCellDM {
-        let bc = businessCards[indexPath.item]
-        return ReceivedCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage.url, backImageURL: bc.backImage.url, textureImageURL: bc.texture.image.url, normal: CGFloat(bc.texture.normal), specular: CGFloat(bc.texture.specular))
+        let cardData = businessCards[indexPath.item].cardData
+        return ReceivedCardsView.BusinessCardCellDM(frontImageURL: cardData.frontImage.url, backImageURL: cardData.backImage.url, textureImageURL: cardData.texture.image.url, normal: CGFloat(cardData.texture.normal), specular: CGFloat(cardData.texture.specular))
     }
     
     func didSelectItem(at indexPath: IndexPath) {

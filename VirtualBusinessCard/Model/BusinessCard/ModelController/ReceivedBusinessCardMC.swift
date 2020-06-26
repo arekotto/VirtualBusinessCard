@@ -15,20 +15,23 @@ class ReceivedBusinessCardMC {
     let businessCard: ReceivedBusinessCard
     
     var id: String { businessCard.id }
-        
-    var frontImage: BusinessCardData.Image { businessCard.cardData.frontImage }
     
-    var backImage: BusinessCardData.Image { businessCard.cardData.backImage }
-
-    var texture: BusinessCardData.Texture { businessCard.cardData.texture }
-
-    var position: BusinessCardData.Position { businessCard.cardData.position }
-
-    var name: BusinessCardData.Name { businessCard.cardData.name }
+    var originalID: BusinessCardID { businessCard.originalID }
     
-    var contact: BusinessCardData.Contact { businessCard.cardData.contact }
+    var ownerID: UserID { businessCard.ownerID }
     
-    var address: BusinessCardData.Address { businessCard.cardData.address }
+    var receivingDate: Date { businessCard.receivingDate }
+    
+    var cardData: BusinessCardData { businessCard.cardData }
+    
+    var tagIDs: [BusinessCardTagID] { businessCard.tagIDs }
+    
+    var ownerDisplayName: String {
+        if let firstName = businessCard.cardData.name.first, let lastName = businessCard.cardData.name.last {
+            return "\(firstName) \(lastName)"
+        }
+        return businessCard.cardData.name.first ?? businessCard.cardData.name.last ?? ""
+    }
     
     init(card: ReceivedBusinessCard) {
         self.businessCard = card

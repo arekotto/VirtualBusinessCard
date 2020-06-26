@@ -9,14 +9,16 @@
 import Firebase
 
 struct SampleBCUploadTask {
-
     
     func callAsFunction(completion: @escaping (Result<Void, Error>) -> Void) {
-
+        
+        // MARK: Data
+        
         let userID = Auth.auth().currentUser!.uid
         let personalBCCollectionRef = Firestore.firestore().collection(UserPublic.collectionName).document(userID).collection(PersonalBusinessCard.collectionName)
         let receivedBCCollectionRef = Firestore.firestore().collection(UserPublic.collectionName).document(userID).collection(ReceivedBusinessCard.collectionName)
-
+        let tagsCollectionRef = Firestore.firestore().collection(UserPublic.collectionName).document(userID).collection(BusinessCardTag.collectionName)
+        
         let imageURLs = [
             URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Back.png?alt=media&token=6a28dce4-14d4-4d6c-abb4-9577615f447d")!,
             URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!,
@@ -29,7 +31,16 @@ struct SampleBCUploadTask {
         ]
         
         let specularValues = [0.1, 0.5, 1.5]
-//        let normlas = [0.1, 0.5, 1.5]
+        
+        let companies = ["IBM", "Microsoft", "Sony", "Apple"]
+        let tags = ["Important", "Conference in Copenhagen", "Can delete soon"]
+        let tagIDs: [BusinessCardTagID] = tags.map { tag in
+            let docRef = tagsCollectionRef.document()
+            docRef.setData(BusinessCardTag(id: docRef.documentID, color: "#FF4423", title: tag, description: nil).asDocument())
+            return docRef.documentID
+        }
+        
+        // MARK: Data upload
 
         Name.samples.enumerated().forEach { idx, person in
             let docRef = personalBCCollectionRef.document()
@@ -41,23 +52,33 @@ struct SampleBCUploadTask {
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
                                   contact: BusinessCardData.Contact(email: "\(person.lastName)@ibm.com", phoneNumberPrimary: "123321123"),
                                   address: BusinessCardData.Address())
-            let personalBC = PersonalBusinessCard(id: docRef.documentID, creationDate: Date(), cardData: bcData)
+            let personalBC = PersonalBusinessCard(id: docRef.documentID, creationDate: day(from: Date(), offset: idx % 5), cardData: bcData)
             docRef.setData(personalBC.asDocument())
         }
         
         (Name.samples + Name.samples).enumerated().forEach { idx, person in
             let docRef = receivedBCCollectionRef.document()
+            let company = companies.safeMod(idx)
             let bcData = BusinessCardData(
                                   frontImage: .init(id: "card1front", url: imageURLs[idx % imageURLs.count]),
                                   backImage: .init(id: "fasfds", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!),
                                   texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs[idx % texturesURLs.count]), specular: specularValues[idx % specularValues.count], normal: specularValues[idx % specularValues.count]),
-                                  position: BusinessCardData.Position(title: "Manager", company: "IBM"),
+                                  position: BusinessCardData.Position(title: "Manager", company: company),
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
-                                  contact: BusinessCardData.Contact(email: "\(person.lastName)@ibm.com", phoneNumberPrimary: "123321123"),
+                                  contact: BusinessCardData.Contact(email: "\(person.lastName)@\(company).com", phoneNumberPrimary: "123321123"),
                                   address: BusinessCardData.Address())
-            let personalBC = ReceivedBusinessCard(id: docRef.documentID, originalID: "some old ID", receivingDate: Date(), cardData: bcData)
+            
+            let cardTagIDs: [BusinessCardTagID]
+            switch idx % 3 {
+            case 0: cardTagIDs = [tagIDs[idx % tagIDs.count], tagIDs[(idx + 1) % tagIDs.count]]
+            case 1: cardTagIDs = [tagIDs[idx % tagIDs.count]]
+            default: cardTagIDs = []
+            }
+            
+            let personalBC = ReceivedBusinessCard(id: docRef.documentID, originalID: "some old ID", ownerID: "Test User", receivingDate: day(from: Date(), offset: idx % 5), cardData: bcData, tagIDs: cardTagIDs)
             docRef.setData(personalBC.asDocument())
         }
+    
     }
     
     private struct Name {
@@ -78,5 +99,18 @@ struct SampleBCUploadTask {
                 Name(firstName: "Kaitlan", lastName: "Solis")
             ]
         }
+    }
+    
+    private func day(from date: Date, offset: Int) -> Date {
+        var now = Calendar.current.dateComponents(in: .current, from: date)
+        now.day = now.day! - offset
+        return Calendar.current.date(from: now)!
+    }
+}
+
+
+private extension Array {
+    func safeMod(_ idx: Int) -> Element {
+        self[idx % count]
     }
 }

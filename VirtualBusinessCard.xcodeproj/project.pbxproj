@@ -46,6 +46,9 @@
 		454625E824A0D95A000D1D25 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E724A0D95A000D1D25 /* Collection.swift */; };
 		454625EA24A0DA78000D1D25 /* UITableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E924A0DA78000D1D25 /* UITableView.swift */; };
 		454625ED24A0F2B7000D1D25 /* InsetTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625EC24A0F2B7000D1D25 /* InsetTableCell.swift */; };
+		4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826724A4BEEF001C763B /* BusinessCardTag.swift */; };
+		4558826B24A4C576001C763B /* BusinessCardTagMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826A24A4C576001C763B /* BusinessCardTagMC.swift */; };
+		4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826C24A4D4AF001C763B /* CardGroup.swift */; };
 		4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F02423B0CE00D44526 /* LoginWithMicrosoftButton.swift */; };
 		4558F1F32423B52000D44526 /* LoginWithGoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F22423B52000D44526 /* LoginWithGoogleButton.swift */; };
 		4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558F1F42423CD4800D44526 /* AppSwiftUIView.swift */; };
@@ -185,6 +188,9 @@
 		454625E724A0D95A000D1D25 /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		454625E924A0DA78000D1D25 /* UITableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITableView.swift; sourceTree = "<group>"; };
 		454625EC24A0F2B7000D1D25 /* InsetTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsetTableCell.swift; sourceTree = "<group>"; };
+		4558826724A4BEEF001C763B /* BusinessCardTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTag.swift; sourceTree = "<group>"; };
+		4558826A24A4C576001C763B /* BusinessCardTagMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTagMC.swift; sourceTree = "<group>"; };
+		4558826C24A4D4AF001C763B /* CardGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardGroup.swift; sourceTree = "<group>"; };
 		4558F1F02423B0CE00D44526 /* LoginWithMicrosoftButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithMicrosoftButton.swift; sourceTree = "<group>"; };
 		4558F1F22423B52000D44526 /* LoginWithGoogleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithGoogleButton.swift; sourceTree = "<group>"; };
 		4558F1F42423CD4800D44526 /* AppSwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSwiftUIView.swift; sourceTree = "<group>"; };
@@ -479,6 +485,15 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		4558826924A4C555001C763B /* BusinessCardTag */ = {
+			isa = PBXGroup;
+			children = (
+				4558826724A4BEEF001C763B /* BusinessCardTag.swift */,
+				4558826A24A4C576001C763B /* BusinessCardTagMC.swift */,
+			);
+			path = BusinessCardTag;
+			sourceTree = "<group>";
+		};
 		4558F1FA2424FBE500D44526 /* Join */ = {
 			isa = PBXGroup;
 			children = (
@@ -606,6 +621,7 @@
 			children = (
 				4577CC8524890B810012EDC8 /* Firestoreable */,
 				4577CC702488EE810012EDC8 /* BusinessCard */,
+				4558826924A4C555001C763B /* BusinessCardTag */,
 				459DC58D23FEA6AF002F03DD /* User */,
 				4577CC81248907ED0012EDC8 /* ModelController.swift */,
 			);
@@ -701,6 +717,7 @@
 				45C25D5F249CF05100945F29 /* GroupedCardsVC.swift */,
 				45C25D61249F4CB100945F29 /* GroupedCardsView.swift */,
 				45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */,
+				4558826C24A4D4AF001C763B /* CardGroup.swift */,
 			);
 			path = GroupedCardsVC;
 			sourceTree = "<group>";
@@ -1018,6 +1035,7 @@
 				45139C562497A1B100DE1E9F /* ReceivedBusinessCardMC.swift in Sources */,
 				45139C592497A49500DE1E9F /* ReceivedCardViewCell.swift in Sources */,
 				4558F1F72423CD6200D44526 /* AppSwiftUIViewModel.swift in Sources */,
+				4558826B24A4C576001C763B /* BusinessCardTagMC.swift in Sources */,
 				454625ED24A0F2B7000D1D25 /* InsetTableCell.swift in Sources */,
 				45C1600F24852DCB00806718 /* AppViewController.swift in Sources */,
 				45B25F212493B32C006DD0F7 /* BusinessCardDetailsVM.swift in Sources */,
@@ -1028,6 +1046,7 @@
 				454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */,
 				45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */,
 				458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */,
+				4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */,
 				458EF407248BA29100EC76D6 /* EditBusinessCardMC.swift in Sources */,
 				459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */,
 				452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */,
@@ -1054,6 +1073,7 @@
 				45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */,
 				45C1602C2486484E00806718 /* PersonalCardsView.swift in Sources */,
 				4577CC77248903D70012EDC8 /* AppError.swift in Sources */,
+				4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */,
 				45C160202485AC6900806718 /* LoginHostingController.swift in Sources */,
 				45C1601E2485333F00806718 /* UserSetupViewModel.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,

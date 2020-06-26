@@ -45,19 +45,37 @@ extension GroupedCardsView {
         
         private let titleLabel: UILabel = {
             let this = UILabel()
-            
+            this.font = UIFont.appDefault(size: 17, weight: .semibold, design: .rounded)
+            this.numberOfLines = 2
             return this
         }()
         
         private let subtitleLabel: UILabel = {
             let this = UILabel()
-            
+            this.font = UIFont.appDefault(size: 13, weight: .regular, design: .rounded)
+            this.textColor = .secondaryLabel
+            return this
+        }()
+        
+        private let countLabel: UILabel = {
+            let this = UILabel()
+            this.font = UIFont.appDefault(size: 13, weight: .medium, design: .rounded)
+            this.textColor = .appAccent
+            //            this.numberOfLines = 2
+            return this
+        }()
+        
+        private lazy var labelStackView: UIStackView = {
+            let this = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel, countLabel])
+            this.axis = .vertical
+            this.spacing = 4
             return this
         }()
         
         override func configureSubviews() {
             super.configureSubviews()
-            [imageViewStack, titleLabel].forEach { innerContentView.addSubview($0) }
+            [imageViewStack, labelStackView].forEach { innerContentView.addSubview($0) }
+            selectionStyle = .none
         }
         
         override func configureConstraints() {
@@ -65,6 +83,12 @@ extension GroupedCardsView {
             imageViewStack.constrainCenterYToSuperview()
             imageViewStack.constrainLeadingToSuperview(inset: 16)
             imageViewStack.constrainSizeToBusinessCardDimensions(width: 100)
+            
+            labelStackView.constrainLeading(to: imageViewStack.trailingAnchor, constant: 16)
+            labelStackView.constrainTrailingToSuperviewMargin()
+            labelStackView.constrainCenterYToSuperview()
+            labelStackView.constrainTopGreaterOrEqual(to: innerContentView.topAnchor)
+            labelStackView.constrainBottomGreaterOrEqual(to: innerContentView.topAnchor)
         }
         
         func setDataModel(_ dm: DataModel) {
@@ -86,6 +110,10 @@ extension GroupedCardsView {
             } else {
                 imageViewStack.backImageView.image = nil
             }
+            
+            titleLabel.text = dm.title
+            subtitleLabel.text = dm.subtitle
+            countLabel.text = dm.cardCountText
         }
         
         private static func fetchImage(url: URL, andSetTo imageView: UIImageView) {
@@ -104,6 +132,10 @@ extension GroupedCardsView {
             let frontImageURL: URL?
             let middleImageURL: URL?
             let backImageURL: URL?
+            
+            let title: String
+            let subtitle: String
+            let cardCountText: String
         }
     }
 }
