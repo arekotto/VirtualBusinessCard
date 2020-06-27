@@ -18,10 +18,6 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         return controller
     }()
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
@@ -46,7 +42,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
         navigationItem.searchController = searchController
-        navigationItem.largeTitleDisplayMode = .always
+        navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: contentView.cellSizeModeButton)
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
         contentView.cellSizeModeButton.addTarget(self, action: #selector(didTapCellSizeModeButton), for: .touchUpInside)

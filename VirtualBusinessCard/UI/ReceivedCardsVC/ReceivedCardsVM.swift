@@ -22,11 +22,14 @@ final class ReceivedCardsVM: AppViewModel {
     weak var delegate: ReceivedBusinessCardsVMDelegate? {
         didSet { didSetDelegate() }
     }
-    
+
     var isSearchActive = false
-    
     private(set) var cellSizeMode = CellSizeMode.expanded
     
+    let title: String
+    let dataFetchMode: DataFetchMode
+    private let userID: UserID
+
     private var user: UserMC?
     private var businessCards = [ReceivedBusinessCardMC]()
     private var filteredBusinessCards = [ReceivedBusinessCardMC]()
@@ -37,8 +40,10 @@ final class ReceivedCardsVM: AppViewModel {
         return manager
     }()
     
-    private var userID: UserID {
-        Auth.auth().currentUser!.uid
+    init(userID: UserID, title: String, dataFetchMode: DataFetchMode) {
+        self.userID = userID
+        self.title = title
+        self.dataFetchMode = dataFetchMode
     }
     
     private func didSetDelegate() {
@@ -56,9 +61,6 @@ final class ReceivedCardsVM: AppViewModel {
 // MARK: - ViewController API
 
 extension ReceivedCardsVM {
-    var title: String {
-        NSLocalizedString("Collection", comment: "")
-    }
     
     var tabBarIconImage: UIImage {
         UIImage(named: "CollectionIcon")!
@@ -104,6 +106,37 @@ extension ReceivedCardsVM {
     }
 }
 
+// MARK: - Firebase static helpers
+
+extension ReceivedCardsVM {
+    private static func mapAllCards(from querySnap: QuerySnapshot) -> [ReceivedBusinessCardMC] {
+        querySnap.documents.compactMap {
+            guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
+                print(#file, "Error mapping business card:", $0.documentID)
+                return nil
+            }
+            return ReceivedBusinessCardMC(card: bc)
+        }
+    }
+    
+    private static func mapCards(from querySnap: QuerySnapshot, containedIn ids: [BusinessCardID]) -> [ReceivedBusinessCardMC] {
+        var idsDict = [String: Bool]()
+        ids.forEach { idsDict[$0] = true }
+        
+        return querySnap.documents.compactMap {
+            
+            guard idsDict[$0.documentID] == true else { return nil }
+            
+            guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
+                print(#file, "Error mapping business card:", $0.documentID)
+                return nil
+            }
+            return ReceivedBusinessCardMC(card: bc)
+        }
+    }
+}
+
+
 // MARK: - Firebase fetch
 
 extension ReceivedCardsVM {
@@ -115,7 +148,7 @@ extension ReceivedCardsVM {
         userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
     }
     
-    private var businessCardCollectionReference: CollectionReference {
+    private var receivedCardsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
     
@@ -141,8 +174,8 @@ extension ReceivedCardsVM {
         userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
             self?.userPrivateDidChange(snapshot, error)
         }
-        businessCardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
-            self?.receivedBusinessCardCollectionDidChange(querySnapshot: querySnapshot, error: error)
+        receivedCardsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
+            self?.receivedCardsCollectionDidChange(querySnapshot: querySnapshot, error: error)
         }
     }
     
@@ -156,27 +189,28 @@ extension ReceivedCardsVM {
         delegate?.refreshData()
     }
     
-    private func receivedBusinessCardCollectionDidChange(querySnapshot: QuerySnapshot?, error: Error?) {
+    private func receivedCardsCollectionDidChange(querySnapshot: QuerySnapshot?, error: Error?) {
         guard let querySnap = querySnapshot else {
             print(#file, error?.localizedDescription ?? "")
             return
         }
-        
-        businessCards = querySnap.documents.compactMap {
-            guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
-                print(#file, "Error mapping business card:", $0.documentID)
-                return nil
-            }
-            return ReceivedBusinessCardMC(card: bc)
+        switch dataFetchMode {
+        case .allReceivedCards: businessCards = Self.mapAllCards(from: querySnap)
+        case .specifiedIDs(let ids): businessCards = Self.mapCards(from: querySnap, containedIn: ids)
         }
         delegate?.refreshData()
     }
 }
 
-// MARK: - CellSizeMode
+// MARK: - CellSizeMode & DataFetchMode
 
 extension ReceivedCardsVM {
     enum CellSizeMode {
         case compact, expanded
+    }
+    
+    enum DataFetchMode {
+        case allReceivedCards
+        case specifiedIDs(_ ids: [BusinessCardID])
     }
 }

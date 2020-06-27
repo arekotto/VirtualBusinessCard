@@ -34,9 +34,9 @@ struct SampleBCUploadTask {
         
         let companies = ["IBM", "Microsoft", "Sony", "Apple"]
         let tags = ["Important", "Conference in Copenhagen", "Can delete soon"]
-        let tagIDs: [BusinessCardTagID] = tags.map { tag in
+        let tagIDs: [BusinessCardTagID] = tags.enumerated().map { idx, tag in
             let docRef = tagsCollectionRef.document()
-            docRef.setData(BusinessCardTag(id: docRef.documentID, color: "#FF4423", title: tag, description: nil).asDocument())
+            docRef.setData(BusinessCardTag(id: docRef.documentID, color: "#FF4423", title: tag, priorityIndex: idx, description: nil).asDocument())
             return docRef.documentID
         }
         
@@ -104,6 +104,8 @@ struct SampleBCUploadTask {
     private func day(from date: Date, offset: Int) -> Date {
         var now = Calendar.current.dateComponents(in: .current, from: date)
         now.day = now.day! - offset
+        now.month = now.month! - (offset % 3)
+        now.year = now.year! - (offset % 2)
         return Calendar.current.date(from: now)!
     }
 }

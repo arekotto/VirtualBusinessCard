@@ -14,6 +14,7 @@ struct BusinessCardTag: Codable {
     var id: BusinessCardTagID
     var color: String
     var title: String
+    var priorityIndex: Int
     var description: String?
 }
 

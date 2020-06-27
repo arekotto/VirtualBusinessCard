@@ -11,6 +11,7 @@ import Firebase
 
 protocol GroupedCardsVMDelegate: class {
     func refreshData()
+    func presentReceivedCards(with viewModel: ReceivedCardsVM)
 }
 
 final class GroupedCardsVM: AppViewModel {
@@ -22,19 +23,22 @@ final class GroupedCardsVM: AppViewModel {
     }
     
     private let userID: UserID
-    private let groupingProperties: [CardGroup.GroupingProperty] = [.tag, .company, .date]
+    private let groupingProperties: [CardGroup.GroupingProperty] = [.tag, .company, .dateDay, .dateMonth, .dateYear]
     
     private let encodeValueDateFormatter = ISO8601DateFormatter()
-    private let displayDateFormatter: DateFormatter = {
-        let this = DateFormatter()
-        this.timeStyle = .none
-        this.dateStyle = UIScreen.main.bounds.width > 320 ? .long : .medium
+    private let dateTitleFormatter = DateTitleFormatter()
+    
+    private lazy var sortingPerGroupingProperty: [CardGroup.GroupingProperty: CardGroup.Sorting] = {
+        var this = [CardGroup.GroupingProperty: CardGroup.Sorting]()
+        groupingProperties.forEach {
+            this[$0] = $0.defaultSorting
+        }
         return this
     }()
     
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
-    private var tags = [BusinessCardTagMC]()
+    private var tags = [BusinessCardTagID: BusinessCardTagMC]()
 
     private var groups = [CardGroup]()
 
@@ -44,14 +48,33 @@ final class GroupedCardsVM: AppViewModel {
     
     private func updateGrouping() {
         switch selectedGroupingProperty {
-        case .tag:
-            groups = CardGroup.groupByTag(cards: cards)
-        case .date:
-            groups = CardGroup.groupByDate(cards: cards, dateFormatter: encodeValueDateFormatter)
-        case .company:
-            groups = CardGroup.groupByCompany(cards: cards)
+        case .tag: groups = CardGroup.groupByTag(cards: cards)
+        case .dateDay: groups = CardGroup.groupByReceivingDay(cards: cards, dateFormatter: encodeValueDateFormatter)
+        case .company: groups = CardGroup.groupByCompany(cards: cards)
+        case .dateMonth: groups = CardGroup.groupByReceivingMonth(cards: cards, dateFormatter: encodeValueDateFormatter)
+        case .dateYear: groups = CardGroup.groupByReceivingYear(cards: cards, dateFormatter: encodeValueDateFormatter)
         }
         delegate?.refreshData()
+    }
+    
+    private func updateSorting() {
+        switch selectedGroupingProperty {
+        case .tag:
+            groups.sort {
+                if let tagID0 = $0.groupingValue, let tagID1 = $1.groupingValue {
+                    return tags[tagID0]?.priorityIndex ?? Int.max < tags[tagID1]?.priorityIndex ?? Int.max
+                } else {
+                    return $1.groupingValue == nil
+                }
+            }
+        default:
+            let sorting = sortingPerGroupingProperty[selectedGroupingProperty]!
+            switch sorting {
+            case .ascending: groups.sort { $0.groupingValue ?? "" < $1.groupingValue ?? "" }
+            case .descending: groups.sort { $0.groupingValue ?? "" > $1.groupingValue ?? "" }
+            }
+        }
+
     }
 }
 
@@ -66,35 +89,38 @@ extension GroupedCardsVM {
         }
     }
     
-    private func itemTitle(groupingValue: CardGroup.GroupingValue) -> String {
+    private func itemTitle(groupingValue: String?) -> String {
         switch selectedGroupingProperty {
         case .tag: return itemTitleForTag(groupingValue: groupingValue)
-        case .date: return itemTitleForDate(groupingValue: groupingValue)
         case .company: return itemTitleForCompany(groupingValue: groupingValue)
+        case .dateDay: return itemTitleForDate(groupingValue: groupingValue, dateFormatter: dateTitleFormatter.dayFormatter)
+        case .dateMonth: return itemTitleForDate(groupingValue: groupingValue, dateFormatter: dateTitleFormatter.monthFormatter)
+        case .dateYear: return itemTitleForDate(groupingValue: groupingValue, dateFormatter: dateTitleFormatter.yearFormatter)
         }
     }
     
-    private func itemTitleForTag(groupingValue: CardGroup.GroupingValue) -> String {
-        switch groupingValue {
-        case .some(let tagID): return tags.first(where: {$0.id == tagID})?.title ?? ""
-        case .none: return NSLocalizedString("Not Tagged", comment: "")
+    private func itemTitleForTag(groupingValue: String?) -> String {
+        if let tagID = groupingValue {
+            return tags[tagID]?.title ?? ""
         }
+        return NSLocalizedString("Not Tagged", comment: "")
     }
     
-    private func itemTitleForCompany(groupingValue: CardGroup.GroupingValue) -> String {
-        switch groupingValue {
-        case .some(let company): return company
-        case .none: return NSLocalizedString("Personal Cards", comment: "")
+    private func itemTitleForCompany(groupingValue: String?) -> String {
+        if let company = groupingValue {
+            return company
         }
+        return NSLocalizedString("Personal Cards", comment: "")
     }
     
-    private func itemTitleForDate(groupingValue: CardGroup.GroupingValue) -> String {
-        switch groupingValue {
-        case .some(let dateString):
-            guard let date = encodeValueDateFormatter.date(from: dateString) else { return "" }
-            return displayDateFormatter.string(from: date)
-        case .none: return "" // this should never happen
+    private func itemTitleForDate(groupingValue: String?, dateFormatter: DateFormatter) -> String {
+        guard let dateString = groupingValue else {
+            return "" // this should never happen
         }
+        guard let date = encodeValueDateFormatter.date(from: dateString) else {
+            return "" // this should never happen
+        }
+        return dateFormatter.string(from: date)
     }
 }
 
@@ -103,6 +129,10 @@ extension GroupedCardsVM {
 extension GroupedCardsVM {
     var title: String {
         NSLocalizedString("Collection", comment: "")
+    }
+    
+    var seeAllCardsButtonTitle: String {
+        NSLocalizedString("See all", comment: "")
     }
     
     var tabBarIconImage: UIImage {
@@ -132,11 +162,20 @@ extension GroupedCardsVM {
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        //        delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
+        let title = item(for: indexPath).title
+        let group = groups[indexPath.item]
+        let vm = ReceivedCardsVM(userID: userID, title: title, dataFetchMode: .specifiedIDs(group.cardIDs))
+        delegate?.presentReceivedCards(with: vm)
     }
     
     func didSelectGroupingMode(at index: Int) {
         selectedGroupingProperty = groupingProperties[index]
+    }
+    
+    func didTapSeeAll() {
+        let title = NSLocalizedString("All Cards", comment: "")
+        let vm = ReceivedCardsVM(userID: userID, title: title, dataFetchMode: .allReceivedCards)
+        delegate?.presentReceivedCards(with: vm)
     }
 }
 
@@ -151,11 +190,11 @@ extension GroupedCardsVM {
         userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
     }
     
-    private var businessCardCollectionReference: CollectionReference {
+    private var receivedCardsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
     
-    private var businessCardTagsCollectionReference: CollectionReference {
+    private var tagsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(BusinessCardTag.collectionName)
     }
     
@@ -181,11 +220,10 @@ extension GroupedCardsVM {
         userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
             self?.userPrivateDidChange(snapshot, error)
         }
-        businessCardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
+        receivedCardsCollectionReference.order(by: "receivingDate", descending: true).addSnapshotListener { [weak self] querySnapshot, error in
             self?.receivedBusinessCardCollectionDidChange(querySnapshot, error)
         }
-        
-        businessCardTagsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
+        tagsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
             self?.businessCardTagsDidChange(querySnapshot, error)
         }
     }
@@ -222,16 +260,46 @@ extension GroupedCardsVM {
             return
         }
         
-        tags = querySnap.documents.compactMap {
+        tags.removeAll()
+        querySnap.documents.forEach {
             guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
                 print(#file, "Error mapping business card:", $0.documentID)
-                return nil
+                return
             }
-            return BusinessCardTagMC(tag: tag)
+            tags[tag.id] = BusinessCardTagMC(tag: tag)
         }
         
         if !cards.isEmpty {
             delegate?.refreshData()
         }
+    }
+}
+
+// MARK: - DateTitleFormatter
+
+extension GroupedCardsVM {
+    private struct DateTitleFormatter {
+        
+        let dayFormatter: DateFormatter = {
+            let this = DateFormatter()
+            this.timeStyle = .none
+            this.dateStyle = UIScreen.main.bounds.width > 320 ? .long : .medium
+            return this
+        }()
+        
+        let monthFormatter: DateFormatter = {
+            let this = DateFormatter()
+            this.timeStyle = .none
+            this.dateFormat = DateFormatter.dateFormat(fromTemplate: "MMMMYYYY", options: 0, locale: Locale.current)
+            return this
+        }()
+        
+        let yearFormatter: DateFormatter = {
+            let this = DateFormatter()
+            this.timeStyle = .none
+            this.dateStyle = UIScreen.main.bounds.width > 320 ? .long : .medium
+            this.dateFormat = DateFormatter.dateFormat(fromTemplate: "YYYY", options: 0, locale: Locale.current)
+            return this
+        }()
     }
 }

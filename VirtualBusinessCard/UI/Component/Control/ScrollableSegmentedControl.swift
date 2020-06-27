@@ -95,6 +95,8 @@ extension ScrollableSegmentedControl {
             this.dataSource = self
             this.delegate = self
             this.backgroundColor = nil
+            this.showsVerticalScrollIndicator = false
+            this.showsHorizontalScrollIndicator = false
             return this
         }()
         

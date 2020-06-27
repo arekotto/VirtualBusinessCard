@@ -29,8 +29,11 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: viewModel.seeAllCardsButtonTitle, style: .plain, target: self, action: #selector(didTapSeeAllButton))
     }
 }
+
+// MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension GroupedCardsVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -66,19 +69,42 @@ extension GroupedCardsVC: UITableViewDataSource, UITableViewDelegate {
             tableCell.setRoundedCornersMode(.none)
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.didSelectItem(at: indexPath)
+    }
 }
+
+// MARK: - Actions
+
+@objc private extension GroupedCardsVC {
+    func didTapSeeAllButton() {
+        viewModel.didTapSeeAll()
+    }
+}
+
+// MARK: - GroupedCardsVMDelegate
     
 extension GroupedCardsVC: GroupedCardsVMDelegate {
+    func presentReceivedCards(with viewModel: ReceivedCardsVM) {
+        let vc = ReceivedCardsVC(viewModel: viewModel)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
     func refreshData() {
         contentView.tableView.reloadData()
     }
 }
+
+// MARK: - TabBarDisplayable
 
 extension GroupedCardsVC: TabBarDisplayable {
     var tabBarIconImage: UIImage {
         viewModel.tabBarIconImage
     }
 }
+
+// MARK: - ScrollableSegmentedControlDelegate
 
 extension GroupedCardsVC: ScrollableSegmentedControlDelegate {
     func scrollableSegmentedControl(_ control: ScrollableSegmentedControl, didSelectItemAt index: Int) {

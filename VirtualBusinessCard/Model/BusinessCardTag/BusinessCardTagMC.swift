@@ -20,6 +20,8 @@ class BusinessCardTagMC {
     
     var color: String { tag.color }
     
+    var priorityIndex: Int { tag.priorityIndex }
+    
     var description: String? { tag.description }
     
     init(tag: BusinessCardTag) {

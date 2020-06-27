@@ -11,10 +11,10 @@ import Foundation
 extension GroupedCardsVM {
     struct CardGroup {
         let groupingProperty: GroupingProperty
-        let groupingValue: GroupingValue
+        let groupingValue: String?
         let cardIDs: [BusinessCardID]
         
-        internal init(groupingProperty: GroupingProperty, groupingValue: GroupingValue, cardIDs: [BusinessCardID]) {
+        internal init(groupingProperty: GroupingProperty, groupingValue: String?, cardIDs: [BusinessCardID]) {
             self.groupingProperty = groupingProperty
             self.groupingValue = groupingValue
             self.cardIDs = cardIDs
@@ -25,20 +25,39 @@ extension GroupedCardsVM {
             case some(value: String)
         }
         
-        enum GroupingProperty {
+        enum GroupingProperty: Int, Hashable {
             case tag
-            case date
-            //        case location
             case company
+            case dateDay
+            case dateMonth
+            case dateYear
+            //        case location
             
             var localizedName: String {
                 switch self {
                 case .tag: return NSLocalizedString("Tag", comment: "")
-                case .date: return NSLocalizedString("Date", comment: "")
+                case .dateDay: return NSLocalizedString("Day", comment: "")
                 //            case .location: return NSLocalizedString("Location", comment: "")
                 case .company: return NSLocalizedString("Company", comment: "")
+                case .dateMonth: return NSLocalizedString("Month", comment: "")
+                case .dateYear: return NSLocalizedString("Year", comment: "")
                 }
             }
+            
+            var defaultSorting: Sorting {
+                switch self {
+                case .tag: return .ascending
+                case .company: return .ascending
+                case .dateDay: return .descending
+                case .dateMonth: return .descending
+                case .dateYear: return .descending
+                }
+            }
+        }
+        
+        enum Sorting {
+            case ascending
+            case descending
         }
     }
 }
@@ -56,15 +75,16 @@ extension GroupedCardsVM.CardGroup {
         }
         
         let groupedDict = Dictionary(grouping: companyCards) { $0.cardData.position.company }
-        let companyCardGroups = groupedDict.map { company, groupedCards in
-            GroupedCardsVM.CardGroup(groupingProperty: .company, groupingValue: .some(value: company!), cardIDs: groupedCards.map(\.id))
+        var companyCardGroups = groupedDict.map { company, groupedCards in
+            GroupedCardsVM.CardGroup(groupingProperty: .company, groupingValue: company, cardIDs: groupedCards.map(\.id))
         }
+        companyCardGroups.sort { $0.groupingValue ?? "" < $1.groupingValue ?? "" }
         
         if privateCards.isEmpty {
             return companyCardGroups
         } else {
             let privateCardGroup = GroupedCardsVM.CardGroup(groupingProperty: .company, groupingValue: .none, cardIDs: privateCards.map(\.id))
-            return [privateCardGroup] + companyCardGroups
+            return companyCardGroups + [privateCardGroup]
         }
     }
     
@@ -87,28 +107,45 @@ extension GroupedCardsVM.CardGroup {
                 dict[tagID] = existingGroupedCardIDs + [card.id]
             }
         }
-        let taggedCardGroups = groupedCardsDict.map { tagID, groupedIDs in
-            GroupedCardsVM.CardGroup(groupingProperty: .tag, groupingValue: .some(value: tagID), cardIDs: groupedIDs)
+        var taggedCardGroups = groupedCardsDict.map { tagID, groupedIDs in
+            GroupedCardsVM.CardGroup(groupingProperty: .tag, groupingValue: tagID, cardIDs: groupedIDs)
         }
+        // TODO: introduce tag ordering
+
         
         if notTaggedCards.isEmpty {
             return taggedCardGroups
         } else {
             let notTaggedCardGroup = GroupedCardsVM.CardGroup(groupingProperty: .tag, groupingValue: .none, cardIDs: notTaggedCards.map(\.id))
-            return [notTaggedCardGroup] + taggedCardGroups
+            return taggedCardGroups + [notTaggedCardGroup]
         }
     }
     
-    static func groupByDate(cards: [ReceivedBusinessCardMC], dateFormatter df: ISO8601DateFormatter) -> [GroupedCardsVM.CardGroup] {
+    static func groupByReceivingDay(cards: [ReceivedBusinessCardMC], dateFormatter df: ISO8601DateFormatter) -> [GroupedCardsVM.CardGroup] {
+        groupByReceivingDate(cards: cards, dateFormatter: df, range: [.year, .month, .day])
+
+    }
+    
+    static func groupByReceivingMonth(cards: [ReceivedBusinessCardMC], dateFormatter df: ISO8601DateFormatter) -> [GroupedCardsVM.CardGroup] {
+        groupByReceivingDate(cards: cards, dateFormatter: df, range: [.year, .month])
+    }
+    
+    static func groupByReceivingYear(cards: [ReceivedBusinessCardMC], dateFormatter df: ISO8601DateFormatter) -> [GroupedCardsVM.CardGroup] {
+        groupByReceivingDate(cards: cards, dateFormatter: df, range: [.year])
+    }
+    
+    private static func groupByReceivingDate(cards: [ReceivedBusinessCardMC], dateFormatter df: ISO8601DateFormatter, range: Set<Calendar.Component>) -> [GroupedCardsVM.CardGroup] {
         var groupedCardsDict = [Date: [BusinessCardID]]()
         groupedCardsDict = cards.reduce(into: groupedCardsDict) { dict, card in
-            let components = Calendar.current.dateComponents([.year, .month, .day], from: card.receivingDate)
+            let components = Calendar.current.dateComponents(range, from: card.receivingDate)
             let date = Calendar.current.date(from: components)!
             let existingGroupedCardIDs = dict[date] ?? []
             dict[date] = existingGroupedCardIDs + [card.id]
         }
-        return groupedCardsDict.map { date, groupedIDs in
-            GroupedCardsVM.CardGroup(groupingProperty: .date, groupingValue: .some(value: df.string(from: date)), cardIDs: groupedIDs)
+        let groups = groupedCardsDict.map { date, groupedIDs in
+            GroupedCardsVM.CardGroup(groupingProperty: .dateDay, groupingValue: df.string(from: date), cardIDs: groupedIDs)
         }
+        
+        return groups.sorted { $0.groupingValue ?? "" > $1.groupingValue ?? "" }
     }
 }

@@ -38,8 +38,10 @@ final class GroupedCardsView: AppBackgroundView {
     }
 }
 
+// MARK: - TableCell
+
 extension GroupedCardsView {
-    class TableCell: InsetTableCell, Reusable {
+    final class TableCell: InsetTableCell, Reusable {
         
         private let imageViewStack = ImageViewStack()
         
@@ -140,9 +142,11 @@ extension GroupedCardsView {
     }
 }
 
+// MARK: - ImageViewStack
+
 extension GroupedCardsView.TableCell {
     
-    private class ImageViewStack: AppView {
+    private final class ImageViewStack: AppView {
         
         private static func imageView() -> UIImageView {
             let this = UIImageView()

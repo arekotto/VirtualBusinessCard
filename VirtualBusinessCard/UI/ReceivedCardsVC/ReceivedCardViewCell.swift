@@ -10,7 +10,7 @@ import UIKit
 import CoreMotion
 
 extension ReceivedCardsView {
-    class BusinessCardCell: AppCollectionViewCell, Reusable {
+    final class BusinessCardCell: AppCollectionViewCell, Reusable {
         
         private let frontSceneView: BusinessCardSceneView = {
             let view = BusinessCardSceneView(dynamicLightingEnabled: true)
@@ -62,6 +62,8 @@ extension ReceivedCardsView {
         }
     }
     
+    // MARK: BusinessCardCellDM
+    
     struct BusinessCardCellDM {
         let frontImageURL: URL
         let backImageURL: URL
@@ -70,6 +72,8 @@ extension ReceivedCardsView {
         let specular: CGFloat
     }
 }
+
+// MARK: API
 
 extension ReceivedCardsView.BusinessCardCell {
     
