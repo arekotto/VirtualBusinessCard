@@ -14,5 +14,4 @@ class AppBackgroundView: AppView {
         super.layoutSubviews()
         backgroundColor = .appDefaultBackground
     }
-    
 }

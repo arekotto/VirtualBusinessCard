@@ -16,6 +16,7 @@ final class ReceivedCardsView: AppBackgroundView {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: ReceivedCardsCollectionViewLayout())
         cv.registerReusableCell(BusinessCardCell.self)
         cv.backgroundColor = nil
+        cv.keyboardDismissMode = .onDrag
         return cv
     }()
     

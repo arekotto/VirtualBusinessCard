@@ -15,6 +15,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         let controller = UISearchController()
         controller.searchResultsUpdater = self
         controller.obscuresBackgroundDuringPresentation = false
+        controller.dimsBackgroundDuringPresentation = false
         return controller
     }()
     

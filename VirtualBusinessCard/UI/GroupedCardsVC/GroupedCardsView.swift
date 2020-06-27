@@ -14,7 +14,6 @@ final class GroupedCardsView: AppBackgroundView {
     
     lazy var tableView: UITableView = {
         let this = UITableView()
-        this.backgroundColor = nil        
         this.rowHeight = 96
         this.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
         this.separatorStyle = .none
@@ -35,6 +34,7 @@ final class GroupedCardsView: AppBackgroundView {
     override func layoutSubviews() {
         super.layoutSubviews()
         scrollableSegmentedControl.backgroundColor = .appDefaultBackground
+        tableView.backgroundColor = .appDefaultBackground
     }
 }
 

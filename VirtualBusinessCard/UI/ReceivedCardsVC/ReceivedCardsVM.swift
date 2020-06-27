@@ -31,8 +31,8 @@ final class ReceivedCardsVM: AppViewModel {
     private let userID: UserID
 
     private var user: UserMC?
-    private var businessCards = [ReceivedBusinessCardMC]()
-    private var filteredBusinessCards = [ReceivedBusinessCardMC]()
+    private var cards = [ReceivedBusinessCardMC]()
+    private var displayedCardIndexes = [Int]()
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -77,11 +77,12 @@ extension ReceivedCardsVM {
     }
     
     func numberOfItems() -> Int {
-        businessCards.count
+        displayedCardIndexes.count
     }
     
     func item(for indexPath: IndexPath) -> ReceivedCardsView.BusinessCardCellDM {
-        let cardData = businessCards[indexPath.item].cardData
+        let cardID = displayedCardIndexes[indexPath.item]
+        let cardData = cards[cardID].cardData
         return ReceivedCardsView.BusinessCardCellDM(frontImageURL: cardData.frontImage.url, backImageURL: cardData.backImage.url, textureImageURL: cardData.texture.image.url, normal: CGFloat(cardData.texture.normal), specular: CGFloat(cardData.texture.specular))
     }
     
@@ -101,8 +102,15 @@ extension ReceivedCardsVM {
         delegate?.refreshLayout(sizeMode: cellSizeMode)
     }
     
-    func didSearch(for string: String) {
-        
+    func didSearch(for searchText: String) {
+        if searchText.isEmpty {
+            displayedCardIndexes = Array(0 ..< cards.count)
+        } else {
+            displayedCardIndexes = cards.enumerated()
+                .filter { _, card in Self.shouldDisplayCard(card, forSearch: searchText) }
+                .map { idx, _ in idx }
+        }
+        delegate?.refreshData()
     }
 }
 
@@ -133,6 +141,12 @@ extension ReceivedCardsVM {
             }
             return ReceivedBusinessCardMC(card: bc)
         }
+    }
+    
+    private static func shouldDisplayCard(_ card: ReceivedBusinessCardMC, forSearch searchedText: String) -> Bool {
+        let name = card.cardData.name
+        let names = [name.first ?? "", name.last ?? "", name.middle ?? "" ]
+        return names.contains(where: { $0.contains(searchedText) })
     }
 }
 
@@ -195,9 +209,10 @@ extension ReceivedCardsVM {
             return
         }
         switch dataFetchMode {
-        case .allReceivedCards: businessCards = Self.mapAllCards(from: querySnap)
-        case .specifiedIDs(let ids): businessCards = Self.mapCards(from: querySnap, containedIn: ids)
+        case .allReceivedCards: cards = Self.mapAllCards(from: querySnap)
+        case .specifiedIDs(let ids): cards = Self.mapCards(from: querySnap, containedIn: ids)
         }
+        displayedCardIndexes = Array(0 ..< cards.count)
         delegate?.refreshData()
     }
 }

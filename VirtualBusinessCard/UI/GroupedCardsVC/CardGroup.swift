@@ -75,10 +75,9 @@ extension GroupedCardsVM.CardGroup {
         }
         
         let groupedDict = Dictionary(grouping: companyCards) { $0.cardData.position.company }
-        var companyCardGroups = groupedDict.map { company, groupedCards in
+        let companyCardGroups = groupedDict.map { company, groupedCards in
             GroupedCardsVM.CardGroup(groupingProperty: .company, groupingValue: company, cardIDs: groupedCards.map(\.id))
         }
-        companyCardGroups.sort { $0.groupingValue ?? "" < $1.groupingValue ?? "" }
         
         if privateCards.isEmpty {
             return companyCardGroups
@@ -107,10 +106,9 @@ extension GroupedCardsVM.CardGroup {
                 dict[tagID] = existingGroupedCardIDs + [card.id]
             }
         }
-        var taggedCardGroups = groupedCardsDict.map { tagID, groupedIDs in
+        let taggedCardGroups = groupedCardsDict.map { tagID, groupedIDs in
             GroupedCardsVM.CardGroup(groupingProperty: .tag, groupingValue: tagID, cardIDs: groupedIDs)
         }
-        // TODO: introduce tag ordering
 
         
         if notTaggedCards.isEmpty {
@@ -142,10 +140,8 @@ extension GroupedCardsVM.CardGroup {
             let existingGroupedCardIDs = dict[date] ?? []
             dict[date] = existingGroupedCardIDs + [card.id]
         }
-        let groups = groupedCardsDict.map { date, groupedIDs in
+        return groupedCardsDict.map { date, groupedIDs in
             GroupedCardsVM.CardGroup(groupingProperty: .dateDay, groupingValue: df.string(from: date), cardIDs: groupedIDs)
-        }
-        
-        return groups.sorted { $0.groupingValue ?? "" > $1.groupingValue ?? "" }
+        }        
     }
 }

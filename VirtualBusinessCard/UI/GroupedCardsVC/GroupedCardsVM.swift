@@ -54,6 +54,7 @@ final class GroupedCardsVM: AppViewModel {
         case .dateMonth: groups = CardGroup.groupByReceivingMonth(cards: cards, dateFormatter: encodeValueDateFormatter)
         case .dateYear: groups = CardGroup.groupByReceivingYear(cards: cards, dateFormatter: encodeValueDateFormatter)
         }
+        updateSorting()
         delegate?.refreshData()
     }
     
@@ -74,7 +75,6 @@ final class GroupedCardsVM: AppViewModel {
             case .descending: groups.sort { $0.groupingValue ?? "" > $1.groupingValue ?? "" }
             }
         }
-
     }
 }
 
@@ -84,7 +84,7 @@ extension GroupedCardsVM {
     
     private static func itemSubtitle(cards: [ReceivedBusinessCardMC]) -> String {
         let subtitle = cards.first!.ownerDisplayName
-        return cards.reduce(subtitle) { text, card in
+        return cards[1..<cards.count].reduce(subtitle) { text, card in
             text + ", \(card.ownerDisplayName)"
         }
     }
@@ -221,10 +221,10 @@ extension GroupedCardsVM {
             self?.userPrivateDidChange(snapshot, error)
         }
         receivedCardsCollectionReference.order(by: "receivingDate", descending: true).addSnapshotListener { [weak self] querySnapshot, error in
-            self?.receivedBusinessCardCollectionDidChange(querySnapshot, error)
+            self?.receivedCardCollectionDidChange(querySnapshot, error)
         }
         tagsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
-            self?.businessCardTagsDidChange(querySnapshot, error)
+            self?.cardTagsDidChange(querySnapshot, error)
         }
     }
     
@@ -238,7 +238,7 @@ extension GroupedCardsVM {
         delegate?.refreshData()
     }
     
-    private func receivedBusinessCardCollectionDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
+    private func receivedCardCollectionDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
         guard let querySnap = querySnapshot else {
             print(#file, error?.localizedDescription ?? "")
             return
@@ -254,7 +254,7 @@ extension GroupedCardsVM {
         updateGrouping()
     }
     
-    private func businessCardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
+    private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
         guard let querySnap = querySnapshot else {
             print(#file, error?.localizedDescription ?? "")
             return
@@ -268,7 +268,9 @@ extension GroupedCardsVM {
             }
             tags[tag.id] = BusinessCardTagMC(tag: tag)
         }
-        
+        if selectedGroupingProperty == .tag {
+            updateSorting()            
+        }
         if !cards.isEmpty {
             delegate?.refreshData()
         }
