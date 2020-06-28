@@ -9,7 +9,7 @@
 import UIKit
 
 final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> {
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,10 +19,6 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         contentView.tableView.dataSource = self
         contentView.tableView.delegate = self
         setupNavigationItem()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         viewModel.fetchData()
     }
     
@@ -30,12 +26,22 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         navigationItem.title = viewModel.title
         navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: viewModel.seeAllCardsButtonTitle, style: .plain, target: self, action: #selector(didTapSeeAllButton))
+        navigationItem.searchController = {
+            let controller = UISearchController()
+            controller.searchResultsUpdater = self
+            controller.delegate = self
+            controller.obscuresBackgroundDuringPresentation = false
+            return controller
+        }()
     }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension GroupedCardsVC: UITableViewDataSource, UITableViewDelegate {
+    
+    private var shouldHideHeader: Bool { navigationItem.searchController?.isActive ?? false }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.numberOfItems()
     }
@@ -47,11 +53,11 @@ extension GroupedCardsVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        contentView.scrollableSegmentedControl
+        shouldHideHeader ? nil : contentView.scrollableSegmentedControl
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        50
+        shouldHideHeader ? 0 : 50
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -91,8 +97,12 @@ extension GroupedCardsVC: GroupedCardsVMDelegate {
         navigationController?.pushViewController(vc, animated: true)
     }
 
-    func refreshData() {
-        contentView.tableView.reloadData()
+    func refreshData(animated: Bool) {
+        if animated {
+            contentView.tableView.reloadSections([0], with: .automatic)
+        } else {
+            contentView.tableView.reloadData()
+        }
     }
 }
 
@@ -109,5 +119,23 @@ extension GroupedCardsVC: TabBarDisplayable {
 extension GroupedCardsVC: ScrollableSegmentedControlDelegate {
     func scrollableSegmentedControl(_ control: ScrollableSegmentedControl, didSelectItemAt index: Int) {
         viewModel.didSelectGroupingMode(at: index)
+    }
+}
+
+// MARK: - UISearchResultsUpdating, UISearchControllerDelegate
+
+extension GroupedCardsVC: UISearchResultsUpdating, UISearchControllerDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        viewModel.didSearch(for: searchController.searchBar.text ?? "")
+    }
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        contentView.tableView.beginUpdates()
+        contentView.tableView.endUpdates()
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        contentView.tableView.beginUpdates()
+        contentView.tableView.endUpdates()
     }
 }

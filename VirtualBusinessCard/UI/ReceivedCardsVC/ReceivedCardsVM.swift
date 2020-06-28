@@ -23,7 +23,6 @@ final class ReceivedCardsVM: AppViewModel {
         didSet { didSetDelegate() }
     }
 
-    var isSearchActive = false
     private(set) var cellSizeMode = CellSizeMode.expanded
     
     let title: String
@@ -102,12 +101,12 @@ extension ReceivedCardsVM {
         delegate?.refreshLayout(sizeMode: cellSizeMode)
     }
     
-    func didSearch(for searchText: String) {
-        if searchText.isEmpty {
+    func didSearch(for query: String) {
+        if query.isEmpty {
             displayedCardIndexes = Array(0 ..< cards.count)
         } else {
             displayedCardIndexes = cards.enumerated()
-                .filter { _, card in Self.shouldDisplayCard(card, forSearch: searchText) }
+                .filter { _, card in Self.shouldDisplayCard(card, forQuery: query) }
                 .map { idx, _ in idx }
         }
         delegate?.refreshData()
@@ -143,10 +142,10 @@ extension ReceivedCardsVM {
         }
     }
     
-    private static func shouldDisplayCard(_ card: ReceivedBusinessCardMC, forSearch searchedText: String) -> Bool {
+    private static func shouldDisplayCard(_ card: ReceivedBusinessCardMC, forQuery query: String) -> Bool {
         let name = card.cardData.name
         let names = [name.first ?? "", name.last ?? "", name.middle ?? "" ]
-        return names.contains(where: { $0.contains(searchedText) })
+        return names.contains(where: { $0.contains(query) })
     }
 }
 

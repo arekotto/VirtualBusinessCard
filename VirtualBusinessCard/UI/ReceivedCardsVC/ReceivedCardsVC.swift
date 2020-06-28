@@ -11,14 +11,6 @@ import CoreMotion
 
 final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsVM> {
     
-    private lazy var searchController: UISearchController = {
-        let controller = UISearchController()
-        controller.searchResultsUpdater = self
-        controller.obscuresBackgroundDuringPresentation = false
-        controller.dimsBackgroundDuringPresentation = false
-        return controller
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
@@ -42,13 +34,20 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.searchController = searchController
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: contentView.cellSizeModeButton)
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
         contentView.cellSizeModeButton.addTarget(self, action: #selector(didTapCellSizeModeButton), for: .touchUpInside)
+        navigationItem.searchController = {
+            let controller = UISearchController()
+            controller.searchResultsUpdater = self
+            controller.obscuresBackgroundDuringPresentation = false
+            return controller
+        }()
     }
 }
+
+// MARK: - Actions
 
 @objc extension ReceivedCardsVC {
     func didTapCellSizeModeButton() {
@@ -56,7 +55,9 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
 }
 
-extension ReceivedCardsVC: UICollectionViewDataSource {
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
+
+extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfItems()
     }
@@ -70,13 +71,13 @@ extension ReceivedCardsVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         (cell as! ReceivedCardsView.BusinessCardCell).setSizeMode(viewModel.cellSizeMode)
     }
-}
-
-extension ReceivedCardsVC: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
     }
 }
+
+// MARK: ReceivedBusinessCardsVMDelegate
 
 extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
@@ -88,10 +89,6 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     
     func presentBusinessCardDetails(id: BusinessCardID) {
         
-    }
-    
-    func didUpdateMotionData(motion: CMDeviceMotion) {
-
     }
     
     func refreshData() {
@@ -107,22 +104,18 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     }
 }
 
+// MARK: - TabBarDisplayable
+
 extension ReceivedCardsVC: TabBarDisplayable {
     var tabBarIconImage: UIImage {
         viewModel.tabBarIconImage
     }
 }
 
-extension ReceivedCardsVC: UISearchResultsUpdating, UISearchControllerDelegate {
+// MARK: - UISearchResultsUpdating, UISearchControllerDelegate
+
+extension ReceivedCardsVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.didSearch(for: searchController.searchBar.text ?? "")
-    }
-    
-    func didPresentSearchController(_ searchController: UISearchController) {
-        viewModel.isSearchActive = true
-    }
-    
-    func didDismissSearchController(_ searchController: UISearchController) {
-        viewModel.isSearchActive = false
     }
 }

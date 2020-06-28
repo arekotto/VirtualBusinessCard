@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 protocol GroupedCardsVMDelegate: class {
-    func refreshData()
+    func refreshData(animated: Bool)
     func presentReceivedCards(with viewModel: ReceivedCardsVM)
 }
 
@@ -19,7 +19,10 @@ final class GroupedCardsVM: AppViewModel {
     weak var delegate: GroupedCardsVMDelegate?
     
     var selectedGroupingProperty = CardGroup.GroupingProperty.tag {
-        didSet { updateGrouping() }
+        didSet {
+            updateGrouping()
+            delegate?.refreshData(animated: false)
+        }
     }
     
     private let userID: UserID
@@ -39,9 +42,11 @@ final class GroupedCardsVM: AppViewModel {
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
     private var tags = [BusinessCardTagID: BusinessCardTagMC]()
-
+    private var mostRecentFetch: Date?
+    
     private var groups = [CardGroup]()
-
+    private var displayedGroupIndexes = [Int]()
+    
     init(userID: String) {
         self.userID = userID
     }
@@ -55,7 +60,7 @@ final class GroupedCardsVM: AppViewModel {
         case .dateYear: groups = CardGroup.groupByReceivingYear(cards: cards, dateFormatter: encodeValueDateFormatter)
         }
         updateSorting()
-        delegate?.refreshData()
+        displayedGroupIndexes = Array(0 ..< groups.count)
     }
     
     private func updateSorting() {
@@ -81,6 +86,22 @@ final class GroupedCardsVM: AppViewModel {
 // MARK: - Item Data
 
 extension GroupedCardsVM {
+    
+    private func shouldDisplayGroup(_ group: CardGroup, forQuery query: String) -> Bool {
+        switch selectedGroupingProperty {
+        case .tag:
+            guard let tagID = group.groupingValue else { return false }
+            return tags[tagID]?.title.range(of: query, options: .caseInsensitive) != nil
+        case .company:
+            return group.groupingValue?.range(of: query, options: .caseInsensitive) != nil
+        case .dateDay:
+            return itemTitle(groupingValue: group.groupingValue).range(of: query, options: .caseInsensitive) != nil
+        case .dateMonth:
+            return itemTitle(groupingValue: group.groupingValue).range(of: query, options: .caseInsensitive) != nil
+        case .dateYear:
+            return itemTitle(groupingValue: group.groupingValue).range(of: query, options: .caseInsensitive) != nil
+        }
+    }
     
     private static func itemSubtitle(cards: [ReceivedBusinessCardMC]) -> String {
         let subtitle = cards.first!.ownerDisplayName
@@ -140,7 +161,7 @@ extension GroupedCardsVM {
     }
     
     func numberOfItems() -> Int {
-        groups.count
+        displayedGroupIndexes.count
     }
     
     var availableGroupingModes: [String] {
@@ -148,7 +169,8 @@ extension GroupedCardsVM {
     }
     
     func item(for indexPath: IndexPath) -> GroupedCardsView.TableCell.DataModel {
-        let group = groups[indexPath.row]
+        let groupIndex = displayedGroupIndexes[indexPath.row]
+        let group = groups[groupIndex]
         let cardsInGroup = cards.filter{group.cardIDs.contains($0.id)}
 
         return GroupedCardsView.TableCell.DataModel(
@@ -176,6 +198,17 @@ extension GroupedCardsVM {
         let title = NSLocalizedString("All Cards", comment: "")
         let vm = ReceivedCardsVM(userID: userID, title: title, dataFetchMode: .allReceivedCards)
         delegate?.presentReceivedCards(with: vm)
+    }
+    
+    func didSearch(for query: String) {
+        if query.isEmpty {
+            displayedGroupIndexes = Array(0 ..< groups.count)
+        } else {
+            displayedGroupIndexes = groups.enumerated()
+                .filter { _, group in shouldDisplayGroup(group, forQuery: query) }
+                .map { idx, _ in idx }
+        }
+        delegate?.refreshData(animated: true)
     }
 }
 
@@ -235,7 +268,7 @@ extension GroupedCardsVM {
             return
         }
         user?.setUserPrivate(document: doc)
-        delegate?.refreshData()
+        delegate?.refreshData(animated: false)
     }
     
     private func receivedCardCollectionDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
@@ -244,6 +277,7 @@ extension GroupedCardsVM {
             return
         }
         
+        let isFirstFetch = mostRecentFetch == nil
         cards = querySnap.documents.compactMap {
             guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
                 print(#file, "Error mapping business card:", $0.documentID)
@@ -251,7 +285,10 @@ extension GroupedCardsVM {
             }
             return ReceivedBusinessCardMC(card: bc)
         }
+        
         updateGrouping()
+        mostRecentFetch = Date()
+        delegate?.refreshData(animated: !isFirstFetch)
     }
     
     private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
@@ -272,7 +309,7 @@ extension GroupedCardsVM {
             updateSorting()            
         }
         if !cards.isEmpty {
-            delegate?.refreshData()
+            delegate?.refreshData(animated: false)
         }
     }
 }
@@ -305,3 +342,4 @@ extension GroupedCardsVM {
         }()
     }
 }
+
