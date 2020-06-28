@@ -339,14 +339,8 @@
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				4541B0E224A8B01B00BF8E0E /* ViewController */,
 				45C25D66249F5EB900945F29 /* Component */,
-				45C25D5E249CF01700945F29 /* GroupedCardsVC */,
-				45139C4E24979C2100DE1E9F /* ReceivedCardsVC */,
-				45B25F1D2493B281006DD0F7 /* BusinessCardDetailsVC */,
-				452B33C3248E4F7C006E6A7D /* SettingsVC */,
-				45C160242485AE7F00806718 /* PersonalBusinessCardsVC */,
-				45C160212485AD1900806718 /* MainTBC */,
-				45C1600D24852DB600806718 /* AppViewController */,
 				45C1600A24852D4A00806718 /* UserSetup */,
 				457B4E7924531AE900761A90 /* scene */,
 				45AA873124499A47004ACDDD /* scratch */,
@@ -466,6 +460,28 @@
 				4558F1F22423B52000D44526 /* LoginWithGoogleButton.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4541B0E324A8B05600BF8E0E /* UserProfileVC */,
+				45C25D5E249CF01700945F29 /* GroupedCardsVC */,
+				45139C4E24979C2100DE1E9F /* ReceivedCardsVC */,
+				45B25F1D2493B281006DD0F7 /* BusinessCardDetailsVC */,
+				452B33C3248E4F7C006E6A7D /* SettingsVC */,
+				45C160242485AE7F00806718 /* PersonalBusinessCardsVC */,
+				45C160212485AD1900806718 /* MainTBC */,
+				45C1600D24852DB600806718 /* AppViewController */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		4541B0E324A8B05600BF8E0E /* UserProfileVC */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UserProfileVC;
 			sourceTree = "<group>";
 		};
 		4543D2D5249BBAF1003B1439 /* Resources */ = {
