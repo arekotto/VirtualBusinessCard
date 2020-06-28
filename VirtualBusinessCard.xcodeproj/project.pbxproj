@@ -325,7 +325,7 @@
 			path = CreateAccount;
 			sourceTree = "<group>";
 		};
-		45139C4E24979C2100DE1E9F /* ReceivedCardsVC */ = {
+		45139C4E24979C2100DE1E9F /* ReceivedCards */ = {
 			isa = PBXGroup;
 			children = (
 				45139C4F24979C3800DE1E9F /* ReceivedCardsVC.swift */,
@@ -333,7 +333,7 @@
 				45139C5324979CB600DE1E9F /* ReceivedCardsView.swift */,
 				45139C582497A49500DE1E9F /* ReceivedCardViewCell.swift */,
 			);
-			path = ReceivedCardsVC;
+			path = ReceivedCards;
 			sourceTree = "<group>";
 		};
 		451C664C240806610016DA68 /* UI */ = {
@@ -377,14 +377,14 @@
 			path = Greetings;
 			sourceTree = "<group>";
 		};
-		452B33C3248E4F7C006E6A7D /* SettingsVC */ = {
+		452B33C3248E4F7C006E6A7D /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				452B33C4248E4F91006E6A7D /* SettingsView.swift */,
 				452B33C6248E4FCA006E6A7D /* SettingsVM.swift */,
 				452B33C8248E4FF8006E6A7D /* SettingsVC.swift */,
 			);
-			path = SettingsVC;
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		4537CED623F6D259003602EA = {
@@ -465,23 +465,23 @@
 		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				4541B0E324A8B05600BF8E0E /* UserProfileVC */,
-				45C25D5E249CF01700945F29 /* GroupedCardsVC */,
-				45139C4E24979C2100DE1E9F /* ReceivedCardsVC */,
-				45B25F1D2493B281006DD0F7 /* BusinessCardDetailsVC */,
-				452B33C3248E4F7C006E6A7D /* SettingsVC */,
-				45C160242485AE7F00806718 /* PersonalBusinessCardsVC */,
+				4541B0E324A8B05600BF8E0E /* UserProfile */,
+				45C25D5E249CF01700945F29 /* GroupedCards */,
+				45139C4E24979C2100DE1E9F /* ReceivedCards */,
+				45B25F1D2493B281006DD0F7 /* BusinessCardDetails */,
+				452B33C3248E4F7C006E6A7D /* Settings */,
+				45C160242485AE7F00806718 /* PersonalBusinessCards */,
 				45C160212485AD1900806718 /* MainTBC */,
 				45C1600D24852DB600806718 /* AppViewController */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
 		};
-		4541B0E324A8B05600BF8E0E /* UserProfileVC */ = {
+		4541B0E324A8B05600BF8E0E /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = UserProfileVC;
+			path = UserProfile;
 			sourceTree = "<group>";
 		};
 		4543D2D5249BBAF1003B1439 /* Resources */ = {
@@ -664,14 +664,14 @@
 			path = scratch;
 			sourceTree = "<group>";
 		};
-		45B25F1D2493B281006DD0F7 /* BusinessCardDetailsVC */ = {
+		45B25F1D2493B281006DD0F7 /* BusinessCardDetails */ = {
 			isa = PBXGroup;
 			children = (
 				45B25F1E2493B2A3006DD0F7 /* BusinessCardDetailsVC.swift */,
 				45B25F202493B32C006DD0F7 /* BusinessCardDetailsVM.swift */,
 				45B25F222493B33B006DD0F7 /* BusinessCardDetailsView.swift */,
 			);
-			path = BusinessCardDetailsVC;
+			path = BusinessCardDetails;
 			sourceTree = "<group>";
 		};
 		45B5E313241FA01B00028B0A /* Login */ = {
@@ -716,7 +716,7 @@
 			path = MainTBC;
 			sourceTree = "<group>";
 		};
-		45C160242485AE7F00806718 /* PersonalBusinessCardsVC */ = {
+		45C160242485AE7F00806718 /* PersonalBusinessCards */ = {
 			isa = PBXGroup;
 			children = (
 				45C160252485AEF800806718 /* PersonalCardsVC.swift */,
@@ -724,10 +724,10 @@
 				45C1602B2486484E00806718 /* PersonalCardsView.swift */,
 				452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */,
 			);
-			path = PersonalBusinessCardsVC;
+			path = PersonalBusinessCards;
 			sourceTree = "<group>";
 		};
-		45C25D5E249CF01700945F29 /* GroupedCardsVC */ = {
+		45C25D5E249CF01700945F29 /* GroupedCards */ = {
 			isa = PBXGroup;
 			children = (
 				45C25D5F249CF05100945F29 /* GroupedCardsVC.swift */,
@@ -735,7 +735,7 @@
 				45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */,
 				4558826C24A4D4AF001C763B /* CardGroup.swift */,
 			);
-			path = GroupedCardsVC;
+			path = GroupedCards;
 			sourceTree = "<group>";
 		};
 		45C25D65249F5EAC00945F29 /* Control */ = {
