@@ -17,11 +17,20 @@ class UserMC: ModelController {
 
     var id: UserID { userPublic.id }
     
-    var firstName: String { userPublic.firstName }
+    var firstName: String {
+        get { userPublic.firstName }
+        set { userPublic.firstName = newValue }
+    }
     
-    var lastName: String { userPublic.lastName }
+    var lastName: String {
+        get { userPublic.lastName }
+        set { userPublic.lastName = newValue }
+    }
     
-    var email: String { userPublic.email }
+    var email: String {
+        get { userPublic.email }
+        set { userPublic.email = newValue }
+    }
 
     var profileImageURL: URL? {
         // TODO: change for real url xD

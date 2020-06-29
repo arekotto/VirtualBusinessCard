@@ -55,14 +55,12 @@ extension GroupedCardsView {
         private let subtitleLabel: UILabel = {
             let this = UILabel()
             this.font = UIFont.appDefault(size: 13, weight: .regular, design: .rounded)
-            this.textColor = .secondaryLabel
             return this
         }()
         
         private let countLabel: UILabel = {
             let this = UILabel()
             this.font = UIFont.appDefault(size: 13, weight: .medium, design: .rounded)
-            this.textColor = .appAccent
             //            this.numberOfLines = 2
             return this
         }()
@@ -91,6 +89,12 @@ extension GroupedCardsView {
             labelStackView.constrainCenterYToSuperview()
             labelStackView.constrainTopGreaterOrEqual(to: innerContentView.topAnchor)
             labelStackView.constrainBottomGreaterOrEqual(to: innerContentView.topAnchor)
+        }
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            subtitleLabel.textColor = .secondaryLabel
+            countLabel.textColor = .appAccent
         }
         
         func setDataModel(_ dm: DataModel) {

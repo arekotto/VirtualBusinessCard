@@ -10,4 +10,8 @@ import Foundation
 
 enum AppError: Error {
     case unknown
+    
+    static var localizedUnknownErrorDescription: String {
+        NSLocalizedString("We have encountered an unknown error. Please try again later.", comment: "")
+    }
 }

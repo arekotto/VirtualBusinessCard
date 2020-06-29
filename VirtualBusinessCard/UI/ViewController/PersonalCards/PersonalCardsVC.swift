@@ -44,9 +44,8 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
     }
     
     private func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewBusinessCardButton))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testingAdd))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: viewModel.settingsImage, style: .plain, target: self, action: #selector(didTapSettingsButton))
     }
 }
 
@@ -56,9 +55,8 @@ extension PersonalCardsVC {
         
     }
     
-    func testingAdd() {
-        let task = SampleBCUploadTask()
-        task() {_ in }
+    func didTapSettingsButton() {
+        viewModel.didTapSettings()
     }
 }
 
@@ -80,6 +78,12 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
 }
 
 extension PersonalCardsVC: PersonalCardsVMlDelegate {
+    func presentSettings(viewModel: UserProfileVM) {
+        let vc = UserProfileVC(viewModel: viewModel)
+        show(vc, sender: nil)
+//        navigationController?.pushViewController(UserProfileVC(viewModel: UserProfileVM(userID: userID)), animated: true)
+    }
+    
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         let cells = contentView.collectionView.visibleCells as! [PersonalCardsView.CollectionCell]
         cells.forEach { cell in

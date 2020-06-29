@@ -20,6 +20,7 @@ class AppNavigationController: UINavigationController {
         if let tabBarDisplayableController = rootViewController as? TabBarDisplayable {
             tabBarItem.image = tabBarDisplayableController.tabBarIconImage
             tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+            rootViewController.navigationItem.largeTitleDisplayMode = .always
         }
     }
     

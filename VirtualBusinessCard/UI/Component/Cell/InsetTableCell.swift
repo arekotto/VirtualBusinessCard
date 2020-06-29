@@ -9,12 +9,9 @@
 import UIKit
 
 class InsetTableCell: AppTableViewCell {
-    
-    static let cornerRadius: CGFloat = 14
-    
+        
     let innerContentView: UIView = {
         let this = UIView()
-        this.layer.cornerRadius = cornerRadius
         this.clipsToBounds = true
         return this
     }()
@@ -22,6 +19,7 @@ class InsetTableCell: AppTableViewCell {
     override func configureCell() {
         super.configureCell()
         backgroundColor = nil
+        selectionStyle = .none
     }
     
     override func configureSubviews() {
@@ -39,20 +37,36 @@ class InsetTableCell: AppTableViewCell {
         innerContentView.backgroundColor = .roundedTableViewCellBackground
     }
     
-    func setRoundedCornersMode(_ mode: RoundedCornersMode) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        if animated {
+            UIView.animate(withDuration: 0.5) {
+                self.innerContentView.backgroundColor = selected ? .appDefaultBackground : .roundedTableViewCellBackground
+            }
+        } else {
+            innerContentView.backgroundColor = selected ? .appDefaultBackground : .roundedTableViewCellBackground
+        }
+    }
+}
+
+final class RoundedInsetTableCell: InsetTableCell, Reusable {
+    
+    static let cornerRadius: CGFloat = 8
+
+    override func configureCell() {
+        super.configureCell()
+        selectionStyle = .none
+    }
+    
+    func configureRoundedCorners(mode: RoundedCornersMode) {
+        innerContentView.layer.cornerRadius = Self.cornerRadius
         switch mode {
-        case .top:
-            innerContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        case .bottom:
-            innerContentView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        case .all:
-            innerContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
-        case .none:
-            innerContentView.layer.maskedCorners = []
+        case .top: innerContentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        case .bottom: innerContentView.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
         }
     }
     
     enum RoundedCornersMode {
-        case top, bottom, all, none
+        case top, bottom
     }
 }

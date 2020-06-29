@@ -26,5 +26,25 @@ class AppTableViewCell: UITableViewCell {
     func configureSubviews() { }
 
     func configureConstraints() { }
+
 }
 
+class AppTableViewHeaderFooterView: UITableViewHeaderFooterView {
+  
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        configureHeader()
+        configureSubviews()
+        configureConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureHeader() { }
+    
+    func configureSubviews() { }
+    
+    func configureConstraints() { }
+}

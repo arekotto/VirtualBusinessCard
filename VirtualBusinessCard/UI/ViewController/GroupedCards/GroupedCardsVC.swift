@@ -12,7 +12,7 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        extendedLayoutIncludesOpaqueBars = true
         viewModel.delegate = self
         contentView.scrollableSegmentedControl.items = viewModel.availableGroupingModes
         contentView.scrollableSegmentedControl.delegate = self
@@ -24,7 +24,6 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
     
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.largeTitleDisplayMode = .always
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: viewModel.seeAllCardsButtonTitle, style: .plain, target: self, action: #selector(didTapSeeAllButton))
         navigationItem.searchController = {
             let controller = UISearchController()
@@ -64,16 +63,7 @@ extension GroupedCardsVC: UITableViewDataSource, UITableViewDelegate {
         let isFirst = indexPath.row == 0
         let isLast = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
 
-        let tableCell = cell as! GroupedCardsView.TableCell
-        if isFirst && isLast {
-            tableCell.setRoundedCornersMode(.all)
-        } else if isFirst {
-            tableCell.setRoundedCornersMode(.top)
-        } else if isLast {
-            tableCell.setRoundedCornersMode(.bottom)
-        } else {
-            tableCell.setRoundedCornersMode(.none)
-        }
+//        (cell as! InsetTableCell).configureRoundedCorners(isFirst: isFirst, isLast: isLast)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

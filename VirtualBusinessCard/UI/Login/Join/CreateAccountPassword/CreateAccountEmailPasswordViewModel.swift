@@ -37,20 +37,11 @@ class CreateAccountEmailPasswordViewModel: AppSwiftUIViewModel {
             if let err = error {
                 print(#file, err.localizedDescription)
                 guard let errorCode = AuthErrorCode(rawValue: err._code) else {
-                    self.createAccountErrorMessage = self.text.unknownError
+                    self.createAccountErrorMessage = AppError.localizedUnknownErrorDescription
                     self.isErrorAlertPresented = true
                     return
                 }
-                switch errorCode {
-                case .networkError:
-                    self.createAccountErrorMessage = self.text.connectionProblemError
-                case .weakPassword:
-                    self.createAccountErrorMessage = self.text.passwordTooWeakError
-                case .emailAlreadyInUse:
-                    self.createAccountErrorMessage = self.text.emailAlreadyInUseError
-                default:
-                    self.createAccountErrorMessage = self.text.unknownError
-                }
+                self.createAccountErrorMessage = errorCode.localizedMessageForUser
                 self.isErrorAlertPresented = true
             } else {
                 SignUpUserInfoStorage.shared.storeInfo(firstName: self.namesInfo.firstName, lastName: self.namesInfo.lastName)
@@ -83,10 +74,6 @@ extension CreateAccountEmailPasswordViewModel {
         let createAccountButton = NSLocalizedString("Join Now", comment: "")
 //        static let createAccountErrorTitle = NSLocalizedString("We Have Issues Creating Your Account", comment: "")
         
-        let connectionProblemError = NSLocalizedString("We're having connection issues. Make sure you're connected to the Internet.", comment: "")
-        let passwordTooWeakError = NSLocalizedString("Your password needs to contain at least 6 characters.", comment: "")
-        let emailAlreadyInUseError = NSLocalizedString("This email has already been registered with a different account.", comment: "")
-        let unknownError = NSLocalizedString("We have encountered an unknown error. Please try again later.", comment: "")
         let createAccountAlertDismiss = NSLocalizedString("OK", comment: "")
         fileprivate init() {}
         
