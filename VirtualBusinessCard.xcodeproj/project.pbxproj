@@ -85,9 +85,9 @@
 		45B25F182493822C006DD0F7 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F172493822C006DD0F7 /* UIFont.swift */; };
 		45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F1924938489006DD0F7 /* UIColor.swift */; };
 		45B25F1C24938499006DD0F7 /* AppColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F1B24938499006DD0F7 /* AppColorTheme.swift */; };
-		45B25F1F2493B2A3006DD0F7 /* BusinessCardDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F1E2493B2A3006DD0F7 /* BusinessCardDetailsVC.swift */; };
-		45B25F212493B32C006DD0F7 /* BusinessCardDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F202493B32C006DD0F7 /* BusinessCardDetailsVM.swift */; };
-		45B25F232493B33B006DD0F7 /* BusinessCardDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F222493B33B006DD0F7 /* BusinessCardDetailsView.swift */; };
+		45B25F1F2493B2A3006DD0F7 /* CardDetailsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F1E2493B2A3006DD0F7 /* CardDetailsVC.swift */; };
+		45B25F212493B32C006DD0F7 /* CardDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F202493B32C006DD0F7 /* CardDetailsVM.swift */; };
+		45B25F232493B33B006DD0F7 /* CardDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F222493B33B006DD0F7 /* CardDetailsView.swift */; };
 		45B25F252493B669006DD0F7 /* AppBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F242493B669006DD0F7 /* AppBackgroundView.swift */; };
 		45B25F272493B7AF006DD0F7 /* SampleBCUploadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F262493B7AF006DD0F7 /* SampleBCUploadTask.swift */; };
 		45B5E315241FA07F00028B0A /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B5E314241FA07F00028B0A /* LoginView.swift */; };
@@ -232,9 +232,9 @@
 		45B25F172493822C006DD0F7 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		45B25F1924938489006DD0F7 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		45B25F1B24938499006DD0F7 /* AppColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorTheme.swift; sourceTree = "<group>"; };
-		45B25F1E2493B2A3006DD0F7 /* BusinessCardDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardDetailsVC.swift; sourceTree = "<group>"; };
-		45B25F202493B32C006DD0F7 /* BusinessCardDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardDetailsVM.swift; sourceTree = "<group>"; };
-		45B25F222493B33B006DD0F7 /* BusinessCardDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardDetailsView.swift; sourceTree = "<group>"; };
+		45B25F1E2493B2A3006DD0F7 /* CardDetailsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsVC.swift; sourceTree = "<group>"; };
+		45B25F202493B32C006DD0F7 /* CardDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsVM.swift; sourceTree = "<group>"; };
+		45B25F222493B33B006DD0F7 /* CardDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsView.swift; sourceTree = "<group>"; };
 		45B25F242493B669006DD0F7 /* AppBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackgroundView.swift; sourceTree = "<group>"; };
 		45B25F262493B7AF006DD0F7 /* SampleBCUploadTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleBCUploadTask.swift; sourceTree = "<group>"; };
 		45B5E314241FA07F00028B0A /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -478,7 +478,7 @@
 				4541B0E324A8B05600BF8E0E /* UserProfile */,
 				45C25D5E249CF01700945F29 /* GroupedCards */,
 				45139C4E24979C2100DE1E9F /* ReceivedCards */,
-				45B25F1D2493B281006DD0F7 /* BusinessCardDetails */,
+				45B25F1D2493B281006DD0F7 /* CardDetails */,
 				452B33C3248E4F7C006E6A7D /* Settings */,
 				45C160242485AE7F00806718 /* PersonalCards */,
 				45C160212485AD1900806718 /* MainTBC */,
@@ -679,14 +679,14 @@
 			path = scratch;
 			sourceTree = "<group>";
 		};
-		45B25F1D2493B281006DD0F7 /* BusinessCardDetails */ = {
+		45B25F1D2493B281006DD0F7 /* CardDetails */ = {
 			isa = PBXGroup;
 			children = (
-				45B25F1E2493B2A3006DD0F7 /* BusinessCardDetailsVC.swift */,
-				45B25F202493B32C006DD0F7 /* BusinessCardDetailsVM.swift */,
-				45B25F222493B33B006DD0F7 /* BusinessCardDetailsView.swift */,
+				45B25F1E2493B2A3006DD0F7 /* CardDetailsVC.swift */,
+				45B25F202493B32C006DD0F7 /* CardDetailsVM.swift */,
+				45B25F222493B33B006DD0F7 /* CardDetailsView.swift */,
 			);
-			path = BusinessCardDetails;
+			path = CardDetails;
 			sourceTree = "<group>";
 		};
 		45B5E313241FA01B00028B0A /* Login */ = {
@@ -1069,7 +1069,7 @@
 				4558826B24A4C576001C763B /* BusinessCardTagMC.swift in Sources */,
 				454625ED24A0F2B7000D1D25 /* InsetTableCell.swift in Sources */,
 				45C1600F24852DCB00806718 /* AppViewController.swift in Sources */,
-				45B25F212493B32C006DD0F7 /* BusinessCardDetailsVM.swift in Sources */,
+				45B25F212493B32C006DD0F7 /* CardDetailsVM.swift in Sources */,
 				4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */,
 				452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */,
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
@@ -1090,7 +1090,7 @@
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
-				45B25F1F2493B2A3006DD0F7 /* BusinessCardDetailsVC.swift in Sources */,
+				45B25F1F2493B2A3006DD0F7 /* CardDetailsVC.swift in Sources */,
 				4577CC84248908530012EDC8 /* UserMC.swift in Sources */,
 				458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */,
 				45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */,
@@ -1117,7 +1117,7 @@
 				4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */,
 				457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */,
 				45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */,
-				45B25F232493B33B006DD0F7 /* BusinessCardDetailsView.swift in Sources */,
+				45B25F232493B33B006DD0F7 /* CardDetailsView.swift in Sources */,
 				454CF7D324A8D39100074E0D /* UserProfileVM.swift in Sources */,
 				45B25F182493822C006DD0F7 /* UIFont.swift in Sources */,
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,

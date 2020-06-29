@@ -92,7 +92,7 @@ extension PersonalCardsVC: PersonalCardsVMlDelegate {
     }
     
     func presentBusinessCardDetails(id: BusinessCardID) {
-        show(BusinessCardDetailsVC(viewModel: BusinessCardDetailsVM()), sender: nil)
+        show(CardDetailsVC(viewModel: CardDetailsVM()), sender: nil)
     }
     
     func reloadData() {

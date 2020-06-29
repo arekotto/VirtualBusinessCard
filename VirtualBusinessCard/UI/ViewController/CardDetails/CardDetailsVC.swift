@@ -1,5 +1,5 @@
 //
-//  BusinessCardDetailsVC.swift
+//  CardDetailsVC.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 12/06/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class BusinessCardDetailsVC: AppViewController<BusinessCardDetailsView, BusinessCardDetailsVM> {
+final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +18,6 @@ final class BusinessCardDetailsVC: AppViewController<BusinessCardDetailsView, Bu
     
 }
 
-extension BusinessCardDetailsVC: BusinessCardDetailsVMDelegate {
+extension CardDetailsVC: CardDetailsVMDelegate {
     
 }
