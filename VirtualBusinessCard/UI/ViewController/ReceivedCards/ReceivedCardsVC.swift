@@ -63,44 +63,44 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: ReceivedCardsView.BusinessCardCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        cell.setDataModel(viewModel.item(for: indexPath))
+        let cell: ReceivedCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        cell.cardFrontBackView.setDataModel(viewModel.item(for: indexPath))
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as! ReceivedCardsView.BusinessCardCell).setSizeMode(viewModel.cellSizeMode)
+        (cell as! ReceivedCardsView.CollectionCell).cardFrontBackView.setSizeMode(viewModel.cellSizeMode)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        viewModel.didSelectItem(at: indexPath)
     }
 }
 
 // MARK: ReceivedBusinessCardsVMDelegate
 
 extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
-    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        let cells = contentView.collectionView.visibleCells as! [ReceivedCardsView.BusinessCardCell]
-        cells.forEach { cell in
-            cell.updateMotionData(motion, over: timeFrame)
-        }
+    func presentCardDetails(viewModel: CardDetailsVM) {
+        show(CardDetailsVC(viewModel: viewModel), sender: nil)
     }
     
-    func presentBusinessCardDetails(id: BusinessCardID) {
-        
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        let cells = contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]
+        cells.forEach { cell in
+            cell.cardFrontBackView.updateMotionData(motion, over: timeFrame)
+        }
     }
     
     func refreshData() {
         contentView.collectionView.reloadData()
     }
     
-    func refreshLayout(sizeMode: ReceivedCardsVM.CellSizeMode) {
+    func refreshLayout(sizeMode: CardFrontBackView.SizeMode) {
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
         let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(cellSize: sizeMode)
         contentView.collectionView.setCollectionViewLayout(layoutFactory.layout(), animated: true)
-        let visibleCells = contentView.collectionView.visibleCells as! [ReceivedCardsView.BusinessCardCell]
-        visibleCells.forEach { $0.setSizeMode(sizeMode) }
+        let visibleCells = contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]
+        visibleCells.forEach { $0.cardFrontBackView.setSizeMode(sizeMode) }
     }
 }
 

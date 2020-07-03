@@ -7,6 +7,7 @@
 //
 
 import Firebase
+import Contacts
 
 class ReceivedBusinessCardMC {
 
@@ -33,14 +34,27 @@ class ReceivedBusinessCardMC {
         return businessCard.cardData.name.first ?? businessCard.cardData.name.last ?? ""
     }
     
+    var addressFormatted: String {
+        
+        let addressData = cardData.address
+        
+        let address = CNMutablePostalAddress()
+        address.street = addressData.street ?? ""
+        address.city = addressData.city ?? ""
+        address.country = addressData.country ?? ""
+        address.postalCode = addressData.postCode ?? ""
+
+        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+    }
+    
     init(card: ReceivedBusinessCard) {
         self.businessCard = card
     }
 }
 
 extension ReceivedBusinessCardMC {
-    convenience init?(userPublicDocument: DocumentSnapshot) {
-        guard let businessCard = ReceivedBusinessCard(documentSnapshot: userPublicDocument) else { return nil }
+    convenience init?(documentSnapshot: DocumentSnapshot) {
+        guard let businessCard = ReceivedBusinessCard(documentSnapshot: documentSnapshot) else { return nil }
         self.init(card: businessCard)
     }
 }

@@ -14,7 +14,7 @@ final class ReceivedCardsView: AppBackgroundView {
     
     let collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: ReceivedCardsCollectionViewLayout())
-        cv.registerReusableCell(BusinessCardCell.self)
+        cv.registerReusableCell(CollectionCell.self)
         cv.backgroundColor = nil
         cv.keyboardDismissMode = .onDrag
         return cv
@@ -40,7 +40,7 @@ final class ReceivedCardsView: AppBackgroundView {
 
 extension ReceivedCardsView {
     struct CollectionViewLayoutFactory {
-        let cellSize: ReceivedCardsVM.CellSizeMode
+        let cellSize: CardFrontBackView.SizeMode
         
         func layout() -> UICollectionViewLayout {
             switch cellSize {
@@ -77,7 +77,7 @@ extension ReceivedCardsView {
         override var itemSize: CGSize {
             set {}
             get {
-                let cardSize = CGSize.businessCardSize(width: Self.screenWidth * 0.8)
+                let cardSize = CardFrontBackView.defaultCardSize
                 let cardsOffset = Self.screenWidth * 0.06
                 return CGSize(width: cardSize.width + cardsOffset, height: cardSize.height + cardsOffset)
             }

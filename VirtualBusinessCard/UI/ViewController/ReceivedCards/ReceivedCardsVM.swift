@@ -11,10 +11,10 @@ import CoreMotion
 import UIKit
 
 protocol ReceivedBusinessCardsVMDelegate: class {
-    func presentBusinessCardDetails(id: BusinessCardID)
     func refreshData()
-    func refreshLayout(sizeMode: ReceivedCardsVM.CellSizeMode)
+    func refreshLayout(sizeMode: CardFrontBackView.SizeMode)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
+    func presentCardDetails(viewModel: CardDetailsVM)
 }
 
 final class ReceivedCardsVM: AppViewModel {
@@ -23,7 +23,7 @@ final class ReceivedCardsVM: AppViewModel {
         didSet { didSetDelegate() }
     }
 
-    private(set) var cellSizeMode = CellSizeMode.expanded
+    private(set) var cellSizeMode = CardFrontBackView.SizeMode.expanded
     
     let title: String
     let dataFetchMode: DataFetchMode
@@ -79,14 +79,15 @@ extension ReceivedCardsVM {
         displayedCardIndexes.count
     }
     
-    func item(for indexPath: IndexPath) -> ReceivedCardsView.BusinessCardCellDM {
+    func item(for indexPath: IndexPath) -> CardFrontBackView.DataModel {
         let cardID = displayedCardIndexes[indexPath.item]
         let cardData = cards[cardID].cardData
-        return ReceivedCardsView.BusinessCardCellDM(frontImageURL: cardData.frontImage.url, backImageURL: cardData.backImage.url, textureImageURL: cardData.texture.image.url, normal: CGFloat(cardData.texture.normal), specular: CGFloat(cardData.texture.specular))
+        return CardFrontBackView.DataModel(frontImageURL: cardData.frontImage.url, backImageURL: cardData.backImage.url, textureImageURL: cardData.texture.image.url, normal: CGFloat(cardData.texture.normal), specular: CGFloat(cardData.texture.specular))
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        //        delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
+        let card = cards[indexPath.item]
+        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id))
     }
     
     func didChangeCellSizeMode() {
@@ -218,11 +219,7 @@ extension ReceivedCardsVM {
 
 // MARK: - CellSizeMode & DataFetchMode
 
-extension ReceivedCardsVM {
-    enum CellSizeMode {
-        case compact, expanded
-    }
-    
+extension ReceivedCardsVM {    
     enum DataFetchMode {
         case allReceivedCards
         case specifiedIDs(_ ids: [BusinessCardID])

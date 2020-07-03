@@ -82,6 +82,9 @@
 		459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */; };
 		459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */; };
 		45AA873324499A5B004ACDDD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AA873224499A5B004ACDDD /* CardView.swift */; };
+		45B0F4C524AA0A39007277BB /* TitleValueCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C424AA0A39007277BB /* TitleValueCollectionCell.swift */; };
+		45B0F4C724AA0A66007277BB /* RoundedCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C624AA0A66007277BB /* RoundedCollectionCell.swift */; };
+		45B0F4CA24AA1510007277BB /* CardFrontBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C924AA1510007277BB /* CardFrontBackView.swift */; };
 		45B25F182493822C006DD0F7 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F172493822C006DD0F7 /* UIFont.swift */; };
 		45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F1924938489006DD0F7 /* UIColor.swift */; };
 		45B25F1C24938499006DD0F7 /* AppColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B25F1B24938499006DD0F7 /* AppColorTheme.swift */; };
@@ -229,6 +232,9 @@
 		459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserPublic+Firestorable.swift"; sourceTree = "<group>"; };
 		459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45AA873224499A5B004ACDDD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		45B0F4C424AA0A39007277BB /* TitleValueCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleValueCollectionCell.swift; sourceTree = "<group>"; };
+		45B0F4C624AA0A66007277BB /* RoundedCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCollectionCell.swift; sourceTree = "<group>"; };
+		45B0F4C924AA1510007277BB /* CardFrontBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFrontBackView.swift; sourceTree = "<group>"; };
 		45B25F172493822C006DD0F7 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
 		45B25F1924938489006DD0F7 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		45B25F1B24938499006DD0F7 /* AppColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColorTheme.swift; sourceTree = "<group>"; };
@@ -510,6 +516,8 @@
 			isa = PBXGroup;
 			children = (
 				454625EC24A0F2B7000D1D25 /* InsetTableCell.swift */,
+				45B0F4C424AA0A39007277BB /* TitleValueCollectionCell.swift */,
+				45B0F4C624AA0A66007277BB /* RoundedCollectionCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -679,6 +687,14 @@
 			path = scratch;
 			sourceTree = "<group>";
 		};
+		45B0F4C824AA1507007277BB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				45B0F4C924AA1510007277BB /* CardFrontBackView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		45B25F1D2493B281006DD0F7 /* CardDetails */ = {
 			isa = PBXGroup;
 			children = (
@@ -765,6 +781,7 @@
 		45C25D66249F5EB900945F29 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				45B0F4C824AA1507007277BB /* View */,
 				454625EB24A0F2AD000D1D25 /* Cell */,
 				45C25D65249F5EAC00945F29 /* Control */,
 			);
@@ -1111,8 +1128,10 @@
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
 				45AA873324499A5B004ACDDD /* CardView.swift in Sources */,
 				45C1601A248530CC00806718 /* UIView+Constrains.swift in Sources */,
+				45B0F4CA24AA1510007277BB /* CardFrontBackView.swift in Sources */,
 				45139C5424979CB600DE1E9F /* ReceivedCardsView.swift in Sources */,
 				45C160282485B0BD00806718 /* PersonalCardsVM.swift in Sources */,
+				45B0F4C524AA0A39007277BB /* TitleValueCollectionCell.swift in Sources */,
 				45139C5224979CA300DE1E9F /* ReceivedCardsVM.swift in Sources */,
 				4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */,
 				457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */,
@@ -1139,6 +1158,7 @@
 				45B5E315241FA07F00028B0A /* LoginView.swift in Sources */,
 				45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */,
 				454625E624A0C136000D1D25 /* AppTableViewCell.swift in Sources */,
+				45B0F4C724AA0A66007277BB /* RoundedCollectionCell.swift in Sources */,
 				454CF7D524A8D3A400074E0D /* UserProfileView.swift in Sources */,
 				45C25D64249F4CD300945F29 /* GroupedCardsVM.swift in Sources */,
 				4541B0E524A8B41300BF8E0E /* UserProfileVC.swift in Sources */,

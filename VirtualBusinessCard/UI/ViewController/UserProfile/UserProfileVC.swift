@@ -12,9 +12,10 @@ final class UserProfileVC: AppViewController<UserProfileView, UserProfileVM> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        hidesBottomBarWhenPushed = true
         viewModel.delegate = self
-        contentView.tableView.dataSource = self
-        contentView.tableView.delegate = self
+        contentView.collectionView.dataSource = self
+        contentView.collectionView.delegate = self
         setupNavigationItem()
         viewModel.fetchData()
     }
@@ -22,7 +23,7 @@ final class UserProfileVC: AppViewController<UserProfileView, UserProfileVM> {
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testingAdd))
-        self.extendedLayoutIncludesOpaqueBars = true
+        extendedLayoutIncludesOpaqueBars = true
     }
     
     @objc func testingAdd() {
@@ -31,54 +32,35 @@ final class UserProfileVC: AppViewController<UserProfileView, UserProfileVM> {
     }
 }
 
-extension UserProfileVC: UITableViewDataSource, UITableViewDelegate {
+extension UserProfileVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         viewModel.numberOrSections()
+
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfRows(in: section)
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {       
-        switch viewModel.rowType(at: indexPath) {
-        case .item:
-            let cell: UserProfileView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
-            cell.setDataModel(viewModel.itemForRow(at: indexPath))
-            return cell
-        case .sectionOpening:
-            let cell: RoundedInsetTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
-            cell.configureRoundedCorners(mode: .top)
-            return cell
-        case .sectionClosing:
-            let cell: RoundedInsetTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
-            cell.configureRoundedCorners(mode: .bottom)
-            return cell
-        }
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: TitleValueCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        cell.setDataModel(viewModel.itemForRow(at: indexPath))
+        return cell
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header: UserProfileView.TableHeader = tableView.dequeueReusableHeaderFooterView()
-        header.title = viewModel.title(for: section)
-        return header
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch viewModel.rowType(at: indexPath) {
-        case .sectionOpening: return 12
-        case .sectionClosing: return 12
-        case .item: return 70
-        }
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.didSelectRow(at: indexPath)
-        tableView.deselectRow(at: indexPath, animated: true)
+        collectionView.deselectItem(at: indexPath, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let cell: RoundedCollectionCell = collectionView.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
+        switch UserProfileView.SupplementaryElementKind(rawValue: kind)! {
+        case .header: cell.configureRoundedCorners(mode: .top)
+        case .footer: cell.configureRoundedCorners(mode: .bottom)
+        }
+        return cell
     }
 }
 
@@ -102,8 +84,6 @@ extension UserProfileVC: UserProfileVMDelegate {
     }
     
     func reloadData() {
-        contentView.tableView.reloadData()
+        contentView.collectionView.reloadData()
     }
-    
-    
 }

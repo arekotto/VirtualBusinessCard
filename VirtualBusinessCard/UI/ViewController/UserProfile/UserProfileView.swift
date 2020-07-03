@@ -9,78 +9,69 @@
 import UIKit
 
 final class UserProfileView: AppBackgroundView {
-    lazy var tableView: UITableView = {
-        let this = UITableView(frame: .zero, style: .grouped)
-        this.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
-        this.separatorStyle = .none
-        this.registerReusableCell(TableCell.self)
-        this.registerReusableCell(RoundedInsetTableCell.self)
-        this.registerReusableHeaderFooterView(TableHeader.self)
+    
+    private(set) lazy var collectionView: UICollectionView = {
+        let this = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
+        this.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        this.registerReusableCell(TitleValueCollectionCell.self)
+        this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.header.rawValue, RoundedCollectionCell.self)
+        this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.footer.rawValue, RoundedCollectionCell.self)
         return this
     }()
     
     override func configureSubviews() {
         super.configureSubviews()
-        [tableView].forEach { addSubview($0) }
+        [collectionView].forEach { addSubview($0) }
     }
     
     override func configureConstraints() {
         super.configureConstraints()
-        tableView.constrainToEdgesOfSuperview()
+        collectionView.constrainToEdgesOfSuperview()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        tableView.backgroundColor = .appDefaultBackground
+        collectionView.backgroundColor = .appDefaultBackground
+    }
+    
+    private func createCollectionViewLayout() -> UICollectionViewLayout {
+        UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
+            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .estimated(50))
+            )
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200.0))
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+                        
+            let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(10))
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.boundarySupplementaryItems = [
+                NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerFooterSize,
+                    elementKind: SupplementaryElementKind.header.rawValue,
+                    alignment: .top
+                ),
+                NSCollectionLayoutBoundarySupplementaryItem(
+                    layoutSize: headerFooterSize,
+                    elementKind: SupplementaryElementKind.footer.rawValue,
+                    alignment: .bottom
+                )
+            ]
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+            return section
+        }
+    }
+
+    enum SupplementaryElementKind: String {
+        case header
+        case footer
     }
 }
 
-// MARK: - TableCell
+// MARK: - TableHeader
 
 extension UserProfileView {
-    final class TableCell: InsetTableCell, Reusable {
-        private let titleLabel: UILabel = {
-            let this = UILabel()
-            this.font = UIFont.appDefault(size: 13, weight: .medium, design: .rounded)
-            this.textColor = .secondaryLabel
-            return this
-        }()
-        
-        private let valueLabel: UILabel = {
-            let this = UILabel()
-            this.font = UIFont.appDefault(size: 17, weight: .medium, design: .rounded)
-            return this
-        }()
-        
-        private lazy var labelStackView: UIStackView = {
-            let this = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
-            this.axis = .vertical
-            this.spacing = 4
-            return this
-        }()
-        
-        override func configureSubviews() {
-            super.configureSubviews()
-            innerContentView.addSubview(labelStackView)
-        }
-        
-        override func configureConstraints() {
-            super.configureConstraints()
-            labelStackView.constrainHorizontallyToSuperview(sideInset: 16)
-            labelStackView.constrainCenterYToSuperview()
-        }
-        
-        func setDataModel(_ dataModel: DateModel) {
-            titleLabel.text = dataModel.title
-            valueLabel.text = dataModel.value
-        }
-        
-        struct DateModel {
-            let title: String
-            let value: String?
-        }
-    }
-    
     final class TableHeader: AppTableViewHeaderFooterView, Reusable {
         
         var title: String? {

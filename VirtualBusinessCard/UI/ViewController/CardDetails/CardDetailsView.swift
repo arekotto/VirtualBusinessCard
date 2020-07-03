@@ -9,29 +9,123 @@
 import UIKit
 
 final class CardDetailsView: AppBackgroundView {
-    
-    lazy var tableView: UITableView = {
-        let this = UITableView(frame: .zero, style: .grouped)
-        this.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
-        this.separatorStyle = .none
-        this.registerReusableCell(TableCell.self)
-        this.registerReusableCell(RoundedInsetTableCell.self)
-        this.registerReusableHeaderFooterView(TableHeader.self)
+            
+    private(set) lazy var collectionView: UICollectionView = {
+        let this = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
+        this.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        this.registerReusableCell(CardImagesCell.self)
+        this.registerReusableCell(TitleValueCollectionCell.self)
+        this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.header.rawValue, RoundedCollectionCell.self)
+        this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.footer.rawValue, RoundedCollectionCell.self)
         return this
     }()
     
     override func configureSubviews() {
         super.configureSubviews()
-        [tableView].forEach { addSubview($0) }
+        [collectionView].forEach { addSubview($0) }
     }
     
     override func configureConstraints() {
         super.configureConstraints()
-        tableView.constrainToEdgesOfSuperview()
+        collectionView.constrainToEdgesOfSuperview()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        tableView.backgroundColor = .appDefaultBackground
+        collectionView.backgroundColor = .appDefaultBackground
+    }
+    
+    
+    private func createCollectionViewLayout() -> UICollectionViewLayout {
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
+            
+            if sectionIndex == 0 {
+                return self?.createCollectionViewLayoutCardImagesSection()
+            } else {
+                return self?.createCollectionViewLayoutDetailsSection()
+            }
+            
+
+        }
+    }
+    
+    private func createCollectionViewLayoutCardImagesSection() -> NSCollectionLayoutSection {
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1))
+        )
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 32, trailing: 0)
+        return section
+    }
+    
+    private func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .estimated(50))
+        )
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200.0))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(10))
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerFooterSize,
+                elementKind: SupplementaryElementKind.header.rawValue,
+                alignment: .top,
+                absoluteOffset: .init(x: 0, y: 20)
+            ),
+            NSCollectionLayoutBoundarySupplementaryItem(
+                layoutSize: headerFooterSize,
+                elementKind: SupplementaryElementKind.footer.rawValue,
+                alignment: .bottom,
+                absoluteOffset: .init(x: 0, y: -20)
+            )
+        ]
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 16, bottom: 20, trailing: 16)
+        return section
+    }
+    
+    enum SupplementaryElementKind: String {
+        case header
+        case footer
+    }
+}
+
+extension CardDetailsView {
+    final class CardImagesCell: AppCollectionViewCell, Reusable {
+        
+        let cardFrontBackView = CardFrontBackView()
+        
+        private var cardFrontBackViewHeightConstraint: NSLayoutConstraint!
+        private var cardFrontBackViewWidthConstraint: NSLayoutConstraint!
+        
+        override func configureSubviews() {
+            super.configureSubviews()
+            addSubview(cardFrontBackView)
+        }
+        
+        override func configureConstraints() {
+            super.configureConstraints()
+            cardFrontBackView.constrainCenterToSuperview()
+            let cardsOffset = UIScreen.main.bounds.width * 0.06
+            cardFrontBackViewWidthConstraint = cardFrontBackView.constrainWidth(constant: CardFrontBackView.defaultCardSize.width + cardsOffset)
+            cardFrontBackViewHeightConstraint = cardFrontBackView.constrainHeight(constant: CardFrontBackView.defaultCardSize.height + cardsOffset)
+        }
+        
+        func extendWithAnimation() {
+            let screenWidth = UIScreen.main.bounds.width
+            let heightOffset = screenWidth * 0.1
+//            let widthOffset = screenWidth * 0.15
+            cardFrontBackViewHeightConstraint.constant = CardFrontBackView.defaultCardSize.height + heightOffset
+            cardFrontBackViewWidthConstraint.constant = UIScreen.main.bounds.width - 32
+            UIView.animate(withDuration: 0.5) {
+                self.layoutIfNeeded()
+            }
+        }
     }
 }

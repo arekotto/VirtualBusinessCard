@@ -28,10 +28,6 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
         contentView.collectionView.delegate = self
         contentView.collectionView.dataSource = self
         setupNavigationItem()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         viewModel.fetchData()
     }
     
@@ -81,7 +77,6 @@ extension PersonalCardsVC: PersonalCardsVMlDelegate {
     func presentSettings(viewModel: UserProfileVM) {
         let vc = UserProfileVC(viewModel: viewModel)
         show(vc, sender: nil)
-//        navigationController?.pushViewController(UserProfileVC(viewModel: UserProfileVM(userID: userID)), animated: true)
     }
     
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
@@ -91,8 +86,8 @@ extension PersonalCardsVC: PersonalCardsVMlDelegate {
         }
     }
     
-    func presentBusinessCardDetails(id: BusinessCardID) {
-        show(CardDetailsVC(viewModel: CardDetailsVM()), sender: nil)
+    func presentCardDetails(viewModel: CardDetailsVM) {
+        show(CardDetailsVC(viewModel: viewModel), sender: nil)
     }
     
     func reloadData() {

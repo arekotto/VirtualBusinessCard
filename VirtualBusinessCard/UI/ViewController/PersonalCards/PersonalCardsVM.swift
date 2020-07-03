@@ -12,9 +12,9 @@ import UIKit
 
 protocol PersonalCardsVMlDelegate: class {
     func presentUserSetup(userID: String, email: String)
-    func presentBusinessCardDetails(id: BusinessCardID)
     func reloadData()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
+    func presentCardDetails(viewModel: CardDetailsVM)
     func presentSettings(viewModel: UserProfileVM)
 }
 
@@ -33,7 +33,7 @@ final class PersonalCardsVM: AppViewModel {
     }()
     
     private var user: UserMC?
-    private var businessCards: [PersonalBusinessCardMC] = []
+    private var cards: [PersonalBusinessCardMC] = []
         
     internal init(userID: UserID) {
         self.userID = userID
@@ -70,16 +70,17 @@ extension PersonalCardsVM {
     }
     
     func numberOfItems() -> Int {
-        businessCards.count
+        cards.count
     }
     
     func item(for indexPath: IndexPath) -> PersonalCardsView.BusinessCardCellDM {
-        let bc = businessCards[indexPath.item]
+        let bc = cards[indexPath.item]
         return PersonalCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage.url, backImageURL: bc.backImage.url, textureImageURL: bc.texture.image.url, normal: CGFloat(bc.texture.normal), specular: CGFloat(bc.texture.specular))
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        delegate?.presentBusinessCardDetails(id: businessCards[indexPath.item].id)
+        let card = cards[indexPath.item]
+        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id))
     }
     
     func didTapSettings() {
@@ -148,7 +149,7 @@ extension PersonalCardsVM {
             return
         }
         
-        businessCards = querySnap.documents.compactMap {
+        cards = querySnap.documents.compactMap {
             guard let bc = PersonalBusinessCard(queryDocumentSnapshot: $0) else {
                 print(#file, "Error mapping business card:", $0.documentID)
                 return nil

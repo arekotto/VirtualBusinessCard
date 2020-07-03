@@ -22,87 +22,16 @@ final class UserProfileVM: AppViewModel {
     private let userID: UserID
     private var user: UserMC?
     
-    let sections: [Section] = [Section(rows: [.firstName, .lastName, .email], title: NSLocalizedString("Account", comment: ""))]
+    private let sections: [Section] = [Section(rows: [.firstName, .lastName, .email], title: NSLocalizedString("Account", comment: ""))]
 
-    internal init(userID: UserID) {
+    init(userID: UserID) {
         self.userID = userID
     }
 }
 
-extension UserProfileVM {
-}
-
-// MARK: - Public API
+// MARK: - Private setters
 
 extension UserProfileVM {
-    var title: String {
-        NSLocalizedString("Settings", comment: "")
-    }
-    
-    func numberOrSections() -> Int {
-        sections.count
-    }
-    
-    func numberOfRows(in section: Int) -> Int {
-        let rowCount = sections[section].rows.count
-        return rowCount > 1 ? rowCount + 2 : 0
-    }
-    
-    func title(for section: Int) -> String {
-        sections[section].title
-    }
-    
-    func rowType(at indexPath: IndexPath) -> RowType {
-        if indexPath.row == 0 {
-            return .sectionOpening
-        }
-        
-        let section = sections[indexPath.section]
-        if indexPath.row == section.rows.count + 1 {
-            return .sectionClosing
-        }
-        return .item
-    }
-    
-    func itemForRow(at indexPath: IndexPath) -> UserProfileView.TableCell.DateModel {
-        let row = rowWithIndexAdjustment(at: indexPath)
-        return UserProfileView.TableCell.DateModel(title: row.title, value: valueText(for: row))
-    }
-    
-    func didSelectRow(at indexPath: IndexPath) {
-        guard rowType(at: indexPath) == .item else { return }
-        let row = rowWithIndexAdjustment(at: indexPath)
-        delegate?.presentAlertWithTextField(title: row.title, message: row.modifyMessage, for: row)
-    }
-    
-    private func rowWithIndexAdjustment(at indexPath: IndexPath) -> Row {
-        let adjustedIndex = indexPath.row - 1
-        return sections[indexPath.section].rows[adjustedIndex]
-    }
-    
-    private func valueText(for row: Row) -> String? {
-        switch row {
-        case .firstName:
-            return user?.firstName
-        case .lastName:
-            return user?.lastName
-        case .email:
-            return user?.email
-        }
-    }
-    
-    func didSetNewValue(_ value: String, for row: Row) {
-        guard !value.isEmpty else {
-            presentEmptyValueAlert(for: row)
-            return
-        }
-        switch row {
-        case .firstName: setNewFirstName(value)
-        case .lastName: setNewLastName(value)
-        case .email: setNewEmail(value)
-        }
-    }
-    
     private func setNewFirstName(_ value: String) {
         user?.firstName = value
         user?.save()
@@ -129,6 +58,60 @@ extension UserProfileVM {
                 self.user?.save()
             }
         })
+    }
+}
+
+// MARK: - Public API
+
+extension UserProfileVM {
+    var title: String {
+        NSLocalizedString("Settings", comment: "")
+    }
+    
+    func numberOrSections() -> Int {
+        sections.count
+    }
+    
+    func numberOfRows(in section: Int) -> Int {
+        let rowCount = sections[section].rows.count
+        return rowCount > 1 ? rowCount : 0
+    }
+    
+    func title(for section: Int) -> String {
+        sections[section].title
+    }
+    
+    func itemForRow(at indexPath: IndexPath) -> TitleValueCollectionCell.DataModel {
+        let row = sections[indexPath.section].rows[indexPath.row]
+        return TitleValueCollectionCell.DataModel(title: row.title, value: valueText(for: row))
+    }
+    
+    func didSelectRow(at indexPath: IndexPath) {
+        let row = sections[indexPath.section].rows[indexPath.row]
+        delegate?.presentAlertWithTextField(title: row.title, message: row.modifyMessage, for: row)
+    }
+    
+    private func valueText(for row: Row) -> String? {
+        switch row {
+        case .firstName:
+            return user?.firstName
+        case .lastName:
+            return user?.lastName
+        case .email:
+            return user?.email
+        }
+    }
+    
+    func didSetNewValue(_ value: String, for row: Row) {
+        guard !value.isEmpty else {
+            presentEmptyValueAlert(for: row)
+            return
+        }
+        switch row {
+        case .firstName: setNewFirstName(value)
+        case .lastName: setNewLastName(value)
+        case .email: setNewEmail(value)
+        }
     }
     
     private func presentEmptyValueAlert(for row: Row) {
@@ -169,10 +152,6 @@ extension UserProfileVM {
         userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
     }
     
-    private var businessCardCollectionReference: CollectionReference {
-        userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
-    }
-    
     private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
         
         guard let doc = document else {
@@ -202,10 +181,12 @@ extension UserProfileVM {
     }
 }
 
+// MARK: - Section, Row, RowType
+
 extension UserProfileVM {
     struct Section {
-        var rows: [Row]
-        var title: String
+        let rows: [Row]
+        let title: String
     }
     
     enum Row {
@@ -228,11 +209,5 @@ extension UserProfileVM {
             case .email: return NSLocalizedString("Enter your new email in the field below.", comment: "")
             }
         }
-    }
-    
-    enum RowType {
-        case sectionOpening
-        case sectionClosing
-        case item
     }
 }
