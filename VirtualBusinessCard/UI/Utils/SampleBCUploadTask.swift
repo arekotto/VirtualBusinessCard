@@ -65,8 +65,8 @@ struct SampleBCUploadTask {
                                   texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs[idx % texturesURLs.count]), specular: specularValues[idx % specularValues.count], normal: specularValues[idx % specularValues.count]),
                                   position: BusinessCardData.Position(title: "Manager", company: company),
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
-                                  contact: BusinessCardData.Contact(email: "\(person.lastName)@\(company).com", phoneNumberPrimary: "123321123"),
-                                  address: BusinessCardData.Address())
+                                  contact: BusinessCardData.Contact(email: "\(person.lastName.lowercased())@\(company.lowercased()).com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.\(company.lowercased()).com"),
+                                  address: BusinessCardData.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"))
             
             let cardTagIDs: [BusinessCardTagID]
             switch idx % 3 {

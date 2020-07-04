@@ -11,7 +11,7 @@ import CoreMotion
 
 final class CardFrontBackView: AppView {
     
-    static let defaultCardSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.7)
+    static let defaultCardSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.8)
     
     private let frontSceneView: BusinessCardSceneView = {
         let view = BusinessCardSceneView(dynamicLightingEnabled: true)
@@ -32,6 +32,11 @@ final class CardFrontBackView: AppView {
     private(set) var backSceneXConstraint: NSLayoutConstraint!
     private(set) var backSceneYConstraint: NSLayoutConstraint!
     
+    override func configureView() {
+        super.configureView()
+        setSizeMode(.expanded)
+    }
+    
     override func configureSubviews() {
         super.configureSubviews()
         allSceneViews.forEach { addSubview($0) }
@@ -51,6 +56,21 @@ final class CardFrontBackView: AppView {
             $0.constrainHeight(constant: Self.defaultCardSize.height, priority: .defaultHigh)
             $0.constrainWidthLessThan(self)
             $0.constrainWidth(constant: Self.defaultCardSize.width, priority: .defaultHigh)
+        }
+    }
+    
+    func setSizeMode(_ sizeMode: SizeMode) {
+        switch sizeMode {
+        case .compact:
+            allSceneViews.forEach {
+                $0.layer.shadowRadius = 6
+                $0.layer.shadowOpacity = 0.2
+            }
+        case .expanded:
+            allSceneViews.forEach {
+                $0.layer.shadowRadius = 12
+                $0.layer.shadowOpacity = 0.4
+            }
         }
     }
     
@@ -105,31 +125,6 @@ extension CardFrontBackView {
             animation.duration = duration
             $0.layer.add(animation, forKey: animation.keyPath)
             $0.layer.shadowOffset = offset
-        }
-    }
-    
-    func setSizeMode(_ sizeMode: SizeMode) {
-        switch sizeMode {
-        case .compact:
-            allSceneViews.forEach {
-                $0.layer.shadowRadius = 6
-                $0.layer.shadowOpacity = 0.2
-            }
-            
-            //            backSceneView.dynamicLightingEnabled = false
-            //            frontSceneView.dynamicLightingEnabled = false
-            //            backSceneView.clipsToBounds = true
-        //            frontSceneView.clipsToBounds = true
-        case .expanded:
-            allSceneViews.forEach {
-                $0.layer.shadowRadius = 12
-                $0.layer.shadowOpacity = 0.4
-            }
-            //            backSceneView.dynamicLightingEnabled = true
-            //            frontSceneView.dynamicLightingEnabled = true
-            //            backSceneView.clipsToBounds = false
-            //            frontSceneView.clipsToBounds = false
-            
         }
     }
 }

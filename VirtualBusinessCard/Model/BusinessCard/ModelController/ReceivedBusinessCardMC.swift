@@ -34,6 +34,24 @@ class ReceivedBusinessCardMC {
         return businessCard.cardData.name.first ?? businessCard.cardData.name.last ?? ""
     }
     
+    var addressCondensed: String {
+        let addressData = cardData.address
+        var address = ""
+        if let street = addressData.street, !street.isEmpty {
+            address.append(street + ",")
+        }
+        if let city = addressData.city, !city.isEmpty {
+            address.append(city + ",")
+        }
+        if let postCode = addressData.postCode, !postCode.isEmpty {
+            address.append(postCode + ",")
+        }
+        if let country = addressData.country, !country.isEmpty {
+            address.append(country)
+        }
+        return address
+    }
+    
     var addressFormatted: String {
         
         let addressData = cardData.address

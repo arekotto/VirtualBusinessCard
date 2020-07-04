@@ -1,14 +1,14 @@
 //
-//  TitleValueCollectionCell.swift
+//  TitleValueImageCollectionViewCell.swift
 //  VirtualBusinessCard
 //
-//  Created by Arek Otto on 29/06/2020.
+//  Created by Arek Otto on 03/07/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
 import UIKit
 
-final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
+final class TitleValueImageCollectionViewCell: AppCollectionViewCell, Reusable {
     
     override var isSelected: Bool {
         get { super.isSelected }
@@ -36,6 +36,13 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
         return this
     }()
     
+    private let imageView: UIImageView = {
+        let this = UIImageView()
+        this.contentMode = .center
+        this.clipsToBounds = true
+        return this
+    }()
+    
     private lazy var labelStackView: UIStackView = {
         let this = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
         this.axis = .vertical
@@ -43,27 +50,37 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
         return this
     }()
     
+    private lazy var mainStackView: UIStackView = {
+        let this = UIStackView(arrangedSubviews: [labelStackView, imageView])
+        this.spacing = 4
+        return this
+    }()
+    
     override func configureSubviews() {
         super.configureSubviews()
-        contentView.addSubview(labelStackView)
+        contentView.addSubview(mainStackView)
     }
     
     override func configureConstraints() {
         super.configureConstraints()
-        labelStackView.constrainHorizontallyToSuperview(sideInset: 16)
-        labelStackView.constrainCenterYToSuperview()
-        labelStackView.constrainTopGreaterOrEqual(to: contentView.topAnchor, constant: 10, priority: .defaultHigh)
-        labelStackView.constrainBottomLessOrEqual(to: contentView.bottomAnchor, constant: -10, priority: .defaultHigh)
+        mainStackView.constrainHorizontallyToSuperview(sideInset: 16)
+        mainStackView.constrainCenterYToSuperview()
+        mainStackView.constrainTopGreaterOrEqual(to: contentView.topAnchor, constant: 10, priority: .defaultHigh)
+        mainStackView.constrainBottomLessOrEqual(to: contentView.bottomAnchor, constant: -10, priority: .defaultHigh)
+        
+        imageView.constrainWidth(constant: 32)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.backgroundColor = .roundedTableViewCellBackground
+        imageView.tintColor = .appAccent
     }
     
     func setDataModel(_ dataModel: DataModel) {
         titleLabel.text = dataModel.title
         valueLabel.text = dataModel.value
+        imageView.image = dataModel.primaryImage
     }
     
     func didUpdateSelected() {
@@ -77,7 +94,16 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
     }
     
     struct DataModel {
+        
         let title: String
         let value: String?
+        
+        let primaryImage: UIImage?
+        
+        init(title: String, value: String?, primaryImage: UIImage?) {
+            self.title = title
+            self.value = value
+            self.primaryImage = primaryImage
+        }
     }
 }

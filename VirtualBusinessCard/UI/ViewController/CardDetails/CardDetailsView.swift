@@ -9,12 +9,15 @@
 import UIKit
 
 final class CardDetailsView: AppBackgroundView {
+        
+    let titleView = TitleView()
             
     private(set) lazy var collectionView: UICollectionView = {
         let this = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
         this.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         this.registerReusableCell(CardImagesCell.self)
         this.registerReusableCell(TitleValueCollectionCell.self)
+        this.registerReusableCell(TitleValueImageCollectionViewCell.self)
         this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.header.rawValue, RoundedCollectionCell.self)
         this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.footer.rawValue, RoundedCollectionCell.self)
         return this
@@ -38,14 +41,7 @@ final class CardDetailsView: AppBackgroundView {
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
         UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
-            
-            if sectionIndex == 0 {
-                return self?.createCollectionViewLayoutCardImagesSection()
-            } else {
-                return self?.createCollectionViewLayoutDetailsSection()
-            }
-            
-
+            sectionIndex == 0 ? self?.createCollectionViewLayoutCardImagesSection() : self?.createCollectionViewLayoutDetailsSection()
         }
     }
     
@@ -54,7 +50,7 @@ final class CardDetailsView: AppBackgroundView {
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(1))
         )
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(CardImagesCell.defaultHeight))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 32, trailing: 0)
@@ -97,7 +93,63 @@ final class CardDetailsView: AppBackgroundView {
 }
 
 extension CardDetailsView {
+    final class TitleView: AppView {
+        
+        private(set) var isVisible = false
+        
+        private var imageViewCenterConstraint: NSLayoutConstraint!
+        private let imageView: UIImageView = {
+            let this = UIImageView()
+            this.contentMode = .scaleAspectFit
+            return this
+        }()
+        
+        override func configureView() {
+            super.configureView()
+            clipsToBounds = true
+            constrainWidth(constant: 70)
+            constrainHeight(constant: 44)
+        }
+        
+        override func configureSubviews() {
+            super.configureSubviews()
+            addSubview(imageView)
+        }
+        
+        override func configureConstraints() {
+            super.configureConstraints()
+            imageView.constrainWidthEqualTo(self)
+            imageView.constrainHeight(constant: 38)
+            imageView.constrainCenterXToSuperview()
+            imageViewCenterConstraint = imageView.constrainCenterYToSuperview(offset: 50)
+        }
+        
+        func setImageURL(_ url: URL?) {
+            imageView.kf.setImage(with: url)
+        }
+        
+        func animateSlideIn() {
+            imageViewCenterConstraint.constant = 0
+            isVisible = true
+            UIView.animate(withDuration: 0.3) {
+                self.layoutIfNeeded()
+            }
+        }
+        
+        func animateSlideOut() {
+            imageViewCenterConstraint.constant = 50
+            isVisible = false
+            UIView.animate(withDuration: 0.3) {
+                self.layoutIfNeeded()
+            }
+        }
+    }
+}
+
+extension CardDetailsView {
     final class CardImagesCell: AppCollectionViewCell, Reusable {
+        
+        static let defaultHeight: CGFloat = 240
         
         let cardFrontBackView = CardFrontBackView()
         
@@ -120,7 +172,6 @@ extension CardDetailsView {
         func extendWithAnimation() {
             let screenWidth = UIScreen.main.bounds.width
             let heightOffset = screenWidth * 0.1
-//            let widthOffset = screenWidth * 0.15
             cardFrontBackViewHeightConstraint.constant = CardFrontBackView.defaultCardSize.height + heightOffset
             cardFrontBackViewWidthConstraint.constant = UIScreen.main.bounds.width - 32
             UIView.animate(withDuration: 0.5) {

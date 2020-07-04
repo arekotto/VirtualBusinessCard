@@ -8,17 +8,19 @@
 
 import Firebase
 import UIKit
+import CoreMotion
 
 protocol CardDetailsVMDelegate: class {
     func reloadData()
-
+    func presentSendEmailViewController(recipient: String)
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
 
 final class CardDetailsVM: AppViewModel {
-    
-    typealias DataModel = TitleValueCollectionCell.DataModel
-    
-    weak var delegate: CardDetailsVMDelegate?
+        
+    weak var delegate: CardDetailsVMDelegate? {
+        didSet { didSetDelegate() }
+    }
     
     private let cardID: BusinessCardID
     private var card: ReceivedBusinessCardMC?
@@ -27,17 +29,34 @@ final class CardDetailsVM: AppViewModel {
     private var user: UserMC?
     
     private var sections = [Section]()
+    
+    private lazy var motionManager: CMMotionManager = {
+        let manager = CMMotionManager()
+        manager.deviceMotionUpdateInterval = 0.1
+        return manager
+    }()
 
     init(userID: UserID, cardID: BusinessCardID) {
         self.userID = userID
         self.cardID = cardID
     }
+    
+    private func didSetDelegate() {
+        if delegate != nil {
+            motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
+                guard let self = self, let motion = motion else { return }
+                self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
+            }
+        } else {
+            motionManager.stopDeviceMotionUpdates()
+        }
+    }
 }
 // MARK: - Public API
 
 extension CardDetailsVM {
-    var title: String {
-        NSLocalizedString("Settings", comment: "")
+    var titleImageURL: URL? {
+        card?.cardData.frontImage.url
     }
     
     func numberOrSections() -> Int {
@@ -45,64 +64,67 @@ extension CardDetailsVM {
     }
     
     func numberOfRows(in section: Int) -> Int {
-        sections[section].rows.count
+        sections[section].items.count
     }
     
-    func row(at indexPath: IndexPath) -> Row {
-        sections[indexPath.section].rows[indexPath.row]
+    func item(at indexPath: IndexPath) -> Item {
+        sections[indexPath.section].items[indexPath.row]
     }
     
     func title(for section: Int) -> String? {
         sections[section].title
+    }
+    
+    func didSelect(action: Action, at indexPath: IndexPath) {
+        let selectedItem = item(at: indexPath)
+        guard selectedItem.actions.contains(action) else { return }
+        var actionValue = ""
+        
+        switch selectedItem.dataModel {
+        case .dataCell(let dm): actionValue = dm.value ?? ""
+        case .dataCellImage(let dm): actionValue = dm.value ?? ""
+        case .cardImagesCell(_): actionValue = ""
+        }
+        
+        guard !actionValue.isEmpty else { return }
+        
+        switch action {
+        case .call:
+            guard let number = URL(string: "tel://" + actionValue) else { return }
+            UIApplication.shared.open(number)
+        case .sendEmail:
+            delegate?.presentSendEmailViewController(recipient: actionValue)
+        case .visitWebsite:
+            if !actionValue.starts(with: "http") {
+                actionValue = "http://" + actionValue
+            }
+            guard let url = URL(string: actionValue) else { return }
+            UIApplication.shared.open(url)
+        case .navigate:
+            guard let address = card?.addressCondensed, !address.isEmpty else { return }
+            guard let addressEncoded = address.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+            guard let url = URL(string: "http://maps.apple.com/?address=" + addressEncoded) else { return }
+            UIApplication.shared.open(url)
+        case .copy:
+            UIPasteboard.general.string = actionValue
+        }
     }
 }
 
 // MARK: - Row Creation
 
 extension CardDetailsVM {
-    private static func makeRows(for card: ReceivedBusinessCardMC) -> [Section] {
     
-        let cardData = card.cardData
-        let imagesDataModel = CardFrontBackView.DataModel(
-            frontImageURL: cardData.frontImage.url,
-            backImageURL: cardData.backImage.url,
-            textureImageURL: cardData.texture.image.url,
-            normal: CGFloat(cardData.texture.normal),
-            specular: CGFloat(cardData.texture.specular)
-        )
-        
-        var sections = [Section(rows: [.cardImagesCell(imagesDataModel)])]
-        
-        let personalData = [
-            DataModel(title: NSLocalizedString("Name", comment: ""), value: card.ownerDisplayName),
-            DataModel(title: NSLocalizedString("Position", comment: ""), value: cardData.position.title),
-            DataModel(title: NSLocalizedString("Company", comment: ""), value: cardData.position.company)
-        ]
-        
-        let includedPersonalDataRows = personalData.filter { $0.value ?? "" != "" }
-        if !includedPersonalDataRows.isEmpty {
-            sections.append(Section(rows: includedPersonalDataRows.map { .dataCell($0) }))
+    private static let imageConfig = UIImage.SymbolConfiguration(font: UIFont.appDefault(size: 20, weight: .semibold, design: .rounded))
+    
+    static func iconImage(for action: Action) -> UIImage? {
+        switch action {
+        case .copy: return UIImage(systemName: "doc.on.doc.fill", withConfiguration: Self.imageConfig)
+        case .call: return UIImage(systemName: "phone.fill", withConfiguration: Self.imageConfig)
+        case .sendEmail: return UIImage(systemName: "envelope.fill", withConfiguration: Self.imageConfig)
+        case .visitWebsite: return UIImage(systemName: "safari.fill", withConfiguration: Self.imageConfig)
+        case .navigate: return UIImage(systemName: "map.fill", withConfiguration: Self.imageConfig)
         }
-        
-        let contactData = [
-            DataModel(title: NSLocalizedString("Phone Primary", comment: ""), value: cardData.contact.phoneNumberPrimary),
-            DataModel(title: NSLocalizedString("Phone Secondary", comment: ""), value: cardData.contact.phoneNumberSecondary),
-            DataModel(title: NSLocalizedString("Email", comment: ""), value: cardData.contact.email),
-            DataModel(title: NSLocalizedString("Website", comment: ""), value: cardData.contact.website),
-            DataModel(title: NSLocalizedString("Fax", comment: ""), value: cardData.contact.fax),
-        ]
-        
-        let includedContactDataRows = contactData.filter { $0.value ?? "" != "" }
-        if !includedContactDataRows.isEmpty {
-            sections.append(Section(rows: includedContactDataRows.map { .dataCell($0) }))
-        }
-        
-        let address = card.addressFormatted
-        if address != "" {
-            sections.append(Section(rows: [.dataCell(DataModel(title: NSLocalizedString("Address", comment: ""), value: address))]))
-        }
-        
-        return sections
     }
 }
 
@@ -166,30 +188,61 @@ extension CardDetailsVM {
         }
         guard let card = ReceivedBusinessCardMC(documentSnapshot: doc) else {
             print(#file, "Error mapping received card:", error?.localizedDescription ?? "No error info available.")
+            self.card = nil
+            sections = []
             return
         }
         self.card = card
-        sections = Self.makeRows(for: card)
+        sections = CardDetailsSectionFactory(card: card, imageProvider: Self.iconImage).makeRows()
         delegate?.reloadData()
     }
 }
 
-// MARK: - Section, Row, RowType
+// MARK: - Section, Item
 
 extension CardDetailsVM {
     struct Section {
         
-        var rows: [Row]
+        var items: [Item]
         var title: String?
         
-        init(rows: [CardDetailsVM.Row], title: String? = nil) {
-            self.rows = rows
+        init(items: [CardDetailsVM.Item], title: String? = nil) {
+            self.items = items
+            self.title = title
+        }
+        
+        init(singleItem: CardDetailsVM.Item, title: String? = nil) {
+            self.items = [singleItem]
             self.title = title
         }
     }
     
-    enum Row {
+    struct Item {
+        let dataModel: DataModel
+        let actions: [Action]
+    }
+    
+    enum DataModel {
         case dataCell(TitleValueCollectionCell.DataModel)
+        case dataCellImage(TitleValueImageCollectionViewCell.DataModel)
         case cardImagesCell(CardFrontBackView.DataModel)
+    }
+    
+    enum Action {
+        case copy
+        case call
+        case sendEmail
+        case visitWebsite
+        case navigate
+        
+        var title: String {
+            switch self {
+            case .copy: return NSLocalizedString("Copy", comment: "")
+            case .call: return NSLocalizedString("Make a Call", comment: "")
+            case .sendEmail: return NSLocalizedString("Send an Email", comment: "")
+            case .visitWebsite: return NSLocalizedString("Open Website in Browser", comment: "")
+            case .navigate: return NSLocalizedString("Open in Maps", comment: "")
+            }
+        }
     }
 }

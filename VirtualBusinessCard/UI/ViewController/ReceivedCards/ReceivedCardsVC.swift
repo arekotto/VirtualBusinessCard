@@ -18,10 +18,6 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         setupNavigationItem()
         extendedLayoutIncludesOpaqueBars = true
         definesPresentationContext = true
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
         viewModel.fetchData()
     }
     
