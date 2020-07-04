@@ -131,7 +131,8 @@ extension CardDetailsView {
         func animateSlideIn() {
             imageViewCenterConstraint.constant = 0
             isVisible = true
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.5) {
+                self.alpha = 1
                 self.layoutIfNeeded()
             }
         }
@@ -139,7 +140,8 @@ extension CardDetailsView {
         func animateSlideOut() {
             imageViewCenterConstraint.constant = 50
             isVisible = false
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.5) {
+                self.alpha = 0
                 self.layoutIfNeeded()
             }
         }

@@ -17,7 +17,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         super.viewDidLoad()
         setupNavigationItem()
         hidesBottomBarWhenPushed = true
-//        extendedLayoutIncludesOpaqueBars = true
+        extendedLayoutIncludesOpaqueBars = true
         contentView.collectionView.delegate = self
         contentView.collectionView.dataSource = self
         viewModel.delegate = self
@@ -102,7 +102,7 @@ extension CardDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > CardDetailsView.CardImagesCell.defaultHeight + 16 {
+        if scrollView.contentOffset.y > CardDetailsView.CardImagesCell.defaultHeight + 16 - (navigationController?.navigationBar.frame.height ?? 0) - UIApplication.shared.statusBarFrame.height {
             guard !contentView.titleView.isVisible else { return }
             contentView.titleView.animateSlideIn()
         } else {

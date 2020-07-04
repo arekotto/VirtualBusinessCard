@@ -44,12 +44,11 @@ class MainTBC: UITabBarController {
         super.viewWillLayoutSubviews()
         tabBar.tintColor = .appAccent
         tabBar.backgroundColor = .appTabBar
+        tabBar.shadowImage = UIColor.barSeparator.as1ptImage()
     }
     
     private func setupTabBarStyle() {
-        tabBar.shadowImage = UIImage.empty
         tabBar.backgroundImage = UIImage.empty
-        
         tabBar.layer.shadowColor = UIColor.black.cgColor
         tabBar.layer.shadowOffset = CGSize(width: 0.0, height: -3.0)
         tabBar.layer.shadowRadius = 5

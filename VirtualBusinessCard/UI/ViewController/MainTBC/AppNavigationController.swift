@@ -14,6 +14,21 @@ protocol TabBarDisplayable {
 
 class AppNavigationController: UINavigationController {
     
+    var isShadowEnabled = false {
+        didSet {
+            if isShadowEnabled {
+                navigationBar.shadowImage = UIColor.barSeparator.as1ptImage()
+                navigationBar.layer.shadowColor = UIColor.black.cgColor
+                navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 0)
+                navigationBar.layer.shadowRadius = 2
+                navigationBar.layer.shadowOpacity = 0.07
+            } else {
+                navigationBar.shadowImage = UIImage.empty
+                navigationBar.layer.shadowOpacity = 0
+            }
+        }
+    }
+    
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
         tabBarItem.title = nil
@@ -32,7 +47,7 @@ class AppNavigationController: UINavigationController {
         super.viewDidLoad()
         navigationBar.prefersLargeTitles = true
         navigationBar.isTranslucent = false
-        navigationBar.shadowImage = UIImage.empty
+        isShadowEnabled = true
     }
     
     override func viewWillLayoutSubviews() {
@@ -40,5 +55,8 @@ class AppNavigationController: UINavigationController {
         navigationBar.barTintColor = .appDefaultBackground
         navigationBar.tintColor = .appAccent
         view.backgroundColor = .appDefaultBackground
+        if isShadowEnabled {
+            navigationBar.shadowImage = UIColor.barSeparator.as1ptImage()
+        }
     }
 }

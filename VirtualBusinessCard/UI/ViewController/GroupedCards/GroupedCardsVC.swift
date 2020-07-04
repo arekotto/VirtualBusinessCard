@@ -22,6 +22,16 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         viewModel.fetchData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        (navigationController as? AppNavigationController)?.isShadowEnabled = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        (navigationController as? AppNavigationController)?.isShadowEnabled = true
+    }
+    
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: viewModel.seeAllCardsButtonTitle, style: .plain, target: self, action: #selector(didTapSeeAllButton))
