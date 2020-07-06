@@ -87,7 +87,7 @@ extension ReceivedCardsVM {
     
     func didSelectItem(at indexPath: IndexPath) {
         let card = cards[indexPath.item]
-        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id))
+        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: item(for: indexPath)))
     }
     
     func didChangeCellSizeMode() {

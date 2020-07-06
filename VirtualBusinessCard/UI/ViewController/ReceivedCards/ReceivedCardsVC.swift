@@ -11,6 +11,13 @@ import CoreMotion
 
 final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsVM> {
     
+    var animator: DetailsTransitionAnimator?
+    
+    var selectedCell: UICollectionViewCell? {
+        guard let indexPath = contentView.collectionView.indexPathsForSelectedItems?.first else { return nil }
+        return contentView.collectionView.cellForItem(at: indexPath)
+    }
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
@@ -19,6 +26,11 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         extendedLayoutIncludesOpaqueBars = true
         definesPresentationContext = true
         viewModel.fetchData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        selectedCell?.isHidden = false
     }
     
     private func setupCollectionView() {
@@ -69,6 +81,9 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if contentView.collectionView.contentOffset.y < -88 && !(navigationItem.searchController?.isActive ?? false) {
+            contentView.collectionView.scrollToItem(at: IndexPath(item: 0), at: .top, animated: false)
+        }
         viewModel.didSelectItem(at: indexPath)
     }
 }
@@ -77,7 +92,10 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
 
 extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     func presentCardDetails(viewModel: CardDetailsVM) {
-        show(CardDetailsVC(viewModel: viewModel), sender: nil)
+        let detailsVC = AppNavigationController(rootViewController: CardDetailsVC(viewModel: viewModel))
+        detailsVC.transitioningDelegate = self
+        detailsVC.modalPresentationStyle = .fullScreen
+        present(detailsVC, animated: true)
     }
     
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
@@ -113,5 +131,22 @@ extension ReceivedCardsVC: TabBarDisplayable {
 extension ReceivedCardsVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.didSearch(for: searchController.searchBar.text ?? "")
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+
+extension ReceivedCardsVC: UIViewControllerTransitioningDelegate {
+    
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let selectedCell = self.selectedCell else { return nil }
+        guard let cellSnap = selectedCell.contentView.snapshotView(afterScreenUpdates: false) else { return nil }
+        animator = DetailsTransitionAnimator(type: .present, animatedCell: selectedCell, animatedCellSnapshot: cellSnap, availableAnimationBounds: view.safeAreaLayoutGuide.layoutFrame)
+        return animator
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        animator?.type = .dismiss
+        return animator
     }
 }

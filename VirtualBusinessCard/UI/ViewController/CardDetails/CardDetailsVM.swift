@@ -14,6 +14,7 @@ protocol CardDetailsVMDelegate: class {
     func reloadData()
     func presentSendEmailViewController(recipient: String)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
+    func dismissSelf()
 }
 
 final class CardDetailsVM: AppViewModel {
@@ -28,7 +29,9 @@ final class CardDetailsVM: AppViewModel {
     private let userID: UserID
     private var user: UserMC?
     
-    private var sections = [Section]()
+    private let initialLoadDataModel: CardFrontBackView.DataModel
+    
+    private lazy var sections = [Section(singleItem: Item(dataModel: .cardImagesCell(initialLoadDataModel), actions: []))]
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -36,9 +39,10 @@ final class CardDetailsVM: AppViewModel {
         return manager
     }()
 
-    init(userID: UserID, cardID: BusinessCardID) {
+    init(userID: UserID, cardID: BusinessCardID, initialLoadDataModel: CardFrontBackView.DataModel) {
         self.userID = userID
         self.cardID = cardID
+        self.initialLoadDataModel = initialLoadDataModel
     }
     
     private func didSetDelegate() {
@@ -108,6 +112,10 @@ extension CardDetailsVM {
         case .copy:
             UIPasteboard.general.string = actionValue
         }
+    }
+    
+    func didTapCloseButton() {
+        delegate?.dismissSelf()
     }
 }
 

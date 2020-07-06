@@ -10,11 +10,12 @@ import UIKit
 
 final class CardDetailsView: AppBackgroundView {
         
+    static let contentInsetTop: CGFloat = 24
+
     let titleView = TitleView()
             
     private(set) lazy var collectionView: UICollectionView = {
         let this = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
-        this.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         this.registerReusableCell(CardImagesCell.self)
         this.registerReusableCell(TitleValueCollectionCell.self)
         this.registerReusableCell(TitleValueImageCollectionViewCell.self)
@@ -53,7 +54,7 @@ final class CardDetailsView: AppBackgroundView {
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(CardImagesCell.defaultHeight))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 32, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: Self.contentInsetTop, leading: 0, bottom: 32, trailing: 0)
         return section
     }
     
@@ -68,6 +69,8 @@ final class CardDetailsView: AppBackgroundView {
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(10))
         
         let section = NSCollectionLayoutSection(group: group)
+        let bottomOffset: CGFloat = 24
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 16, bottom: bottomOffset, trailing: 16)
         section.boundarySupplementaryItems = [
             NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: headerFooterSize,
@@ -79,10 +82,9 @@ final class CardDetailsView: AppBackgroundView {
                 layoutSize: headerFooterSize,
                 elementKind: SupplementaryElementKind.footer.rawValue,
                 alignment: .bottom,
-                absoluteOffset: .init(x: 0, y: -20)
+                absoluteOffset: .init(x: 0, y: -bottomOffset)
             )
         ]
-        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 16, bottom: 20, trailing: 16)
         return section
     }
     
@@ -161,11 +163,13 @@ extension CardDetailsView {
         override func configureSubviews() {
             super.configureSubviews()
             addSubview(cardFrontBackView)
+            cardFrontBackView.isHidden = true
         }
         
         override func configureConstraints() {
             super.configureConstraints()
-            cardFrontBackView.constrainCenterToSuperview()
+            cardFrontBackView.constrainCenterXToSuperview()
+            cardFrontBackView.constrainTopToSuperview()
             let cardsOffset = UIScreen.main.bounds.width * 0.06
             cardFrontBackViewWidthConstraint = cardFrontBackView.constrainWidth(constant: CardFrontBackView.defaultCardSize.width + cardsOffset)
             cardFrontBackViewHeightConstraint = cardFrontBackView.constrainHeight(constant: CardFrontBackView.defaultCardSize.height + cardsOffset)
@@ -176,9 +180,20 @@ extension CardDetailsView {
             let heightOffset = screenWidth * 0.1
             cardFrontBackViewHeightConstraint.constant = CardFrontBackView.defaultCardSize.height + heightOffset
             cardFrontBackViewWidthConstraint.constant = UIScreen.main.bounds.width - 32
-            UIView.animate(withDuration: 0.5) {
+            UIView.animate(withDuration: 0.3) {
                 self.layoutIfNeeded()
             }
+        }
+        
+        func condenseWithAnimation(completion: @escaping () -> Void) {
+            let cardsOffset = UIScreen.main.bounds.width * 0.06
+            cardFrontBackViewHeightConstraint.constant = CardFrontBackView.defaultCardSize.height + cardsOffset
+            cardFrontBackViewWidthConstraint.constant = CardFrontBackView.defaultCardSize.width + cardsOffset
+            UIView.animate(withDuration: 0.2, animations: {
+                self.layoutIfNeeded()
+            }, completion: { _ in
+                completion()
+            })
         }
     }
 }

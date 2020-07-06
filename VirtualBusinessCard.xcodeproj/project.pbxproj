@@ -128,6 +128,7 @@
 		45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */; };
 		45F41FA324600D0A002BC37F /* BusinessCardSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */; };
 		45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F41FA424600E79002BC37F /* BusinessCardTVC.swift */; };
+		45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */; };
 		9E6AEC9EEDA28F23576379D6 /* libPods-VirtualBusinessCardTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C48E5C40E0464D2F2568390 /* libPods-VirtualBusinessCardTests.a */; };
 		A98E0132DA4C07A1AF3B816A /* libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 706CD27DFEFFC748D4061E4E /* libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a */; };
 		C89A3F0654015C8DABF7CBB3 /* libPods-VirtualBusinessCard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E36C7107E0C5DDA489128F7 /* libPods-VirtualBusinessCard.a */; };
@@ -280,6 +281,7 @@
 		45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailViewModel.swift; sourceTree = "<group>"; };
 		45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardSceneView.swift; sourceTree = "<group>"; };
 		45F41FA424600E79002BC37F /* BusinessCardTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTVC.swift; sourceTree = "<group>"; };
+		45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTransitionAnimator.swift; sourceTree = "<group>"; };
 		4C48E5C40E0464D2F2568390 /* libPods-VirtualBusinessCardTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualBusinessCardTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E36C7107E0C5DDA489128F7 /* libPods-VirtualBusinessCard.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualBusinessCard.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		706CD27DFEFFC748D4061E4E /* libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -352,6 +354,7 @@
 				45139C5124979CA300DE1E9F /* ReceivedCardsVM.swift */,
 				45139C5324979CB600DE1E9F /* ReceivedCardsView.swift */,
 				45139C582497A49500DE1E9F /* ReceivedCardViewCell.swift */,
+				45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */,
 			);
 			path = ReceivedCards;
 			sourceTree = "<group>";
@@ -1099,6 +1102,7 @@
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
 				454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */,
+				45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */,
 				45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */,
 				458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */,
 				4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */,

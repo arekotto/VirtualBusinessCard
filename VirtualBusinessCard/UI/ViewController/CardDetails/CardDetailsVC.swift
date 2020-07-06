@@ -13,6 +13,22 @@ import Kingfisher
 
 final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     
+    func imageCellOrigin(translatedTo targetView: UIView) -> CGPoint? {
+        guard let cell = cardImagesCell() else { return nil }
+        return cell.cardFrontBackView.convert(cell.cardFrontBackView.bounds, to: targetView).origin
+    }
+    
+    func estimatedImageCellOrigin() -> CGPoint {
+        let estimatedTopAreaInset: CGFloat = 88
+        let cardsOffset = UIScreen.main.bounds.width * 0.06
+        let x = (UIScreen.main.bounds.width - (CardFrontBackView.defaultCardSize.width + cardsOffset)) / 2
+        return CGPoint(x: x, y: CardDetailsView.contentInsetTop + estimatedTopAreaInset)
+    }
+    
+    func setImageSectionHidden(_ isHidden: Bool) {
+        cardImagesCell()?.cardFrontBackView.isHidden = isHidden
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationItem()
@@ -32,14 +48,23 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.titleView = contentView.titleView
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseButton))
     }
     
     private func cardImagesCell() -> CardDetailsView.CardImagesCell? {
-        contentView.collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? CardDetailsView.CardImagesCell
+        contentView.collectionView.cellForItem(at: IndexPath(item: 0)) as? CardDetailsView.CardImagesCell
     }
 }
 
 // MARK: - Actions
+
+@objc private extension CardDetailsVC {
+    func didTapCloseButton() {
+        viewModel.didTapCloseButton()
+    }
+}
+
+// MARK: - AlertController
 
 private extension CardDetailsVC {
     func displayAlertController(with actions: [CardDetailsVM.Action], for indexPath: IndexPath) {
@@ -102,7 +127,8 @@ extension CardDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y > CardDetailsView.CardImagesCell.defaultHeight + 16 - (navigationController?.navigationBar.frame.height ?? 0) - UIApplication.shared.statusBarFrame.height {
+        let safeAreaTopInset = view.safeAreaInsets.top
+        if scrollView.contentOffset.y > CardDetailsView.CardImagesCell.defaultHeight + CardDetailsView.contentInsetTop - safeAreaTopInset {
             guard !contentView.titleView.isVisible else { return }
             contentView.titleView.animateSlideIn()
         } else {
@@ -115,6 +141,16 @@ extension CardDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate {
 // MARK: - CardDetailsVMDelegate
 
 extension CardDetailsVC: CardDetailsVMDelegate {
+    func dismissSelf() {
+        guard let cell = cardImagesCell() else {
+            dismiss(animated: false)
+            return
+        }
+        cell.condenseWithAnimation {
+            self.dismiss(animated: true)
+        }
+    }
+    
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         cardImagesCell()?.cardFrontBackView.updateMotionData(motion, over: timeFrame)
     }
