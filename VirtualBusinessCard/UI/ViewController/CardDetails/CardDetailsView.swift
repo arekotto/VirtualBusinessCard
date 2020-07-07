@@ -13,8 +13,8 @@ final class CardDetailsView: AppBackgroundView {
     static let contentInsetTop: CGFloat = 24
 
     let titleView = TitleView()
-            
-    private(set) lazy var collectionView: UICollectionView = {
+    
+    let collectionView: UICollectionView = {
         let this = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
         this.registerReusableCell(CardImagesCell.self)
         this.registerReusableCell(TitleValueCollectionCell.self)
@@ -38,27 +38,29 @@ final class CardDetailsView: AppBackgroundView {
         super.layoutSubviews()
         collectionView.backgroundColor = .appDefaultBackground
     }
-    
-    
-    private func createCollectionViewLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
-            sectionIndex == 0 ? self?.createCollectionViewLayoutCardImagesSection() : self?.createCollectionViewLayoutDetailsSection()
+}
+
+// MARK: - Static functions
+
+extension CardDetailsView {
+    private static func createCollectionViewLayout() -> UICollectionViewLayout {
+        UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
+            sectionIndex == 0 ? createCollectionViewLayoutCardImagesSection() : createCollectionViewLayoutDetailsSection()
         }
     }
-    
-    private func createCollectionViewLayoutCardImagesSection() -> NSCollectionLayoutSection {
+    private static func createCollectionViewLayoutCardImagesSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(1))
         )
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(CardImagesCell.defaultHeight))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(ReceivedCardsView.CollectionCell.defaultHeight))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: Self.contentInsetTop, leading: 0, bottom: 32, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: Self.contentInsetTop, leading: 0, bottom: 16, trailing: 0)
         return section
     }
     
-    private func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
+    private static func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .estimated(50))
@@ -93,6 +95,8 @@ final class CardDetailsView: AppBackgroundView {
         case footer
     }
 }
+
+// MARK: - TitleView
 
 extension CardDetailsView {
     final class TitleView: AppView {
@@ -150,15 +154,18 @@ extension CardDetailsView {
     }
 }
 
+// MARK: - CardImagesCell
+
 extension CardDetailsView {
     final class CardImagesCell: AppCollectionViewCell, Reusable {
-        
-        static let defaultHeight: CGFloat = 240
-        
+                
         let cardFrontBackView = CardFrontBackView()
         
-        private var cardFrontBackViewHeightConstraint: NSLayoutConstraint!
-        private var cardFrontBackViewWidthConstraint: NSLayoutConstraint!
+        private var cardFrontBackViewCompactHeightConstraint: NSLayoutConstraint!
+        private var cardFrontBackViewCompactWidthConstraint: NSLayoutConstraint!
+        
+        private var cardFrontBackViewExtendedHeightConstraint: NSLayoutConstraint?
+        private var cardFrontBackViewExtendedWidthConstraint: NSLayoutConstraint?
         
         override func configureSubviews() {
             super.configureSubviews()
@@ -168,28 +175,40 @@ extension CardDetailsView {
         
         override func configureConstraints() {
             super.configureConstraints()
-            cardFrontBackView.constrainCenterXToSuperview()
-            cardFrontBackView.constrainTopToSuperview()
-            let cardsOffset = UIScreen.main.bounds.width * 0.06
-            cardFrontBackViewWidthConstraint = cardFrontBackView.constrainWidth(constant: CardFrontBackView.defaultCardSize.width + cardsOffset)
-            cardFrontBackViewHeightConstraint = cardFrontBackView.constrainHeight(constant: CardFrontBackView.defaultCardSize.height + cardsOffset)
+            cardFrontBackView.constrainCenterToSuperview()
+            cardFrontBackViewCompactWidthConstraint = cardFrontBackView.constrainWidthEqualTo(self,
+                multiplier: ReceivedCardsView.CollectionCell.defaultWidthMultiplier
+            )
+            cardFrontBackViewCompactHeightConstraint = cardFrontBackView.constrainHeightEqualTo(self,
+                multiplier: ReceivedCardsView.CollectionCell.defaultHeightMultiplier
+            )
         }
         
         func extendWithAnimation() {
-            let screenWidth = UIScreen.main.bounds.width
-            let heightOffset = screenWidth * 0.1
-            cardFrontBackViewHeightConstraint.constant = CardFrontBackView.defaultCardSize.height + heightOffset
-            cardFrontBackViewWidthConstraint.constant = UIScreen.main.bounds.width - 32
-            UIView.animate(withDuration: 0.3) {
+            cardFrontBackView.lockViewsToCurrentSizes()
+
+            cardFrontBackViewCompactHeightConstraint.isActive = false
+            cardFrontBackViewCompactWidthConstraint.isActive = false
+            
+            let newWidth = UIScreen.main.bounds.width - 32
+            let newOffset = newWidth - cardFrontBackView.frame.width
+            
+            cardFrontBackViewExtendedWidthConstraint = cardFrontBackView.constrainWidth(constant: newWidth)
+            let multi = ReceivedCardsView.CollectionCell.defaultHeightMultiplier
+            cardFrontBackViewExtendedHeightConstraint = cardFrontBackView.constrainHeightEqualTo(self, constant: newOffset, multiplier: multi)
+            
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
-            }
+            })
         }
         
         func condenseWithAnimation(completion: @escaping () -> Void) {
-            let cardsOffset = UIScreen.main.bounds.width * 0.06
-            cardFrontBackViewHeightConstraint.constant = CardFrontBackView.defaultCardSize.height + cardsOffset
-            cardFrontBackViewWidthConstraint.constant = CardFrontBackView.defaultCardSize.width + cardsOffset
-            UIView.animate(withDuration: 0.2, animations: {
+            
+            cardFrontBackViewExtendedWidthConstraint?.isActive = false
+            cardFrontBackViewExtendedHeightConstraint?.isActive = false
+            cardFrontBackViewCompactHeightConstraint.isActive = true
+            cardFrontBackViewCompactWidthConstraint.isActive = true
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
             }, completion: { _ in
                 completion()

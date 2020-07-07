@@ -9,28 +9,21 @@
 import UIKit
 import CoreMotion
 
-final class CardFrontBackView: AppView {
+class CardFrontBackView: AppView {
     
-    static let defaultCardSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.8)
+    let frontSceneView =  BusinessCardSceneView(dynamicLightingEnabled: true)
+    let backSceneView = BusinessCardSceneView(dynamicLightingEnabled: true)
     
-    private let frontSceneView: BusinessCardSceneView = {
-        let view = BusinessCardSceneView(dynamicLightingEnabled: true)
-        return view
-    }()
+    var frontSceneViewHeightConstraint: NSLayoutConstraint!
+    var backSceneViewHeightConstraint: NSLayoutConstraint!
     
-    private let backSceneView: BusinessCardSceneView = {
-        let view = BusinessCardSceneView(dynamicLightingEnabled: true)
-        return view
-    }()
-    
-    private var allSceneViews: [BusinessCardSceneView] {
+    var allSceneViews: [BusinessCardSceneView] {
         [backSceneView, frontSceneView]
     }
     
-    private(set) var frontSceneXConstraint: NSLayoutConstraint!
-    private(set) var frontSceneYConstraint: NSLayoutConstraint!
-    private(set) var backSceneXConstraint: NSLayoutConstraint!
-    private(set) var backSceneYConstraint: NSLayoutConstraint!
+    var sizeMode = SizeMode.expanded {
+        didSet { setSizeMode(sizeMode) }
+    }
     
     override func configureView() {
         super.configureView()
@@ -44,32 +37,41 @@ final class CardFrontBackView: AppView {
     
     override func configureConstraints() {
         super.configureConstraints()
-                
+        
         frontSceneView.constrainLeadingToSuperview()
         frontSceneView.constrainTopToSuperview()
+        
         
         backSceneView.constrainTrailingToSuperview()
         backSceneView.constrainBottomToSuperview()
         
-        allSceneViews.forEach {
-            $0.constrainHeightLessThan(self)
-            $0.constrainHeight(constant: Self.defaultCardSize.height, priority: .defaultHigh)
-            $0.constrainWidthLessThan(self)
-            $0.constrainWidth(constant: Self.defaultCardSize.width, priority: .defaultHigh)
-        }
+        frontSceneViewHeightConstraint = frontSceneView.constrainHeightEqualTo(self, multiplier: 0.9)
+        backSceneViewHeightConstraint = backSceneView.constrainHeightEqualTo(self, multiplier: 0.9)
+        
+        frontSceneView.constrainWidthEqualTo(frontSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardSizeRatio)
+        backSceneView.constrainWidthEqualTo(backSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardSizeRatio)
     }
     
-    func setSizeMode(_ sizeMode: SizeMode) {
+    func lockViewsToCurrentSizes() {
+        
+        frontSceneViewHeightConstraint.isActive = false
+        frontSceneView.constrainHeight(constant: frontSceneView.frame.size.height)
+        
+        backSceneViewHeightConstraint.isActive = false
+        backSceneView.constrainHeight(constant: backSceneView.frame.size.height)
+    }
+    
+    private func setSizeMode(_ sizeMode: SizeMode) {
         switch sizeMode {
         case .compact:
             allSceneViews.forEach {
-                $0.layer.shadowRadius = 6
-                $0.layer.shadowOpacity = 0.2
+                $0.layer.shadowRadius = 4.5
+                $0.layer.shadowOpacity = 0.35
             }
         case .expanded:
             allSceneViews.forEach {
-                $0.layer.shadowRadius = 12
-                $0.layer.shadowOpacity = 0.4
+                $0.layer.shadowRadius = 9
+                $0.layer.shadowOpacity = 0.35
             }
         }
     }
@@ -101,7 +103,6 @@ extension CardFrontBackView {
                 if let backImage = imagesResult.backImage {
                     self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
                 }
-                
             }
         }
     }
@@ -112,7 +113,10 @@ extension CardFrontBackView {
         let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
         let y = deviceRotationInZ * 10 / deg2rad(45)
         
-        animateShadow(to: CGSize(width: y, height: -x), over: timeInterval)
+        switch sizeMode {
+        case .compact:  animateShadow(to: CGSize(width: y / 2, height: -x / 2), over: timeInterval)
+        case .expanded: animateShadow(to: CGSize(width: y, height: -x), over: timeInterval)
+        }
         
         allSceneViews.forEach { $0.updateMotionData(motion: motion, over: timeInterval) }
     }

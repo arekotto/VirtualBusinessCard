@@ -77,7 +77,7 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as! ReceivedCardsView.CollectionCell).cardFrontBackView.setSizeMode(viewModel.cellSizeMode)
+        (cell as! ReceivedCardsView.CollectionCell).cardFrontBackView.sizeMode = viewModel.cellSizeMode
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -85,6 +85,14 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
             contentView.collectionView.scrollToItem(at: IndexPath(item: 0), at: .top, animated: false)
         }
         viewModel.didSelectItem(at: indexPath)
+    }
+}
+
+extension ReceivedCardsVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
+        guard let firstVisibleItem = collectionView.indexPathsForVisibleItems.min() else { return proposedContentOffset }
+        let isShowingFirstItem = firstVisibleItem.item == 0
+        return isShowingFirstItem ? collectionView.contentOffset : proposedContentOffset
     }
 }
 
@@ -114,7 +122,7 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
         let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(cellSize: sizeMode)
         contentView.collectionView.setCollectionViewLayout(layoutFactory.layout(), animated: true)
         let visibleCells = contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]
-        visibleCells.forEach { $0.cardFrontBackView.setSizeMode(sizeMode) }
+        visibleCells.forEach { $0.cardFrontBackView.sizeMode = sizeMode }
     }
 }
 

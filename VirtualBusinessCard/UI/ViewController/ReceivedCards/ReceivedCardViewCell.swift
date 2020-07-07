@@ -11,8 +11,16 @@ import CoreMotion
 
 extension ReceivedCardsView {
     final class CollectionCell: AppCollectionViewCell, Reusable {
-        
+        static let defaultHeight: CGFloat = 270
+        static let defaultWidthMultiplier: CGFloat = 0.85
+        static let defaultHeightMultiplier: CGFloat = 0.8
+
         let cardFrontBackView = CardFrontBackView()
+        
+        override func configureCell() {
+            super.configureCell()
+            clipsToBounds = true
+        }
         
         override func configureSubviews() {
             super.configureSubviews()
@@ -21,7 +29,9 @@ extension ReceivedCardsView {
         
         override func configureConstraints() {
             super.configureConstraints()
-            cardFrontBackView.constrainToEdgesOfSuperview()
+            cardFrontBackView.constrainCenterToSuperview()
+            cardFrontBackView.constrainWidthEqualTo(contentView, multiplier: Self.defaultWidthMultiplier)
+            cardFrontBackView.constrainHeightEqualTo(contentView, multiplier: Self.defaultHeightMultiplier)
         }
     }
 }

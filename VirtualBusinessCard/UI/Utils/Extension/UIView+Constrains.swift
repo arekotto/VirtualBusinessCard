@@ -364,6 +364,15 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
+    
+    @discardableResult
+    func constrainWidthLessThanOrEqualTo(constant: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> NSLayoutConstraint {
+        translatesAutoresizingMaskIntoConstraints = false
+        let constraint = widthAnchor.constraint(lessThanOrEqualToConstant: constant)
+        constraint.priority = priority
+        constraint.isActive = true
+        return constraint
+    }
 }
 
 extension UIView {

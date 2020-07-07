@@ -13,16 +13,15 @@ import Kingfisher
 
 final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     
-    func imageCellOrigin(translatedTo targetView: UIView) -> CGPoint? {
+    func imageCellFrame(translatedTo targetView: UIView) -> CGRect? {
         guard let cell = cardImagesCell() else { return nil }
-        return cell.cardFrontBackView.convert(cell.cardFrontBackView.bounds, to: targetView).origin
+        return cell.contentView.convert(cell.contentView.bounds, to: targetView)
     }
     
-    func estimatedImageCellOrigin() -> CGPoint {
+    func estimatedImageCellFrame() -> CGRect {
         let estimatedTopAreaInset: CGFloat = 88
-        let cardsOffset = UIScreen.main.bounds.width * 0.06
-        let x = (UIScreen.main.bounds.width - (CardFrontBackView.defaultCardSize.width + cardsOffset)) / 2
-        return CGPoint(x: x, y: CardDetailsView.contentInsetTop + estimatedTopAreaInset)
+        let origin = CGPoint(x: 0, y: CardDetailsView.contentInsetTop + estimatedTopAreaInset)
+        return CGRect(origin: origin, size: CGSize(width: UIScreen.main.bounds.width, height: ReceivedCardsView.CollectionCell.defaultHeight))
     }
     
     func setImageSectionHidden(_ isHidden: Bool) {
@@ -128,7 +127,7 @@ extension CardDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let safeAreaTopInset = view.safeAreaInsets.top
-        if scrollView.contentOffset.y > CardDetailsView.CardImagesCell.defaultHeight + CardDetailsView.contentInsetTop - safeAreaTopInset {
+        if scrollView.contentOffset.y > ReceivedCardsView.CollectionCell.defaultHeight + CardDetailsView.contentInsetTop - safeAreaTopInset {
             guard !contentView.titleView.isVisible else { return }
             contentView.titleView.animateSlideIn()
         } else {

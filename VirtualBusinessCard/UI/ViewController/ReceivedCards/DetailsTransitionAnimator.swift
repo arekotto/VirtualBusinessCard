@@ -63,18 +63,16 @@ extension ReceivedCardsVC {
             
             [presentingVC.view, presentedView, availableAnimationBoundsView].forEach { containerView.addSubview($0) }
 
-            let animatedCellOnPresentedViewOrigin: CGPoint
-            if let exactBounds = cardDetailsVC.imageCellOrigin(translatedTo: availableAnimationBoundsView) {
+            let animatedCellOnPresentedViewOrigin: CGRect
+            if let exactBounds = cardDetailsVC.imageCellFrame(translatedTo: availableAnimationBoundsView) {
                 animatedCellOnPresentedViewOrigin = exactBounds
             } else {
-                animatedCellOnPresentedViewOrigin = presentingVC.view.convert(cardDetailsVC.estimatedImageCellOrigin(), to: availableAnimationBoundsView)
+                animatedCellOnPresentedViewOrigin = presentingVC.view.convert(cardDetailsVC.estimatedImageCellFrame(), to: availableAnimationBoundsView)
             }
-            
-            let animatedCellOnPresentedViewFrame = CGRect(x: animatedCellOnPresentedViewOrigin.x, y: animatedCellOnPresentedViewOrigin.y, width: animatedCellSnapshot.frame.width, height: animatedCellSnapshot.frame.height)
             
             let animatedCellFrame = animatedCell.contentView.convert(animatedCell.contentView.bounds, to: availableAnimationBoundsView)
             
-            animatedCellSnapshot.frame = isPresenting ? animatedCellFrame : animatedCellOnPresentedViewFrame
+            animatedCellSnapshot.frame = isPresenting ? animatedCellFrame : animatedCellOnPresentedViewOrigin
             
             let onScreenPresentedViewFrame = presentedView.frame
             let offScreenPresentedViewFrame = CGRect(origin: CGPoint(x: UIScreen.main.bounds.width, y: onScreenPresentedViewFrame.origin.y), size: onScreenPresentedViewFrame.size)
@@ -88,13 +86,12 @@ extension ReceivedCardsVC {
             UIView.animate(withDuration: Self.duration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 if isPresenting {
                     presentedView.frame = onScreenPresentedViewFrame
-                    self.animatedCellSnapshot.frame = animatedCellOnPresentedViewFrame
+                    self.animatedCellSnapshot.frame = animatedCellOnPresentedViewOrigin
                 } else {
                     presentedView.frame = offScreenPresentedViewFrame
                     self.animatedCellSnapshot.frame = animatedCellFrame
                 }
             }) { _ in
-//                self.animatedCellSnapshot.removeFromSuperview()
                 presentingVC.view.removeFromSuperview()
                 availableAnimationBoundsView.removeFromSuperview()
                 if !isPresenting {

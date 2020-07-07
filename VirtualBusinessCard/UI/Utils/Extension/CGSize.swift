@@ -9,7 +9,10 @@
 import CoreGraphics
 
 extension CGSize {
+    
+    static var businessCardSizeRatio: CGFloat { 55 / 85 }
+    
     static func businessCardSize(width: CGFloat) -> CGSize {
-        CGSize(width: width, height: width * 55 / 85)
+        CGSize(width: width, height: width * businessCardSizeRatio)
     }
 }

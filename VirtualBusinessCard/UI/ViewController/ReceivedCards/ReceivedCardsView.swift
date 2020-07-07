@@ -13,7 +13,7 @@ final class ReceivedCardsView: AppBackgroundView {
     let cellSizeModeButton = UIButton(type: .system)
     
     let collectionView: UICollectionView = {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: ReceivedCardsCollectionViewLayout())
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.registerReusableCell(CollectionCell.self)
         cv.backgroundColor = nil
         cv.keyboardDismissMode = .onDrag
@@ -38,56 +38,45 @@ final class ReceivedCardsView: AppBackgroundView {
     }
 }
 
+// MARK: - CollectionViewLayoutFactory
+
 extension ReceivedCardsView {
     struct CollectionViewLayoutFactory {
         let cellSize: CardFrontBackView.SizeMode
         
         func layout() -> UICollectionViewLayout {
             switch cellSize {
-            case .compact: return CompactCellLayout()
-            case .expanded: return ExpandedCellLayout()
-            }
-        }
-        
-    }
-
-    class ReceivedCardsCollectionViewLayout: UICollectionViewFlowLayout {
-        
-        static let screenWidth = UIScreen.main.bounds.size.width
-        
-        override init() {
-            super.init()
-            let inset = Self.screenWidth * 0.05
-            sectionInset = UIEdgeInsets(top: 30, left: inset, bottom: 30, right: inset)
-            minimumLineSpacing = 30
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
-            guard let cv = collectionView, let firstVisibleItem = cv.indexPathsForVisibleItems.min() else { return proposedContentOffset }
-            let isShowingFirstItem = firstVisibleItem.item == 0
-            return isShowingFirstItem ? cv.contentOffset : proposedContentOffset
-        }
-    }
-
-    final class ExpandedCellLayout: ReceivedCardsCollectionViewLayout {
-        override var itemSize: CGSize {
-            set {}
-            get {
-                let cardSize = CardFrontBackView.defaultCardSize
-                let cardsOffset = Self.screenWidth * 0.06
-                return CGSize(width: cardSize.width + cardsOffset, height: cardSize.height + cardsOffset)
+            case .compact: return createCollectionViewCompactLayout()
+            case .expanded: return createCollectionViewExtendedLayout()
             }
         }
     }
-
-    class CompactCellLayout: ReceivedCardsCollectionViewLayout {
-        override var itemSize: CGSize {
-            set {}
-            get { CGSize.businessCardSize(width: Self.screenWidth * 0.4) }
-        }
+    
+    private static func createCollectionViewExtendedLayout() -> UICollectionViewLayout {
+        
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .absolute(CollectionCell.defaultHeight))
+        )
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200.0))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+    
+    private static func createCollectionViewCompactLayout() -> UICollectionViewLayout {
+        
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.5),
+            heightDimension: .fractionalHeight(1))
+        )
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(CollectionCell.defaultHeight * 0.5))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+        return UICollectionViewCompositionalLayout(section: section)
     }
 }
