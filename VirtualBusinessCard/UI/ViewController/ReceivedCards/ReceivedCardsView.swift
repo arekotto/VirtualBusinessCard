@@ -11,7 +11,7 @@ import UIKit
 final class ReceivedCardsView: AppBackgroundView {
     
     let cellSizeModeButton = UIButton(type: .system)
-    
+
     let collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.registerReusableCell(CollectionCell.self)

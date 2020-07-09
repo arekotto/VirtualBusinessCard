@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIAlertController {
-    static func withTint(title: String?, message: String?, preferredStyle: UIAlertController.Style) -> UIAlertController {
+    static func accentTinted(title: String?, message: String?, preferredStyle: UIAlertController.Style) -> UIAlertController {
         let ac = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         ac.view.tintColor = .appAccent
         return ac

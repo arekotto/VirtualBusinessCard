@@ -66,13 +66,13 @@ extension UserProfileVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
 extension UserProfileVC: UserProfileVMDelegate {
     func presentAlert(title: String?, message: String?) {
-        let alert = UIAlertController.withTint(title: title, message: message, preferredStyle: .alert)
+        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
         present(alert, animated: true)
     }
     
     func presentAlertWithTextField(title: String?, message: String?, for row: UserProfileVM.Row) {
-        let alert = UIAlertController.withTint(title: title, message: message, preferredStyle: .alert)
+        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .alert)
         alert.addTextField { field in
             field.placeholder = title
         }

@@ -78,6 +78,8 @@
 		458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 458EF404248B9B6D00EC76D6 /* Kingfisher */; };
 		458EF407248BA29100EC76D6 /* EditBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF406248BA29100EC76D6 /* EditBusinessCardMC.swift */; };
 		458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF409248BC7A000EC76D6 /* PersonalBusinessCardMC.swift */; };
+		459102F324B708A60064B12C /* PersonalCardsCompactVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459102F224B708A60064B12C /* PersonalCardsCompactVC.swift */; };
+		459102F524B70D780064B12C /* PersonalCardsCompactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459102F424B70D780064B12C /* PersonalCardsCompactView.swift */; };
 		45944B0E24AF70530005CAF1 /* CardDetailsSectionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45944B0D24AF70530005CAF1 /* CardDetailsSectionFactory.swift */; };
 		459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58623FEA496002F03DD /* Firestoreable.swift */; };
 		459DC58A23FEA4CB002F03DD /* UserPublic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58923FEA4CB002F03DD /* UserPublic.swift */; };
@@ -231,6 +233,8 @@
 		458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		458EF406248BA29100EC76D6 /* EditBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBusinessCardMC.swift; sourceTree = "<group>"; };
 		458EF409248BC7A000EC76D6 /* PersonalBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBusinessCardMC.swift; sourceTree = "<group>"; };
+		459102F224B708A60064B12C /* PersonalCardsCompactVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsCompactVC.swift; sourceTree = "<group>"; };
+		459102F424B70D780064B12C /* PersonalCardsCompactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsCompactView.swift; sourceTree = "<group>"; };
 		45944B0D24AF70530005CAF1 /* CardDetailsSectionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailsSectionFactory.swift; sourceTree = "<group>"; };
 		459DC58623FEA496002F03DD /* Firestoreable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Firestoreable.swift; sourceTree = "<group>"; };
 		459DC58923FEA4CB002F03DD /* UserPublic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPublic.swift; sourceTree = "<group>"; };
@@ -488,6 +492,7 @@
 		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				459102F124B708780064B12C /* PersonalCardsCompact */,
 				4541B0E324A8B05600BF8E0E /* UserProfile */,
 				45C25D5E249CF01700945F29 /* GroupedCards */,
 				45139C4E24979C2100DE1E9F /* ReceivedCards */,
@@ -661,6 +666,15 @@
 				45139C552497A1B100DE1E9F /* ReceivedBusinessCardMC.swift */,
 			);
 			path = ModelController;
+			sourceTree = "<group>";
+		};
+		459102F124B708780064B12C /* PersonalCardsCompact */ = {
+			isa = PBXGroup;
+			children = (
+				459102F224B708A60064B12C /* PersonalCardsCompactVC.swift */,
+				459102F424B70D780064B12C /* PersonalCardsCompactView.swift */,
+			);
+			path = PersonalCardsCompact;
 			sourceTree = "<group>";
 		};
 		459DC58823FEA4A1002F03DD /* Model */ = {
@@ -1100,6 +1114,7 @@
 				4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */,
 				452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */,
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
+				459102F324B708A60064B12C /* PersonalCardsCompactVC.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
 				454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */,
 				45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */,
@@ -1115,6 +1130,7 @@
 				452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */,
 				45C25D60249CF05100945F29 /* GroupedCardsVC.swift in Sources */,
 				454CF7E024A9F52D00074E0D /* UIAlertController.swift in Sources */,
+				459102F524B70D780064B12C /* PersonalCardsCompactView.swift in Sources */,
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,

@@ -27,11 +27,16 @@ final class ReceivedCardsVM: AppViewModel {
     
     let title: String
     let dataFetchMode: DataFetchMode
+    
     private let userID: UserID
 
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
     private var displayedCardIndexes = [Int]()
+    
+    private let sortActions = defaultSortActions()
+    
+    private(set) lazy var selectedSortMode = sortActions.first!.mode
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -73,6 +78,11 @@ extension ReceivedCardsVM {
         case .expanded:
             return UIImage(systemName: "table.fill", withConfiguration: imgConfig)!
         }
+    }
+    
+    var sortControlImage: UIImage {
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        return UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imgConfig)!
     }
     
     func numberOfItems() -> Int {
@@ -120,11 +130,88 @@ extension ReceivedCardsVM {
             }
         }
     }
+    
+    func sortingAlertControllerDataModel() -> SortingAlertControllerDataModel {
+        SortingAlertControllerDataModel(title: NSLocalizedString("Sort cards by:", comment: ""), actions: sortActions)
+    }
+    
+    func didSelectSortMode(_ mode: SortMode) {
+        guard sortActions.contains(where: { $0.mode == mode}) else { return }
+        selectedSortMode = mode
+        DispatchQueue.global().async {
+            let newSortedCards = Self.sortCards(self.cards, using: mode)
+            DispatchQueue.main.async {
+                self.cards = newSortedCards
+                self.delegate?.refreshData(animated: true)
+            }
+        }
+    }
+}
+
+// MARK: - Sorting static helpers
+
+extension ReceivedCardsVM {
+    
+    private static func defaultSortActions() -> [SortAction] {
+        return [
+            SortAction(mode: SortMode(property: .firstName, direction: .ascending), title: NSLocalizedString("First name - ascending", comment: "")),
+            SortAction(mode: SortMode(property: .firstName, direction: .descending), title: NSLocalizedString("First name - descending", comment: "")),
+            SortAction(mode: SortMode(property: .lastName, direction: .ascending), title: NSLocalizedString("Last name - ascending", comment: "")),
+            SortAction(mode: SortMode(property: .lastName, direction: .descending), title: NSLocalizedString("Last name - descending", comment: "")),
+            SortAction(mode: SortMode(property: .receivingDate, direction: .ascending), title: NSLocalizedString("Receiving date - ascending", comment: "")),
+            SortAction(mode: SortMode(property: .receivingDate, direction: .descending), title: NSLocalizedString("Receiving date - descending", comment: ""))
+        ]
+    }
+    
+    private static func sortCards(_ cards: [ReceivedBusinessCardMC], using mode: SortMode) -> [ReceivedBusinessCardMC] {
+        switch mode.property {
+        case .firstName:
+            switch mode.direction {
+            case .ascending: return cards.sorted(by: Self.cardSorterFirstNameAscending)
+            case .descending: return cards.sorted(by: Self.cardSorterFirstNameDescending)
+            }
+        case .lastName:
+            switch mode.direction {
+            case .ascending: return cards.sorted(by: Self.cardSorterLastNameAscending)
+            case .descending: return cards.sorted(by: Self.cardSorterLastNameDescending)
+            }
+        case .receivingDate:
+            switch mode.direction {
+            case .ascending: return cards.sorted(by: Self.cardSorterDateAscending)
+            case .descending: return cards.sorted(by: Self.cardSorterDateDescending)
+            }
+        }
+    }
+    
+    private static func cardSorterFirstNameAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
+        (lhs.cardData.name.first ?? "") <= (rhs.cardData.name.first ?? "")
+    }
+    
+    private static func cardSorterFirstNameDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
+        (lhs.cardData.name.first ?? "") >= (rhs.cardData.name.first ?? "")
+    }
+    
+    private static func cardSorterLastNameAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
+        (lhs.cardData.name.last ?? "") <= (rhs.cardData.name.last ?? "")
+    }
+    
+    private static func cardSorterLastNameDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
+        (lhs.cardData.name.last ?? "") >= (rhs.cardData.name.last ?? "")
+    }
+    
+    private static func cardSorterDateAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
+        lhs.receivingDate <= rhs.receivingDate
+    }
+    
+    private static func cardSorterDateDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
+        lhs.receivingDate >= rhs.receivingDate
+    }
 }
 
 // MARK: - Firebase static helpers
 
 extension ReceivedCardsVM {
+    
     private static func mapAllCards(from querySnap: QuerySnapshot) -> [ReceivedBusinessCardMC] {
         querySnap.documents.compactMap {
             guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
@@ -216,20 +303,63 @@ extension ReceivedCardsVM {
             print(#file, error?.localizedDescription ?? "")
             return
         }
-        switch dataFetchMode {
-        case .allReceivedCards: cards = Self.mapAllCards(from: querySnap)
-        case .specifiedIDs(let ids): cards = Self.mapCards(from: querySnap, containedIn: ids)
+        
+        DispatchQueue.global().async {
+            
+            let newCardsSorted = self.mapAndSortCards(querySnapshot: querySnap)
+            
+            DispatchQueue.main.async {
+                self.cards = newCardsSorted
+                self.displayedCardIndexes = Array(0 ..< newCardsSorted.count)
+                self.delegate?.refreshData(animated: false)
+            }
         }
-        displayedCardIndexes = Array(0 ..< cards.count)
-        delegate?.refreshData(animated: false)
+    }
+    
+    private func mapAndSortCards(querySnapshot: QuerySnapshot) -> [ReceivedBusinessCardMC] {
+        let newCards: [ReceivedBusinessCardMC]
+        switch self.dataFetchMode {
+        case .allReceivedCards: newCards = Self.mapAllCards(from: querySnapshot)
+        case .specifiedIDs(let ids): newCards = Self.mapCards(from: querySnapshot, containedIn: ids)
+        }
+        return Self.sortCards(newCards, using: self.selectedSortMode)
     }
 }
 
-// MARK: - CellSizeMode & DataFetchMode
+// MARK: - DataFetchMode
 
 extension ReceivedCardsVM {    
     enum DataFetchMode {
         case allReceivedCards
         case specifiedIDs(_ ids: [BusinessCardID])
     }
+}
+
+// MARK: - Sorting
+
+extension ReceivedCardsVM {
+    
+    struct SortingAlertControllerDataModel {
+        let title: String
+        let actions: [SortAction]
+    }
+    
+    struct SortMode: Equatable {
+        let property: Property
+        let direction: Direction
+        
+        enum Property {
+            case firstName, lastName, receivingDate
+        }
+        
+        enum Direction {
+            case ascending, descending
+        }
+    }
+    
+    struct SortAction {
+        let mode: SortMode
+        let title: String
+    }
+    
 }

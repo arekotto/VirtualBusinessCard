@@ -45,9 +45,15 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: contentView.cellSizeModeButton)
+
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
         contentView.cellSizeModeButton.addTarget(self, action: #selector(didTapCellSizeModeButton), for: .touchUpInside)
+        
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(customView: contentView.cellSizeModeButton),
+            UIBarButtonItem(image: viewModel.sortControlImage, style: .plain, target: self, action: #selector(didTapSortButton))
+        ]
+        
         navigationItem.searchController = {
             let controller = UISearchController()
             controller.searchResultsUpdater = self
@@ -62,6 +68,20 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
 @objc extension ReceivedCardsVC {
     func didTapCellSizeModeButton() {
         viewModel.didChangeCellSizeMode()
+    }
+    
+    func didTapSortButton() {
+        let dataModel = viewModel.sortingAlertControllerDataModel()
+        let alert = UIAlertController.accentTinted(title: dataModel.title, message: nil, preferredStyle: .actionSheet)
+        dataModel.actions.forEach { action in
+            let alertAction = UIAlertAction(title: action.title, style: .default) { _ in
+                self.viewModel.didSelectSortMode(action.mode)
+            }
+            alertAction.setValue(action.mode == viewModel.selectedSortMode, forKey: "checked")
+            alert.addAction(alertAction)
+        }
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+        present(alert, animated: true)
     }
 }
 
