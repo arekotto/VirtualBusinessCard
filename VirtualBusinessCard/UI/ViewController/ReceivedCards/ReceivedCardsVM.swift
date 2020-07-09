@@ -11,7 +11,7 @@ import CoreMotion
 import UIKit
 
 protocol ReceivedBusinessCardsVMDelegate: class {
-    func refreshData()
+    func refreshData(animated: Bool)
     func refreshLayout(sizeMode: CardFrontBackView.SizeMode)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentCardDetails(viewModel: CardDetailsVM)
@@ -103,14 +103,22 @@ extension ReceivedCardsVM {
     }
     
     func didSearch(for query: String) {
-        if query.isEmpty {
-            displayedCardIndexes = Array(0 ..< cards.count)
-        } else {
-            displayedCardIndexes = cards.enumerated()
-                .filter { _, card in Self.shouldDisplayCard(card, forQuery: query) }
-                .map { idx, _ in idx }
+        DispatchQueue.global().async {
+            let newDisplayedCardIndexes: [Int]
+            if query.isEmpty {
+                newDisplayedCardIndexes = Array(0 ..< self.cards.count)
+            } else {
+                newDisplayedCardIndexes = self.cards.enumerated()
+                    .filter { _, card in Self.shouldDisplayCard(card, forQuery: query) }
+                    .map { idx, _ in idx }
+            }
+            if newDisplayedCardIndexes != self.displayedCardIndexes {
+                DispatchQueue.main.async {
+                    self.displayedCardIndexes = newDisplayedCardIndexes
+                    self.delegate?.refreshData(animated: true)
+                }
+            }
         }
-        delegate?.refreshData()
     }
 }
 
@@ -200,7 +208,7 @@ extension ReceivedCardsVM {
             return
         }
         user?.setUserPrivate(document: doc)
-        delegate?.refreshData()
+        delegate?.refreshData(animated: false)
     }
     
     private func receivedCardsCollectionDidChange(querySnapshot: QuerySnapshot?, error: Error?) {
@@ -213,7 +221,7 @@ extension ReceivedCardsVM {
         case .specifiedIDs(let ids): cards = Self.mapCards(from: querySnap, containedIn: ids)
         }
         displayedCardIndexes = Array(0 ..< cards.count)
-        delegate?.refreshData()
+        delegate?.refreshData(animated: false)
     }
 }
 

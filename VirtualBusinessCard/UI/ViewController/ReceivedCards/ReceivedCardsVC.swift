@@ -17,6 +17,8 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         guard let indexPath = contentView.collectionView.indexPathsForSelectedItems?.first else { return nil }
         return contentView.collectionView.cellForItem(at: indexPath)
     }
+
+    private var isSearchActive = false
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,8 +115,14 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
         }
     }
     
-    func refreshData() {
-        contentView.collectionView.reloadData()
+    func refreshData(animated: Bool) {
+        if animated {
+            contentView.collectionView.performBatchUpdates({
+                contentView.collectionView.reloadSections([0])
+            })
+        } else {
+            contentView.collectionView.reloadData()
+        }
     }
     
     func refreshLayout(sizeMode: CardFrontBackView.SizeMode) {

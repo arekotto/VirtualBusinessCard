@@ -46,13 +46,13 @@ extension ReceivedCardsView {
         
         func layout() -> UICollectionViewLayout {
             switch cellSize {
-            case .compact: return createCollectionViewCompactLayout()
-            case .expanded: return createCollectionViewExtendedLayout()
+            case .compact: return makeCollectionViewCompactLayout()
+            case .expanded: return makeCollectionViewExtendedLayout()
             }
         }
     }
     
-    private static func createCollectionViewExtendedLayout() -> UICollectionViewLayout {
+    private static func makeCollectionViewExtendedLayout() -> UICollectionViewLayout {
         
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
@@ -66,7 +66,7 @@ extension ReceivedCardsView {
         return UICollectionViewCompositionalLayout(section: section)
     }
     
-    private static func createCollectionViewCompactLayout() -> UICollectionViewLayout {
+    private static func makeCollectionViewCompactLayout() -> UICollectionViewLayout {
         
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(0.5),
