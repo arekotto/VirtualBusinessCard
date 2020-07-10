@@ -10,7 +10,7 @@ import UIKit
 
 class MainTBC: UITabBarController {
         
-    private(set) lazy var personalCardsVC = PersonalCardsCompactVC(viewModel: PersonalCardsVM(userID: userID))
+    private(set) lazy var personalCardsVC = PersonalCardsVC(viewModel: PersonalCardsVM(userID: userID))
     private(set) lazy var groupedCardsVC = GroupedCardsVC(viewModel: GroupedCardsVM(userID: userID))
     
     var allViewControllers: [UIViewController] {

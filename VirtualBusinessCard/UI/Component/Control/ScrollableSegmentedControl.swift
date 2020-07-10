@@ -170,9 +170,9 @@ extension ScrollableSegmentedControl {
             ]
             
             if animated {
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                     self.layoutIfNeeded()
-                }
+                })
             } else {
                 layoutIfNeeded()
             }

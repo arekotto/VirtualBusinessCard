@@ -40,15 +40,25 @@ final class CardDetailsView: AppBackgroundView {
     }
 }
 
-// MARK: - Static functions
+// MARK: - GroupedCardsView
 
 extension CardDetailsView {
-    private static func createCollectionViewLayout() -> UICollectionViewLayout {
+    enum SupplementaryElementKind: String {
+        case header
+        case footer
+    }
+}
+
+// MARK: - Static functions
+
+private extension CardDetailsView {
+    static func createCollectionViewLayout() -> UICollectionViewLayout {
         UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
             sectionIndex == 0 ? createCollectionViewLayoutCardImagesSection() : createCollectionViewLayoutDetailsSection()
         }
     }
-    private static func createCollectionViewLayoutCardImagesSection() -> NSCollectionLayoutSection {
+    
+    static func createCollectionViewLayoutCardImagesSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(1))
@@ -60,7 +70,7 @@ extension CardDetailsView {
         return section
     }
     
-    private static func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
+    static func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .estimated(50))
@@ -88,11 +98,6 @@ extension CardDetailsView {
             )
         ]
         return section
-    }
-    
-    enum SupplementaryElementKind: String {
-        case header
-        case footer
     }
 }
 

@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 
 protocol GroupedCardsVMDelegate: class {
-    func refreshData(animated: Bool)
+    func refreshData(preUpdateItemCount: Int, postUpdateItemCount: Int, animated: Bool)
     func presentReceivedCards(with viewModel: ReceivedCardsVM)
 }
 
@@ -19,10 +19,7 @@ final class GroupedCardsVM: AppViewModel {
     weak var delegate: GroupedCardsVMDelegate?
     
     var selectedGroupingProperty = CardGroup.GroupingProperty.tag {
-        didSet {
-            updateGrouping()
-            delegate?.refreshData(animated: false)
-        }
+        didSet { didSetGroupingProperty() }
     }
     
     private let userID: UserID
@@ -66,7 +63,7 @@ final class GroupedCardsVM: AppViewModel {
     private func updateSorting() {
         switch selectedGroupingProperty {
         case .tag:
-            groups.sort {
+            groups = groups.sorted {
                 if let tagID0 = $0.groupingValue, let tagID1 = $1.groupingValue {
                     return tags[tagID0]?.priorityIndex ?? Int.max < tags[tagID1]?.priorityIndex ?? Int.max
                 } else {
@@ -76,8 +73,18 @@ final class GroupedCardsVM: AppViewModel {
         default:
             let sorting = sortingPerGroupingProperty[selectedGroupingProperty]!
             switch sorting {
-            case .ascending: groups.sort { $0.groupingValue ?? "" < $1.groupingValue ?? "" }
-            case .descending: groups.sort { $0.groupingValue ?? "" > $1.groupingValue ?? "" }
+            case .ascending: groups = groups.sorted { $0.groupingValue ?? "" < $1.groupingValue ?? "" }
+            case .descending: groups = groups.sorted { $0.groupingValue ?? "" > $1.groupingValue ?? "" }
+            }
+        }
+    }
+    
+    private func didSetGroupingProperty() {
+        DispatchQueue.global().async {
+            let preUpdateItemCount = self.numberOfItems()
+            self.updateGrouping()
+            DispatchQueue.main.async {
+                self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: false)
             }
         }
     }
@@ -168,12 +175,12 @@ extension GroupedCardsVM {
         groupingProperties.map(\.localizedName)
     }
     
-    func item(for indexPath: IndexPath) -> GroupedCardsView.TableCell.DataModel {
+    func item(for indexPath: IndexPath) -> GroupedCardsView.CollectionCell.DataModel {
         let groupIndex = displayedGroupIndexes[indexPath.row]
         let group = groups[groupIndex]
         let cardsInGroup = cards.filter{group.cardIDs.contains($0.id)}
 
-        return GroupedCardsView.TableCell.DataModel(
+        return GroupedCardsView.CollectionCell.DataModel(
             frontImageURL: cardsInGroup[optional: 0]?.cardData.frontImage.url,
             middleImageURL: cardsInGroup[optional: 1]?.cardData.frontImage.url,
             backImageURL: cardsInGroup[optional: 2]?.cardData.frontImage.url,
@@ -201,14 +208,25 @@ extension GroupedCardsVM {
     }
     
     func didSearch(for query: String) {
+        let preUpdateItemCount = numberOfItems()
         if query.isEmpty {
             displayedGroupIndexes = Array(0 ..< groups.count)
+            delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: numberOfItems(), animated: true)
         } else {
-            displayedGroupIndexes = groups.enumerated()
-                .filter { _, group in shouldDisplayGroup(group, forQuery: query) }
-                .map { idx, _ in idx }
+            DispatchQueue.global().async {
+                self.displayedGroupIndexes = self.groups
+                    .enumerated()
+                    .filter { _, group in self.shouldDisplayGroup(group, forQuery: query) }
+                    .map { idx, _ in idx }
+                
+                DispatchQueue.main.async {
+                    self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: true
+                    )
+                }
+                
+            }
+            
         }
-        delegate?.refreshData(animated: true)
     }
 }
 
@@ -268,7 +286,8 @@ extension GroupedCardsVM {
             return
         }
         user?.setUserPrivate(document: doc)
-        delegate?.refreshData(animated: false)
+        let itemCount = numberOfItems()
+        delegate?.refreshData(preUpdateItemCount: itemCount, postUpdateItemCount: itemCount, animated: false)
     }
     
     private func receivedCardCollectionDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
@@ -276,19 +295,25 @@ extension GroupedCardsVM {
             print(#file, error?.localizedDescription ?? "")
             return
         }
+        DispatchQueue.global().async {
+            let preUpdateItemCount = self.numberOfItems()
+            let isFirstFetch = self.mostRecentFetch == nil
         
-        let isFirstFetch = mostRecentFetch == nil
-        cards = querySnap.documents.compactMap {
-            guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
-                print(#file, "Error mapping business card:", $0.documentID)
-                return nil
+            self.cards = querySnap.documents.compactMap {
+                guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
+                    print(#file, "Error mapping business card:", $0.documentID)
+                    return nil
+                }
+                return ReceivedBusinessCardMC(card: bc)
             }
-            return ReceivedBusinessCardMC(card: bc)
+            
+            self.updateGrouping()
+            self.mostRecentFetch = Date()
+            DispatchQueue.main.async {
+                self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: !isFirstFetch)
+
+            }
         }
-        
-        updateGrouping()
-        mostRecentFetch = Date()
-        delegate?.refreshData(animated: !isFirstFetch)
     }
     
     private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
@@ -297,6 +322,7 @@ extension GroupedCardsVM {
             return
         }
         
+        let preUpdateItemCount = numberOfItems()
         tags.removeAll()
         querySnap.documents.forEach {
             guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
@@ -309,7 +335,7 @@ extension GroupedCardsVM {
             updateSorting()            
         }
         if !cards.isEmpty {
-            delegate?.refreshData(animated: false)
+            delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: numberOfItems(), animated: false)
         }
     }
 }

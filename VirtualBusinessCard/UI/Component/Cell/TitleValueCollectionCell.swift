@@ -66,7 +66,7 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
         valueLabel.text = dataModel.value
     }
     
-    func didUpdateSelected() {
+    private func didUpdateSelected() {
         if isSelected {
             contentView.backgroundColor = .appDefaultBackground
         } else {

@@ -16,8 +16,8 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         viewModel.delegate = self
         contentView.scrollableSegmentedControl.items = viewModel.availableGroupingModes
         contentView.scrollableSegmentedControl.delegate = self
-        contentView.tableView.dataSource = self
-        contentView.tableView.delegate = self
+        contentView.collectionView.dataSource = self
+        contentView.collectionView.delegate = self
         setupNavigationItem()
         viewModel.fetchData()
     }
@@ -25,6 +25,9 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (navigationController as? AppNavigationController)?.isShadowEnabled = false
+        contentView.collectionView.indexPathsForSelectedItems?.forEach {
+            contentView.collectionView.deselectItem(at: $0, animated: true)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -38,46 +41,50 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         navigationItem.searchController = {
             let controller = UISearchController()
             controller.searchResultsUpdater = self
-            controller.delegate = self
             controller.obscuresBackgroundDuringPresentation = false
             return controller
         }()
     }
 }
 
-// MARK: - UITableViewDataSource, UITableViewDelegate
-
-extension GroupedCardsVC: UITableViewDataSource, UITableViewDelegate {
-    
-    private var shouldHideHeader: Bool { navigationItem.searchController?.isActive ?? false }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfItems()
+extension GroupedCardsVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        viewModel.numberOfItems()
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: GroupedCardsView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: GroupedCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.setDataModel(viewModel.item(for: indexPath))
         return cell
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        shouldHideHeader ? nil : contentView.scrollableSegmentedControl
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        shouldHideHeader ? 0 : 50
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let isFirst = indexPath.row == 0
-        let isLast = indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
-
-//        (cell as! InsetTableCell).configureRoundedCorners(isFirst: isFirst, isLast: isLast)
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.didSelectItem(at: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        switch GroupedCardsView.SupplementaryElementKind(rawValue: elementKind)! {
+        case .collectionViewHeader: collectionView.bringSubviewToFront(view)
+        default: return
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        switch GroupedCardsView.SupplementaryElementKind(rawValue: kind)! {
+        case .sectionHeader:
+            let cell: RoundedCollectionCell = collectionView.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
+            cell.configureRoundedCorners(mode: .top)
+            return cell
+        case .sectionFooter:
+            let cell: RoundedCollectionCell = collectionView.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
+            cell.configureRoundedCorners(mode: .bottom)
+            return cell
+        case .collectionViewHeader:
+            let cell: GroupedCardsView.CollectionHeader = collectionView.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
+            contentView.scrollableSegmentedControl.removeFromSuperview()
+            cell.mainStackView.addArrangedSubview(contentView.scrollableSegmentedControl)
+            return cell
+        }
     }
 }
 
@@ -96,13 +103,34 @@ extension GroupedCardsVC: GroupedCardsVMDelegate {
         let vc = ReceivedCardsVC(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)
     }
-
-    func refreshData(animated: Bool) {
+    
+    func refreshData() {
+        contentView.collectionView.reloadData()
+    }
+    
+    func refreshData(preUpdateItemCount: Int, postUpdateItemCount: Int, animated: Bool) {
         if animated {
-            contentView.tableView.reloadSections([0], with: .automatic)
+            refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: postUpdateItemCount)
         } else {
-            contentView.tableView.reloadData()
+            UIView.performWithoutAnimation {
+                refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: postUpdateItemCount)
+            }
         }
+    }
+    
+    private func refreshData(preUpdateItemCount: Int, postUpdateItemCount: Int) {
+        let cv = contentView.collectionView
+        cv.performBatchUpdates({
+            if preUpdateItemCount == postUpdateItemCount {
+                cv.reloadItems(at: Array(0..<preUpdateItemCount).map { IndexPath(item: $0) })
+            } else if preUpdateItemCount < postUpdateItemCount {
+                cv.reloadItems(at: Array(0..<preUpdateItemCount).map { IndexPath(item: $0) })
+                cv.insertItems(at: Array(preUpdateItemCount..<postUpdateItemCount).map { IndexPath(item: $0) })
+            } else {
+                cv.reloadItems(at: Array(0..<postUpdateItemCount).map { IndexPath(item: $0) })
+                cv.deleteItems(at: Array(postUpdateItemCount..<preUpdateItemCount).map { IndexPath(item: $0) })
+            }
+        })
     }
 }
 
@@ -122,20 +150,10 @@ extension GroupedCardsVC: ScrollableSegmentedControlDelegate {
     }
 }
 
-// MARK: - UISearchResultsUpdating, UISearchControllerDelegate
+// MARK: - UISearchResultsUpdating
 
-extension GroupedCardsVC: UISearchResultsUpdating, UISearchControllerDelegate {
+extension GroupedCardsVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.didSearch(for: searchController.searchBar.text ?? "")
-    }
-    
-    func didPresentSearchController(_ searchController: UISearchController) {
-        contentView.tableView.beginUpdates()
-        contentView.tableView.endUpdates()
-    }
-    
-    func didDismissSearchController(_ searchController: UISearchController) {
-        contentView.tableView.beginUpdates()
-        contentView.tableView.endUpdates()
     }
 }
