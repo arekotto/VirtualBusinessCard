@@ -63,7 +63,24 @@ final class ScrollableSegmentedControl: AppControl {
 extension ScrollableSegmentedControl {
     
     private final class MainComponent: AppControl, UICollectionViewDataSource, UICollectionViewDelegate {
-                    
+                
+        private static func collectionViewLayout() -> UICollectionViewLayout {
+            
+            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+                widthDimension: .estimated(100),
+                heightDimension: .fractionalHeight(1))
+            )
+                        
+            let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(500), heightDimension: .fractionalHeight(1))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+            group.interItemSpacing = .fixed(10)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16)
+            section.orthogonalScrollingBehavior = .continuous
+            return UICollectionViewCompositionalLayout(section: section)
+        }
+        
         var items = [String]() {
             didSet { didSetItems() }
         }
@@ -74,6 +91,8 @@ extension ScrollableSegmentedControl {
             selectedIndexPath?.item
         }
         
+        private var hasPerformedInitialLayout = SingleTimeToggleBool()
+
         private var selectionIndicatorConstraints = [NSLayoutConstraint]()
         
         private let selectionIndicator: UIView = {
@@ -84,13 +103,7 @@ extension ScrollableSegmentedControl {
         }()
         
         private lazy var collectionView: UICollectionView = {
-            let layout = UICollectionViewFlowLayout()
-            layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-            layout.sectionInset = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
-            layout.minimumInteritemSpacing = 10
-            layout.scrollDirection = .horizontal
-            
-            let this = UICollectionView(frame: .zero, collectionViewLayout: layout)
+            let this = UICollectionView(frame: .zero, collectionViewLayout: Self.collectionViewLayout())
             this.registerReusableCell(CollectionCell.self)
             this.dataSource = self
             this.delegate = self
@@ -121,6 +134,10 @@ extension ScrollableSegmentedControl {
         override func layoutSubviews() {
             super.layoutSubviews()
             selectionIndicator.backgroundColor = .scrollableSegmentedControlSelectionBackground
+            hasPerformedInitialLayout.setToTrue()
+            if !items.isEmpty && (collectionView.indexPathsForSelectedItems ?? []).isEmpty {
+                collectionView.selectItem(at: IndexPath(item: 0), animated: false, scrollPosition: .left)
+            }
         }
         
         // MARK: UICollectionViewDataSource, UICollectionViewDelegate
@@ -153,7 +170,7 @@ extension ScrollableSegmentedControl {
             if items.isEmpty, let selectedIndexPath = selectedIndexPath {
                 collectionView.deselectItem(at: selectedIndexPath, animated: false)
                 selectionIndicator.isHidden = true
-            } else {
+            } else if hasPerformedInitialLayout.value {
                 collectionView.selectItem(at: IndexPath(item: 0), animated: false, scrollPosition: .left)
             }
         }
@@ -234,3 +251,10 @@ extension ScrollableSegmentedControl {
     }
 }
 
+struct SingleTimeToggleBool {
+    private(set) var value = false
+    
+    mutating func setToTrue() {
+        value = true
+    }
+}

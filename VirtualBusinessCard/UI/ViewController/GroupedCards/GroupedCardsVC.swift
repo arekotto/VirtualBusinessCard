@@ -14,8 +14,6 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         super.viewDidLoad()
         extendedLayoutIncludesOpaqueBars = true
         viewModel.delegate = self
-        contentView.scrollableSegmentedControl.items = viewModel.availableGroupingModes
-        contentView.scrollableSegmentedControl.delegate = self
         contentView.collectionView.dataSource = self
         contentView.collectionView.delegate = self
         setupNavigationItem()
@@ -82,7 +80,9 @@ extension GroupedCardsVC: UICollectionViewDelegate, UICollectionViewDataSource {
         case .collectionViewHeader:
             let cell: GroupedCardsView.CollectionHeader = collectionView.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
             contentView.scrollableSegmentedControl.removeFromSuperview()
+            contentView.scrollableSegmentedControl.delegate = self
             cell.mainStackView.addArrangedSubview(contentView.scrollableSegmentedControl)
+            contentView.scrollableSegmentedControl.items = viewModel.availableGroupingModes
             return cell
         }
     }
