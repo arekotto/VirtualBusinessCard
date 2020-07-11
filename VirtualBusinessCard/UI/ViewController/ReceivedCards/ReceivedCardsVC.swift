@@ -80,7 +80,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
             alertAction.setValue(action.mode == viewModel.selectedSortMode, forKey: "checked")
             alert.addAction(alertAction)
         }
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+        alert.addCancelAction()
         present(alert, animated: true)
     }
 }

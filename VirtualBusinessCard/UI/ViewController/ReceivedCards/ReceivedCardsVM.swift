@@ -81,7 +81,7 @@ extension ReceivedCardsVM {
     }
     
     var sortControlImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
         return UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imgConfig)!
     }
     

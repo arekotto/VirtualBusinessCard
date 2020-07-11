@@ -21,6 +21,11 @@
 		45139C562497A1B100DE1E9F /* ReceivedBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C552497A1B100DE1E9F /* ReceivedBusinessCardMC.swift */; };
 		45139C592497A49500DE1E9F /* ReceivedCardViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45139C582497A49500DE1E9F /* ReceivedCardViewCell.swift */; };
 		45174CD824B8842D009BFE58 /* GroupedCardsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CD724B8842D009BFE58 /* GroupedCardsCell.swift */; };
+		45174CDB24B89772009BFE58 /* TagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CDA24B89772009BFE58 /* TagsVC.swift */; };
+		45174CDD24B898CB009BFE58 /* TagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CDC24B898CB009BFE58 /* TagsView.swift */; };
+		45174CDF24B8994E009BFE58 /* TagsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CDE24B8994E009BFE58 /* TagsVM.swift */; };
+		45174CE124B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE024B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift */; };
+		45174CE324B8CB12009BFE58 /* TitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE224B8CB12009BFE58 /* TitleCollectionViewCell.swift */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
 		452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */; };
@@ -171,6 +176,11 @@
 		45139C552497A1B100DE1E9F /* ReceivedBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedBusinessCardMC.swift; sourceTree = "<group>"; };
 		45139C582497A49500DE1E9F /* ReceivedCardViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedCardViewCell.swift; sourceTree = "<group>"; };
 		45174CD724B8842D009BFE58 /* GroupedCardsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedCardsCell.swift; sourceTree = "<group>"; };
+		45174CDA24B89772009BFE58 /* TagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVC.swift; sourceTree = "<group>"; };
+		45174CDC24B898CB009BFE58 /* TagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsView.swift; sourceTree = "<group>"; };
+		45174CDE24B8994E009BFE58 /* TagsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVM.swift; sourceTree = "<group>"; };
+		45174CE024B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleAccessoryImageCollectionCell.swift; sourceTree = "<group>"; };
+		45174CE224B8CB12009BFE58 /* TitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCollectionViewCell.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
 		452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsViewCell.swift; sourceTree = "<group>"; };
@@ -363,6 +373,16 @@
 			path = ReceivedCards;
 			sourceTree = "<group>";
 		};
+		45174CD924B8974B009BFE58 /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				45174CDA24B89772009BFE58 /* TagsVC.swift */,
+				45174CDE24B8994E009BFE58 /* TagsVM.swift */,
+				45174CDC24B898CB009BFE58 /* TagsView.swift */,
+			);
+			path = Tags;
+			sourceTree = "<group>";
+		};
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -492,6 +512,7 @@
 		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				45174CD924B8974B009BFE58 /* Tags */,
 				4541B0E324A8B05600BF8E0E /* UserProfile */,
 				45C25D5E249CF01700945F29 /* GroupedCards */,
 				45139C4E24979C2100DE1E9F /* ReceivedCards */,
@@ -530,6 +551,8 @@
 				45B0F4C424AA0A39007277BB /* TitleValueCollectionCell.swift */,
 				45B0F4C624AA0A66007277BB /* RoundedCollectionCell.swift */,
 				452CEE8224AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift */,
+				45174CE024B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift */,
+				45174CE224B8CB12009BFE58 /* TitleCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1115,8 +1138,10 @@
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
 				459102F324B708A60064B12C /* PersonalCardsCompactVC.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
+				45174CE324B8CB12009BFE58 /* TitleCollectionViewCell.swift in Sources */,
 				454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */,
 				45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */,
+				45174CDD24B898CB009BFE58 /* TagsView.swift in Sources */,
 				45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */,
 				458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */,
 				4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */,
@@ -1134,8 +1159,10 @@
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
 				45B25F1F2493B2A3006DD0F7 /* CardDetailsVC.swift in Sources */,
+				45174CDF24B8994E009BFE58 /* TagsVM.swift in Sources */,
 				4577CC84248908530012EDC8 /* UserMC.swift in Sources */,
 				458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */,
+				45174CE124B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift in Sources */,
 				45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */,
 				45C160302486535700806718 /* ActivityIndicator.swift in Sources */,
 				452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */,
@@ -1146,6 +1173,7 @@
 				4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */,
 				45139C4D24979A3500DE1E9F /* ReceivedBusinessCard.swift in Sources */,
 				45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */,
+				45174CDB24B89772009BFE58 /* TagsVC.swift in Sources */,
 				45C1602C2486484E00806718 /* PersonalCardsView.swift in Sources */,
 				4577CC77248903D70012EDC8 /* AppError.swift in Sources */,
 				4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */,

@@ -10,7 +10,7 @@ import UIKit
 
 final class UserProfileView: AppBackgroundView {
     
-    private(set) lazy var collectionView: UICollectionView = {
+    let collectionView: UICollectionView = {
         let this = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
         this.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         this.registerReusableCell(TitleValueCollectionCell.self)
@@ -33,8 +33,17 @@ final class UserProfileView: AppBackgroundView {
         super.layoutSubviews()
         collectionView.backgroundColor = .appDefaultBackground
     }
-    
-    private func createCollectionViewLayout() -> UICollectionViewLayout {
+
+    enum SupplementaryElementKind: String {
+        case header
+        case footer
+    }
+}
+
+// MARK: - Static functions
+
+extension UserProfileView {
+    private static func createCollectionViewLayout() -> UICollectionViewLayout {
         UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
@@ -42,7 +51,7 @@ final class UserProfileView: AppBackgroundView {
             )
             let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200.0))
             let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-                        
+            
             let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(10))
             
             let section = NSCollectionLayoutSection(group: group)
@@ -62,44 +71,5 @@ final class UserProfileView: AppBackgroundView {
             return section
         }
     }
-
-    enum SupplementaryElementKind: String {
-        case header
-        case footer
-    }
 }
 
-// MARK: - TableHeader
-
-extension UserProfileView {
-    final class TableHeader: AppTableViewHeaderFooterView, Reusable {
-        
-        var title: String? {
-            get { label.text }
-            set { label.text = newValue }
-        }
-        
-        private let label: UILabel = {
-            let this = UILabel()
-            this.font = UIFont.appDefault(size: 15, weight: .medium, design: .rounded)
-            return this
-        }()
-        
-        override func configureSubviews() {
-            super.configureSubviews()
-            contentView.addSubview(label)
-        }
-        
-        override func configureConstraints() {
-            super.configureConstraints()
-            label.constrainCenterYToSuperview()
-            label.constrainHorizontallyToSuperview(sideInset: 16)
-        }
-        
-        override func layoutSubviews() {
-            super.layoutSubviews()
-            label.textColor = .secondaryLabel
-            contentView.backgroundColor = .appDefaultBackground
-        }
-    }
-}

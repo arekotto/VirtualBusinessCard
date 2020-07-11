@@ -22,7 +22,7 @@ final class UserProfileVM: AppViewModel {
     private let userID: UserID
     private var user: UserMC?
     
-    private let sections: [Section] = [Section(rows: [.firstName, .lastName, .email], title: NSLocalizedString("Account", comment: ""))]
+    private let sections = [Section(rows: [.firstName, .lastName, .email], title: NSLocalizedString("Account", comment: ""))]
 
     init(userID: UserID) {
         self.userID = userID
@@ -65,10 +65,10 @@ extension UserProfileVM {
 
 extension UserProfileVM {
     var title: String {
-        NSLocalizedString("Settings", comment: "")
+        NSLocalizedString("Profile", comment: "")
     }
     
-    func numberOrSections() -> Int {
+    func numberOfSections() -> Int {
         sections.count
     }
     

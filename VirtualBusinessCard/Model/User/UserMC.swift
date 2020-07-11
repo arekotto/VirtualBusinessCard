@@ -36,10 +36,6 @@ class UserMC: ModelController {
         // TODO: change for real url xD
         return URL(string: "https://www.askideas.com/media/26/Bill-Gates-Funny-Face-Picture.jpeg")
     }
-//
-//    var personalBusinessCardIDs: [BusinessCardID] { userPrivate?.personalBusinessCardIDs ?? [] }
-//
-//    var collectedBusinessCardIDs: [BusinessCardID] { userPrivate?.collectedBusinessCardIDs ?? [] }
     
     init(userPublic: UserPublic, userPrivate: UserPrivate? = nil) {
         self.userPublic = userPublic
@@ -68,6 +64,8 @@ extension UserMC {
         userPrivate = UserPrivate(documentSnapshot: document)
     }
 }
+
+// MARK: - Saving
 
 extension UserMC {
     

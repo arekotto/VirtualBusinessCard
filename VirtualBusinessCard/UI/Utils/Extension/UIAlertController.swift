@@ -14,5 +14,9 @@ extension UIAlertController {
         ac.view.tintColor = .appAccent
         return ac
     }
+    
+    func addCancelAction() {
+        addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+    }
 }
 

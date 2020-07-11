@@ -68,16 +68,16 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 private extension CardDetailsVC {
     func displayAlertController(with actions: [CardDetailsVM.Action], for indexPath: IndexPath) {
         guard !actions.isEmpty else { return }
-        let controller = UIAlertController.accentTinted(title: nil, message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController.accentTinted(title: nil, message: nil, preferredStyle: .actionSheet)
         actions.forEach { action in
             let alertAction = UIAlertAction(title: action.title, style: .default) { _ in
                 self.viewModel.didSelect(action: action, at: indexPath)
             }
             alertAction.setValue(CardDetailsVM.iconImage(for: action), forKey: "image")
-            controller.addAction(alertAction)
+            alert.addAction(alertAction)
         }
-        controller.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
-        present(controller, animated: true)
+        alert.addCancelAction()
+        present(alert, animated: true)
     }
 }
 

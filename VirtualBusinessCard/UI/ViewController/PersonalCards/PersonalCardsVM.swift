@@ -15,7 +15,7 @@ protocol PersonalCardsVMlDelegate: class {
     func reloadData()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentCardDetails(viewModel: CardDetailsVM)
-    func presentSettings(viewModel: UserProfileVM)
+    func presentSettings(viewModel: SettingsVM)
 }
 
 final class PersonalCardsVM: AppViewModel {
@@ -61,7 +61,7 @@ extension PersonalCardsVM {
     }
     
     var newBusinessCardImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .large)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
         return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
     }
     
@@ -84,7 +84,7 @@ extension PersonalCardsVM {
     }
     
     func didTapSettings() {
-        delegate?.presentSettings(viewModel: UserProfileVM(userID: userID))
+        delegate?.presentSettings(viewModel: SettingsVM(userID: userID))
     }
 }
 

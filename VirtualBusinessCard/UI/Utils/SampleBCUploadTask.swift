@@ -7,6 +7,7 @@
 //
 
 import Firebase
+import UIKit
 
 struct SampleBCUploadTask {
     
@@ -32,22 +33,22 @@ struct SampleBCUploadTask {
         
         let specularValues = [0.1, 0.5, 1.5]
         
+        let colors: [UIColor] = [.systemRed, .systemBlue, .systemPink, .systemGreen]
         let companies = ["IBM", "Microsoft", "Sony", "Apple"]
         let tags = ["Important", "Conference in Copenhagen", "Can delete soon"]
         let tagIDs: [BusinessCardTagID] = tags.enumerated().map { idx, tag in
             let docRef = tagsCollectionRef.document()
-            docRef.setData(BusinessCardTag(id: docRef.documentID, color: "#FF4423", title: tag, priorityIndex: idx, description: nil).asDocument())
+            docRef.setData(BusinessCardTag(id: docRef.documentID, colorHex: colors.randomElement()!.toHexString(), title: tag, priorityIndex: idx, description: nil).asDocument())
             return docRef.documentID
         }
-        
         // MARK: Data upload
 
         Name.samples.enumerated().forEach { idx, person in
             let docRef = personalBCCollectionRef.document()
             let bcData = BusinessCardData(
-                                  frontImage: .init(id: "card1front", url: imageURLs[idx % imageURLs.count]),
+                frontImage: .init(id: "card1front", url: imageURLs.randomElement()!),
                                   backImage: .init(id: "fasfds", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!),
-                                  texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs[idx % texturesURLs.count]), specular: specularValues[idx % specularValues.count], normal: specularValues[idx % specularValues.count]),
+                                  texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs.randomElement()!), specular: specularValues.randomElement()!, normal: specularValues.randomElement()!),
                                   position: BusinessCardData.Position(title: "Manager", company: "IBM"),
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
                                   contact: BusinessCardData.Contact(email: "\(person.lastName)@ibm.com", phoneNumberPrimary: "123321123"),
@@ -62,7 +63,7 @@ struct SampleBCUploadTask {
             let bcData = BusinessCardData(
                                   frontImage: .init(id: "card1front", url: imageURLs[idx % imageURLs.count]),
                                   backImage: .init(id: "fasfds", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!),
-                                  texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs[idx % texturesURLs.count]), specular: specularValues[idx % specularValues.count], normal: specularValues[idx % specularValues.count]),
+                                  texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs.randomElement()!), specular: specularValues.randomElement()!, normal: specularValues.randomElement()!),
                                   position: BusinessCardData.Position(title: "Manager", company: company),
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
                                   contact: BusinessCardData.Contact(email: "\(person.lastName.lowercased())@\(company.lowercased()).com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.\(company.lowercased()).com"),

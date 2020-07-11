@@ -12,7 +12,7 @@ typealias BusinessCardTagID = String
 
 struct BusinessCardTag: Codable {
     var id: BusinessCardTagID
-    var color: String
+    var colorHex: String
     var title: String
     var priorityIndex: Int
     var description: String?

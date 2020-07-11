@@ -7,22 +7,30 @@
 //
 
 import Firebase
+import UIKit
 
 class BusinessCardTagMC {
     
     let storage = Storage.storage().reference()
     
-    let tag: BusinessCardTag
+    private var tag: BusinessCardTag
     
     var id: String { tag.id }
     
     var title: String { tag.title }
     
-    var color: String { tag.color }
+    var colorHex: String { tag.colorHex }
     
-    var priorityIndex: Int { tag.priorityIndex }
+    var priorityIndex: Int {
+        get { tag.priorityIndex }
+        set { tag.priorityIndex = newValue }
+    }
     
     var description: String? { tag.description }
+    
+    var color: UIColor {
+        UIColor(hex: tag.colorHex) ?? .clear
+    }
     
     init(tag: BusinessCardTag) {
         self.tag = tag
@@ -39,5 +47,14 @@ extension BusinessCardTagMC {
 extension BusinessCardTagMC: Equatable {
     static func == (lhs: BusinessCardTagMC, rhs: BusinessCardTagMC) -> Bool {
         lhs.tag == rhs.tag
+    }
+}
+
+// MARK: - Saving
+
+extension BusinessCardTagMC {
+    
+    func save(in collectionReference: CollectionReference) {
+        collectionReference.document(tag.id).setData(tag.asDocument())
     }
 }

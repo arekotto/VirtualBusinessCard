@@ -12,7 +12,7 @@ final class UserProfileVC: AppViewController<UserProfileView, UserProfileVM> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hidesBottomBarWhenPushed = true
+        extendedLayoutIncludesOpaqueBars = true
         viewModel.delegate = self
         contentView.collectionView.dataSource = self
         contentView.collectionView.delegate = self
@@ -22,21 +22,13 @@ final class UserProfileVC: AppViewController<UserProfileView, UserProfileVM> {
     
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testingAdd))
-        extendedLayoutIncludesOpaqueBars = true
-    }
-    
-    @objc func testingAdd() {
-        let task = SampleBCUploadTask()
-        task() {_ in }
     }
 }
 
 extension UserProfileVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        viewModel.numberOrSections()
-
+        viewModel.numberOfSections()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -79,7 +71,7 @@ extension UserProfileVC: UserProfileVMDelegate {
         alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default) { _ in
             self.viewModel.didSetNewValue(alert.textFields?.first?.text ?? "", for: row)
         })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+        alert.addCancelAction()
         present(alert, animated: true)
     }
     

@@ -20,4 +20,6 @@ enum AppColorTheme: String {
     case scrollableSegmentedControlSelectionBackground = "ScrollableSegmentedControlSelectionBackground"
     case scrollableSegmentedControlSelectionText = "ScrollableSegmentedControlSelectionText"
     case roundedTableViewCellBackground = "RoundedTableViewCellBackground"
+    case defaultText = "DefaultText"
+    case selectedCellBackground = "SelectedCellBackground"
 }

@@ -64,8 +64,8 @@ extension PersonalCardsCompactVC: UICollectionViewDataSource, UICollectionViewDe
 }
 
 extension PersonalCardsCompactVC: PersonalCardsVMlDelegate {
-    func presentSettings(viewModel: UserProfileVM) {
-        let vc = UserProfileVC(viewModel: viewModel)
+    func presentSettings(viewModel: SettingsVM) {
+        let vc = SettingsVC(viewModel: viewModel)
         show(vc, sender: nil)
     }
 

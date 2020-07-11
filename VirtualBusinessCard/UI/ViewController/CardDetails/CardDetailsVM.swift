@@ -123,7 +123,7 @@ extension CardDetailsVM {
 
 extension CardDetailsVM {
     
-    private static let imageConfig = UIImage.SymbolConfiguration(font: UIFont.appDefault(size: 20, weight: .semibold, design: .rounded))
+    private static let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
     
     static func iconImage(for action: Action) -> UIImage? {
         switch action {
