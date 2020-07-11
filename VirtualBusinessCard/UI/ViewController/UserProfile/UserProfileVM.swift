@@ -19,14 +19,10 @@ final class UserProfileVM: AppViewModel {
     
     weak var delegate: UserProfileVMDelegate?
     
-    private let userID: UserID
     private var user: UserMC?
     
     private let sections = [Section(rows: [.firstName, .lastName, .email], title: NSLocalizedString("Account", comment: ""))]
 
-    init(userID: UserID) {
-        self.userID = userID
-    }
 }
 
 // MARK: - Private setters

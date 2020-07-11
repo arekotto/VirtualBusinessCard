@@ -18,18 +18,12 @@ protocol SettingsVMDelegate: class {
 final class SettingsVM: AppViewModel {
     
     weak var delegate: SettingsVMDelegate?
-    
-    private let userID: UserID
-    
+        
     private let sections: [Section] = [
         Section(items: [.tags, .profile], title: ""),
         Section(items: [.logOut], title: "")
     ]
-    
-    init(userID: UserID) {
-        self.userID = userID
-    }
-    
+
     private func logout() {
         try! Auth.auth().signOut()
     }

@@ -17,13 +17,9 @@ final class TagsVM: AppViewModel {
     
     weak var delegate: TagsVMDelegate?
     
-    private let userID: UserID
     private var user: UserMC?
     private var tags = [BusinessCardTagMC]()
     
-    init(userID: String) {
-        self.userID = userID
-    }
 }
 
 // MARK: - ViewController API

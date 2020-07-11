@@ -10,4 +10,9 @@ import Foundation
 
 class AppViewModel {
     
+    let userID: UserID
+    
+    init(userID: UserID) {
+        self.userID = userID
+    }
 }

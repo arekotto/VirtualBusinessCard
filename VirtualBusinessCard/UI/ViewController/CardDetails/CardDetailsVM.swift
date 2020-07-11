@@ -26,7 +26,6 @@ final class CardDetailsVM: AppViewModel {
     private let cardID: BusinessCardID
     private var card: ReceivedBusinessCardMC?
     
-    private let userID: UserID
     private var user: UserMC?
     
     private let initialLoadDataModel: CardFrontBackView.DataModel
@@ -40,9 +39,9 @@ final class CardDetailsVM: AppViewModel {
     }()
 
     init(userID: UserID, cardID: BusinessCardID, initialLoadDataModel: CardFrontBackView.DataModel) {
-        self.userID = userID
         self.cardID = cardID
         self.initialLoadDataModel = initialLoadDataModel
+        super.init(userID: userID)
     }
     
     private func didSetDelegate() {

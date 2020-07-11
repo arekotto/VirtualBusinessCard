@@ -22,7 +22,6 @@ final class GroupedCardsVM: AppViewModel {
         didSet { didSetGroupingProperty() }
     }
     
-    private let userID: UserID
     private let groupingProperties: [CardGroup.GroupingProperty] = [.tag, .company, .dateDay, .dateMonth, .dateYear]
     
     private let encodeValueDateFormatter = ISO8601DateFormatter()
@@ -43,10 +42,6 @@ final class GroupedCardsVM: AppViewModel {
     
     private var groups = [CardGroup]()
     private var displayedGroupIndexes = [Int]()
-    
-    init(userID: String) {
-        self.userID = userID
-    }
     
     private func updateGrouping() {
         switch selectedGroupingProperty {

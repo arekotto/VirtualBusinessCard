@@ -26,6 +26,9 @@
 		45174CDF24B8994E009BFE58 /* TagsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CDE24B8994E009BFE58 /* TagsVM.swift */; };
 		45174CE124B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE024B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift */; };
 		45174CE324B8CB12009BFE58 /* TitleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE224B8CB12009BFE58 /* TitleCollectionViewCell.swift */; };
+		45174CE624B9DEC3009BFE58 /* NewTagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE524B9DEC3009BFE58 /* NewTagVC.swift */; };
+		45174CE824B9E32F009BFE58 /* NewTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE724B9E32F009BFE58 /* NewTagView.swift */; };
+		45174CEA24B9E342009BFE58 /* NewTagVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE924B9E342009BFE58 /* NewTagVM.swift */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
 		452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */; };
@@ -181,6 +184,9 @@
 		45174CDE24B8994E009BFE58 /* TagsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsVM.swift; sourceTree = "<group>"; };
 		45174CE024B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleAccessoryImageCollectionCell.swift; sourceTree = "<group>"; };
 		45174CE224B8CB12009BFE58 /* TitleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCollectionViewCell.swift; sourceTree = "<group>"; };
+		45174CE524B9DEC3009BFE58 /* NewTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTagVC.swift; sourceTree = "<group>"; };
+		45174CE724B9E32F009BFE58 /* NewTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTagView.swift; sourceTree = "<group>"; };
+		45174CE924B9E342009BFE58 /* NewTagVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTagVM.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
 		452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsViewCell.swift; sourceTree = "<group>"; };
@@ -383,6 +389,16 @@
 			path = Tags;
 			sourceTree = "<group>";
 		};
+		45174CE424B9DEA7009BFE58 /* NewTag */ = {
+			isa = PBXGroup;
+			children = (
+				45174CE524B9DEC3009BFE58 /* NewTagVC.swift */,
+				45174CE724B9E32F009BFE58 /* NewTagView.swift */,
+				45174CE924B9E342009BFE58 /* NewTagVM.swift */,
+			);
+			path = NewTag;
+			sourceTree = "<group>";
+		};
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -512,6 +528,7 @@
 		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				45174CE424B9DEA7009BFE58 /* NewTag */,
 				45174CD924B8974B009BFE58 /* Tags */,
 				4541B0E324A8B05600BF8E0E /* UserProfile */,
 				45C25D5E249CF01700945F29 /* GroupedCards */,
@@ -1152,6 +1169,7 @@
 				4511A130246D6CC100AE3306 /* CreateAccountNameViewModel.swift in Sources */,
 				454625E224A0C0EF000D1D25 /* AppCollectionViewCell.swift in Sources */,
 				452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */,
+				45174CE824B9E32F009BFE58 /* NewTagView.swift in Sources */,
 				45C25D60249CF05100945F29 /* GroupedCardsVC.swift in Sources */,
 				454CF7E024A9F52D00074E0D /* UIAlertController.swift in Sources */,
 				459102F524B70D780064B12C /* PersonalCardsCompactView.swift in Sources */,
@@ -1181,8 +1199,10 @@
 				45C1601E2485333F00806718 /* UserSetupViewModel.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
 				45AA873324499A5B004ACDDD /* CardView.swift in Sources */,
+				45174CE624B9DEC3009BFE58 /* NewTagVC.swift in Sources */,
 				45C1601A248530CC00806718 /* UIView+Constrains.swift in Sources */,
 				45B0F4CA24AA1510007277BB /* CardFrontBackView.swift in Sources */,
+				45174CEA24B9E342009BFE58 /* NewTagVM.swift in Sources */,
 				45139C5424979CB600DE1E9F /* ReceivedCardsView.swift in Sources */,
 				45C160282485B0BD00806718 /* PersonalCardsVM.swift in Sources */,
 				45B0F4C524AA0A39007277BB /* TitleValueCollectionCell.swift in Sources */,

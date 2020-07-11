@@ -28,8 +28,6 @@ final class ReceivedCardsVM: AppViewModel {
     let title: String
     let dataFetchMode: DataFetchMode
     
-    private let userID: UserID
-
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
     private var displayedCardIndexes = [Int]()
@@ -45,9 +43,9 @@ final class ReceivedCardsVM: AppViewModel {
     }()
     
     init(userID: UserID, title: String, dataFetchMode: DataFetchMode) {
-        self.userID = userID
         self.title = title
         self.dataFetchMode = dataFetchMode
+        super.init(userID: userID)
     }
     
     private func didSetDelegate() {
