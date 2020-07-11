@@ -17,7 +17,6 @@ final class TagsVM: AppViewModel {
     
     weak var delegate: TagsVMDelegate?
     
-    private var user: UserMC?
     private var tags = [BusinessCardTagMC]()
     
 }
@@ -93,53 +92,15 @@ extension TagsVM {
 // MARK: - Firebase fetch
 
 extension TagsVM {
-    private var userPublicDocumentReference: DocumentReference {
-        Firestore.firestore().collection(UserPublic.collectionName).document(userID)
-    }
-    
-    private var userPrivateDocumentReference: DocumentReference {
-        userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
-    }
     
     private var tagsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(BusinessCardTag.collectionName)
     }
     
     func fetchData() {
-        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
-            self?.userPublicDidChange(document, error)
-        }
-    }
-    
-    private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user public changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        
-        guard let user = UserMC(userPublicDocument: doc) else {
-            print(#file, "Error mapping user public:", doc.documentID)
-            return
-        }
-        self.user = user
-        userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
-            self?.userPrivateDidChange(snapshot, error)
-        }
         tagsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
             self?.cardTagsDidChange(querySnapshot, error)
         }
-    }
-    
-    private func userPrivateDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user private changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        user?.setUserPrivate(document: doc)
-        delegate?.refreshData()
     }
     
     private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {

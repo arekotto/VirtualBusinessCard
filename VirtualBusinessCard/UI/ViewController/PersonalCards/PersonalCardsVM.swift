@@ -83,15 +83,6 @@ extension PersonalCardsVM {
 }
 
 extension PersonalCardsVM {
-    func fetchData() {
-        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
-            self?.userPublicDidChange(document, error)
-        }
-    }
-    
-    private var userPublicDocumentReference: DocumentReference {
-        Firestore.firestore().collection(UserPublic.collectionName).document(userID)
-    }
     
     private var userPrivateDocumentReference: DocumentReference {
         userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
@@ -99,6 +90,12 @@ extension PersonalCardsVM {
     
     private var businessCardCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
+    }
+    
+    func fetchData() {
+        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
+            self?.userPublicDidChange(document, error)
+        }
     }
     
     private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {

@@ -35,7 +35,6 @@ final class GroupedCardsVM: AppViewModel {
         return this
     }()
     
-    private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
     private var tags = [BusinessCardTagID: BusinessCardTagMC]()
     private var mostRecentFetch: Date?
@@ -228,14 +227,6 @@ extension GroupedCardsVM {
 // MARK: - Firebase fetch
 
 extension GroupedCardsVM {
-    private var userPublicDocumentReference: DocumentReference {
-        Firestore.firestore().collection(UserPublic.collectionName).document(userID)
-    }
-    
-    private var userPrivateDocumentReference: DocumentReference {
-        userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
-    }
-    
     private var receivedCardsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
@@ -245,44 +236,12 @@ extension GroupedCardsVM {
     }
     
     func fetchData() {
-        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
-            self?.userPublicDidChange(document, error)
-        }
-    }
-    
-    private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user public changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        
-        guard let user = UserMC(userPublicDocument: doc) else {
-            print(#file, "Error mapping user public:", doc.documentID)
-            return
-        }
-        self.user = user
-        userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
-            self?.userPrivateDidChange(snapshot, error)
-        }
         receivedCardsCollectionReference.order(by: "receivingDate", descending: true).addSnapshotListener { [weak self] querySnapshot, error in
             self?.receivedCardCollectionDidChange(querySnapshot, error)
         }
         tagsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
             self?.cardTagsDidChange(querySnapshot, error)
         }
-    }
-    
-    private func userPrivateDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user private changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        user?.setUserPrivate(document: doc)
-        let itemCount = numberOfItems()
-        delegate?.refreshData(preUpdateItemCount: itemCount, postUpdateItemCount: itemCount, animated: false)
     }
     
     private func receivedCardCollectionDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
@@ -306,7 +265,6 @@ extension GroupedCardsVM {
             self.mostRecentFetch = Date()
             DispatchQueue.main.async {
                 self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: !isFirstFetch)
-
             }
         }
     }

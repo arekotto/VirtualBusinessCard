@@ -15,14 +15,15 @@ protocol UserProfileVMDelegate: class {
     func presentAlert(title: String?, message: String?)
 }
 
-final class UserProfileVM: AppViewModel {
+final class UserProfileVM: UserViewModel {
     
     weak var delegate: UserProfileVMDelegate?
-    
-    private var user: UserMC?
-    
+        
     private let sections = [Section(rows: [.firstName, .lastName, .email], title: NSLocalizedString("Account", comment: ""))]
 
+    override func informDelegateAboutDataRefresh() {
+        delegate?.reloadData()
+    }
 }
 
 // MARK: - Private setters
@@ -128,52 +129,6 @@ extension UserProfileVM {
                 message: NSLocalizedString("Your account has to have a valid email.", comment: "")
             )
         }
-    }
-}
-
-// MARK: - Firebase fetch
-
-extension UserProfileVM {
-    func fetchData() {
-        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
-            self?.userPublicDidChange(document, error)
-        }
-    }
-    
-    private var userPublicDocumentReference: DocumentReference {
-        Firestore.firestore().collection(UserPublic.collectionName).document(userID)
-    }
-    
-    private var userPrivateDocumentReference: DocumentReference {
-        userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
-    }
-    
-    private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user public changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        
-        guard let user = UserMC(userPublicDocument: doc) else {
-            print(#file, "Error mapping user public:", doc.documentID)
-            return
-        }
-        self.user = user
-        userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
-            self?.userPrivateDidChange(snapshot, error)
-        }
-    }
-    
-    private func userPrivateDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user private changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        user?.setUserPrivate(document: doc)
-        delegate?.reloadData()
     }
 }
 

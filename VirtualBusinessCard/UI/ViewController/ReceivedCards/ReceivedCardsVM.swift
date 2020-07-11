@@ -247,53 +247,14 @@ extension ReceivedCardsVM {
 // MARK: - Firebase fetch
 
 extension ReceivedCardsVM {
-    private var userPublicDocumentReference: DocumentReference {
-        Firestore.firestore().collection(UserPublic.collectionName).document(userID)
-    }
-    
-    private var userPrivateDocumentReference: DocumentReference {
-        userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
-    }
-    
     private var receivedCardsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
     
     func fetchData() {
-        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
-            self?.userPublicDidChange(document, error)
-        }
-    }
-    
-    private func userPublicDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user public changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        
-        guard let user = UserMC(userPublicDocument: doc) else {
-            print(#file, "Error mapping user public:", doc.documentID)
-            return
-        }
-        self.user = user
-        userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
-            self?.userPrivateDidChange(snapshot, error)
-        }
         receivedCardsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
             self?.receivedCardsCollectionDidChange(querySnapshot: querySnapshot, error: error)
         }
-    }
-    
-    private func userPrivateDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user private changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        user?.setUserPrivate(document: doc)
-        delegate?.refreshData(animated: false)
     }
     
     private func receivedCardsCollectionDidChange(querySnapshot: QuerySnapshot?, error: Error?) {
