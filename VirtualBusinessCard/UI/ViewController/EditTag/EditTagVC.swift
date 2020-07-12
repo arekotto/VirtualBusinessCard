@@ -1,5 +1,5 @@
 //
-//  NewTagVC.swift
+//  EditTagVC.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 11/07/2020.
@@ -9,7 +9,7 @@
 import UIKit
 import Colorful
 
-final class NewTagVC: AppViewController<NewTagView, NewTagVM> {
+final class EditTagVC: AppViewController<EditTagView, EditTagVM> {
     
     private lazy var doneEditingButton = UIBarButtonItem(title: viewModel.doneEditingButtonTitle, style: .done, target: self, action: #selector(didTapDoneEditingButton))
     private lazy var cancelEditingButton = UIBarButtonItem(title: viewModel.cancelEditingButtonTitle, style: .plain, target: self, action: #selector(didTapCancelEditingButton))
@@ -51,7 +51,7 @@ final class NewTagVC: AppViewController<NewTagView, NewTagVM> {
 // MARK: - Actions
 
 @objc
-private extension NewTagVC {
+private extension EditTagVC {
     func didTapDoneEditingButton() {
         contentView.endEditing(true)
         viewModel.didSelectDone()
@@ -70,7 +70,7 @@ private extension NewTagVC {
 
 // MARK: - NewTagVMDelegate
 
-extension NewTagVC: NewTagVMDelegate {
+extension EditTagVC: NewTagVMDelegate {
     
     func presentDeleteAlert() {
         let title = NSLocalizedString("Delete Tag", comment: "")
@@ -122,13 +122,13 @@ extension NewTagVC: NewTagVMDelegate {
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 
-extension NewTagVC: UICollectionViewDataSource, UICollectionViewDelegate {
+extension EditTagVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfItems()
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: NewTagView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        let cell: EditTagView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.color = viewModel.itemForCell(at: indexPath)
         cell.layoutIfNeeded()
         return cell
@@ -141,7 +141,7 @@ extension NewTagVC: UICollectionViewDataSource, UICollectionViewDelegate {
 
 // MARK: - UITextFieldDelegate
 
-extension NewTagVC: UITextFieldDelegate {
+extension EditTagVC: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -162,7 +162,7 @@ extension NewTagVC: UITextFieldDelegate {
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 
-extension NewTagVC: UIAdaptivePresentationControllerDelegate {
+extension EditTagVC: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         viewModel.isAllowedDragToDismiss
     }

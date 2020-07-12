@@ -1,5 +1,5 @@
 //
-//  NewTagView.swift
+//  EditTagView.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 11/07/2020.
@@ -9,7 +9,7 @@
 import UIKit
 import Colorful
 
-final class NewTagView: AppBackgroundView {
+final class EditTagView: AppBackgroundView {
     
     let nameField: UITextField = {
         let this = UITextField()
@@ -140,7 +140,7 @@ final class NewTagView: AppBackgroundView {
     }
 }
 
-extension NewTagView {
+extension EditTagView {
     static func collectionViewLayout() -> UICollectionViewLayout {
         
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(

@@ -1,5 +1,5 @@
 //
-//  NewTagVM.swift
+//  EditTagVM.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 11/07/2020.
@@ -19,7 +19,7 @@ protocol NewTagVMDelegate: class {
     func dismissSelf()
 }
 
-final class NewTagVM: AppViewModel {
+final class EditTagVM: AppViewModel {
     
     weak var delegate: NewTagVMDelegate?
     
@@ -56,7 +56,7 @@ final class NewTagVM: AppViewModel {
 
 // MARK: - ViewController API
 
-extension NewTagVM {
+extension EditTagVM {
     
     var doneEditingButtonTitle: String {
         NSLocalizedString("Done", comment: "")
@@ -166,7 +166,7 @@ extension NewTagVM {
 
 // MARK: - Firebase
 
-extension NewTagVM {
+extension EditTagVM {
     private var tagsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(BusinessCardTag.collectionName)
     }

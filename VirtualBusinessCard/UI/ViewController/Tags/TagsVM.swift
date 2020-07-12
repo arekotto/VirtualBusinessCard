@@ -11,7 +11,7 @@ import UIKit
 
 protocol TagsVMDelegate: class {
     func refreshData()
-    func presentNewTagVC(with viewModel: NewTagVM)
+    func presentNewTagVC(with viewModel: EditTagVM)
 }
 
 final class TagsVM: AppViewModel {
@@ -66,7 +66,7 @@ extension TagsVM {
     
     func didSelectItem(at indexPath: IndexPath) {
         let editTag = tagForRow(at: indexPath).editBusinessCardTagMC()
-        delegate?.presentNewTagVC(with: NewTagVM(userID: userID, editBusinessCardTagMC: editTag))
+        delegate?.presentNewTagVC(with: EditTagVM(userID: userID, editBusinessCardTagMC: editTag))
     }
     
     func didMoveItem(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -96,7 +96,7 @@ extension TagsVM {
     }
     
     func didSelectNewTag() {
-        delegate?.presentNewTagVC(with: NewTagVM(userID: userID, estimatedLowestPriorityIndex: tags.count))
+        delegate?.presentNewTagVC(with: EditTagVM(userID: userID, estimatedLowestPriorityIndex: tags.count))
     }
 }
 
