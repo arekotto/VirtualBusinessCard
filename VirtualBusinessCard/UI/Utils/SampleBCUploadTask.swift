@@ -33,12 +33,11 @@ struct SampleBCUploadTask {
         
         let specularValues = [0.1, 0.5, 1.5]
         
-        let colors: [UIColor] = [.systemRed, .systemBlue, .systemPink, .systemGreen]
         let companies = ["IBM", "Microsoft", "Sony", "Apple"]
         let tags = ["Important", "Conference in Copenhagen", "Can delete soon"]
         let tagIDs: [BusinessCardTagID] = tags.enumerated().map { idx, tag in
             let docRef = tagsCollectionRef.document()
-            docRef.setData(BusinessCardTag(id: docRef.documentID, colorHex: colors.randomElement()!.toHexString(), title: tag, priorityIndex: idx, description: nil).asDocument())
+            docRef.setData(BusinessCardTag(id: docRef.documentID, tagColor: BusinessCardTag.TagColor.allCases.randomElement()!, title: tag, priorityIndex: idx, description: nil).asDocument())
             return docRef.documentID
         }
         // MARK: Data upload

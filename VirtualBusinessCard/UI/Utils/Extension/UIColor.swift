@@ -19,11 +19,12 @@ extension UIColor {
     static let scrollableSegmentedControlSelectionText = UIColor(named:  AppColorTheme.scrollableSegmentedControlSelectionText.rawValue)!
     static let roundedTableViewCellBackground = UIColor(named:  AppColorTheme.roundedTableViewCellBackground.rawValue)!
     static let defaultText = UIColor(named:  AppColorTheme.defaultText.rawValue)!
-    static let selectedCellBackground = UIColor(named:  AppColorTheme.selectedCellBackground.rawValue)!
+    static let selectedCellBackgroundLight = UIColor(named:  AppColorTheme.selectedCellBackgroundLight.rawValue)!
+    static let selectedCellBackgroundStrong = UIColor(named:  AppColorTheme.selectedCellBackgroundStrong.rawValue)!
 }
 
 extension UIColor {
-
+    
     /// Converts this `UIColor` instance to a 1x1 `UIImage` instance and returns it.
     ///
     /// - Returns: `self` as a 1x1 `UIImage`.
@@ -77,5 +78,24 @@ extension UIColor {
         assert(blue >= 0 && blue <= 255, "Invalid blue component")
         
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+}
+
+// MARK: - TagColor
+
+extension UIColor {
+    static func initFrom(tagColor: BusinessCardTag.TagColor) -> UIColor {
+        switch tagColor {
+        case .red: return .systemRed
+        case .green: return .systemGreen
+        case .gray: return .systemGray
+        case .blue: return .systemBlue
+        case .pink: return .systemPink
+        case .orange: return .systemOrange
+        case .teal: return .systemTeal
+        case .indigo: return .systemIndigo
+        case .purple: return .systemPurple
+        case .yellow: return .systemYellow
+        }
     }
 }

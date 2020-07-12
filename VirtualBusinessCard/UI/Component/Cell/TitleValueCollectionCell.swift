@@ -25,7 +25,6 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
     private let titleLabel: UILabel = {
         let this = UILabel()
         this.font = UIFont.appDefault(size: 13, weight: .medium, design: .rounded)
-        this.textColor = .secondaryLabel
         return this
     }()
     
@@ -59,6 +58,7 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
     override func layoutSubviews() {
         super.layoutSubviews()
         contentView.backgroundColor = .roundedTableViewCellBackground
+        titleLabel.textColor = .secondaryLabel
     }
     
     func setDataModel(_ dataModel: DataModel) {

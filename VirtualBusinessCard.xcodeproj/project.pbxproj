@@ -29,6 +29,8 @@
 		45174CE624B9DEC3009BFE58 /* NewTagVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE524B9DEC3009BFE58 /* NewTagVC.swift */; };
 		45174CE824B9E32F009BFE58 /* NewTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE724B9E32F009BFE58 /* NewTagView.swift */; };
 		45174CEA24B9E342009BFE58 /* NewTagVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE924B9E342009BFE58 /* NewTagVM.swift */; };
+		45174D7724BB08C3009BFE58 /* EditBusinessCardTagMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174D7624BB08C3009BFE58 /* EditBusinessCardTagMC.swift */; };
+		45174D7A24BB4189009BFE58 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 45174D7924BB4189009BFE58 /* Reachability */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
 		452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */; };
@@ -187,6 +189,7 @@
 		45174CE524B9DEC3009BFE58 /* NewTagVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTagVC.swift; sourceTree = "<group>"; };
 		45174CE724B9E32F009BFE58 /* NewTagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTagView.swift; sourceTree = "<group>"; };
 		45174CE924B9E342009BFE58 /* NewTagVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTagVM.swift; sourceTree = "<group>"; };
+		45174D7624BB08C3009BFE58 /* EditBusinessCardTagMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBusinessCardTagMC.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
 		452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsViewCell.swift; sourceTree = "<group>"; };
@@ -316,6 +319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */,
+				45174D7A24BB4189009BFE58 /* Reachability in Frameworks */,
 				C89A3F0654015C8DABF7CBB3 /* libPods-VirtualBusinessCard.a in Frameworks */,
 				452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */,
 			);
@@ -579,6 +583,7 @@
 			children = (
 				4558826724A4BEEF001C763B /* BusinessCardTag.swift */,
 				4558826A24A4C576001C763B /* BusinessCardTagMC.swift */,
+				45174D7624BB08C3009BFE58 /* EditBusinessCardTagMC.swift */,
 			);
 			path = BusinessCardTag;
 			sourceTree = "<group>";
@@ -905,6 +910,7 @@
 			packageProductDependencies = (
 				458EF404248B9B6D00EC76D6 /* Kingfisher */,
 				452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */,
+				45174D7924BB4189009BFE58 /* Reachability */,
 			);
 			productName = VirtualBusinessCard;
 			productReference = 4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */;
@@ -984,6 +990,7 @@
 			packageReferences = (
 				458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */,
+				45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */,
 			);
 			productRefGroup = 4537CEE023F6D259003602EA /* Products */;
 			projectDirPath = "";
@@ -1243,6 +1250,7 @@
 				4558F1F32423B52000D44526 /* LoginWithGoogleButton.swift in Sources */,
 				45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */,
 				45C160232485AD3000806718 /* MainTBC.swift in Sources */,
+				45174D7724BB08C3009BFE58 /* EditBusinessCardTagMC.swift in Sources */,
 				45B25F272493B7AF006DD0F7 /* SampleBCUploadTask.swift in Sources */,
 				45C25D62249F4CB100945F29 /* GroupedCardsView.swift in Sources */,
 				45C1601324852EC500806718 /* AppControl.swift in Sources */,
@@ -1616,6 +1624,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/amirdew/CollectionViewPagingLayout";
@@ -1635,6 +1651,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		45174D7924BB4189009BFE58 /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
 		452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */;

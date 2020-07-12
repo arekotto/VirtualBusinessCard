@@ -31,7 +31,6 @@ final class TagsView: AppBackgroundView {
         tableView.constrainVerticallyToSuperview()
         tableView.constrainHorizontallyToSuperview(sideInset: 16)
     }
-    
 }
 
 extension TagsView {
@@ -50,13 +49,15 @@ extension TagsView {
         
         private let tagNameLabel: UILabel = {
             let this = UILabel()
-            this.font = UIFont.appDefault(size: 15, weight: .regular, design: .rounded)
+            this.font = UIFont.appDefault(size: 16, weight: .medium, design: .rounded)
+            this.numberOfLines = 2
+            this.lineBreakMode = .byWordWrapping
             return this
         }()
         
         private lazy var mainStackView: UIStackView = {
             let this = UIStackView(arrangedSubviews: [tagImageView, tagNameLabel])
-            this.spacing = 8
+            this.spacing = 16
             return this
         }()
         
@@ -73,14 +74,14 @@ extension TagsView {
         
         override func configureConstraints() {
             super.configureConstraints()
-            tagImageView.constrainWidth(constant: 30)
+            tagImageView.constrainWidth(constant: 40)
             mainStackView.constrainToSuperview(topInset: 8, leadingInset: 16, bottomInset: 8, trailingInset: 4)
         }
         
         override func layoutSubviews() {
             super.layoutSubviews()
             backgroundColor = .roundedTableViewCellBackground
-            selectedBackgroundView?.backgroundColor = .selectedCellBackground
+            selectedBackgroundView?.backgroundColor = .selectedCellBackgroundLight
             layer.cornerRadius = 8
             updateMaskedCorners()
         }
@@ -110,6 +111,5 @@ extension TagsView {
             let isFirstCell: Bool
             let isLastCell: Bool
         }
-        
     }
 }

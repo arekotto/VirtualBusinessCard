@@ -18,5 +18,9 @@ extension UIAlertController {
     func addCancelAction() {
         addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
     }
+    
+    func addOkAction() {
+        addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
+    }
 }
 

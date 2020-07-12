@@ -41,14 +41,15 @@ extension TagsVC: UITableViewDelegate, UITableViewDataSource {
         viewModel.numberOfItems()
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        print("")
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: TagsView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
-        cell.dataModel = viewModel.item(for: indexPath)
+        cell.dataModel = viewModel.itemForRow(at: indexPath)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.didSelectItem(at: indexPath)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -78,18 +79,18 @@ extension TagsVC: UITableViewDelegate, UITableViewDataSource {
 @objc
 private extension TagsVC {
     func didTapNewTagButton() {
-        
+        viewModel.didSelectNewTag()
     }
     
     func didTapSortButton() {
-        contentView.tableView.isEditing = true
+        contentView.tableView.setEditing(true, animated: true)
         navigationItem.setRightBarButtonItems([doneEditingButton], animated: true)
         navigationItem.setLeftBarButtonItems([cancelEditingButton], animated: true)
         navigationItem.setHidesBackButton(true, animated: true)
     }
     
     func didTapDoneEditingButton() {
-        contentView.tableView.isEditing = false
+        contentView.tableView.setEditing(false, animated: true)
         navigationItem.setRightBarButtonItems(nonEditingButtons, animated: true)
         navigationItem.setLeftBarButtonItems([], animated: true)
         navigationItem.setHidesBackButton(false, animated: true)
@@ -97,7 +98,7 @@ private extension TagsVC {
     }
     
     func didTapCancelEditingButton() {
-        contentView.tableView.isEditing = false
+        contentView.tableView.setEditing(false, animated: true)
         navigationItem.setRightBarButtonItems(nonEditingButtons, animated: true)
         navigationItem.setLeftBarButtonItems([], animated: true)
         navigationItem.setHidesBackButton(false, animated: true)
@@ -108,6 +109,13 @@ private extension TagsVC {
 // MARK: - TagsVMDelegate
     
 extension TagsVC: TagsVMDelegate {
+    func presentNewTagVC(with viewModel: NewTagVM) {
+        let editTagVC = NewTagVC(viewModel: viewModel)
+        let navVC = AppNavigationController(rootViewController: editTagVC)
+        navVC.presentationController?.delegate = editTagVC
+        present(navVC, animated: true)
+    }
+    
     func refreshData() {
         contentView.tableView.reloadData()
     }

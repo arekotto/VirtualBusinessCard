@@ -11,6 +11,7 @@ import UIKit
 
 protocol TagsVMDelegate: class {
     func refreshData()
+    func presentNewTagVC(with viewModel: NewTagVM)
 }
 
 final class TagsVM: AppViewModel {
@@ -18,7 +19,10 @@ final class TagsVM: AppViewModel {
     weak var delegate: TagsVMDelegate?
     
     private var tags = [BusinessCardTagMC]()
-    
+ 
+    private func tagForRow(at indexPath: IndexPath) -> BusinessCardTagMC {
+        tags[indexPath.row]
+    }
 }
 
 // MARK: - ViewController API
@@ -50,14 +54,19 @@ extension TagsVM {
         tags.count
     }
     
-    func item(for indexPath: IndexPath) -> TagsView.TableCell.DataModel {
-        let tag = tags[indexPath.row]
+    func itemForRow(at indexPath: IndexPath) -> TagsView.TableCell.DataModel {
+        let tag = tagForRow(at: indexPath)
         return TagsView.TableCell.DataModel(
             tagName: tag.title,
-            tagColor: tag.color,
+            tagColor: tag.displayColor,
             isFirstCell: indexPath.row == 0,
             isLastCell: indexPath.row == numberOfItems() - 1
         )
+    }
+    
+    func didSelectItem(at indexPath: IndexPath) {
+        let editTag = tagForRow(at: indexPath).editBusinessCardTagMC()
+        delegate?.presentNewTagVC(with: NewTagVM(userID: userID, editBusinessCardTagMC: editTag))
     }
     
     func didMoveItem(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -66,22 +75,32 @@ extension TagsVM {
     }
     
     func didApproveEditing() {
-        tags.enumerated().forEach { idx, tag in
-            tag.priorityIndex = idx
+        DispatchQueue.global().async {
+            let editableTags = self.tags.map{ $0.editBusinessCardTagMC() }
+            editableTags.enumerated().forEach { idx, tag in
+                tag.priorityIndex = idx
+            }
+            editableTags.forEach {
+                $0.savePriorityIndex(in: self.tagsCollectionReference)
+            }
+            self.tags = editableTags.map{ $0.businessCardTagMC() }
+            DispatchQueue.main.async {
+                self.delegate?.refreshData()
+            }
         }
-        tags.forEach {
-            $0.save(in: tagsCollectionReference)
-        }
-        delegate?.refreshData()
     }
     
     func didCancelEditing() {
         tags.sort(by: Self.sortByPriority)
         delegate?.refreshData()
     }
+    
+    func didSelectNewTag() {
+        delegate?.presentNewTagVC(with: NewTagVM(userID: userID, estimatedLowestPriorityIndex: tags.count))
+    }
 }
 
-// MARK: - Firebase fetch
+// MARK: -  Sorting
 
 extension TagsVM {
     private static func sortByPriority(_ lhs: BusinessCardTagMC, _ rhs: BusinessCardTagMC) -> Bool {
@@ -92,7 +111,6 @@ extension TagsVM {
 // MARK: - Firebase fetch
 
 extension TagsVM {
-    
     private var tagsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(BusinessCardTag.collectionName)
     }
