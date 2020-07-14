@@ -36,19 +36,7 @@ extension PersonalCardsView {
             [backSceneView, frontSceneView]
         }
         
-        private let shareButton: UIButton = {
-            let button = UIButton()
-            button.setTitle(NSLocalizedString("Share", comment: ""), for: .normal)
-            button.titleLabel?.font = .appDefault(size: 20, weight: .semibold, design: .rounded)
-            let imgConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .large)
-            button.setImage(UIImage(systemName: "square.and.arrow.up.fill", withConfiguration: imgConfig), for: .normal)
-            button.layer.cornerRadius = 14
-            button.layer.shadowOpacity = 0.35
-            button.layer.shadowRadius = 10
-            button.layer.shadowOffset = CGSize(width: 0, height: 6)
-            button.imageEdgeInsets = UIEdgeInsets(top: 4, left: -12, bottom: 4, right: 12)
-            return button
-        }()
+        let shareButton = ShareButton()
         
         private let scalableView = UIView()
         
@@ -95,56 +83,52 @@ extension PersonalCardsView {
             shareButton.layer.shadowColor = UIColor.appAccent.cgColor
             shareButton.backgroundColor = .appAccent
         }
-    }
-    
-    struct BusinessCardCellDM {
-        let frontImageURL: URL
-        let backImageURL: URL
-        let textureImageURL: URL
-        let normal: CGFloat
-        let specular: CGFloat
-    }
-}
 
-extension PersonalCardsView.CollectionCell {
-    func setDataModel(_ dm: PersonalCardsView.BusinessCardCellDM) {
-        let task = ImageAndTextureFetchTask(frontImageURL: dm.frontImageURL, textureURL: dm.textureImageURL, backImageURL: dm.backImageURL)
-        task { [weak self] result in
-            switch result {
-            case .failure(let err): print(err.localizedDescription)
-            case .success(let imagesResult):
-                self?.frontSceneView.setImage(image: imagesResult.frontImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
-                if let backImage = imagesResult.backImage {
-                    self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
+        func setDataModel(_ dm: DataModel) {
+            let task = ImageAndTextureFetchTask(frontImageURL: dm.frontImageURL, textureURL: dm.textureImageURL, backImageURL: dm.backImageURL)
+            task { [weak self] result in
+                switch result {
+                case .failure(let err): print(err.localizedDescription)
+                case .success(let imagesResult):
+                    self?.frontSceneView.setImage(image: imagesResult.frontImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
+                    if let backImage = imagesResult.backImage {
+                        self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
+                    }
                 }
-
+            }
+        }
+        
+        func updateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+            let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
+            let x = deviceRotationInX / deg2rad(90) * 20 - 10
+            let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
+            let y = deviceRotationInZ * 10 / deg2rad(45)
+            
+            animateShadow(to: CGSize(width: y, height: -x), over: timeFrame)
+            
+            allSceneViews.forEach { $0.updateMotionData(motion: motion, over: timeFrame) }
+        }
+        
+        func setDynamicLightingEnabled(to isUpdating: Bool) {
+            allSceneViews.forEach {
+                $0.dynamicLightingEnabled = isUpdating
+            }
+        }
+        
+        private func animateShadow(to offset: CGSize, over duration: TimeInterval) {
+            allSceneViews.forEach {
+                let animation = CABasicAnimation(keyPath: "shadowOffset")
+                animation.fromValue = $0.layer.shadowOffset
+                animation.toValue = offset
+                animation.duration = duration
+                $0.layer.add(animation, forKey: animation.keyPath)
+                $0.layer.shadowOffset = offset
             }
         }
     }
-    
-    func updateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
-        let x = deviceRotationInX / deg2rad(90) * 20 - 10
-        let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
-        let y = deviceRotationInZ * 10 / deg2rad(45)
-        
-
-        animateShadow(to: CGSize(width: y, height: -x), over: timeFrame)
-
-        allSceneViews.forEach { $0.updateMotionData(motion: motion, over: timeFrame) }
-    }
-    
-    private func animateShadow(to offset: CGSize, over duration: TimeInterval) {
-        allSceneViews.forEach {
-            let animation = CABasicAnimation(keyPath: "shadowOffset")
-            animation.fromValue = $0.layer.shadowOffset
-            animation.toValue = offset
-            animation.duration = duration
-            $0.layer.add(animation, forKey: animation.keyPath)
-            $0.layer.shadowOffset = offset
-        }
-    }
 }
+
+// MARK: - TransformableView
 
 extension PersonalCardsView.CollectionCell: TransformableView {
     
@@ -218,5 +202,41 @@ extension PersonalCardsView.CollectionCell: TransformableView {
         translateY = min(translateY, scalableView.bounds.height * maxTranslationRatio.y)
         transform = transform.translatedBy(x: translateX, y: translateY).scaledBy(x: scale, y: scale)
         scalableView.transform = transform
+    }
+}
+
+// MARK: - BusinessCardCellDM
+
+extension PersonalCardsView.CollectionCell {
+    struct DataModel {
+        let frontImageURL: URL
+        let backImageURL: URL
+        let textureImageURL: URL
+        let normal: CGFloat
+        let specular: CGFloat
+    }
+}
+
+extension PersonalCardsView.CollectionCell {
+    final class ShareButton: UIButton {
+
+        var indexPath: IndexPath?
+        
+        init() {
+            super.init(frame: .zero)
+            setTitle(NSLocalizedString("Share", comment: ""), for: .normal)
+            titleLabel?.font = .appDefault(size: 20, weight: .semibold, design: .rounded)
+            let imgConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium, scale: .large)
+            setImage(UIImage(systemName: "square.and.arrow.up.fill", withConfiguration: imgConfig), for: .normal)
+            layer.cornerRadius = 14
+            layer.shadowOpacity = 0.35
+            layer.shadowRadius = 10
+            layer.shadowOffset = CGSize(width: 0, height: 6)
+            imageEdgeInsets = UIEdgeInsets(top: 4, left: -12, bottom: 4, right: 12)
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
     }
 }

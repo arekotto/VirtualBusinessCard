@@ -26,18 +26,32 @@ struct BusinessCardTag: Codable {
     }
 }
 
+// MARK: - Equatable
+
 extension BusinessCardTag: Equatable {
     static func == (lhs: BusinessCardTag, rhs: BusinessCardTag) -> Bool {
         lhs.id == rhs.id
     }
 }
 
+// MARK: - Firestoreable
+
 extension BusinessCardTag: Firestoreable {
     
 }
 
+// MARK: - TagColor
+
 extension BusinessCardTag {
     enum TagColor: Int, Codable, CaseIterable {
         case red, green, gray, blue, pink, orange, teal, indigo, purple, yellow
+    }
+}
+
+// MARK: - CodingKeys
+
+extension BusinessCardTag {
+    enum CodingKeys: String, CodingKey {
+        case id, tagColor, title, priorityIndex, description
     }
 }

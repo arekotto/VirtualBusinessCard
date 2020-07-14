@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIFont {
-    static func appDefault(size: CGFloat, weight: Weight = .regular, design: UIFontDescriptor.SystemDesign) -> UIFont {
+    static func appDefault(size: CGFloat, weight: Weight = .regular, design: UIFontDescriptor.SystemDesign = .default) -> UIFont {
         let systemFont = UIFont.systemFont(ofSize: size, weight: weight)
 
         guard let descriptor = systemFont.fontDescriptor.withDesign(design) else {

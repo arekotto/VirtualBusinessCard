@@ -10,13 +10,7 @@ import Foundation
 
 struct UserPrivate: Codable {
 
-    var personalBusinessCardIDs: [BusinessCardID]
-    var collectedBusinessCardIDs: [BusinessCardID]
-    
-    init(personalBusinessCardIDs: [BusinessCardID] = [], collectedBusinessCardIDs: [BusinessCardID] = []) {
-        self.personalBusinessCardIDs = personalBusinessCardIDs
-        self.collectedBusinessCardIDs = collectedBusinessCardIDs
-    }
+    var cardExchangeAccessTokens: [String]
 }
 
 extension UserPrivate: SingletonFirestoreable {

@@ -16,13 +16,12 @@ protocol PersonalCardsVMlDelegate: class {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentCardDetails(viewModel: CardDetailsVM)
     func presentSettings(viewModel: SettingsVM)
+    func presentDirectSharingVC(viewModel: DirectSharingVM)
 }
 
 final class PersonalCardsVM: AppViewModel {
     
-    weak var delegate: PersonalCardsVMlDelegate? {
-        didSet { didSetDelegate() }
-    }
+    weak var delegate: PersonalCardsVMlDelegate?
         
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -33,15 +32,8 @@ final class PersonalCardsVM: AppViewModel {
     private var user: UserMC?
     private var cards: [PersonalBusinessCardMC] = []
     
-    private func didSetDelegate() {
-        if delegate != nil {
-            motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
-                guard let self = self, let motion = motion else { return }
-                self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
-            }
-        } else {
-            motionManager.stopDeviceMotionUpdates()
-        }
+    private func cardForCell(at indexPath: IndexPath) -> PersonalBusinessCardMC {
+        cards[indexPath.item]
     }
 }
 
@@ -67,19 +59,41 @@ extension PersonalCardsVM {
         cards.count
     }
     
-    func item(for indexPath: IndexPath) -> PersonalCardsView.BusinessCardCellDM {
-        let bc = cards[indexPath.item]
-        return PersonalCardsView.BusinessCardCellDM(frontImageURL: bc.frontImage.url, backImageURL: bc.backImage.url, textureImageURL: bc.texture.image.url, normal: CGFloat(bc.texture.normal), specular: CGFloat(bc.texture.specular))
+    func item(for indexPath: IndexPath) -> PersonalCardsView.CollectionCell.DataModel {
+        let card = cardForCell(at: indexPath)
+        return PersonalCardsView.CollectionCell.DataModel(
+            frontImageURL: card.frontImage.url,
+            backImageURL: card.backImage.url,
+            textureImageURL: card.texture.image.url,
+            normal: CGFloat(card.texture.normal),
+            specular: CGFloat(card.texture.specular)
+        )
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        let card = cards[indexPath.item]
+        let card = cardForCell(at: indexPath)
 //        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: item(for: indexPath)))
     }
     
     func didTapSettings() {
         delegate?.presentSettings(viewModel: SettingsVM(userID: userID))
     }
+    
+    func didSelectShareCard(at indexPath: IndexPath) {
+        delegate?.presentDirectSharingVC(viewModel: DirectSharingVM(userID: userID, sharedCard: cardForCell(at: indexPath)))
+    }
+    
+    func startUpdatingMotionData() {
+        motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
+            guard let self = self, let motion = motion else { return }
+            self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
+        }
+    }
+    
+    func stopUpdatingMotionData() {
+        motionManager.stopDeviceMotionUpdates()
+    }
+    
 }
 
 extension PersonalCardsVM {

@@ -217,9 +217,7 @@ extension GroupedCardsVM {
                     self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: true
                     )
                 }
-                
             }
-            
         }
     }
 }

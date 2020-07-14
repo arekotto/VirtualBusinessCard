@@ -64,6 +64,11 @@ extension PersonalCardsCompactVC: UICollectionViewDataSource, UICollectionViewDe
 }
 
 extension PersonalCardsCompactVC: PersonalCardsVMlDelegate {
+    
+    func presentDirectSharingVC(viewModel: DirectSharingVM) {
+        
+    }
+    
     func presentSettings(viewModel: SettingsVM) {
         let vc = SettingsVC(viewModel: viewModel)
         show(vc, sender: nil)

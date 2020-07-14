@@ -27,4 +27,8 @@ class AppViewController<V: AppView, M: AppViewModel>: UIViewController {
     override func loadView() {
         view = V()
     }
+    
+    func presentUnknownErrorAlert(title: String) {
+        let message = AppError.localizedUnknownErrorDescription
+    }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 typealias BusinessCardID = String
 
-struct BusinessCardData: Codable {
+struct BusinessCardData: DocumentRepresentable {
     var frontImage: Image
     var backImage: Image
     var texture: Texture

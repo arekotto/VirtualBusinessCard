@@ -33,8 +33,13 @@ class UserMC: ModelController {
     }
 
     var profileImageURL: URL? {
-        // TODO: change for real url xD
+        // TODO: change for real url
         return URL(string: "https://www.askideas.com/media/26/Bill-Gates-Funny-Face-Picture.jpeg")
+    }
+    
+    var cardExchangeAccessTokens: [String] {
+        get { userPrivate?.cardExchangeAccessTokens ?? [] }
+        set { userPrivate?.cardExchangeAccessTokens = newValue }
     }
     
     init(userPublic: UserPublic, userPrivate: UserPrivate? = nil) {
@@ -48,6 +53,10 @@ class UserMC: ModelController {
     
     func asDocument() -> [String : Any] {
         return userPublic.asDocument()
+    }
+    
+    func addCardExchangeAccessToken(_ token: String) {
+        userPrivate?.cardExchangeAccessTokens.append(token)
     }
 }
 
@@ -77,10 +86,38 @@ extension UserMC {
         userReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
     }
     
-    func save() {
-        userReference.setData(userPublic.asDocument())
+    func save(completion: ((Result<Void, Error>) -> Void)? = nil) {
+        
+        let dispatchGroup = DispatchGroup()
+        
+        dispatchGroup.enter()
+        dispatchGroup.enter()
+        
+        var encounteredError: Error?
+        
+        userReference.setData(userPublic.asDocument()) { error in
+            if encounteredError == nil {
+                encounteredError = error
+            }
+            dispatchGroup.leave()
+        }
         if let data = userPrivate {
-            privateDataReference.setData(data.asDocument())
+            privateDataReference.setData(data.asDocument()) { error in
+                if encounteredError == nil {
+                    encounteredError = error
+                }
+                dispatchGroup.leave()
+            }
+        } else {
+            dispatchGroup.leave()
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            if let error = encounteredError {
+                completion?(.failure(error))
+            } else {
+                completion?(.success(()))
+            }
         }
     }
 }

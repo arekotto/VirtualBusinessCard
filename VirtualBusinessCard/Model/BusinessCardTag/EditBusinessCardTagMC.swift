@@ -30,7 +30,7 @@ final class EditBusinessCardTagMC {
         set { tag.tagColor = newValue }
     }
     
-    @objc var priorityIndex: Int {
+    var priorityIndex: Int {
         get { tag.priorityIndex }
         set { tag.priorityIndex = newValue }
     }
@@ -86,7 +86,7 @@ extension EditBusinessCardTagMC {
     }
     
     func savePriorityIndex(in collectionReference: CollectionReference) {
-        collectionReference.document(tag.id).updateData([#keyPath(EditBusinessCardTagMC.priorityIndex): priorityIndex])
+        collectionReference.document(tag.id).updateData([BusinessCardTag.CodingKeys.priorityIndex: priorityIndex])
     }
     
     func delete(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {

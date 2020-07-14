@@ -11,6 +11,10 @@ import CollectionViewPagingLayout
 
 final class PersonalCardsView: AppBackgroundView {
     
+    var visibleCells: [CollectionCell] {
+        collectionView.visibleCells as? [CollectionCell] ?? []
+    }
+    
     let collectionView: UICollectionView = {
         let layout = CollectionViewPagingLayout()
         layout.numberOfVisibleItems = 3

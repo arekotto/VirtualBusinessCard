@@ -31,12 +31,23 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
         viewModel.fetchData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        contentView.visibleCells.forEach { $0.setDynamicLightingEnabled(to: true) }
+        viewModel.startUpdatingMotionData()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        navigationItem.rightBarButtonItem?.tintColor = UIColor.appAccent
         contentView.collectionView.performBatchUpdates({
             self.contentView.collectionView.collectionViewLayout.invalidateLayout()
         })
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.stopUpdatingMotionData()
+        contentView.visibleCells.forEach { $0.setDynamicLightingEnabled(to: false) }
     }
     
     private func setupNavigationItem() {
@@ -45,16 +56,7 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
     }
 }
 
-@objc
-extension PersonalCardsVC {
-    func didTapNewBusinessCardButton() {
-        
-    }
-    
-    func didTapSettingsButton() {
-        viewModel.didTapSettings()
-    }
-}
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 
 extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -64,7 +66,8 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: PersonalCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.setDataModel(viewModel.item(for: indexPath))
-        cell.tag = indexPath.item
+        cell.shareButton.indexPath = indexPath
+        cell.shareButton.addTarget(self, action: #selector(didTapShareButton(_:)), for: .touchUpInside)
         return cell
     }
     
@@ -73,7 +76,34 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
 }
 
+// MARK: - Actions
+
+@objc
+private extension PersonalCardsVC {
+    func didTapNewBusinessCardButton() {
+        
+    }
+    
+    func didTapSettingsButton() {
+        viewModel.didTapSettings()
+    }
+    
+    func didTapShareButton(_ button: PersonalCardsView.CollectionCell.ShareButton) {
+        guard let indexPath = button.indexPath else { return }
+        viewModel.didSelectShareCard(at: indexPath)
+    }
+}
+
+
+
 extension PersonalCardsVC: PersonalCardsVMlDelegate {
+    
+    func presentDirectSharingVC(viewModel: DirectSharingVM) {
+        let navVC = AppNavigationController(rootViewController: DirectSharingVC(viewModel: viewModel))
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
+    }
+    
     func presentSettings(viewModel: SettingsVM) {
         let vc = SettingsVC(viewModel: viewModel)
         show(vc, sender: nil)

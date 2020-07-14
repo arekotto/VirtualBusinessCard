@@ -8,18 +8,22 @@
 
 import Firebase
 
-protocol Firestoreable: Codable, Equatable {
-    static var collectionName: String { get }
+protocol DocumentRepresentable: Codable {
+    func asDocument() -> [String: Any]
 }
 
-extension Firestoreable {
+extension DocumentRepresentable {
     func asDocument() -> [String: Any] {
         guard let json = try? JSONEncoder().encode(self) else {
             return [:]
         }
-
+        
         return ((try? JSONSerialization.jsonObject(with: json)) as? [String: Any]) ?? [:]
     }
+}
+
+protocol Firestoreable: DocumentRepresentable, Equatable {
+    static var collectionName: String { get }
 }
 
 extension Firestoreable {

@@ -33,6 +33,7 @@
 		45174D7A24BB4189009BFE58 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 45174D7924BB4189009BFE58 /* Reachability */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
+		451E20F324BC82940097BEDE /* DirectCardExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E20F224BC82940097BEDE /* DirectCardExchange.swift */; };
 		452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */; };
 		452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C4248E4F91006E6A7D /* SettingsView.swift */; };
 		452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C6248E4FCA006E6A7D /* SettingsVM.swift */; };
@@ -136,8 +137,12 @@
 		45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D69249F85E500945F29 /* IndexPath.swift */; };
 		45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD39CD2448905B00C5587C /* AnimationHelper.swift */; };
 		45D6BF7824169A41008B2498 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6BF7724169A41008B2498 /* Color.swift */; };
+		45E62CFC24BCD1B500B96B17 /* DirectCardExchangeMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */; };
 		45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */; };
 		45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */; };
+		45F1ED9E24BC483A00AE1322 /* DirectSharingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1ED9D24BC483A00AE1322 /* DirectSharingVC.swift */; };
+		45F1EDA024BC488100AE1322 /* DirectSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1ED9F24BC488100AE1322 /* DirectSharingView.swift */; };
+		45F1EDA224BC489700AE1322 /* DirectSharingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1EDA124BC489700AE1322 /* DirectSharingVM.swift */; };
 		45F41FA324600D0A002BC37F /* BusinessCardSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */; };
 		45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F41FA424600E79002BC37F /* BusinessCardTVC.swift */; };
 		45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */; };
@@ -192,6 +197,7 @@
 		45174D7624BB08C3009BFE58 /* EditBusinessCardTagMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBusinessCardTagMC.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
+		451E20F224BC82940097BEDE /* DirectCardExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchange.swift; sourceTree = "<group>"; };
 		452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsViewCell.swift; sourceTree = "<group>"; };
 		452B33C4248E4F91006E6A7D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		452B33C6248E4FCA006E6A7D /* SettingsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVM.swift; sourceTree = "<group>"; };
@@ -300,8 +306,12 @@
 		45C25D69249F85E500945F29 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
 		45CD39CD2448905B00C5587C /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
 		45D6BF7724169A41008B2498 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchangeMC.swift; sourceTree = "<group>"; };
 		45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
 		45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailViewModel.swift; sourceTree = "<group>"; };
+		45F1ED9D24BC483A00AE1322 /* DirectSharingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectSharingVC.swift; sourceTree = "<group>"; };
+		45F1ED9F24BC488100AE1322 /* DirectSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectSharingView.swift; sourceTree = "<group>"; };
+		45F1EDA124BC489700AE1322 /* DirectSharingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectSharingVM.swift; sourceTree = "<group>"; };
 		45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardSceneView.swift; sourceTree = "<group>"; };
 		45F41FA424600E79002BC37F /* BusinessCardTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTVC.swift; sourceTree = "<group>"; };
 		45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTransitionAnimator.swift; sourceTree = "<group>"; };
@@ -444,6 +454,15 @@
 			path = Greetings;
 			sourceTree = "<group>";
 		};
+		451E20F124BC82770097BEDE /* DirectCardExchange */ = {
+			isa = PBXGroup;
+			children = (
+				451E20F224BC82940097BEDE /* DirectCardExchange.swift */,
+				45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */,
+			);
+			path = DirectCardExchange;
+			sourceTree = "<group>";
+		};
 		452B33C3248E4F7C006E6A7D /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -532,6 +551,7 @@
 		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				45F1ED9C24BC482400AE1322 /* DirectSharing */,
 				45174CE424B9DEA7009BFE58 /* EditTag */,
 				45174CD924B8974B009BFE58 /* Tags */,
 				4541B0E324A8B05600BF8E0E /* UserProfile */,
@@ -724,6 +744,7 @@
 		459DC58823FEA4A1002F03DD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				451E20F124BC82770097BEDE /* DirectCardExchange */,
 				4577CC8524890B810012EDC8 /* Firestoreable */,
 				4577CC702488EE810012EDC8 /* BusinessCard */,
 				4558826924A4C555001C763B /* BusinessCardTag */,
@@ -863,6 +884,16 @@
 				45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */,
 			);
 			path = LoginWithEmail;
+			sourceTree = "<group>";
+		};
+		45F1ED9C24BC482400AE1322 /* DirectSharing */ = {
+			isa = PBXGroup;
+			children = (
+				45F1ED9D24BC483A00AE1322 /* DirectSharingVC.swift */,
+				45F1EDA124BC489700AE1322 /* DirectSharingVM.swift */,
+				45F1ED9F24BC488100AE1322 /* DirectSharingView.swift */,
+			);
+			path = DirectSharing;
 			sourceTree = "<group>";
 		};
 		A043EB3D702FD4AD55973A83 /* Frameworks */ = {
@@ -1148,6 +1179,7 @@
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
 				4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */,
 				458EF3FE248A5F7800EC76D6 /* BusinessCardMC.swift in Sources */,
+				45F1EDA024BC488100AE1322 /* DirectSharingView.swift in Sources */,
 				4543D2D7249BBDCC003B1439 /* UIImage.swift in Sources */,
 				45C160092485103600806718 /* FIRDocumentReference.swift in Sources */,
 				45C1601C2485330000806718 /* UserSetupView.swift in Sources */,
@@ -1162,6 +1194,7 @@
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
 				459102F324B708A60064B12C /* PersonalCardsCompactVC.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
+				451E20F324BC82940097BEDE /* DirectCardExchange.swift in Sources */,
 				45174CE324B8CB12009BFE58 /* TitleCollectionViewCell.swift in Sources */,
 				454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */,
 				45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */,
@@ -1173,6 +1206,8 @@
 				459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */,
 				452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */,
 				4510341E2492697E009C4B26 /* CGSize.swift in Sources */,
+				45F1ED9E24BC483A00AE1322 /* DirectSharingVC.swift in Sources */,
+				45F1EDA224BC489700AE1322 /* DirectSharingVM.swift in Sources */,
 				4511A130246D6CC100AE3306 /* CreateAccountNameViewModel.swift in Sources */,
 				454625E224A0C0EF000D1D25 /* AppCollectionViewCell.swift in Sources */,
 				452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */,
@@ -1262,6 +1297,7 @@
 				45D6BF7824169A41008B2498 /* Color.swift in Sources */,
 				4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */,
 				4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */,
+				45E62CFC24BCD1B500B96B17 /* DirectCardExchangeMC.swift in Sources */,
 				45C1603624865E7A00806718 /* AppUIState.swift in Sources */,
 				45B25F1C24938499006DD0F7 /* AppColorTheme.swift in Sources */,
 			);
