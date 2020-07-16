@@ -16,18 +16,22 @@ struct DirectCardExchange: Codable {
     var accessToken: String
     
     var sharingUserID: UserID
+    var sharingUserCardID: BusinessCardID
     var sharingUserCardData: BusinessCardData
 
-    var scanningUserID: UserID?
-    var scanningUserCardData: BusinessCardData?
+    var receivingUserCardID: BusinessCardID?
+    var receivingUserID: UserID?
+    var receivingUserCardData: BusinessCardData?
     
-    init(id: DirectCardExchangeID, accessToken: String, sharingUserID: UserID, sharingUserCardData: BusinessCardData, scanningUserID: UserID? = nil, scanningUserCardData: BusinessCardData? = nil) {
+    init(id: DirectCardExchangeID, accessToken: String, sharingUserID: UserID, sharingUserCardID: BusinessCardID, sharingUserCardData: BusinessCardData, receivingUserCardID: BusinessCardID? = nil, receivingUserID: UserID? = nil, receivingUserCardData: BusinessCardData? = nil) {
         self.id = id
         self.accessToken = accessToken
         self.sharingUserID = sharingUserID
+        self.sharingUserCardID = sharingUserCardID
         self.sharingUserCardData = sharingUserCardData
-        self.scanningUserID = scanningUserID
-        self.scanningUserCardData = scanningUserCardData
+        self.receivingUserCardID = receivingUserCardID
+        self.receivingUserID = receivingUserID
+        self.receivingUserCardData = receivingUserCardData
     }
 }
 
@@ -49,6 +53,6 @@ extension DirectCardExchange: Firestoreable {
 
 extension DirectCardExchange {
     enum CodingKeys: String, CodingKey {
-        case id, accessToken, sharingUserCardData, sharingUserID, scanningUserID, scanningUserCardData
+        case id, accessToken, sharingUserID, sharingUserCardID, sharingUserCardData, receivingUserCardID, receivingUserID, receivingUserCardData
     }
 }

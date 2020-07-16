@@ -11,6 +11,8 @@ import Contacts
 
 class ReceivedBusinessCardMC {
 
+    static private let unsavedObjectID = ""
+
     let storage = Storage.storage().reference()
     
     let businessCard: ReceivedBusinessCard
@@ -71,6 +73,12 @@ class ReceivedBusinessCardMC {
 }
 
 extension ReceivedBusinessCardMC {
+
+    convenience init(originalID: BusinessCardID, ownerID: UserID, cardData: BusinessCardData) {
+        let newCard = ReceivedBusinessCard(id: Self.unsavedObjectID, originalID: originalID, ownerID: ownerID, receivingDate: Date(), cardData: cardData)
+        self.init(card: newCard)
+    }
+
     convenience init?(documentSnapshot: DocumentSnapshot) {
         guard let businessCard = ReceivedBusinessCard(documentSnapshot: documentSnapshot) else { return nil }
         self.init(card: businessCard)

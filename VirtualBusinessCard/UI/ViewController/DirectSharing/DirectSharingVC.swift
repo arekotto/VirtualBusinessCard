@@ -89,8 +89,9 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
 // MARK: - DirectSharingVMDelegate
 
 extension DirectSharingVC: DirectSharingVMDelegate {
-    func presentAcceptCardVC() {
-        show(UIViewController(), sender: nil)
+
+    func presentAcceptCardVC(with viewModel: AcceptCardVM) {
+        show(AcceptCardVC(viewModel: viewModel), sender: nil)
     }
     
     func didFetchData() {

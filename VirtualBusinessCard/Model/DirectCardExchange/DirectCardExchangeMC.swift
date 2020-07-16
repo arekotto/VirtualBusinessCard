@@ -20,16 +20,19 @@ final class DirectCardExchangeMC {
     var sharingUserID: UserID { exchange.sharingUserID }
     var sharingUserCardData: BusinessCardData { exchange.sharingUserCardData }
     
-    @objc
-    var scanningUserID: UserID? {
-        get { exchange.scanningUserID }
-        set { exchange.scanningUserID = newValue }
+    var receivingUserID: UserID? {
+        get { exchange.receivingUserID }
+        set { exchange.receivingUserID = newValue }
+    }
+
+    var receivingUserCardID: BusinessCardID? {
+        get { exchange.receivingUserCardID }
+        set { exchange.receivingUserCardID = newValue }
     }
     
-//    @objc
-    var scanningUserCardData: BusinessCardData? {
-        get { exchange.scanningUserCardData }
-        set { exchange.scanningUserCardData = newValue }
+    var receivingUserCardData: BusinessCardData? {
+        get { exchange.receivingUserCardData }
+        set { exchange.receivingUserCardData = newValue }
     }
     
     init(exchange: DirectCardExchange) {
@@ -43,8 +46,9 @@ extension DirectCardExchangeMC {
     
     func saveScanningUserData(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
         var updateDict: [AnyHashable: Any] = [:]
-        updateDict[DirectCardExchange.CodingKeys.scanningUserID.rawValue] = exchange.scanningUserID ?? nil
-        updateDict[DirectCardExchange.CodingKeys.scanningUserCardData.rawValue] = exchange.scanningUserCardData?.asDocument()	 ?? nil
+        updateDict[DirectCardExchange.CodingKeys.receivingUserID.rawValue] = exchange.receivingUserID ?? nil
+        updateDict[DirectCardExchange.CodingKeys.receivingUserCardData.rawValue] = exchange.receivingUserCardData?.asDocument() ?? nil
+        updateDict[DirectCardExchange.CodingKeys.receivingUserCardID.rawValue] = exchange.receivingUserCardID ?? nil
         collectionReference.document(exchange.id).updateData(updateDict) { error in
             if let err = error {
                 completion?(.failure(err))

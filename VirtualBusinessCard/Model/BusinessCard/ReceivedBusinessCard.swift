@@ -16,7 +16,7 @@ struct ReceivedBusinessCard: Codable {
     var cardData: BusinessCardData
     var tagIDs: [BusinessCardTagID]
     
-    internal init(id: BusinessCardID, originalID: BusinessCardID, ownerID: UserID, receivingDate: Date, cardData: BusinessCardData, tagIDs: [BusinessCardTagID] = []) {
+    init(id: BusinessCardID, originalID: BusinessCardID, ownerID: UserID, receivingDate: Date, cardData: BusinessCardData, tagIDs: [BusinessCardTagID] = []) {
         self.id = id
         self.originalID = originalID
         self.ownerID = ownerID

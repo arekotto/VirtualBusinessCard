@@ -16,7 +16,7 @@ protocol DirectSharingVMDelegate: class {
     func presentErrorReadingQRCodeAlert()
     func playHapticFeedback()
     func presentLoadingAlert()
-    func presentAcceptCardVC()
+    func presentAcceptCardVC(with viewModel: AcceptCardVM)
 }
 
 final class DirectSharingVM: UserViewModel {
@@ -68,7 +68,7 @@ extension DirectSharingVM {
         let accessToken = Self.randomAccessToken(length: 20)
         
         let docRef = directCardExchangeReference.document()
-        let exchange = DirectCardExchange(id: docRef.documentID, accessToken: accessToken, sharingUserID: userID, sharingUserCardData: card.businessCard.cardData)
+        let exchange = DirectCardExchange(id: docRef.documentID, accessToken: accessToken, sharingUserID: userID, sharingUserCardID: card.id, sharingUserCardData: card.businessCard.cardData)
         docRef.setData(exchange.asDocument()) { [weak self] error in
             
             guard let self = self else { return }
@@ -152,16 +152,17 @@ extension DirectSharingVM {
             print(#file, "Error mapping exchange:", docSnap.documentID)
             return
         }
-        
-        if let scanningUserID = initiatedExchange.scanningUserID, let scanningUserCardData = initiatedExchange.scanningUserCardData {
 
-            guard scanningUserID != self.userID else { return }
+        guard let receivingUserID = initiatedExchange.receivingUserID else { return }
+        guard let receivingUserCardID = initiatedExchange.receivingUserCardID else { return }
+        guard let receivingUserCardData = initiatedExchange.receivingUserCardData else { return }
 
-            print(scanningUserID, scanningUserCardData.name)
-            
-            delegate?.playHapticFeedback()
-            delegate?.presentAcceptCardVC()
-        }
+        guard receivingUserID != self.userID else { return }
+
+        let receivedCard = ReceivedBusinessCardMC(originalID: receivingUserCardID, ownerID: receivingUserID, cardData: receivingUserCardData)
+
+        delegate?.playHapticFeedback()
+        delegate?.presentAcceptCardVC(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
     }
     
     private func joinedExchangeDidChange(_ documentSnapshot: DocumentSnapshot?, _ error: Error?) {
@@ -177,18 +178,26 @@ extension DirectSharingVM {
         
         joinedExchangeSnapshotListener?.remove()
         let joinedExchange = DirectCardExchangeMC(exchange: exchangeModel)
-        joinedExchange.scanningUserID = userID
-        joinedExchange.scanningUserCardData = card.businessCard.cardData
+        joinedExchange.receivingUserID = userID
+        joinedExchange.receivingUserCardID = card.id
+        joinedExchange.receivingUserCardData = card.businessCard.cardData
         joinedExchange.saveScanningUserData(in: directCardExchangeReference) { [weak self] result in
+
+            guard let self = self else { return }
+
             switch result {
             case .failure(let error):
                 print(#file, "Error uploading data to joined exchange:", error.localizedDescription)
-                self?.delegate?.presentErrorReadingQRCodeAlert()
+                self.delegate?.presentErrorReadingQRCodeAlert()
             case .success:
-                print(joinedExchange.sharingUserID, joinedExchange.sharingUserCardData.name)
-                
-                self?.delegate?.playHapticFeedback()
-                self?.delegate?.presentAcceptCardVC()
+
+                self.delegate?.playHapticFeedback()
+                let receivedCard = ReceivedBusinessCardMC(
+                    originalID: joinedExchange.sharingUserID,
+                    ownerID: joinedExchange.sharingUserID,
+                    cardData: joinedExchange.sharingUserCardData
+                )
+                self.delegate?.presentAcceptCardVC(with: AcceptCardVM(userID: self.userID, sharedCard: receivedCard))
             }
         }
     }

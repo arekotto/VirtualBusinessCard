@@ -136,6 +136,9 @@
 		45C25D68249F5EC900945F29 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */; };
 		45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D69249F85E500945F29 /* IndexPath.swift */; };
 		45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD39CD2448905B00C5587C /* AnimationHelper.swift */; };
+		45D445A724C05D3B00630C72 /* AcceptCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D445A624C05D3B00630C72 /* AcceptCardVC.swift */; };
+		45D445A924C05D7800630C72 /* AcceptCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D445A824C05D7800630C72 /* AcceptCardView.swift */; };
+		45D445AB24C05DAF00630C72 /* AcceptCardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D445AA24C05DAF00630C72 /* AcceptCardVM.swift */; };
 		45D6BF7824169A41008B2498 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6BF7724169A41008B2498 /* Color.swift */; };
 		45E62CFC24BCD1B500B96B17 /* DirectCardExchangeMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */; };
 		45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */; };
@@ -305,6 +308,9 @@
 		45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
 		45C25D69249F85E500945F29 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
 		45CD39CD2448905B00C5587C /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
+		45D445A624C05D3B00630C72 /* AcceptCardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptCardVC.swift; sourceTree = "<group>"; };
+		45D445A824C05D7800630C72 /* AcceptCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptCardView.swift; sourceTree = "<group>"; };
+		45D445AA24C05DAF00630C72 /* AcceptCardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptCardVM.swift; sourceTree = "<group>"; };
 		45D6BF7724169A41008B2498 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchangeMC.swift; sourceTree = "<group>"; };
 		45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
@@ -551,6 +557,7 @@
 		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				45D445A524C05D2500630C72 /* AcceptCard */,
 				45F1ED9C24BC482400AE1322 /* DirectSharing */,
 				45174CE424B9DEA7009BFE58 /* EditTag */,
 				45174CD924B8974B009BFE58 /* Tags */,
@@ -877,6 +884,16 @@
 			path = Component;
 			sourceTree = "<group>";
 		};
+		45D445A524C05D2500630C72 /* AcceptCard */ = {
+			isa = PBXGroup;
+			children = (
+				45D445A624C05D3B00630C72 /* AcceptCardVC.swift */,
+				45D445A824C05D7800630C72 /* AcceptCardView.swift */,
+				45D445AA24C05DAF00630C72 /* AcceptCardVM.swift */,
+			);
+			path = AcceptCard;
+			sourceTree = "<group>";
+		};
 		45E64C54241938F900FECFC9 /* LoginWithEmail */ = {
 			isa = PBXGroup;
 			children = (
@@ -1193,12 +1210,14 @@
 				452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */,
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
 				459102F324B708A60064B12C /* PersonalCardsCompactVC.swift in Sources */,
+				45D445A724C05D3B00630C72 /* AcceptCardVC.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
 				451E20F324BC82940097BEDE /* DirectCardExchange.swift in Sources */,
 				45174CE324B8CB12009BFE58 /* TitleCollectionViewCell.swift in Sources */,
 				454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */,
 				45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */,
 				45174CDD24B898CB009BFE58 /* TagsView.swift in Sources */,
+				45D445A924C05D7800630C72 /* AcceptCardView.swift in Sources */,
 				45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */,
 				458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */,
 				4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */,
@@ -1237,6 +1256,7 @@
 				45C1602C2486484E00806718 /* PersonalCardsView.swift in Sources */,
 				4577CC77248903D70012EDC8 /* AppError.swift in Sources */,
 				4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */,
+				45D445AB24C05DAF00630C72 /* AcceptCardVM.swift in Sources */,
 				45C160202485AC6900806718 /* LoginHostingController.swift in Sources */,
 				45C1601E2485333F00806718 /* UserSetupViewModel.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
