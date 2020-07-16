@@ -24,7 +24,7 @@ class CardFrontBackView: AppView {
     var sizeMode = SizeMode.expanded {
         didSet { setSizeMode(sizeMode) }
     }
-    
+
     override func configureView() {
         super.configureView()
         setSizeMode(.expanded)
@@ -92,6 +92,10 @@ class CardFrontBackView: AppView {
 }
 
 extension CardFrontBackView {
+
+    func setDynamicLightingEnabled(_ isEnabled: Bool) {
+        allSceneViews.forEach { $0.dynamicLightingEnabled = isEnabled }
+    }
     
     func setDataModel(_ dm: DataModel) {
         let task = ImageAndTextureFetchTask(frontImageURL: dm.frontImageURL, textureURL: dm.textureImageURL, backImageURL: dm.backImageURL)

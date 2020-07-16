@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Colorful
 
 final class EditTagVC: AppViewController<EditTagView, EditTagVM> {
     

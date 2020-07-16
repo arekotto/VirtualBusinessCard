@@ -53,11 +53,15 @@ private extension DirectSharingVM {
 
 extension DirectSharingVM {
     var title: String {
-        NSLocalizedString("Sharing Card", comment: "")
+        NSLocalizedString("Share Card", comment: "")
     }
     
     var cancelButtonTitle: String {
         NSLocalizedString("Cancel", comment: "")
+    }
+
+    var businessCardFrontImageURL: URL? {
+        card.frontImage.url
     }
     
     func generateQRCode() {
@@ -79,7 +83,7 @@ extension DirectSharingVM {
                 self?.initiatedExchangeDidChange(docSnapshot, error)
             }
             
-            self.directSharingExchangeData = DirectSharingExchangeData(exchangeID: docRef.documentID, accessToken: accessToken)
+            self.directSharingExchangeData = DirectSharingExchangeData(userID: self.userID, exchangeID: docRef.documentID, accessToken: accessToken)
             guard let jsonData = try? JSONEncoder().encode(self.directSharingExchangeData!) else {
                 self.delegate?.presentErrorGeneratingQRCodeAlert()
                 return
@@ -104,6 +108,11 @@ extension DirectSharingVM {
         }
         
         guard let exchange = try? JSONDecoder().decode(DirectSharingExchangeData.self, from: jsonData) else {
+            delegate?.presentErrorReadingQRCodeAlert()
+            return
+        }
+
+        guard exchange.userID != userID else {
             delegate?.presentErrorReadingQRCodeAlert()
             return
         }
@@ -145,13 +154,14 @@ extension DirectSharingVM {
         }
         
         if let scanningUserID = initiatedExchange.scanningUserID, let scanningUserCardData = initiatedExchange.scanningUserCardData {
-            
+
+            guard scanningUserID != self.userID else { return }
+
             print(scanningUserID, scanningUserCardData.name)
             
             delegate?.playHapticFeedback()
             delegate?.presentAcceptCardVC()
         }
-        
     }
     
     private func joinedExchangeDidChange(_ documentSnapshot: DocumentSnapshot?, _ error: Error?) {
@@ -164,6 +174,8 @@ extension DirectSharingVM {
             print(#file, "Error mapping exchange:", docSnap.documentID)
             return
         }
+        
+        joinedExchangeSnapshotListener?.remove()
         let joinedExchange = DirectCardExchangeMC(exchange: exchangeModel)
         joinedExchange.scanningUserID = userID
         joinedExchange.scanningUserCardData = card.businessCard.cardData
@@ -182,9 +194,9 @@ extension DirectSharingVM {
     }
 }
 
-
 private extension DirectSharingVM {
     struct DirectSharingExchangeData: Codable {
+        var userID: UserID
         var exchangeID: DirectCardExchangeID
         var accessToken: String
     }

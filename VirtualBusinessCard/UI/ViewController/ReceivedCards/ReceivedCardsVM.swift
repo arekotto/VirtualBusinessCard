@@ -87,7 +87,7 @@ extension ReceivedCardsVM {
         displayedCardIndexes.count
     }
     
-    func item(for indexPath: IndexPath) -> CardFrontBackView.DataModel {
+    func itemForCell(at indexPath: IndexPath) -> CardFrontBackView.DataModel {
         let cardID = displayedCardIndexes[indexPath.item]
         let cardData = cards[cardID].cardData
         return CardFrontBackView.DataModel(frontImageURL: cardData.frontImage.url, backImageURL: cardData.backImage.url, textureImageURL: cardData.texture.image.url, normal: CGFloat(cardData.texture.normal), specular: CGFloat(cardData.texture.specular))
@@ -95,7 +95,7 @@ extension ReceivedCardsVM {
     
     func didSelectItem(at indexPath: IndexPath) {
         let card = cards[indexPath.item]
-        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: item(for: indexPath)))
+        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: itemForCell(at: indexPath)))
     }
     
     func didChangeCellSizeMode() {

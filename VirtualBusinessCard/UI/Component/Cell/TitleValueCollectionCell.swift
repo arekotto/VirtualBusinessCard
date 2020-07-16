@@ -68,7 +68,7 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
     
     private func didUpdateSelected() {
         if isSelected {
-            contentView.backgroundColor = .appDefaultBackground
+            contentView.backgroundColor = .appBackground
         } else {
             UIView.animate(withDuration: 0.5) {
                 self.contentView.backgroundColor = .roundedTableViewCellBackground

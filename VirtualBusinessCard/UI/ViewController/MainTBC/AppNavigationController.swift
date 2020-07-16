@@ -52,10 +52,10 @@ class AppNavigationController: UINavigationController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        navigationBar.barTintColor = .appDefaultBackground
+        navigationBar.barTintColor = .appBackground
         navigationBar.tintColor = .appAccent
         toolbar.tintColor = .appAccent
-        view.backgroundColor = .appDefaultBackground
+        view.backgroundColor = .appBackground
         if isShadowEnabled {
             navigationBar.shadowImage = UIColor.barSeparator.as1ptImage()
         }

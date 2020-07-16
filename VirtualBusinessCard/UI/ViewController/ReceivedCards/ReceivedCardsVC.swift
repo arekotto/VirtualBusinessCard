@@ -94,7 +94,7 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ReceivedCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        cell.cardFrontBackView.setDataModel(viewModel.item(for: indexPath))
+        cell.cardFrontBackView.setDataModel(viewModel.itemForCell(at: indexPath))
         return cell
     }
     

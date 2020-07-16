@@ -8,6 +8,7 @@
 
 import AVFoundation
 import UIKit
+import Kingfisher
 
 final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingVM> {
     
@@ -20,6 +21,7 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
         setupCaptureSession()
         setupNavigationItem()
         contentView.goToSettingsButton.addTarget(self, action: #selector(didTapGoToSettingsButton), for: .touchUpInside)
+        contentView.businessCardImageView.kf.setImage(with: viewModel.businessCardFrontImageURL)
         viewModel.delegate = self
         viewModel.fetchData()
     }
@@ -99,7 +101,7 @@ extension DirectSharingVC: DirectSharingVMDelegate {
         let title = NSLocalizedString("QR Could Not Be Read", comment: "")
         let message = NSLocalizedString("Try reading the code again.", comment: "")
         let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .alert)
-        alert.addOkAction()
+        alert.addOkAction() { _ in self.captureSession.startRunning() }
         present(alert, animated: true)
     }
     

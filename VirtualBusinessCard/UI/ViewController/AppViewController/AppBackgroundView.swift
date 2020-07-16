@@ -12,6 +12,6 @@ class AppBackgroundView: AppView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = .appDefaultBackground
+        backgroundColor = .appBackground
     }
 }

@@ -10,7 +10,8 @@ import UIKit
 
 extension UIColor {
     static let appAccent = UIColor(named: AppColorTheme.appAccent.rawValue)!
-    static let appDefaultBackground = UIColor(named: AppColorTheme.appDefaultBackground.rawValue)!
+    static let appBackground = UIColor(named: AppColorTheme.appBackground.rawValue)!
+    static let appBackgroundSecondary = UIColor(named: AppColorTheme.appBackgroundSecondary.rawValue)!
     static let appGray = UIColor(named: AppColorTheme.appGray.rawValue)!
     static let appWhite = UIColor(named: AppColorTheme.appWhite.rawValue)!
     static let barSeparator = UIColor(named: AppColorTheme.barSeparator.rawValue)!

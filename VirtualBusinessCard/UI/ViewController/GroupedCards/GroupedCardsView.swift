@@ -37,7 +37,7 @@ final class GroupedCardsView: AppBackgroundView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.backgroundColor = .appDefaultBackground
+        collectionView.backgroundColor = .appBackground
     }
 }
 
@@ -115,7 +115,7 @@ extension GroupedCardsView {
         
         override func layoutSubviews() {
             super.layoutSubviews()
-            backgroundColor = .appDefaultBackground
+            backgroundColor = .appBackground
         }
         
         override func configureSubviews() {

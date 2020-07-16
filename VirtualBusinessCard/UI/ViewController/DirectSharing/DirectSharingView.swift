@@ -9,14 +9,39 @@
 import UIKit
 import AVFoundation
 
-final class DirectSharingView: AppBackgroundView {
+final class DirectSharingView: AppView {
     
     let qrCodeImageView: UIImageView = {
         let this = UIImageView()
         this.contentMode = .scaleAspectFit
+        this.layer.magnificationFilter = .nearest
         return this
     }()
-    
+
+    let businessCardImageView: UIImageView = {
+        let this = UIImageView()
+        this.layer.shadowRadius = 5
+        this.layer.shadowOpacity = 0.15
+        this.layer.shadowOffset = CGSize(width: 0, height: 0)
+        this.contentMode = .scaleAspectFit
+        return this
+    }()
+
+    let goToSettingsButton: UIButton = {
+        let this = UIButton()
+        this.setTitle(NSLocalizedString("Take me to Settings", comment: ""), for: .normal)
+        this.setTitleColor(.appAccent, for: .normal)
+        return this
+    }()
+
+    private let cameraPreviewOverlay: UIImageView = {
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 40, weight: .ultraLight)
+        let this = UIImageView(image: UIImage(systemName: "viewfinder", withConfiguration: imageConfig))
+        this.tintColor = .white
+        this.contentMode = .scaleAspectFit
+        return this
+    }()
+
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private let cameraPreviewView: UIView = {
         let this = UIView()
@@ -31,13 +56,6 @@ final class DirectSharingView: AppBackgroundView {
         return this
     }()
     
-    let goToSettingsButton: UIButton = {
-        let this = UIButton()
-        this.setTitle(NSLocalizedString("Take me to Settings", comment: ""), for: .normal)
-        this.setTitleColor(.appAccent, for: .normal)
-        return this
-    }()
-    
     private lazy var cameraPreviewDisabledStackView: UIStackView = {
         let this = UIStackView(arrangedSubviews: [cameraPreviewDisabledLabel, goToSettingsButton])
         this.axis = .vertical
@@ -45,7 +63,6 @@ final class DirectSharingView: AppBackgroundView {
         this.isHidden = true
         return this
     }()
-    
     
     private let cameraDescriptionLabel: UILabel = {
         let this = UILabel()
@@ -58,28 +75,39 @@ final class DirectSharingView: AppBackgroundView {
     
     private let qrCodeDescriptionLabel: UILabel = {
         let this = UILabel()
-        this.text = NSLocalizedString("show them your card's QR code.", comment: "")
+        this.text = NSLocalizedString("let them scan your card's QR code.", comment: "")
         this.textAlignment = .center
         this.numberOfLines = 2
         this.font = .appDefault(size: 14)
         return this
     }()
-    
+
+    private lazy var shareCardView: UIStackView = {
+        let this = UIStackView(arrangedSubviews: [qrCodeImageView, businessCardImageView])
+        this.axis = .vertical
+        this.spacing = 16
+        return this
+    }()
+
     private let horizontalOrDivider = HorizontalOrDivider()
     
     override func configureSubviews() {
         super.configureSubviews()
-        [cameraPreviewView, horizontalOrDivider, cameraDescriptionLabel, qrCodeDescriptionLabel, qrCodeImageView].forEach { addSubview($0) }
+        [cameraPreviewView, cameraPreviewOverlay, horizontalOrDivider, cameraDescriptionLabel, qrCodeDescriptionLabel, shareCardView].forEach { addSubview($0) }
         cameraPreviewView.addSubview(cameraPreviewDisabledStackView)
     }
     
     override func configureConstraints() {
         super.configureConstraints()
-        
+
+        cameraPreviewOverlay.constrainCenter(toView: cameraPreviewView)
+        cameraPreviewOverlay.constrainHeightEqualTo(cameraPreviewView, multiplier: 0.8)
+        cameraPreviewOverlay.constrainWidthEqualTo(cameraPreviewView, multiplier: 0.8)
+
         cameraPreviewDisabledStackView.constrainCenterYToSuperview()
         cameraPreviewDisabledStackView.constrainHorizontallyToSuperview(sideInset: 24)
 
-        horizontalOrDivider.constrainCenterToSuperview()
+        horizontalOrDivider.constrainCenterYToSuperview()
         horizontalOrDivider.constrainHeight(constant: 20)
         horizontalOrDivider.constrainHorizontallyToSuperview(sideInset: 40)
         
@@ -88,15 +116,18 @@ final class DirectSharingView: AppBackgroundView {
         cameraPreviewView.constrainBottom(to: cameraDescriptionLabel.topAnchor, constant: -16)
         
         cameraDescriptionLabel.constrainHorizontallyToSuperview(sideInset: 16)
-        cameraDescriptionLabel.constrainBottom(to: horizontalOrDivider.topAnchor, constant: -8)
+        cameraDescriptionLabel.constrainBottom(to: horizontalOrDivider.topAnchor, constant: -4)
 
         qrCodeDescriptionLabel.constrainHorizontallyToSuperview(sideInset: 16)
-        qrCodeDescriptionLabel.constrainTop(to: horizontalOrDivider.bottomAnchor, constant: 8)
+        qrCodeDescriptionLabel.constrainTop(to: horizontalOrDivider.bottomAnchor, constant: 4)
 
-        qrCodeImageView.constrainCenterXToSuperview()
-        qrCodeImageView.constrainTop(to: qrCodeDescriptionLabel.bottomAnchor, constant: 16)
-        qrCodeImageView.constrainHeight(constant: 100)
-        qrCodeImageView.constrainWidth(constant: 100)
+        qrCodeImageView.constrainWidth(constant: UIScreen.main.bounds.width - 64)
+
+        businessCardImageView.constrainHeightEqualTo(qrCodeImageView, multiplier: 0.3)
+
+        shareCardView.constrainCenterXToSuperview()
+        shareCardView.constrainTop(to: qrCodeDescriptionLabel.bottomAnchor, constant: 16)
+        shareCardView.constrainBottomToSuperviewSafeArea(inset: 16)
     }
     
     override func layoutSubviews() {
@@ -104,7 +135,8 @@ final class DirectSharingView: AppBackgroundView {
         cameraPreviewDisabledLabel.textColor = .secondaryLabel
         cameraDescriptionLabel.textColor = .secondaryLabel
         qrCodeDescriptionLabel.textColor = .secondaryLabel
-        cameraPreviewView.backgroundColor = .appDefaultBackground
+        cameraPreviewView.backgroundColor = .appBackground
+        backgroundColor = .appBackgroundSecondary
 
         previewLayer?.frame = cameraPreviewView.layer.bounds
     }
@@ -118,6 +150,7 @@ final class DirectSharingView: AppBackgroundView {
     
     func disableCameraPreview() {
         previewLayer?.removeFromSuperlayer()
+        cameraPreviewOverlay.isHidden = true
         cameraPreviewDisabledStackView.isHidden = false
     }
 }

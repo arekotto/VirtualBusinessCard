@@ -32,7 +32,7 @@ final class SettingsView: AppView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.backgroundColor = .appDefaultBackground
+        collectionView.backgroundColor = .appBackground
     }
     
     enum SupplementaryElementKind: String {
