@@ -98,15 +98,14 @@ extension CardFrontBackView {
     }
     
     func setDataModel(_ dm: DataModel) {
-        let task = ImageAndTextureFetchTask(frontImageURL: dm.frontImageURL, textureURL: dm.textureImageURL, backImageURL: dm.backImageURL)
+        let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL])
         task { [weak self] result in
             switch result {
             case .failure(let err): print(err.localizedDescription)
-            case .success(let imagesResult):
-                self?.frontSceneView.setImage(image: imagesResult.frontImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
-                if let backImage = imagesResult.backImage {
-                    self?.backSceneView.setImage(image: backImage, texture: imagesResult.texture, normal: dm.normal, specular: dm.specular)
-                }
+            case .success(let images):
+                let texture = images[1]
+                self?.frontSceneView.setImage(image: images[0], texture: texture, normal: dm.normal, specular: dm.specular)
+                self?.backSceneView.setImage(image: images[2], texture: texture, normal: dm.normal, specular: dm.specular)
             }
         }
     }

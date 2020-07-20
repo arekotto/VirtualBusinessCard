@@ -56,7 +56,6 @@ class DisplayVC: UIViewController {
             holderView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20),
             holderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             holderView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            
         ])
         
     }

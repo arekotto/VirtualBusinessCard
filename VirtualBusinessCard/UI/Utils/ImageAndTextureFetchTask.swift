@@ -11,64 +11,39 @@ import Kingfisher
 
 struct ImageAndTextureFetchTask {
    
-    let frontImageURL: URL
-    let textureURL: URL
-    let backImageURL: URL
+    let imageURLs: [URL]
     
-    init(frontImageURL: URL, textureURL: URL, backImageURL: URL) {
-        self.frontImageURL = frontImageURL
-        self.textureURL = textureURL
-        self.backImageURL = backImageURL
+    init(imageURLs: [URL]) {
+        self.imageURLs = imageURLs
     }
     
-    func callAsFunction(completion: @escaping (Result<ImagesResult, Error>) -> Void) {
+    func callAsFunction(completion: @escaping (Result<[UIImage], Error>) -> Void) {
         let dispatchGroup = DispatchGroup()
-        dispatchGroup.enter()
-        dispatchGroup.enter()
-        dispatchGroup.enter()
 
-        var frontImage: UIImage?
-        var backImage: UIImage?
-        var texture: UIImage?
-        
+        imageURLs.forEach{ _ in dispatchGroup.enter() }
+
+        var imagesDict = [Int: UIImage]()
         var error: Error?
-        
-        KingfisherManager.shared.retrieveImage(with: backImageURL) { result in
-            switch result {
-            case .success(let imageResult): backImage = imageResult.image
-            case .failure(let err): error = err
+
+        imageURLs.enumerated().forEach { idx, url in
+            KingfisherManager.shared.retrieveImage(with: url) { result in
+                switch result {
+                case .success(let imageResult): imagesDict[idx] = imageResult.image
+                case .failure(let err): error = err
+                }
+                dispatchGroup.leave()
             }
-            dispatchGroup.leave()
-        }
-        
-        KingfisherManager.shared.retrieveImage(with: frontImageURL) { result in
-            switch result {
-            case .success(let imageResult): frontImage = imageResult.image
-            case .failure(let err): error = err
-            }
-            dispatchGroup.leave()
-        }
-        
-        KingfisherManager.shared.retrieveImage(with: textureURL) { result in
-            switch result {
-            case .success(let imageResult): texture = imageResult.image
-            case .failure(let err): error = err
-            }
-            dispatchGroup.leave()
         }
         
         dispatchGroup.notify(queue: .main) {
             if let err = error {
                 completion(.failure(err))
             } else {
-                completion(.success(ImagesResult(frontImage: frontImage!, texture: texture!, backImage: backImage)))
+                let indexes = Array(0 ..< self.imageURLs.count)
+                completion(.success(indexes.map{ imagesDict[$0]! }))
             }
         }
     }
     
-    struct ImagesResult {
-        let frontImage: UIImage
-        let texture: UIImage
-        let backImage: UIImage?
-    }
+
 }

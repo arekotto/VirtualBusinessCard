@@ -888,8 +888,8 @@
 			isa = PBXGroup;
 			children = (
 				45D445A624C05D3B00630C72 /* AcceptCardVC.swift */,
-				45D445A824C05D7800630C72 /* AcceptCardView.swift */,
 				45D445AA24C05DAF00630C72 /* AcceptCardVM.swift */,
+				45D445A824C05D7800630C72 /* AcceptCardView.swift */,
 			);
 			path = AcceptCard;
 			sourceTree = "<group>";

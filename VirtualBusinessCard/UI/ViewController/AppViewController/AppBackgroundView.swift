@@ -10,8 +10,8 @@ import Foundation
 
 class AppBackgroundView: AppView {
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
+    override func configureColors() {
+        super.configureColors()
         backgroundColor = .appBackground
     }
 }

@@ -69,7 +69,7 @@ final class DirectSharingView: AppView {
         this.text = NSLocalizedString("Scan the QR code of your business partner's card", comment: "")
         this.textAlignment = .center
         this.numberOfLines = 2
-        this.font = .appDefault(size: 14)
+        this.font = .appDefault(size: 13)
         return this
     }()
     
@@ -78,7 +78,7 @@ final class DirectSharingView: AppView {
         this.text = NSLocalizedString("let them scan your card's QR code.", comment: "")
         this.textAlignment = .center
         this.numberOfLines = 2
-        this.font = .appDefault(size: 14)
+        this.font = .appDefault(size: 13)
         return this
     }()
 
