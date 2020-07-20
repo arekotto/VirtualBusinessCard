@@ -11,8 +11,15 @@ import UIKit
 final class AcceptCardView: AppBackgroundView {
 
     static let defaultCardViewSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.8)
-    static let startingCardTopConstraintConstant = -defaultCardViewSize.height / 2
     static let startingSlideToAcceptStackViewTopConstraint = defaultCardViewSize.height * 1.2
+
+    var startingCardTopConstraintConstant: CGFloat {
+        -Self.defaultCardViewSize.height / 2 + statusBarHeight
+    }
+
+    private var statusBarHeight: CGFloat {
+        window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+    }
 
     private(set) var slideToAcceptStackViewTopConstraint: NSLayoutConstraint!
     private(set) lazy var slideToAcceptStackView: UIStackView = {
@@ -23,6 +30,12 @@ final class AcceptCardView: AppBackgroundView {
         return this
     }()
 
+    let rejectButton: UIButton = {
+        let this = UIButton()
+        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .medium)
+        this.setImage(UIImage(systemName: "xmark.circle.fill", withConfiguration: config), for: .normal)
+        return this
+    }()
 
     private(set) var cardSceneViewTopConstraint: NSLayoutConstraint!
     let cardSceneView: BusinessCardSceneView = {
@@ -48,9 +61,12 @@ final class AcceptCardView: AppBackgroundView {
         return this
     }()
 
+    private var statusBarBlurViewHeightConstraint: NSLayoutConstraint!
+    private let statusBarBlurView = UIVisualEffectView(effect:  UIBlurEffect(style: .systemUltraThinMaterial))
+
     override func configureSubviews() {
         super.configureSubviews()
-        [slideToAcceptStackView, cardSceneView].forEach { addSubview($0) }
+        [slideToAcceptStackView, rejectButton, cardSceneView, statusBarBlurView].forEach { addSubview($0) }
     }
 
     override func configureConstraints() {
@@ -65,13 +81,27 @@ final class AcceptCardView: AppBackgroundView {
         slideToAcceptImageView.constrainHeight(constant: 30)
 
         cardSceneView.constrainCenterXToSuperview()
-        cardSceneViewTopConstraint = cardSceneView.constrainTopToSuperview(inset: Self.startingCardTopConstraintConstant)
+        cardSceneViewTopConstraint = cardSceneView.constrainTopToSuperview(inset: 0)
+
+        rejectButton.constrainCenterXToSuperview()
+        rejectButton.constrainBottomToSuperviewSafeArea(inset: 20)
+        rejectButton.constrainHeight(constant: 50)
+
+        statusBarBlurView.constrainHorizontallyToSuperview()
+        statusBarBlurView.constrainTopToSuperview()
+        statusBarBlurViewHeightConstraint = statusBarBlurView.constrainHeight(constant: 44)
+    }
+
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        statusBarBlurViewHeightConstraint.constant = window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        cardSceneViewTopConstraint.constant = startingCardTopConstraintConstant
     }
 
     override func configureColors() {
         super.configureColors()
         slideToAcceptLabel.textColor = .appGray
         slideToAcceptImageView.tintColor = .appGray
-
+        rejectButton.tintColor = .appAccent
     }
 }

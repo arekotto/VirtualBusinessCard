@@ -10,6 +10,8 @@ import UIKit
 
 protocol AcceptCardVMDelegate: class {
     func didFetchData(image: UIImage, texture: UIImage, normal: Double, specular: Double)
+    func presentRejectAlert()
+    func dismissSelf()
 }
 
 final class AcceptCardVM: AppViewModel {
@@ -36,4 +38,17 @@ final class AcceptCardVM: AppViewModel {
         }
     }
 
+}
+
+// MARK: - ViewController API
+
+extension AcceptCardVM {
+
+    func didSelectReject() {
+        delegate?.presentRejectAlert()
+    }
+
+    func didConfirmReject() {
+        delegate?.dismissSelf()
+    }
 }

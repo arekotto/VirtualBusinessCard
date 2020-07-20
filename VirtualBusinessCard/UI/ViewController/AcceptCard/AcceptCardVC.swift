@@ -22,6 +22,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         viewModel.delegate = self
         viewModel.fetchData()
         contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:))))
+        contentView.rejectButton.addTarget(self, action: #selector(didTapRejectButton), for: .touchUpInside)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
 
@@ -33,21 +34,18 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
     private func makeBounceAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
-
         animator.addAnimations {
             UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [.calculationModeCubic], animations: {
-
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1/2) {
                     self.contentView.cardSceneViewTopConstraint.constant += 10
                     self.view.layoutIfNeeded()
                 }
                 UIView.addKeyframe(withRelativeStartTime: 1/2, relativeDuration: 1/2) {
-                    self.contentView.cardSceneViewTopConstraint.constant = AcceptCardView.startingCardTopConstraintConstant
+                    self.contentView.cardSceneViewTopConstraint.constant = self.contentView.startingCardTopConstraintConstant
                     self.view.layoutIfNeeded()
                 }
             })
         }
-
         return animator
     }
 
@@ -99,18 +97,22 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
             self.acceptAnimator = nil
             switch state {
             case .end: return
-            case .start:
-                self.contentView.cardSceneViewTopConstraint.constant = AcceptCardView.startingCardTopConstraintConstant
-                self.contentView.slideToAcceptStackViewTopConstraint.constant = AcceptCardView.startingSlideToAcceptStackViewTopConstraint
-                self.view.layoutIfNeeded()
-                UIView.animate(withDuration: 0.1) {
-                    self.contentView.slideToAcceptStackView.alpha = 1
-                }
+            case .start: self.resetViewAfterDiscardedAcceptAnimation()
             default: return
             }
         }
 
         return animator
+    }
+
+    private func resetViewAfterDiscardedAcceptAnimation() {
+        self.contentView.cardSceneViewTopConstraint.constant = contentView.startingCardTopConstraintConstant
+        self.contentView.slideToAcceptStackViewTopConstraint.constant = AcceptCardView.startingSlideToAcceptStackViewTopConstraint
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.2) {
+            self.contentView.slideToAcceptStackView.alpha = 1
+            self.contentView.rejectButton.alpha = 1
+        }
     }
 
     private func beginAcceptAnimation() {
@@ -121,8 +123,9 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         slideUpAnimator = nil
         slideDownAnimator = nil
 
-        UIView.animate(withDuration: 0.1) {
+        UIView.animate(withDuration: 0.2) {
             self.contentView.slideToAcceptStackView.alpha = 0
+            self.contentView.rejectButton.alpha = 0
         }
 
         acceptAnimator = makeAcceptAnimator()
@@ -154,6 +157,10 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
 @objc private extension AcceptCardVC {
 
+    func didTapRejectButton() {
+        viewModel.didSelectReject()
+    }
+
     func playBounceAnimation() {
         guard acceptAnimator == nil else { return }
 
@@ -184,6 +191,21 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 }
 
 extension AcceptCardVC: AcceptCardVMDelegate {
+    func dismissSelf() {
+        dismiss(animated: true)
+    }
+
+    func presentRejectAlert() {
+        let title = NSLocalizedString("Reject Card", comment: "")
+        let message = NSLocalizedString("This business card has not been saved to your collection yet. Are you sure you want to reject it?", comment: "")
+        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Reject Card", comment: ""), style: .destructive) { _ in
+            self.viewModel.didConfirmReject()
+        })
+        alert.addCancelAction()
+        present(alert, animated: true)
+    }
+
     func didFetchData(image: UIImage, texture: UIImage, normal: Double, specular: Double) {
         contentView.cardSceneView.setImage(image: image, texture: texture, normal: CGFloat(normal), specular: CGFloat(specular))
 
