@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import CoreMotion
 
 final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
@@ -26,6 +27,11 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         viewModel.delegate = self
         setupContentView()
         setupBars()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.willAppear()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -104,9 +110,10 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
                     self.contentView.cardSceneViewTopConstraint.constant = AcceptCardView.cardViewExpandedTopConstraint
                     self.contentView.cardSceneViewHeightConstraint.constant = AcceptCardView.cardViewExpandedSize
                     self.contentView.cardSceneViewWidthConstraint.constant = AcceptCardView.defaultCardViewSize.width
-
                     self.contentView.doneButtonView.isHidden = false
                     self.contentView.doneButtonView.alpha = 1
+                    self.contentView.cardSavedLabel.isHidden = false
+                    self.contentView.cardSavedLabel.alpha = 1
                     self.view.layoutIfNeeded()
                 }
             })
@@ -135,6 +142,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
                 UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.01) {
                     self.contentView.cardSceneViewHeightConstraint.constant += 20
                     self.contentView.cardSceneViewWidthConstraint.constant += 20
+                    self.contentView.cardSceneView.sceneShadowOpacity = CardFrontBackView.defaultSceneShadowOpacity
                     self.view.layoutIfNeeded()
                 }
                 UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
@@ -265,6 +273,10 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 }
 
 extension AcceptCardVC: AcceptCardVMDelegate {
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        contentView.cardSceneView.updateMotionData(motion, over: timeFrame)
+    }
+
     func presentSaveErrorAlert(title: String) {
         let alert = UIAlertController.accentTinted(title: title, message: nil, preferredStyle: .alert)
         alert.addOkAction()

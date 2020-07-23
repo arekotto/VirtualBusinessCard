@@ -10,12 +10,22 @@ import UIKit
 import CoreMotion
 
 class CardFrontBackView: AppView {
-    
+
+    static let defaultSceneShadowOpacity: Float = 0.35
+
+    var sceneShadowOpacity = defaultSceneShadowOpacity {
+        didSet {
+            allSceneViews.forEach {
+                $0.layer.shadowOpacity = sceneShadowOpacity
+            }
+        }
+    }
+
+    private var frontSceneViewHeightConstraint: NSLayoutConstraint!
     let frontSceneView =  BusinessCardSceneView(dynamicLightingEnabled: true)
+
+    private var backSceneViewHeightConstraint: NSLayoutConstraint!
     let backSceneView = BusinessCardSceneView(dynamicLightingEnabled: true)
-    
-    var frontSceneViewHeightConstraint: NSLayoutConstraint!
-    var backSceneViewHeightConstraint: NSLayoutConstraint!
 
     private let subScenesHeightMultiplayer: CGFloat
     
@@ -82,12 +92,12 @@ class CardFrontBackView: AppView {
         case .compact:
             allSceneViews.forEach {
                 $0.layer.shadowRadius = 4.5
-                $0.layer.shadowOpacity = 0.35
+                $0.layer.shadowOpacity = sceneShadowOpacity
             }
         case .expanded:
             allSceneViews.forEach {
                 $0.layer.shadowRadius = 9
-                $0.layer.shadowOpacity = 0.35
+                $0.layer.shadowOpacity = sceneShadowOpacity
             }
         }
     }

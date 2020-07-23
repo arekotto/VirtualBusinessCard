@@ -11,7 +11,7 @@ import UIKit
 final class AcceptCardView: AppBackgroundView {
 
     static let defaultCardViewSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.8)
-    static let startingSlideToAcceptStackViewTopConstraint = defaultCardViewSize.height * 1.2
+    static let startingSlideToAcceptStackViewTopConstraint = defaultCardViewSize.height * 1.3
     static let cardViewExpandedSize = defaultCardViewSize.height * 2 + 32
     static let cardViewExpandedTopConstraint: CGFloat = 80
 
@@ -31,12 +31,11 @@ final class AcceptCardView: AppBackgroundView {
     private(set) var cardSceneViewTopConstraint: NSLayoutConstraint!
     private(set) var cardSceneViewHeightConstraint: NSLayoutConstraint!
     private(set) var cardSceneViewWidthConstraint: NSLayoutConstraint!
+
     let cardSceneView: CardFrontBackView = {
         let this = CardFrontBackView(subScenesHeightMultiplayer: 1)
-        this.setDynamicLightingEnabled(false)
         this.transform = CGAffineTransform(rotationAngle: .pi/4)
-        this.layer.shadowRadius = 9
-        this.layer.shadowOpacity = 0.35
+        this.sceneShadowOpacity = 0.2
         return this
     }()
 
@@ -60,6 +59,15 @@ final class AcceptCardView: AppBackgroundView {
         this.isHidden = true
         this.alpha = 0
         this.layer.cornerRadius = 22
+        return this
+    }()
+
+    let cardSavedLabel: UILabel = {
+        let this = UILabel()
+        this.text = NSLocalizedString("Saved to collection.", comment: "")
+        this.alpha = 0
+        this.isHidden = true
+        this.font = .appDefault(size: 14, weight: .medium, design: .rounded)
         return this
     }()
 
@@ -88,7 +96,6 @@ final class AcceptCardView: AppBackgroundView {
 
     private let scrollView: UIScrollView = {
         let this = UIScrollView()
-        this.alwaysBounceVertical = true
         this.clipsToBounds = true
         return this
     }()
@@ -97,6 +104,7 @@ final class AcceptCardView: AppBackgroundView {
         super.configureSubviews()
         [doneButtonBackground, doneButton].forEach { doneButtonView.addSubview($0) }
         [slideToAcceptStackView, rejectButton, scrollView, cardSceneView, doneButtonView].forEach { addSubview($0) }
+        cardSceneView.addSubview(cardSavedLabel)
     }
 
     override func configureConstraints() {
@@ -108,7 +116,10 @@ final class AcceptCardView: AppBackgroundView {
         cardSceneViewTopConstraint = cardSceneView.constrainTopToSuperviewSafeArea()
         cardSceneView.constrainCenterXToSuperview()
 
-        scrollView.constrainTopToSuperviewSafeArea()
+        scrollView.constrainToSuperview()
+
+        cardSavedLabel.constrainCenterXToSuperview()
+        cardSavedLabel.constrainTop(to: cardSceneView.bottomAnchor, constant: 30)
 
         slideToAcceptStackView.constrainCenterXToSuperview()
         slideToAcceptStackViewTopConstraint = slideToAcceptStackView.constrainTopToSuperview(inset: Self.startingSlideToAcceptStackViewTopConstraint)
@@ -138,11 +149,15 @@ final class AcceptCardView: AppBackgroundView {
         rejectButton.tintColor = .appAccent
         doneButton.backgroundColor = UIColor.appGray.withAlphaComponent(0.1)
         doneButton.tintColor = .appAccent
+        cardSavedLabel.textColor = .tertiaryLabel
     }
 
     func prepareForExpandedCardView() {
         cardSceneView.removeFromSuperview()
+
         scrollView.addSubview(cardSceneView)
+        scrollView.alwaysBounceVertical = true
+
         cardSceneViewTopConstraint = cardSceneView.constrainTopToSuperview(inset: Self.cardViewExpandedTopConstraint)
         cardSceneView.constrainBottom(to: scrollView.bottomAnchor)
         cardSceneView.constrainCenterXToSuperview()

@@ -8,15 +8,17 @@
 
 import UIKit
 import Firebase
+import CoreMotion
 
 protocol AcceptCardVMDelegate: class {
     func presentRejectAlert()
     func presentSaveOfflineAlert()
     func presentSaveErrorAlert(title: String)
     func dismissSelf()
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
 
-final class AcceptCardVM: AppViewModel {
+final class AcceptCardVM: MotionDataViewModel {
 
     weak var delegate: AcceptCardVMDelegate?
 
@@ -27,6 +29,11 @@ final class AcceptCardVM: AppViewModel {
     init(userID: UserID, sharedCard: EditReceivedBusinessCardMC) {
         card = sharedCard
         super.init(userID: userID)
+    }
+
+    override func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        super.didReceiveMotionData(motion, over: timeFrame)
+        delegate?.didUpdateMotionData(motion, over: timeFrame)
     }
 }
 
@@ -42,6 +49,10 @@ extension AcceptCardVM {
 
     var addTagImage: UIImage {
         UIImage(systemName: "tag", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))!
+    }
+
+    func willAppear() {
+        startUpdatingMotionData(in: 0.1)
     }
 
     func dataModel() -> CardFrontBackView.DataModel {

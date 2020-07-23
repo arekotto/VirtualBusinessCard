@@ -29,10 +29,20 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         definesPresentationContext = true
         viewModel.fetchData()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        viewModel.willAppear()
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         selectedCell?.isHidden = false
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.didDisappear()
     }
     
     private func setupCollectionView() {

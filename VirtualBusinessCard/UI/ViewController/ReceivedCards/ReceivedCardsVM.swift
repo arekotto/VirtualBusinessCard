@@ -17,11 +17,9 @@ protocol ReceivedBusinessCardsVMDelegate: class {
     func presentCardDetails(viewModel: CardDetailsVM)
 }
 
-final class ReceivedCardsVM: AppViewModel {
+final class ReceivedCardsVM: MotionDataViewModel {
     
-    weak var delegate: ReceivedBusinessCardsVMDelegate? {
-        didSet { didSetDelegate() }
-    }
+    weak var delegate: ReceivedBusinessCardsVMDelegate?
 
     private(set) var cellSizeMode = CardFrontBackView.SizeMode.expanded
     
@@ -36,27 +34,14 @@ final class ReceivedCardsVM: AppViewModel {
     
     private(set) lazy var selectedSortMode = sortActions.first!.mode
     
-    private lazy var motionManager: CMMotionManager = {
-        let manager = CMMotionManager()
-        manager.deviceMotionUpdateInterval = 0.1
-        return manager
-    }()
-    
     init(userID: UserID, title: String, dataFetchMode: DataFetchMode) {
         self.title = title
         self.dataFetchMode = dataFetchMode
         super.init(userID: userID)
     }
-    
-    private func didSetDelegate() {
-        if delegate != nil {
-            motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
-                guard let self = self, let motion = motion else { return }
-                self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
-            }
-        } else {
-            motionManager.stopDeviceMotionUpdates()
-        }
+
+    override func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        delegate?.didUpdateMotionData(motion, over: timeFrame)
     }
 }
 
@@ -82,6 +67,14 @@ extension ReceivedCardsVM {
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
         return UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imgConfig)!
     }
+
+    func willAppear() {
+        startUpdatingMotionData(in: cellSizeMode.motionDataUpdateInterval)
+    }
+
+    func didDisappear() {
+        pauseUpdatingMotionData()
+    }
     
     func numberOfItems() -> Int {
         displayedCardIndexes.count
@@ -102,9 +95,9 @@ extension ReceivedCardsVM {
         switch cellSizeMode {
         case .compact:
             cellSizeMode = .expanded
-            motionManager.deviceMotionUpdateInterval = 0.1
+            startUpdatingMotionData(in: 0.1)
         case .expanded:
-            motionManager.deviceMotionUpdateInterval = 0.2
+            startUpdatingMotionData(in: 0.2)
             cellSizeMode = .compact
         }
         delegate?.refreshLayout(sizeMode: cellSizeMode)
@@ -321,4 +314,13 @@ extension ReceivedCardsVM {
         let title: String
     }
     
+}
+
+private extension CardFrontBackView.SizeMode {
+    var motionDataUpdateInterval: TimeInterval {
+        switch self {
+        case .compact: return 0.1
+        case .expanded: return 0.2
+        }
+    }
 }

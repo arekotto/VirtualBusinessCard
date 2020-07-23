@@ -40,6 +40,8 @@
 		452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C8248E4FF8006E6A7D /* SettingsVC.swift */; };
 		452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */; };
 		452CEE8324AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452CEE8224AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift */; };
+		4533849C24C9EFFB0020AEF6 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849B24C9EFFB0020AEF6 /* UserViewModel.swift */; };
+		4533849E24C9F0120020AEF6 /* MotionDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849D24C9F0120020AEF6 /* MotionDataViewModel.swift */; };
 		4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE223F6D259003602EA /* AppDelegate.swift */; };
 		4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE423F6D259003602EA /* SceneDelegate.swift */; };
 		4537CEE723F6D259003602EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE623F6D259003602EA /* ContentView.swift */; };
@@ -207,7 +209,9 @@
 		452B33C6248E4FCA006E6A7D /* SettingsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVM.swift; sourceTree = "<group>"; };
 		452B33C8248E4FF8006E6A7D /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		452CEE8224AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleValueImageCollectionViewCell.swift; sourceTree = "<group>"; };
-		4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualBusinessCard.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4533849B24C9EFFB0020AEF6 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
+		4533849D24C9F0120020AEF6 /* MotionDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionDataViewModel.swift; sourceTree = "<group>"; };
+		4537CEDF23F6D259003602EA /* Virtual Business Card.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Business Card.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4537CEE223F6D259003602EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4537CEE423F6D259003602EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		4537CEE623F6D259003602EA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -496,7 +500,7 @@
 		4537CEE023F6D259003602EA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */,
+				4537CEDF23F6D259003602EA /* Virtual Business Card.app */,
 				4537CEF523F6D25A003602EA /* VirtualBusinessCardTests.xctest */,
 				4537CF0023F6D25A003602EA /* VirtualBusinessCardUITests.xctest */,
 			);
@@ -832,6 +836,8 @@
 				45B25F242493B669006DD0F7 /* AppBackgroundView.swift */,
 				454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */,
 				454625E524A0C136000D1D25 /* AppTableViewCell.swift */,
+				4533849B24C9EFFB0020AEF6 /* UserViewModel.swift */,
+				4533849D24C9F0120020AEF6 /* MotionDataViewModel.swift */,
 			);
 			path = AppViewController;
 			sourceTree = "<group>";
@@ -964,7 +970,7 @@
 				45174D7924BB4189009BFE58 /* Reachability */,
 			);
 			productName = VirtualBusinessCard;
-			productReference = 4537CEDF23F6D259003602EA /* VirtualBusinessCard.app */;
+			productReference = 4537CEDF23F6D259003602EA /* Virtual Business Card.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4537CEF423F6D25A003602EA /* VirtualBusinessCardTests */ = {
@@ -1238,6 +1244,7 @@
 				454CF7E024A9F52D00074E0D /* UIAlertController.swift in Sources */,
 				459102F524B70D780064B12C /* PersonalCardsCompactView.swift in Sources */,
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
+				4533849E24C9F0120020AEF6 /* MotionDataViewModel.swift in Sources */,
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
 				45B25F1F2493B2A3006DD0F7 /* CardDetailsVC.swift in Sources */,
@@ -1281,6 +1288,7 @@
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,
 				454625EA24A0DA78000D1D25 /* UITableView.swift in Sources */,
 				45C1603424865DB400806718 /* InitialUserSetupTask.swift in Sources */,
+				4533849C24C9EFFB0020AEF6 /* UserViewModel.swift in Sources */,
 				4511A12D246D617800AE3306 /* CreateAccountNameView.swift in Sources */,
 				45B5E31D241FED0700028B0A /* LoginWithAppleButton.swift in Sources */,
 				45B5E317241FA09900028B0A /* LoginViewModel.swift in Sources */,
@@ -1512,7 +1520,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.thesis.VirtualBusinessCard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Virtual Business Card";
 				PROVISIONING_PROFILE_SPECIFIER = "VBC Provisioning Profile";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1547,7 +1555,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.thesis.VirtualBusinessCard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Virtual Business Card";
 				PROVISIONING_PROFILE_SPECIFIER = "VBC Provisioning Profile";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
