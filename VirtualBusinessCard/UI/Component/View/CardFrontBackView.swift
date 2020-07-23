@@ -16,6 +16,8 @@ class CardFrontBackView: AppView {
     
     var frontSceneViewHeightConstraint: NSLayoutConstraint!
     var backSceneViewHeightConstraint: NSLayoutConstraint!
+
+    private let subScenesHeightMultiplayer: CGFloat
     
     var allSceneViews: [BusinessCardSceneView] {
         [backSceneView, frontSceneView]
@@ -23,6 +25,20 @@ class CardFrontBackView: AppView {
     
     var sizeMode = SizeMode.expanded {
         didSet { setSizeMode(sizeMode) }
+    }
+
+    init(subScenesHeightMultiplayer: CGFloat) {
+        self.subScenesHeightMultiplayer = subScenesHeightMultiplayer
+        super.init()
+    }
+
+    required init() {
+        self.subScenesHeightMultiplayer = 0.9
+        super.init()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func configureView() {
@@ -45,8 +61,8 @@ class CardFrontBackView: AppView {
         backSceneView.constrainTrailingToSuperview()
         backSceneView.constrainBottomToSuperview()
         
-        frontSceneViewHeightConstraint = frontSceneView.constrainHeightEqualTo(self, multiplier: 0.9)
-        backSceneViewHeightConstraint = backSceneView.constrainHeightEqualTo(self, multiplier: 0.9)
+        frontSceneViewHeightConstraint = frontSceneView.constrainHeightEqualTo(self, multiplier: subScenesHeightMultiplayer)
+        backSceneViewHeightConstraint = backSceneView.constrainHeightEqualTo(self, multiplier: subScenesHeightMultiplayer)
         
         frontSceneView.constrainWidthEqualTo(frontSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardSizeRatio)
         backSceneView.constrainWidthEqualTo(backSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardSizeRatio)

@@ -30,7 +30,7 @@ final class EditTagVM: AppViewModel {
 
     private let selectableTagColors = BusinessCardTag.TagColor.allCases
     
-    private var hasMadeChanges = SingleTimeToggleBool()
+    private var hasMadeChanges = SingleTimeToggleBool(ofInitialValue: false)
     
     init(userID: UserID, editBusinessCardTagMC: EditBusinessCardTagMC) {
         title = NSLocalizedString("Edit Tag", comment: "")
@@ -76,7 +76,7 @@ extension EditTagVM {
         set {
             guard tag.title != newValue else { return }
             tag.title = newValue
-            hasMadeChanges.setToTrue()
+            hasMadeChanges.toggle()
         }
     }
     
@@ -100,7 +100,7 @@ extension EditTagVM {
         guard indexPath.item < numberOfItems() else { return }
         tag.tagColor = selectableTagColors[indexPath.item]
         delegate?.applyNewTagColor(tag.displayColor)
-        hasMadeChanges.setToTrue()
+        hasMadeChanges.toggle()
     }
     
     func didAttemptDismiss() {
@@ -146,15 +146,16 @@ extension EditTagVM {
         tag.save(in: tagsCollectionReference) { result in
             switch result {
             case .success(): return
-            case .failure(let error): encounteredError = error
+            case .failure(let error):
+                print(error.localizedDescription)
+                encounteredError = error
             }
         }
         
         // give firebase some time to return an error if something is very wrong
         // otherwise data will be stored in cache if offline
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            if let error = encounteredError {
-                print(error.localizedDescription)
+            if let _ = encounteredError {
                 let errorTitle = AppError.localizedUnknownErrorDescription
                 self.delegate?.presentSaveErrorAlert(title: errorTitle)
             } else {

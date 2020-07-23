@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-
-
 struct ShrinkOnTapButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
@@ -86,7 +84,6 @@ struct BorderedRoundedButtonStyle: ButtonStyle {
     
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-//            .font(Font.appDefault(size: Font.textSize(textStyle: .title1), weight: .medium, design: .default))
             .foregroundColor(Color.appAccent)
             .scaleEffect(configuration.isPressed ? 0.94 : 1.0)
             .cornerRadius(20)

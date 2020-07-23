@@ -36,7 +36,7 @@ final class EditBusinessCardTagMC {
     }
     
     var description: String? { tag.description }
-    
+
     var displayColor: UIColor {
         UIColor.initFrom(tagColor: tag.tagColor)
     }

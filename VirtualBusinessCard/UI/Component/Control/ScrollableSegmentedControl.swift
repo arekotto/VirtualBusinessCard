@@ -91,7 +91,7 @@ extension ScrollableSegmentedControl {
             selectedIndexPath?.item
         }
         
-        private var hasPerformedInitialLayout = SingleTimeToggleBool()
+        private var hasPerformedInitialLayout = SingleTimeToggleBool(ofInitialValue: false)
 
         private var selectionIndicatorConstraints = [NSLayoutConstraint]()
         
@@ -134,7 +134,7 @@ extension ScrollableSegmentedControl {
         override func layoutSubviews() {
             super.layoutSubviews()
             selectionIndicator.backgroundColor = .scrollableSegmentedControlSelectionBackground
-            hasPerformedInitialLayout.setToTrue()
+            hasPerformedInitialLayout.toggle()
             if !items.isEmpty && (collectionView.indexPathsForSelectedItems ?? []).isEmpty {
                 collectionView.selectItem(at: IndexPath(item: 0), animated: false, scrollPosition: .left)
             }
@@ -253,8 +253,16 @@ extension ScrollableSegmentedControl {
 
 struct SingleTimeToggleBool {
     private(set) var value = false
+
+    private var hasPerformedToggle = false
+
+    init(ofInitialValue value: Bool) {
+        self.value = value
+    }
     
-    mutating func setToTrue() {
-        value = true
+    mutating func toggle() {
+        guard !hasPerformedToggle else { return }
+        hasPerformedToggle = true
+        value.toggle()
     }
 }

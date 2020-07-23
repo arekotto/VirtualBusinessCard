@@ -159,7 +159,7 @@ extension DirectSharingVM {
 
         guard receivingUserID != self.userID else { return }
 
-        let receivedCard = ReceivedBusinessCardMC(originalID: receivingUserCardID, ownerID: receivingUserID, cardData: receivingUserCardData)
+        let receivedCard = EditReceivedBusinessCardMC(originalID: receivingUserCardID, ownerID: receivingUserID, cardData: receivingUserCardData)
 
         delegate?.playHapticFeedback()
         delegate?.presentAcceptCardVC(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
@@ -192,7 +192,7 @@ extension DirectSharingVM {
             case .success:
 
                 self.delegate?.playHapticFeedback()
-                let receivedCard = ReceivedBusinessCardMC(
+                let receivedCard = EditReceivedBusinessCardMC(
                     originalID: joinedExchange.sharingUserID,
                     ownerID: joinedExchange.sharingUserID,
                     cardData: joinedExchange.sharingUserCardData

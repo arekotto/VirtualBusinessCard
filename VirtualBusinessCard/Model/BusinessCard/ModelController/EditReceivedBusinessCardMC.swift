@@ -1,37 +1,42 @@
 //
-//  ReceivedBusinessCardMC.swift
+//  EditReceivedBusinessCardMC.swift
 //  VirtualBusinessCard
 //
-//  Created by Arek Otto on 15/06/2020.
+//  Created by Arek Otto on 20/07/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
 
 import Firebase
 import Contacts
 
-class ReceivedBusinessCardMC {
-    
-    let businessCard: ReceivedBusinessCard
-    
+final class EditReceivedBusinessCardMC {
+
+    static private let unsavedObjectID = ""
+
+    private(set) var businessCard: ReceivedBusinessCard
+
     var id: String { businessCard.id }
-    
+
     var originalID: BusinessCardID { businessCard.originalID }
-    
+
     var ownerID: UserID { businessCard.ownerID }
-    
+
     var receivingDate: Date { businessCard.receivingDate }
-    
+
     var cardData: BusinessCardData { businessCard.cardData }
-    
-    var tagIDs: [BusinessCardTagID] { businessCard.tagIDs }
-    
+
+    var tagIDs: [BusinessCardTagID] {
+        get { businessCard.tagIDs }
+        set { businessCard.tagIDs = newValue }
+    }
+
     var ownerDisplayName: String {
         if let firstName = businessCard.cardData.name.first, let lastName = businessCard.cardData.name.last {
             return "\(firstName) \(lastName)"
         }
         return businessCard.cardData.name.first ?? businessCard.cardData.name.last ?? ""
     }
-    
+
     var addressCondensed: String {
         let addressData = cardData.address
         var address = ""
@@ -49,11 +54,11 @@ class ReceivedBusinessCardMC {
         }
         return address
     }
-    
+
     var addressFormatted: String {
-        
+
         let addressData = cardData.address
-        
+
         let address = CNMutablePostalAddress()
         address.street = addressData.street ?? ""
         address.city = addressData.city ?? ""
@@ -62,21 +67,46 @@ class ReceivedBusinessCardMC {
 
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
-    
+
     init(card: ReceivedBusinessCard) {
         self.businessCard = card
     }
 }
 
-extension ReceivedBusinessCardMC {
+extension EditReceivedBusinessCardMC {
+
+    convenience init(originalID: BusinessCardID, ownerID: UserID, cardData: BusinessCardData) {
+        let newCard = ReceivedBusinessCard(id: Self.unsavedObjectID, originalID: originalID, ownerID: ownerID, receivingDate: Date(), cardData: cardData)
+        self.init(card: newCard)
+    }
+
     convenience init?(documentSnapshot: DocumentSnapshot) {
         guard let businessCard = ReceivedBusinessCard(documentSnapshot: documentSnapshot) else { return nil }
         self.init(card: businessCard)
     }
+
+    func save(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
+        let docRef: DocumentReference
+        if businessCard.id == Self.unsavedObjectID {
+            docRef = collectionReference.document()
+            businessCard.id = docRef.documentID
+        } else {
+            docRef = collectionReference.document(businessCard.id)
+        }
+
+        docRef.setData(businessCard.asDocument()) { error in
+            if let err = error {
+                print(err.localizedDescription)
+                completion?(.failure(err))
+            } else {
+                completion?(.success(()))
+            }
+        }
+    }
 }
 
-extension ReceivedBusinessCardMC: Equatable {
-    static func == (lhs: ReceivedBusinessCardMC, rhs: ReceivedBusinessCardMC) -> Bool {
+extension EditReceivedBusinessCardMC: Equatable {
+    static func == (lhs: EditReceivedBusinessCardMC, rhs: EditReceivedBusinessCardMC) -> Bool {
         lhs.businessCard == rhs.businessCard
     }
 }

@@ -177,7 +177,9 @@ extension ReceivedCardsVC: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         guard let selectedCell = self.selectedCell else { return nil }
         guard let cellSnap = selectedCell.contentView.snapshotView(afterScreenUpdates: false) else { return nil }
-        animator = DetailsTransitionAnimator(type: .present, animatedCell: selectedCell, animatedCellSnapshot: cellSnap, availableAnimationBounds: view.safeAreaLayoutGuide.layoutFrame)
+
+        let estimatedTopSafeAreaInset = (contentView.statusBarHeight ?? 0) + (navigationController?.navigationBar.bounds.height ?? 0)
+        animator = DetailsTransitionAnimator(type: .present, animatedCell: selectedCell, animatedCellSnapshot: cellSnap, availableAnimationBounds: view.safeAreaLayoutGuide.layoutFrame, estimatedTopSafeAreaInset: estimatedTopSafeAreaInset)
         return animator
     }
     

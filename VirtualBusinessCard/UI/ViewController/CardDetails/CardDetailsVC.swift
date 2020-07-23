@@ -18,9 +18,8 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         return cell.contentView.convert(cell.contentView.bounds, to: targetView)
     }
     
-    func estimatedImageCellFrame() -> CGRect {
-        let estimatedTopAreaInset: CGFloat = 88
-        let origin = CGPoint(x: 0, y: CardDetailsView.contentInsetTop + estimatedTopAreaInset)
+    func estimatedImageCellFrame(estimatedTopSafeAreaInset: CGFloat) -> CGRect {
+        let origin = CGPoint(x: 0, y: CardDetailsView.contentInsetTop + estimatedTopSafeAreaInset)
         return CGRect(origin: origin, size: CGSize(width: UIScreen.main.bounds.width, height: ReceivedCardsView.CollectionCell.defaultHeight))
     }
     

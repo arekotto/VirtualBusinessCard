@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import Firebase
 
 protocol AcceptCardVMDelegate: class {
-    func didFetchData(image: UIImage, texture: UIImage, normal: Double, specular: Double)
     func presentRejectAlert()
+    func presentSaveOfflineAlert()
+    func presentSaveErrorAlert(title: String)
     func dismissSelf()
 }
 
@@ -18,37 +20,70 @@ final class AcceptCardVM: AppViewModel {
 
     weak var delegate: AcceptCardVMDelegate?
 
-    let card: ReceivedBusinessCardMC
+    let card: EditReceivedBusinessCardMC
+    private var acceptedCard = SingleTimeToggleBool(ofInitialValue: false)
+    private(set) var hasSavedCardToCollection = false
 
-    init(userID: UserID, sharedCard: ReceivedBusinessCardMC) {
+    init(userID: UserID, sharedCard: EditReceivedBusinessCardMC) {
         card = sharedCard
         super.init(userID: userID)
     }
-
-    func fetchData() {
-        let texture = card.cardData.texture
-        let task = ImageAndTextureFetchTask(imageURLs: [card.cardData.frontImage.url, texture.image.url])
-        task() { [weak self] result in
-            switch result {
-            case .failure(let error):
-                return
-            case .success(let images):
-                self?.delegate?.didFetchData(image: images[0], texture: images[1], normal: texture.normal, specular: texture.specular)
-            }
-        }
-    }
-
 }
 
 // MARK: - ViewController API
 
 extension AcceptCardVM {
 
+    var hasAcceptedCard: Bool { acceptedCard.value }
+
+    func dataModel() -> CardFrontBackView.DataModel {
+        let texture = card.cardData.texture
+        return CardFrontBackView.DataModel(
+            frontImageURL: card.cardData.frontImage.url,
+            backImageURL: card.cardData.backImage.url,
+            textureImageURL: texture.image.url,
+            normal: CGFloat(texture.normal),
+            specular: CGFloat(texture.specular)
+        )
+    }
+
+    func didAcceptCard() {
+        acceptedCard.toggle()
+        card.save(in: receivedCardsCollectionReference) { [weak self] result in
+            switch result {
+            case .success(): self?.hasSavedCardToCollection = true
+            case .failure(let error):
+                print(error.localizedDescription)
+                let errorTitle = AppError.localizedUnknownErrorDescription
+                self?.delegate?.presentSaveErrorAlert(title: errorTitle)
+            }
+        }
+    }
+
     func didSelectReject() {
         delegate?.presentRejectAlert()
     }
 
+    func didSelectDone() {
+        guard hasAcceptedCard else { return }
+        guard hasSavedCardToCollection else {
+            delegate?.presentSaveOfflineAlert()
+            return
+        }
+        delegate?.dismissSelf()
+    }
+
     func didConfirmReject() {
         delegate?.dismissSelf()
+    }
+
+    func didConfirmSaveOffline() {
+        delegate?.dismissSelf()
+    }
+}
+
+extension AcceptCardVM {
+    private var receivedCardsCollectionReference: CollectionReference {
+        userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
 }

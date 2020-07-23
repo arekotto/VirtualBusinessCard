@@ -10,6 +10,10 @@ import UIKit
 
 class AppView: UIView {
 
+    var statusBarHeight: CGFloat? {
+        window?.windowScene?.statusBarManager?.statusBarFrame.height
+    }
+
     required init() {
         super.init(frame: .zero)
         configureView()

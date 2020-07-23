@@ -17,12 +17,14 @@ extension ReceivedCardsVC {
         private let animatedCell: UICollectionViewCell
         private let animatedCellSnapshot: UIView
         private let availableAnimationBounds: CGRect
+        private let estimatedTopSafeAreaInset: CGFloat
         
-        init?(type: PresentationType, animatedCell: UICollectionViewCell, animatedCellSnapshot: UIView, availableAnimationBounds: CGRect) {
+        init?(type: PresentationType, animatedCell: UICollectionViewCell, animatedCellSnapshot: UIView, availableAnimationBounds: CGRect, estimatedTopSafeAreaInset: CGFloat) {
             self.type = type
             self.animatedCellSnapshot = animatedCellSnapshot
             self.animatedCell = animatedCell
             self.availableAnimationBounds = availableAnimationBounds
+            self.estimatedTopSafeAreaInset = estimatedTopSafeAreaInset
         }
         
         func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -60,20 +62,24 @@ extension ReceivedCardsVC {
             availableAnimationBoundsView.frame = self.availableAnimationBounds
             availableAnimationBoundsView.clipsToBounds = true
             availableAnimationBoundsView.addSubview(animatedCellSnapshot)
-            
-            [presentingVC.view, presentedView, availableAnimationBoundsView].forEach { containerView.addSubview($0) }
+
+            let shadowView = UIView(frame: presentingVC.view.bounds)
+            shadowView.backgroundColor = .black
+
+            [presentingVC.view, shadowView, presentedView, availableAnimationBoundsView].forEach { containerView.addSubview($0) }
 
             let animatedCellOnPresentedViewOrigin: CGRect
             if let exactBounds = cardDetailsVC.imageCellFrame(translatedTo: availableAnimationBoundsView) {
                 animatedCellOnPresentedViewOrigin = exactBounds
             } else {
-                animatedCellOnPresentedViewOrigin = presentingVC.view.convert(cardDetailsVC.estimatedImageCellFrame(), to: availableAnimationBoundsView)
+                animatedCellOnPresentedViewOrigin = presentingVC.view.convert(cardDetailsVC.estimatedImageCellFrame(estimatedTopSafeAreaInset: estimatedTopSafeAreaInset), to: availableAnimationBoundsView)
             }
             
             let animatedCellFrame = animatedCell.contentView.convert(animatedCell.contentView.bounds, to: availableAnimationBoundsView)
             
             animatedCellSnapshot.frame = isPresenting ? animatedCellFrame : animatedCellOnPresentedViewOrigin
-            
+            shadowView.alpha = isPresenting ? 0 : 0.2
+
             let onScreenPresentedViewFrame = presentedView.frame
             let offScreenPresentedViewFrame = CGRect(origin: CGPoint(x: UIScreen.main.bounds.width, y: onScreenPresentedViewFrame.origin.y), size: onScreenPresentedViewFrame.size)
             if isPresenting {
@@ -82,14 +88,16 @@ extension ReceivedCardsVC {
             
             animatedCell.isHidden = true
             cardDetailsVC.setImageSectionHidden(true)
-            
+
             UIView.animate(withDuration: Self.duration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 if isPresenting {
                     presentedView.frame = onScreenPresentedViewFrame
                     self.animatedCellSnapshot.frame = animatedCellOnPresentedViewOrigin
+                    shadowView.alpha = 0.2
                 } else {
                     presentedView.frame = offScreenPresentedViewFrame
                     self.animatedCellSnapshot.frame = animatedCellFrame
+                    shadowView.alpha = 0 
                 }
             }) { _ in
                 presentingVC.view.removeFromSuperview()
