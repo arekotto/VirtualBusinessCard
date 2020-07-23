@@ -376,6 +376,15 @@ public extension UIView {
 }
 
 extension UIView {
+
+    @discardableResult
+    func constrainSizeEqualTo(_ view: UIView) -> [NSLayoutConstraint] {
+        return [
+            constrainWidthEqualTo(view),
+            constrainHeightEqualTo(view)
+        ]
+    }
+
     @discardableResult
     func constrainSizeToBusinessCardDimensions(width: CGFloat) -> [NSLayoutConstraint] {
         let bcSize = CGSize.businessCardSize(width: width)

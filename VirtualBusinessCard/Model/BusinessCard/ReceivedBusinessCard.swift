@@ -15,14 +15,16 @@ struct ReceivedBusinessCard: Codable {
     var receivingDate: Date
     var cardData: BusinessCardData
     var tagIDs: [BusinessCardTagID]
+    var notes: String
     
-    init(id: BusinessCardID, originalID: BusinessCardID, ownerID: UserID, receivingDate: Date, cardData: BusinessCardData, tagIDs: [BusinessCardTagID] = []) {
+    init(id: BusinessCardID, originalID: BusinessCardID, ownerID: UserID, receivingDate: Date, cardData: BusinessCardData, tagIDs: [BusinessCardTagID] = [], notes: String = "") {
         self.id = id
         self.originalID = originalID
         self.ownerID = ownerID
         self.receivingDate = receivingDate
         self.cardData = cardData
         self.tagIDs = tagIDs
+        self.notes = notes
     }
 }
 

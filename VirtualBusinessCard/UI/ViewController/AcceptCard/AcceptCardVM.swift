@@ -36,6 +36,14 @@ extension AcceptCardVM {
 
     var hasAcceptedCard: Bool { acceptedCard.value }
 
+    var addNoteImage: UIImage {
+        UIImage(systemName: "pencil", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))!
+    }
+
+    var addTagImage: UIImage {
+        UIImage(systemName: "tag", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))!
+    }
+
     func dataModel() -> CardFrontBackView.DataModel {
         let texture = card.cardData.texture
         return CardFrontBackView.DataModel(
@@ -58,6 +66,14 @@ extension AcceptCardVM {
                 self?.delegate?.presentSaveErrorAlert(title: errorTitle)
             }
         }
+    }
+
+    func didSelectAddNote() {
+
+    }
+
+    func didSelectAddTag() {
+
     }
 
     func didSelectReject() {

@@ -50,7 +50,7 @@ final class DirectSharingView: AppView {
     
     private let cameraPreviewDisabledLabel: UILabel = {
         let this = UILabel()
-        this.text = NSLocalizedString("QR code scanning could be enabled. Make sure the app has access to the camera in Settings.", comment: "")
+        this.text = NSLocalizedString("QR code scanning could not be enabled. Make sure the app has access to the camera in Settings.", comment: "")
         this.numberOfLines = 0
         this.textAlignment = .center
         return this

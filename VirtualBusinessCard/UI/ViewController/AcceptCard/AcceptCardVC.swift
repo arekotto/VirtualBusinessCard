@@ -19,14 +19,13 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
     private var slideUpAnimator: UIViewPropertyAnimator?
     private var finishAcceptingAnimator: UIViewPropertyAnimator?
 
+    override var prefersStatusBarHidden: Bool { true }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
-        contentView.cardSceneView.setDataModel(viewModel.dataModel())
-        contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:))))
-        contentView.rejectButton.addTarget(self, action: #selector(didTapRejectButton), for: .touchUpInside)
-        contentView.doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        setupContentView()
+        setupBars()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -34,6 +33,22 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         contentView.cardSceneView.lockViewsToCurrentSizes()
         playBounceAnimation()
         bounceAnimatorsTimer = Timer.scheduledTimer(timeInterval: 2.1, target: self, selector: #selector(playBounceAnimation), userInfo: nil, repeats: true)
+    }
+
+    private func setupContentView() {
+        contentView.cardSceneView.setDataModel(viewModel.dataModel())
+        contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:))))
+        contentView.rejectButton.addTarget(self, action: #selector(didTapRejectButton), for: .touchUpInside)
+        contentView.doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
+    }
+
+    private func setupBars() {
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        toolbarItems = [
+            UIBarButtonItem(image: viewModel.addNoteImage, style: .plain, target: self, action: #selector(didTapAddNoteButton)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(image: viewModel.addTagImage, style: .plain, target: self, action: #selector(didTapAddTagButton))
+        ]
     }
 
     private func makeBounceAnimator() -> UIViewPropertyAnimator {
@@ -86,21 +101,23 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         animator.addAnimations {
             UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [.calculationModeCubic], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
-                    self.contentView.cardSceneViewTopConstraint.constant = 16
+                    self.contentView.cardSceneViewTopConstraint.constant = AcceptCardView.cardViewExpandedTopConstraint
                     self.contentView.cardSceneViewHeightConstraint.constant = AcceptCardView.cardViewExpandedSize
                     self.contentView.cardSceneViewWidthConstraint.constant = AcceptCardView.defaultCardViewSize.width
-                    self.contentView.statusBarBlurView.alpha = 0
-                    self.contentView.doneButton.isHidden = false
-                    self.contentView.doneButton.alpha = 1
-                    self.contentView.mainStackView.isHidden = false
-                    self.contentView.mainStackView.alpha = 1
+
+                    self.contentView.doneButtonView.isHidden = false
+                    self.contentView.doneButtonView.alpha = 1
                     self.view.layoutIfNeeded()
                 }
             })
         }
         animator.addCompletion { _ in
-            self.contentView.statusBarBlurView.isHidden = true
-            self.contentView.cardSceneView.setDynamicLightingEnabled(true)
+            self.bounceAnimatorsTimer?.invalidate()
+            self.contentView.gestureRecognizers?.forEach {
+                self.contentView.removeGestureRecognizer($0)
+            }
+            self.contentView.prepareForExpandedCardView()
+            self.navigationController?.setToolbarHidden(false, animated: true)
         }
         return animator
     }
@@ -134,7 +151,6 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
             default: return
             }
         }
-
         return animator
     }
 
@@ -202,6 +218,14 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 }
 
 @objc private extension AcceptCardVC {
+
+    func didTapAddNoteButton() {
+        viewModel.didSelectAddNote()
+    }
+
+    func didTapAddTagButton() {
+        viewModel.didSelectAddTag()
+    }
 
     func didTapDoneButton() {
         viewModel.didSelectDone()

@@ -22,7 +22,7 @@ final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
     
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(testingAdd))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Test Data", style: .plain, target: self, action: #selector(testingAdd))
     }
     
     @objc func testingAdd() {
