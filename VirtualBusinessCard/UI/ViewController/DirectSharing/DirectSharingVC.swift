@@ -91,7 +91,13 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
 extension DirectSharingVC: DirectSharingVMDelegate {
 
     func presentAcceptCardVC(with viewModel: AcceptCardVM) {
-        show(AcceptCardVC(viewModel: viewModel), sender: nil)
+        if let loadingAlert = presentedViewController {
+            loadingAlert.dismiss(animated: true) {
+                self.show(AcceptCardVC(viewModel: viewModel), sender: nil)
+            }
+        } else {
+            show(AcceptCardVC(viewModel: viewModel), sender: nil)
+        }
     }
     
     func didFetchData() {
@@ -99,23 +105,24 @@ extension DirectSharingVC: DirectSharingVMDelegate {
     }
     
     func presentErrorReadingQRCodeAlert() {
-        let title = NSLocalizedString("QR Could Not Be Read", comment: "")
-        let message = NSLocalizedString("Try reading the code again.", comment: "")
-        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .alert)
-        alert.addOkAction() { _ in self.captureSession.startRunning() }
-        present(alert, animated: true)
+        let message = NSLocalizedString("QR code could not be read. Try pointing the camera at it again.", comment: "")
+        if let loadingAlert = presentedViewController {
+            loadingAlert.dismiss(animated: true) {
+                self.presentErrorAlert(message: message) { _ in self.captureSession.startRunning() }
+            }
+        } else {
+            presentErrorAlert(message: message) { _ in self.captureSession.startRunning() }
+        }
     }
     
     func presentLoadingAlert() {
-        // TODO:
-    }
-    
-    func playHapticFeedback() {
-        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+        let vc = SharingDataIndicatorVC(viewModel: AppViewModel(userID: viewModel.userID))
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true)
     }
     
     func presentErrorGeneratingQRCodeAlert() {
-        presentUnknownErrorAlert(title: NSLocalizedString("Error Generating QR Code", comment: ""))
+        presentErrorAlert(message: NSLocalizedString("We couldn't generate a QR code for your card. Please try again.", comment: ""))
     }
     
     func didGenerateQRCode(image: UIImage) {

@@ -11,6 +11,7 @@ import Foundation
 typealias BusinessCardID = String
 
 struct BusinessCardData: DocumentRepresentable {
+
     var frontImage: Image
     var backImage: Image
     var texture: Texture
@@ -19,8 +20,10 @@ struct BusinessCardData: DocumentRepresentable {
     var name: Name
     var contact: Contact
     var address: Address
+
+    var hapticFeedbackSharpness: Float
     
-    internal init(frontImage: Image, backImage: Image, texture: Texture, position: Position, name: Name, contact: Contact, address: Address) {
+    init(frontImage: BusinessCardData.Image, backImage: BusinessCardData.Image, texture: BusinessCardData.Texture, position: BusinessCardData.Position, name: BusinessCardData.Name, contact: BusinessCardData.Contact, address: BusinessCardData.Address, hapticFeedbackSharpness: Float) {
         self.frontImage = frontImage
         self.backImage = backImage
         self.texture = texture
@@ -28,6 +31,7 @@ struct BusinessCardData: DocumentRepresentable {
         self.name = name
         self.contact = contact
         self.address = address
+        self.hapticFeedbackSharpness = hapticFeedbackSharpness
     }
 }
 

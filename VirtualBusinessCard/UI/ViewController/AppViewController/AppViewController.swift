@@ -28,7 +28,10 @@ class AppViewController<V: AppView, M: AppViewModel>: UIViewController {
         view = V()
     }
     
-    func presentUnknownErrorAlert(title: String) {
-        let message = AppError.localizedUnknownErrorDescription
+    func presentErrorAlert(message: String = AppError.localizedUnknownErrorDescription, okActionHandler: ((UIAlertAction) -> Void)? = nil) {
+        let title = NSLocalizedString("Something went wrong", comment: "")
+        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .alert)
+        alert.addOkAction(handler: okActionHandler)
+        present(alert, animated: true)
     }
 }

@@ -5,7 +5,7 @@
 //  Created by Arek Otto on 14/02/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
-
+/*
 import SwiftUI
 import Firebase
 import CoreNFC
@@ -202,3 +202,4 @@ extension SendVC: CBPeripheralDelegate {
 
     }
 }
+*/

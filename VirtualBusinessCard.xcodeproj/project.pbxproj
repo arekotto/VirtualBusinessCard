@@ -42,6 +42,9 @@
 		452CEE8324AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452CEE8224AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift */; };
 		4533849C24C9EFFB0020AEF6 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849B24C9EFFB0020AEF6 /* UserViewModel.swift */; };
 		4533849E24C9F0120020AEF6 /* MotionDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849D24C9F0120020AEF6 /* MotionDataViewModel.swift */; };
+		453384A024CB0C650020AEF6 /* HapticFeedbackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849F24CB0C650020AEF6 /* HapticFeedbackEngine.swift */; };
+		453384A224CB0D080020AEF6 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453384A124CB0D080020AEF6 /* QRCodeGenerator.swift */; };
+		453384A424CB29860020AEF6 /* SharingDataIndicatorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453384A324CB29860020AEF6 /* SharingDataIndicatorVC.swift */; };
 		4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE223F6D259003602EA /* AppDelegate.swift */; };
 		4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE423F6D259003602EA /* SceneDelegate.swift */; };
 		4537CEE723F6D259003602EA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CEE623F6D259003602EA /* ContentView.swift */; };
@@ -211,6 +214,9 @@
 		452CEE8224AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleValueImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		4533849B24C9EFFB0020AEF6 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		4533849D24C9F0120020AEF6 /* MotionDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionDataViewModel.swift; sourceTree = "<group>"; };
+		4533849F24CB0C650020AEF6 /* HapticFeedbackEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackEngine.swift; sourceTree = "<group>"; };
+		453384A124CB0D080020AEF6 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
+		453384A324CB29860020AEF6 /* SharingDataIndicatorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingDataIndicatorVC.swift; sourceTree = "<group>"; };
 		4537CEDF23F6D259003602EA /* Virtual Business Card.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Virtual Business Card.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4537CEE223F6D259003602EA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4537CEE423F6D259003602EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -730,6 +736,8 @@
 				45B25F1B24938499006DD0F7 /* AppColorTheme.swift */,
 				45B25F262493B7AF006DD0F7 /* SampleBCUploadTask.swift */,
 				454625E324A0C10C000D1D25 /* Reusable.swift */,
+				4533849F24CB0C650020AEF6 /* HapticFeedbackEngine.swift */,
+				453384A124CB0D080020AEF6 /* QRCodeGenerator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -918,6 +926,7 @@
 				45F1ED9D24BC483A00AE1322 /* DirectSharingVC.swift */,
 				45F1EDA124BC489700AE1322 /* DirectSharingVM.swift */,
 				45F1ED9F24BC488100AE1322 /* DirectSharingView.swift */,
+				453384A324CB29860020AEF6 /* SharingDataIndicatorVC.swift */,
 			);
 			path = DirectSharing;
 			sourceTree = "<group>";
@@ -1203,6 +1212,7 @@
 				4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */,
 				452CEE8324AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift in Sources */,
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
+				453384A224CB0D080020AEF6 /* QRCodeGenerator.swift in Sources */,
 				4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */,
 				458EF3FE248A5F7800EC76D6 /* BusinessCardMC.swift in Sources */,
 				45F1EDA024BC488100AE1322 /* DirectSharingView.swift in Sources */,
@@ -1265,8 +1275,10 @@
 				45174CDB24B89772009BFE58 /* TagsVC.swift in Sources */,
 				45C1602C2486484E00806718 /* PersonalCardsView.swift in Sources */,
 				4577CC77248903D70012EDC8 /* AppError.swift in Sources */,
+				453384A024CB0C650020AEF6 /* HapticFeedbackEngine.swift in Sources */,
 				4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */,
 				45D445AB24C05DAF00630C72 /* AcceptCardVM.swift in Sources */,
+				453384A424CB29860020AEF6 /* SharingDataIndicatorVC.swift in Sources */,
 				45C160202485AC6900806718 /* LoginHostingController.swift in Sources */,
 				45C1601E2485333F00806718 /* UserSetupViewModel.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
@@ -1428,7 +1440,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1482,7 +1494,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1500,6 +1512,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"VirtualBusinessCard/Preview Content\"";
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_BITCODE = YES;
@@ -1535,6 +1548,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"VirtualBusinessCard/Preview Content\"";
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_BITCODE = YES;

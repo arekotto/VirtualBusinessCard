@@ -40,6 +40,7 @@ struct SampleBCUploadTask {
             docRef.setData(BusinessCardTag(id: docRef.documentID, tagColor: BusinessCardTag.TagColor.allCases.randomElement()!, title: tag, priorityIndex: idx, description: nil).asDocument())
             return docRef.documentID
         }
+        let hapticSharpness: [Float] = [0.1, 0.2, 0.4, 0.6, 0.8, 1]
         // MARK: Data upload
 
         Name.samples.enumerated().forEach { idx, person in
@@ -50,8 +51,9 @@ struct SampleBCUploadTask {
                                   texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs.randomElement()!), specular: specularValues.randomElement()!, normal: specularValues.randomElement()!),
                                   position: BusinessCardData.Position(title: "Manager", company: "IBM"),
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
-                                  contact: BusinessCardData.Contact(email: "\(person.lastName)@ibm.com", phoneNumberPrimary: "123321123"),
-                                  address: BusinessCardData.Address())
+                                  contact: BusinessCardData.Contact(email: "\(person.lastName.lowercased())@ibm.com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.ibm.com"),
+                                  address: BusinessCardData.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"),
+                                  hapticFeedbackSharpness: hapticSharpness.randomElement()!)
             let personalBC = PersonalBusinessCard(id: docRef.documentID, creationDate: day(from: Date(), offset: idx % 5), cardData: bcData)
             docRef.setData(personalBC.asDocument())
         }
@@ -66,7 +68,8 @@ struct SampleBCUploadTask {
                                   position: BusinessCardData.Position(title: "Manager", company: company),
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
                                   contact: BusinessCardData.Contact(email: "\(person.lastName.lowercased())@\(company.lowercased()).com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.\(company.lowercased()).com"),
-                                  address: BusinessCardData.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"))
+                                  address: BusinessCardData.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"),
+                                  hapticFeedbackSharpness: hapticSharpness.randomElement()!)
             
             let cardTagIDs: [BusinessCardTagID]
             switch idx % 3 {

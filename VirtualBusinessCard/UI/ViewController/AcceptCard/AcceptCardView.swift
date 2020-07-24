@@ -103,7 +103,7 @@ final class AcceptCardView: AppBackgroundView {
     override func configureSubviews() {
         super.configureSubviews()
         [doneButtonBackground, doneButton].forEach { doneButtonView.addSubview($0) }
-        [slideToAcceptStackView, rejectButton, scrollView, cardSceneView, doneButtonView].forEach { addSubview($0) }
+        [slideToAcceptStackView, scrollView, rejectButton, cardSceneView, doneButtonView].forEach { addSubview($0) }
         cardSceneView.addSubview(cardSavedLabel)
     }
 

@@ -26,9 +26,9 @@ final class CardDetailsVM: AppViewModel {
     private let cardID: BusinessCardID
     private var card: ReceivedBusinessCardMC?
         
-    private let initialLoadDataModel: CardFrontBackView.DataModel
+    private let prefetchedData: PrefetchedData
     
-    private lazy var sections = [Section(singleItem: Item(dataModel: .cardImagesCell(initialLoadDataModel), actions: []))]
+    private lazy var sections = [Section(singleItem: Item(dataModel: .cardImagesCell(prefetchedData.dataModel), actions: []))]
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -36,9 +36,9 @@ final class CardDetailsVM: AppViewModel {
         return manager
     }()
 
-    init(userID: UserID, cardID: BusinessCardID, initialLoadDataModel: CardFrontBackView.DataModel) {
+    init(userID: UserID, cardID: BusinessCardID, initialLoadDataModel: PrefetchedData) {
         self.cardID = cardID
-        self.initialLoadDataModel = initialLoadDataModel
+        self.prefetchedData = initialLoadDataModel
         super.init(userID: userID)
     }
     
@@ -58,6 +58,10 @@ final class CardDetailsVM: AppViewModel {
 extension CardDetailsVM {
     var titleImageURL: URL? {
         card?.cardData.frontImage.url
+    }
+
+    var hapticSharpness: Float {
+        card?.cardData.hapticFeedbackSharpness ?? prefetchedData.hapticSharpness
     }
     
     func numberOrSections() -> Int {
@@ -211,5 +215,12 @@ extension CardDetailsVM {
             case .navigate: return NSLocalizedString("Open in Maps", comment: "")
             }
         }
+    }
+}
+
+extension CardDetailsVM {
+    struct PrefetchedData {
+        let dataModel: CardFrontBackView.DataModel
+        let hapticSharpness: Float
     }
 }

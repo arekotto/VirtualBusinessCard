@@ -81,14 +81,13 @@ extension ReceivedCardsVM {
     }
     
     func itemForCell(at indexPath: IndexPath) -> CardFrontBackView.DataModel {
-        let cardID = displayedCardIndexes[indexPath.item]
-        let cardData = cards[cardID].cardData
+        let cardData = displayedCard(at: indexPath).cardData
         return CardFrontBackView.DataModel(frontImageURL: cardData.frontImage.url, backImageURL: cardData.backImage.url, textureImageURL: cardData.texture.image.url, normal: CGFloat(cardData.texture.normal), specular: CGFloat(cardData.texture.specular))
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        let card = cards[indexPath.item]
-        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: itemForCell(at: indexPath)))
+        let card = displayedCard(at: indexPath)
+        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: CardDetailsVM.PrefetchedData(dataModel: itemForCell(at: indexPath), hapticSharpness: card.cardData.hapticFeedbackSharpness)))
     }
     
     func didChangeCellSizeMode() {
@@ -136,6 +135,11 @@ extension ReceivedCardsVM {
                 self.delegate?.refreshData(animated: true)
             }
         }
+    }
+
+    private func displayedCard(at indexPath: IndexPath) -> ReceivedBusinessCardMC {
+        let cardIdx = displayedCardIndexes[indexPath.item]
+        return cards[cardIdx]
     }
 }
 

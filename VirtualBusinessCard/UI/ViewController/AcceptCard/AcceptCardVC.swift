@@ -20,6 +20,11 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
     private var slideUpAnimator: UIViewPropertyAnimator?
     private var finishAcceptingAnimator: UIViewPropertyAnimator?
 
+    private var didEnterAcceptingRangeInAnimationProgress = false
+
+    private lazy var lightEngine = HapticFeedbackEngine(sharpness: 0.7, intensity: 0.4)
+    private lazy var strongEngine = HapticFeedbackEngine(sharpness: 0.7, intensity: 1)
+
     override var prefersStatusBarHidden: Bool { true }
 
     override func viewDidLoad() {
@@ -64,7 +69,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1/2) {
                     self.contentView.cardSceneViewTopConstraint.constant += 10
                     self.view.layoutIfNeeded()
-                }
+                } 
                 UIView.addKeyframe(withRelativeStartTime: 1/2, relativeDuration: 1/2) {
                     self.contentView.cardSceneViewTopConstraint.constant = self.contentView.startingCardTopConstraintConstant
                     self.view.layoutIfNeeded()
@@ -145,8 +150,10 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
                     self.contentView.cardSceneView.sceneShadowOpacity = CardFrontBackView.defaultSceneShadowOpacity
                     self.view.layoutIfNeeded()
                 }
-                UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
+                UIView.addKeyframe(withRelativeStartTime: 0.601, relativeDuration: 0.4) {
                     self.contentView.cardSceneViewTopConstraint.constant += self.view.bounds.height / 4
+                    self.contentView.cardSceneViewHeightConstraint.constant += 15
+                    self.contentView.cardSceneViewWidthConstraint.constant += 15
                     self.view.layoutIfNeeded()
                 }
             })
@@ -193,21 +200,20 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         acceptAnimator?.pauseAnimation()
     }
 
-    var isCurrentlyAccepting = false
     private func updateAcceptAnimation(completeFraction: CGFloat) {
         var complete = completeFraction
-        if complete > 3/5 {
-            if !isCurrentlyAccepting {
-                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+        if complete > 0.6 {
+            if !didEnterAcceptingRangeInAnimationProgress {
+                self.strongEngine.play()
             }
-            isCurrentlyAccepting = true
+            didEnterAcceptingRangeInAnimationProgress = true
             let bounceValue = log10(1 + (complete - 3/5))
-            complete = 3/5 + bounceValue
+            complete = 0.6 + 0.01 + bounceValue
         } else {
-            if isCurrentlyAccepting {
-                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            if didEnterAcceptingRangeInAnimationProgress {
+                self.strongEngine.play()
             }
-            isCurrentlyAccepting = false
+            didEnterAcceptingRangeInAnimationProgress = false
         }
         acceptAnimator?.fractionComplete = complete
     }
@@ -248,7 +254,14 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
         bounceAnimator = makeBounceAnimator()
         bounceAnimator?.startAnimation()
-        
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.lightEngine.play()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            self.lightEngine.play()
+        }
+
         if slideDownAnimator == nil {
             slideDownAnimator = makeSlideDownAnimator()
             slideDownAnimator?.startAnimation()

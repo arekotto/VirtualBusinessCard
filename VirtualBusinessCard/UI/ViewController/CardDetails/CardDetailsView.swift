@@ -202,7 +202,7 @@ extension CardDetailsView {
             let multi = ReceivedCardsView.CollectionCell.defaultHeightMultiplier
             cardFrontBackViewExtendedHeightConstraint = cardFrontBackView.constrainHeightEqualTo(self, constant: newOffset, multiplier: multi)
             
-            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
             })
         }
@@ -213,11 +213,9 @@ extension CardDetailsView {
             cardFrontBackViewExtendedHeightConstraint?.isActive = false
             cardFrontBackViewCompactHeightConstraint.isActive = true
             cardFrontBackViewCompactWidthConstraint.isActive = true
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
-            }, completion: { _ in
-                completion()
-            })
+            }, completion: { _ in completion() })
         }
     }
 }

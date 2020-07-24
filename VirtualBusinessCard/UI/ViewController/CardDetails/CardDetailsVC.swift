@@ -12,6 +12,8 @@ import CoreMotion
 import Kingfisher
 
 final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
+
+    private var engine: HapticFeedbackEngine!
     
     func imageCellFrame(translatedTo targetView: UIView) -> CGRect? {
         guard let cell = cardImagesCell() else { return nil }
@@ -36,11 +38,16 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         contentView.collectionView.dataSource = self
         viewModel.delegate = self
         viewModel.fetchData()
+        engine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         cardImagesCell()?.extendWithAnimation()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.engine.play()
+        }
     }
     
     private func setupNavigationItem() {
@@ -144,8 +151,11 @@ extension CardDetailsVC: CardDetailsVMDelegate {
             dismiss(animated: false)
             return
         }
-        cell.condenseWithAnimation {
+        cell.condenseWithAnimation() {
             self.dismiss(animated: true)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.engine.play()
         }
     }
     

@@ -5,7 +5,7 @@
 //  Created by Arek Otto on 06/04/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
-
+/*
 import UIKit
 import CoreBluetooth
 import CoreLocation
@@ -112,3 +112,4 @@ extension ReceiveVC: CBPeripheralManagerDelegate {
         print("disconnected from char")
     }
 }
+*/

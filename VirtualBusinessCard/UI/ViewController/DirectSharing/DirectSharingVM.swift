@@ -14,7 +14,6 @@ protocol DirectSharingVMDelegate: class {
     func didGenerateQRCode(image: UIImage)
     func presentErrorGeneratingQRCodeAlert()
     func presentErrorReadingQRCodeAlert()
-    func playHapticFeedback()
     func presentLoadingAlert()
     func presentAcceptCardVC(with viewModel: AcceptCardVM)
 }
@@ -37,6 +36,10 @@ final class DirectSharingVM: UserViewModel {
     
     override func informDelegateAboutDataRefresh() {
         delegate?.didFetchData()
+    }
+
+    private func playHapticFeedback(of sharpness: Float) {
+        HapticFeedbackEngine(sharpness: sharpness, intensity: 0.6).play()
     }
 }
 
@@ -116,7 +119,9 @@ extension DirectSharingVM {
             delegate?.presentErrorReadingQRCodeAlert()
             return
         }
-        
+
+        delegate?.presentLoadingAlert()
+
         user?.addCardExchangeAccessToken(exchange.accessToken)
         user?.save() { [weak self] result in
             switch result {
@@ -161,17 +166,19 @@ extension DirectSharingVM {
 
         let receivedCard = EditReceivedBusinessCardMC(originalID: receivingUserCardID, ownerID: receivingUserID, cardData: receivingUserCardData)
 
-        delegate?.playHapticFeedback()
+        playHapticFeedback(of: receivedCard.cardData.hapticFeedbackSharpness)
         delegate?.presentAcceptCardVC(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
     }
     
     private func joinedExchangeDidChange(_ documentSnapshot: DocumentSnapshot?, _ error: Error?) {
         guard let docSnap = documentSnapshot else {
+            delegate?.presentErrorReadingQRCodeAlert()
             print(#file, error?.localizedDescription ?? "")
             return
         }
         
         guard let exchangeModel = DirectCardExchange(documentSnapshot: docSnap) else {
+            delegate?.presentErrorReadingQRCodeAlert()
             print(#file, "Error mapping exchange:", docSnap.documentID)
             return
         }
@@ -191,12 +198,12 @@ extension DirectSharingVM {
                 self.delegate?.presentErrorReadingQRCodeAlert()
             case .success:
 
-                self.delegate?.playHapticFeedback()
                 let receivedCard = EditReceivedBusinessCardMC(
                     originalID: joinedExchange.sharingUserID,
                     ownerID: joinedExchange.sharingUserID,
                     cardData: joinedExchange.sharingUserCardData
                 )
+                self.playHapticFeedback(of: receivedCard.cardData.hapticFeedbackSharpness)
                 self.delegate?.presentAcceptCardVC(with: AcceptCardVM(userID: self.userID, sharedCard: receivedCard))
             }
         }
@@ -211,20 +218,3 @@ private extension DirectSharingVM {
     }
 }
 
-struct QRCodeGenerator {
-    
-    private(set) static var shared = Self()
-    
-    private init() {}
-    
-    func generate(from string: String) -> UIImage? {
-        let data = string.data(using: String.Encoding.ascii)
-        
-        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return nil }
-        filter.setValue(data, forKey: "inputMessage")
-        let transform = CGAffineTransform(scaleX: 3, y: 3)
-        
-        guard let output = filter.outputImage?.transformed(by: transform) else { return nil }
-        return UIImage(ciImage: output)
-    }
-}
