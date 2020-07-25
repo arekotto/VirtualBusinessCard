@@ -25,6 +25,11 @@ final class EditReceivedBusinessCardMC {
 
     var cardData: BusinessCardData { businessCard.cardData }
 
+    var notes: String {
+        get { businessCard.notes }
+        set { businessCard.notes = newValue }
+    }
+
     var tagIDs: [BusinessCardTagID] {
         get { businessCard.tagIDs }
         set { businessCard.tagIDs = newValue }

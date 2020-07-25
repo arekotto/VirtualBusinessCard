@@ -27,7 +27,9 @@ class AppViewController<V: AppView, M: AppViewModel>: UIViewController {
     override func loadView() {
         view = V()
     }
-    
+}
+
+extension AppViewController {
     func presentErrorAlert(title: String? = NSLocalizedString("Something Went Wrong", comment: ""), message: String = AppError.localizedUnknownErrorDescription, okActionHandler: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .alert)
         alert.addOkAction(handler: okActionHandler)
@@ -39,5 +41,15 @@ class AppViewController<V: AppView, M: AppViewModel>: UIViewController {
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true)
+    }
+
+    func presentDismissAlert() {
+        let title = NSLocalizedString("Are you sure you want to discard?", comment: "")
+        let alert = UIAlertController.accentTinted(title: title, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Discard Changes", style: .destructive) { _ in
+            self.dismiss(animated: true)
+        })
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Keep Editing", comment: ""), style: .cancel))
+        present(alert, animated: true)
     }
 }

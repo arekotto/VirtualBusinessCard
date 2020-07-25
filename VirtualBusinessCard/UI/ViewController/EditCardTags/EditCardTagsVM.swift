@@ -13,6 +13,7 @@ import UIKit
 protocol EditCardTagsVMDelegate: class {
     func refreshData()
     func refreshRowAnimated(at indexPath: IndexPath)
+    func presentDismissAlert()
     func dismiss()
 }
 
@@ -29,6 +30,10 @@ final class EditCardTagsVM: PartialUserViewModel {
 
     private let initiallySelectedTagIDs: [BusinessCardTagID]
     private var selectedTagIDs: [BusinessCardTagID]
+
+    private var hasMadeChanges: Bool {
+        Set(selectedTagIDs) != Set(initiallySelectedTagIDs)
+    }
 
     init(userID: UserID, selectedTagIDs: [BusinessCardTagID]) {
         self.initiallySelectedTagIDs = selectedTagIDs
@@ -52,6 +57,10 @@ extension EditCardTagsVM {
 
     var cancelEditingButtonTitle: String {
         NSLocalizedString("Cancel", comment: "")
+    }
+
+    var isAllowedDragToDismiss: Bool {
+        !hasMadeChanges
     }
 
     func numberOfItems() -> Int {
@@ -78,8 +87,14 @@ extension EditCardTagsVM {
     }
 
     func didApproveSelection() {
-        selectionDelegate?.didChangeSelectedTagIDs(to: selectedTagIDs)
+        if hasMadeChanges {
+            selectionDelegate?.didChangeSelectedTagIDs(to: selectedTagIDs)
+        }
         delegate?.dismiss()
+    }
+
+    func didAttemptDismiss() {
+        delegate?.presentDismissAlert()
     }
 
     func didDiscardSelection() {

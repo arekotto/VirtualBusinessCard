@@ -77,3 +77,15 @@ extension EditCardTagsVC: EditCardTagsVMDelegate {
         dismiss(animated: true)
     }
 }
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension EditCardTagsVC: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        viewModel.isAllowedDragToDismiss
+    }
+
+    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        viewModel.didAttemptDismiss()
+    }
+}

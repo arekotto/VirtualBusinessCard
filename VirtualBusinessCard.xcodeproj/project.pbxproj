@@ -153,6 +153,9 @@
 		45D445AB24C05DAF00630C72 /* AcceptCardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D445AA24C05DAF00630C72 /* AcceptCardVM.swift */; };
 		45D6BF7824169A41008B2498 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6BF7724169A41008B2498 /* Color.swift */; };
 		45E21C2724CC8FA900013E9E /* PartialUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */; };
+		45E21C2A24CC95CC00013E9E /* EditCardNotesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */; };
+		45E21C2C24CC95F400013E9E /* EditCardNotesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */; };
+		45E21C2E24CC960300013E9E /* EditCardNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2D24CC960300013E9E /* EditCardNotesView.swift */; };
 		45E62CFC24BCD1B500B96B17 /* DirectCardExchangeMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */; };
 		45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */; };
 		45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */; };
@@ -338,6 +341,9 @@
 		45D445AA24C05DAF00630C72 /* AcceptCardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptCardVM.swift; sourceTree = "<group>"; };
 		45D6BF7724169A41008B2498 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialUserViewModel.swift; sourceTree = "<group>"; };
+		45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVC.swift; sourceTree = "<group>"; };
+		45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVM.swift; sourceTree = "<group>"; };
+		45E21C2D24CC960300013E9E /* EditCardNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesView.swift; sourceTree = "<group>"; };
 		45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchangeMC.swift; sourceTree = "<group>"; };
 		45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
 		45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailViewModel.swift; sourceTree = "<group>"; };
@@ -583,6 +589,7 @@
 		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				45E21C2824CC95B600013E9E /* EditCardNotes */,
 				4576993F24CC8205008D3778 /* LoadingPopover */,
 				45CF2F5524CC59D7003F9F91 /* EditCardTags */,
 				45D445A524C05D2500630C72 /* AcceptCard */,
@@ -949,6 +956,16 @@
 			path = AcceptCard;
 			sourceTree = "<group>";
 		};
+		45E21C2824CC95B600013E9E /* EditCardNotes */ = {
+			isa = PBXGroup;
+			children = (
+				45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */,
+				45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */,
+				45E21C2D24CC960300013E9E /* EditCardNotesView.swift */,
+			);
+			path = EditCardNotes;
+			sourceTree = "<group>";
+		};
 		45E64C54241938F900FECFC9 /* LoginWithEmail */ = {
 			isa = PBXGroup;
 			children = (
@@ -1250,6 +1267,7 @@
 				452CEE8324AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift in Sources */,
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
 				453384A224CB0D080020AEF6 /* QRCodeGenerator.swift in Sources */,
+				45E21C2A24CC95CC00013E9E /* EditCardNotesVC.swift in Sources */,
 				4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */,
 				458EF3FE248A5F7800EC76D6 /* BusinessCardMC.swift in Sources */,
 				45F1EDA024BC488100AE1322 /* DirectSharingView.swift in Sources */,
@@ -1313,6 +1331,7 @@
 				45B25F252493B669006DD0F7 /* AppBackgroundView.swift in Sources */,
 				4558F1FC2424FD9E00D44526 /* CreateAccountView.swift in Sources */,
 				45CF2F5B24CC5A5E003F9F91 /* EditCardTagsVM.swift in Sources */,
+				45E21C2E24CC960300013E9E /* EditCardNotesView.swift in Sources */,
 				45139C4D24979A3500DE1E9F /* ReceivedBusinessCard.swift in Sources */,
 				45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */,
 				45174CDB24B89772009BFE58 /* TagsVC.swift in Sources */,
@@ -1357,6 +1376,7 @@
 				4537CEE723F6D259003602EA /* ContentView.swift in Sources */,
 				45139C4B249794AF00DE1E9F /* PersonalBusinessCard.swift in Sources */,
 				451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */,
+				45E21C2C24CC95F400013E9E /* EditCardNotesVM.swift in Sources */,
 				451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */,
 				45B5E315241FA07F00028B0A /* LoginView.swift in Sources */,
 				45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */,

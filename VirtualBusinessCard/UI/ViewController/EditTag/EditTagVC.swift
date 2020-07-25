@@ -113,16 +113,6 @@ extension EditTagVC: NewTagVMDelegate {
         }
     }
     
-    func presentDismissAlert() {
-        let title = NSLocalizedString("Are you sure you want to discard?", comment: "")
-        let alert = UIAlertController.accentTinted(title: title, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Discard Changes", style: .destructive) { _ in
-            self.dismissSelf()
-        })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Keep Editing", comment: ""), style: .cancel))
-        present(alert, animated: true)
-    }
-    
     func dismissSelf() {
         if let presentedVC = presentedViewController {
             presentedVC.dismiss(animated: true) {

@@ -17,6 +17,7 @@ protocol AcceptCardVMDelegate: class {
     func dismissSelf()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentEditCardTagsVC(viewModel: EditCardTagsVM)
+    func presentEditCardNotesVC(viewModel: EditCardNotesVM)
 }
 
 final class AcceptCardVM: MotionDataViewModel {
@@ -81,7 +82,9 @@ extension AcceptCardVM {
     }
 
     func didSelectAddNote() {
-
+        let vm = EditCardNotesVM(notes: card.notes)
+        vm.editingDelegate = self
+        delegate?.presentEditCardNotesVC(viewModel: vm)
     }
 
     func didSelectAddTag() {
@@ -126,6 +129,23 @@ extension AcceptCardVM: EditCardTagsVMSelectionDelegate {
     func didChangeSelectedTagIDs(to tagIDs: [BusinessCardTagID]) {
         card.tagIDs = tagIDs
         card.save(in: receivedCardsCollectionReference, fields: [.tagIDs]) { [weak self] result in
+            switch result {
+            case .success(): return
+            case .failure(let error):
+                print(error.localizedDescription)
+                let errorTitle = AppError.localizedUnknownErrorDescription
+                self?.delegate?.presentSaveErrorAlert(title: errorTitle)
+            }
+        }
+    }
+}
+
+// MARK: - EditCardNotesVMEditingDelegate
+
+extension AcceptCardVM: EditCardNotesVMEditingDelegate {
+    func didEditNotes(to editedNotes: String) {
+        card.notes = editedNotes
+        card.save(in: receivedCardsCollectionReference, fields: [.notes]) { [weak self] result in
             switch result {
             case .success(): return
             case .failure(let error):
