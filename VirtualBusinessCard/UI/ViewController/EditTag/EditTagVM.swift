@@ -127,7 +127,7 @@ extension EditTagVM {
                 snap?.documents.forEach {
                     let card = EditReceivedBusinessCardMC(documentSnapshot: $0)
                     card?.tagIDs.removeAll { $0 == self.tag.id }
-                    card?.save(in: self.receivedCardsCollectionReference, fields: [ReceivedBusinessCard.CodingKeys.tagIDs])
+                    card?.save(in: self.receivedCardsCollectionReference, fields: [.tagIDs])
                 }
                 self.tag.delete(in: self.tagsCollectionReference)
                 self.delegate?.dismissSelf()

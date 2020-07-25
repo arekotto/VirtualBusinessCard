@@ -286,6 +286,11 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 }
 
 extension AcceptCardVC: AcceptCardVMDelegate {
+    func presentEditCardTagsVC(viewModel: EditCardTagsVM) {
+        let vc = EditCardTagsVC(viewModel: viewModel)
+        present(AppNavigationController(rootViewController: vc), animated: true)
+    }
+
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         contentView.cardSceneView.updateMotionData(motion, over: timeFrame)
     }

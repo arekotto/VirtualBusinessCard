@@ -1,0 +1,138 @@
+//
+//  EditCardTagsVM.swift
+//  VirtualBusinessCard
+//
+//  Created by Arek Otto on 25/07/2020.
+//  Copyright © 2020 Arek Otto. All rights reserved.
+//
+
+import Foundation
+import Firebase
+import UIKit
+
+protocol EditCardTagsVMDelegate: class {
+    func refreshData()
+    func refreshRowAnimated(at indexPath: IndexPath)
+    func dismiss()
+}
+
+protocol EditCardTagsVMSelectionDelegate: class {
+    func didChangeSelectedTagIDs(to tagIDs: [BusinessCardTagID])
+}
+
+final class EditCardTagsVM: AppViewModel {
+
+    weak var delegate: EditCardTagsVMDelegate?
+    weak var selectionDelegate: EditCardTagsVMSelectionDelegate?
+
+    private var tags = [BusinessCardTagMC]()
+
+    private let initiallySelectedTagIDs: [BusinessCardTagID]
+    private var selectedTagIDs: [BusinessCardTagID]
+
+    init(userID: UserID, selectedTagIDs: [BusinessCardTagID]) {
+        self.initiallySelectedTagIDs = selectedTagIDs
+        self.selectedTagIDs = selectedTagIDs
+        super.init(userID: userID)
+    }
+
+    private func tagForRow(at indexPath: IndexPath) -> BusinessCardTagMC {
+        tags[indexPath.row]
+    }
+}
+
+extension EditCardTagsVM {
+    var title: String {
+        NSLocalizedString("Add Tags", comment: "")
+    }
+
+    var doneEditingButtonTitle: String {
+        NSLocalizedString("Done", comment: "")
+    }
+
+    var cancelEditingButtonTitle: String {
+        NSLocalizedString("Cancel", comment: "")
+    }
+
+    func numberOfItems() -> Int {
+        tags.count
+    }
+
+    func itemForRow(at indexPath: IndexPath) -> TagTableCell.DataModel {
+        let tag = tagForRow(at: indexPath)
+        return TagTableCell.DataModel(
+            tagName: tag.title,
+            tagColor: tag.displayColor,
+            accessoryImage: accessoryImage(for: tag.id)
+        )
+    }
+
+    func didSelectItem(at indexPath: IndexPath) {
+        let tagID = tagForRow(at: indexPath).id
+        if let selectedTagIndex = selectedTagIDs.firstIndex(of: tagID) {
+            selectedTagIDs.remove(at: selectedTagIndex)
+        } else {
+            selectedTagIDs.append(tagID)
+        }
+        delegate?.refreshRowAnimated(at: indexPath)
+    }
+
+    func didApproveSelection() {
+        selectionDelegate?.didChangeSelectedTagIDs(to: selectedTagIDs)
+        delegate?.dismiss()
+    }
+
+    func didDiscardSelection() {
+        delegate?.dismiss()
+    }
+}
+
+// MARK: - AccessoryImage
+
+private extension EditCardTagsVM {
+
+    static let accessoryImageConfiguration = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+
+    static let selectedAccessoryImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: accessoryImageConfiguration)!
+
+    static let deselectedAccessoryImage = UIImage(systemName: "circle", withConfiguration: accessoryImageConfiguration)!
+
+    func accessoryImage(for tagID: BusinessCardTagID) -> UIImage {
+        selectedTagIDs.contains(tagID) ? Self.selectedAccessoryImage : Self.deselectedAccessoryImage
+    }
+}
+
+// MARK: - Firebase fetch
+
+extension EditCardTagsVM {
+    private var tagsCollectionReference: CollectionReference {
+        userPublicDocumentReference.collection(BusinessCardTag.collectionName)
+    }
+
+    func fetchData() {
+        tagsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
+            self?.cardTagsDidChange(querySnapshot, error)
+        }
+    }
+
+    private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
+        guard let querySnap = querySnapshot else {
+            print(#file, error?.localizedDescription ?? "")
+            return
+        }
+
+        DispatchQueue.global().async {
+            let newTags: [BusinessCardTagMC] = querySnap.documents.compactMap {
+                guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
+                    print(#file, "Error mapping business card:", $0.documentID)
+                    return nil
+                }
+                return BusinessCardTagMC(tag: tag)
+            }
+            self.tags = newTags.sorted(by: BusinessCardTagMC.sortByPriority)
+            DispatchQueue.main.async {
+                self.delegate?.refreshData()
+            }
+        }
+    }
+}

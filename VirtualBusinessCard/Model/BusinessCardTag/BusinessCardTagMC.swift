@@ -45,8 +45,18 @@ extension BusinessCardTagMC {
     }
 }
 
+// MARK: - Equatable
+
 extension BusinessCardTagMC: Equatable {
     static func == (lhs: BusinessCardTagMC, rhs: BusinessCardTagMC) -> Bool {
         lhs.tag == rhs.tag
+    }
+}
+
+// MARK: - Sorting
+
+extension BusinessCardTagMC {
+    static func sortByPriority(_ lhs: BusinessCardTagMC, _ rhs: BusinessCardTagMC) -> Bool {
+        lhs.priorityIndex < rhs.priorityIndex
     }
 }

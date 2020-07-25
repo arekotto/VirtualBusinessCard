@@ -42,7 +42,7 @@ extension TagsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: TagsView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
+        let cell: TagTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
         cell.dataModel = viewModel.itemForRow(at: indexPath)
         return cell
     }

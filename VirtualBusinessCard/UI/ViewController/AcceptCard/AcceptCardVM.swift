@@ -16,6 +16,7 @@ protocol AcceptCardVMDelegate: class {
     func presentSaveErrorAlert(title: String)
     func dismissSelf()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
+    func presentEditCardTagsVC(viewModel: EditCardTagsVM)
 }
 
 final class AcceptCardVM: MotionDataViewModel {
@@ -84,7 +85,9 @@ extension AcceptCardVM {
     }
 
     func didSelectAddTag() {
-
+        let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
+        vm.selectionDelegate = self
+        delegate?.presentEditCardTagsVC(viewModel: vm)
     }
 
     func didSelectReject() {
@@ -109,8 +112,27 @@ extension AcceptCardVM {
     }
 }
 
+// MARK: - Firebase
+
 extension AcceptCardVM {
     private var receivedCardsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
+    }
+}
+
+// MARK: - EditCardTagsVMSelectionDelegate
+
+extension AcceptCardVM: EditCardTagsVMSelectionDelegate {
+    func didChangeSelectedTagIDs(to tagIDs: [BusinessCardTagID]) {
+        card.tagIDs = tagIDs
+        card.save(in: receivedCardsCollectionReference, fields: [.tagIDs]) { [weak self] result in
+            switch result {
+            case .success(): return
+            case .failure(let error):
+                print(error.localizedDescription)
+                let errorTitle = AppError.localizedUnknownErrorDescription
+                self?.delegate?.presentSaveErrorAlert(title: errorTitle)
+            }
+        }
     }
 }

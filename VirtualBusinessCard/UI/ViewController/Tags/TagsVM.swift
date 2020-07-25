@@ -54,14 +54,9 @@ extension TagsVM {
         tags.count
     }
     
-    func itemForRow(at indexPath: IndexPath) -> TagsView.TableCell.DataModel {
+    func itemForRow(at indexPath: IndexPath) -> TagTableCell.DataModel {
         let tag = tagForRow(at: indexPath)
-        return TagsView.TableCell.DataModel(
-            tagName: tag.title,
-            tagColor: tag.displayColor,
-            isFirstCell: indexPath.row == 0,
-            isLastCell: indexPath.row == numberOfItems() - 1
-        )
+        return TagTableCell.DataModel(tagName: tag.title, tagColor: tag.displayColor)
     }
     
     func didSelectItem(at indexPath: IndexPath) {
@@ -81,7 +76,7 @@ extension TagsVM {
                 tag.priorityIndex = idx
             }
             editableTags.forEach {
-                $0.savePriorityIndex(in: self.tagsCollectionReference)
+                $0.save(in: self.tagsCollectionReference, fields: [.priorityIndex])
             }
             self.tags = editableTags.map{ $0.businessCardTagMC() }
             DispatchQueue.main.async {
@@ -91,20 +86,12 @@ extension TagsVM {
     }
     
     func didCancelEditing() {
-        tags.sort(by: Self.sortByPriority)
+        tags.sort(by: BusinessCardTagMC.sortByPriority)
         delegate?.refreshData()
     }
     
     func didSelectNewTag() {
         delegate?.presentNewTagVC(with: EditTagVM(userID: userID, estimatedLowestPriorityIndex: tags.count))
-    }
-}
-
-// MARK: -  Sorting
-
-extension TagsVM {
-    private static func sortByPriority(_ lhs: BusinessCardTagMC, _ rhs: BusinessCardTagMC) -> Bool {
-        lhs.priorityIndex < rhs.priorityIndex
     }
 }
 
@@ -126,15 +113,19 @@ extension TagsVM {
             print(#file, error?.localizedDescription ?? "")
             return
         }
-        
-        tags = querySnap.documents.compactMap {
-            guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
-                print(#file, "Error mapping business card:", $0.documentID)
-                return nil
-            }
-            return BusinessCardTagMC(tag: tag)
-        }.sorted(by: Self.sortByPriority)
 
-        delegate?.refreshData()
+        DispatchQueue.global().async {
+            let newTags: [BusinessCardTagMC] = querySnap.documents.compactMap {
+                guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
+                    print(#file, "Error mapping business card:", $0.documentID)
+                    return nil
+                }
+                return BusinessCardTagMC(tag: tag)
+            }
+            self.tags = newTags.sorted(by: BusinessCardTagMC.sortByPriority)
+            DispatchQueue.main.async {
+                self.delegate?.refreshData()
+            }
+        }
     }
 }

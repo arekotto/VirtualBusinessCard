@@ -84,9 +84,30 @@ extension EditBusinessCardTagMC {
             }
         }
     }
-    
-    func savePriorityIndex(in collectionReference: CollectionReference) {
-        collectionReference.document(tag.id).updateData([BusinessCardTag.CodingKeys.priorityIndex: priorityIndex])
+
+    func save(in collectionReference: CollectionReference, fields: [BusinessCardTag.CodingKeys], completion: ((Result<Void, Error>) -> Void)? = nil) {
+        let docRef: DocumentReference
+        if tag.id == Self.unsavedObjectID {
+            docRef = collectionReference.document()
+            tag.id = docRef.documentID
+        } else {
+            docRef = collectionReference.document(tag.id)
+        }
+
+        let tagDoc = tag.asDocument()
+
+        let updates = fields.reduce(into: [String: Any]()) { updates, key in
+            updates[key.rawValue] = tagDoc[key.rawValue]
+        }
+
+        docRef.updateData(updates) { error in
+            if let err = error {
+                print(err.localizedDescription)
+                completion?(.failure(err))
+            } else {
+                completion?(.success(()))
+            }
+        }
     }
     
     func delete(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
