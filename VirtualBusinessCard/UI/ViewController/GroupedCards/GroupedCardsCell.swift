@@ -41,6 +41,7 @@ extension GroupedCardsView {
             this.font = UIFont.appDefault(size: 17, weight: .semibold, design: .rounded)
             this.numberOfLines = 2
             this.lineBreakMode = .byWordWrapping
+            this.setContentCompressionResistancePriority(.required, for: .horizontal)
             return this
         }()
 
