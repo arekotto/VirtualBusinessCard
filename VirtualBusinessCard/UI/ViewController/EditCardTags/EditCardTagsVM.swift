@@ -20,7 +20,7 @@ protocol EditCardTagsVMSelectionDelegate: class {
     func didChangeSelectedTagIDs(to tagIDs: [BusinessCardTagID])
 }
 
-final class EditCardTagsVM: AppViewModel {
+final class EditCardTagsVM: PartialUserViewModel {
 
     weak var delegate: EditCardTagsVMDelegate?
     weak var selectionDelegate: EditCardTagsVMSelectionDelegate?

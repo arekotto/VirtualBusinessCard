@@ -24,4 +24,5 @@ enum AppColorTheme: String {
     case defaultText = "DefaultText"
     case selectedCellBackgroundLight = "SelectedCellBackgroundLight"
     case selectedCellBackgroundStrong = "SelectedCellBackgroundStrong"
+    case secondaryText = "SecondaryText"
 }

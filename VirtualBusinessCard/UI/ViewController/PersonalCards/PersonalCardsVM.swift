@@ -19,7 +19,7 @@ protocol PersonalCardsVMlDelegate: class {
     func presentDirectSharingVC(viewModel: DirectSharingVM)
 }
 
-final class PersonalCardsVM: AppViewModel {
+final class PersonalCardsVM: PartialUserViewModel {
     
     weak var delegate: PersonalCardsVMlDelegate?
         

@@ -14,11 +14,11 @@ protocol DirectSharingVMDelegate: class {
     func didGenerateQRCode(image: UIImage)
     func presentErrorGeneratingQRCodeAlert()
     func presentErrorReadingQRCodeAlert()
-    func presentLoadingAlert()
+    func presentLoadingAlert(viewModel: LoadingPopoverVM)
     func presentAcceptCardVC(with viewModel: AcceptCardVM)
 }
 
-final class DirectSharingVM: UserViewModel {
+final class DirectSharingVM: CompleteUserViewModel {
     
     weak var delegate: DirectSharingVMDelegate?
     
@@ -99,7 +99,7 @@ extension DirectSharingVM {
                 self.delegate?.presentErrorGeneratingQRCodeAlert()
                 return
             }
-            
+            self.qrCode = qrCode
             self.delegate?.didGenerateQRCode(image: qrCode)
         }
     }
@@ -120,7 +120,7 @@ extension DirectSharingVM {
             return
         }
 
-        delegate?.presentLoadingAlert()
+        delegate?.presentLoadingAlert(viewModel: LoadingPopoverVM(title: NSLocalizedString("Sharing card", comment: "")))
 
         user?.addCardExchangeAccessToken(exchange.accessToken)
         user?.save() { [weak self] result in

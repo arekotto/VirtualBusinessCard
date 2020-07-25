@@ -15,7 +15,7 @@ protocol UserProfileVMDelegate: class {
     func presentAlert(title: String?, message: String?)
 }
 
-final class UserProfileVM: UserViewModel {
+final class UserProfileVM: CompleteUserViewModel {
     
     weak var delegate: UserProfileVMDelegate?
         

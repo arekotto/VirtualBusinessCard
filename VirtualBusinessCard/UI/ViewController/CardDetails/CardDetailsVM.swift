@@ -17,7 +17,7 @@ protocol CardDetailsVMDelegate: class {
     func dismissSelf()
 }
 
-final class CardDetailsVM: AppViewModel {
+final class CardDetailsVM: PartialUserViewModel {
         
     weak var delegate: CardDetailsVMDelegate? {
         didSet { didSetDelegate() }

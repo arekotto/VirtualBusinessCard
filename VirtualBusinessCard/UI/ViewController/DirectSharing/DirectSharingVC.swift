@@ -101,6 +101,7 @@ extension DirectSharingVC: DirectSharingVMDelegate {
     }
     
     func didFetchData() {
+        guard viewModel.qrCode == nil else { return }
         viewModel.generateQRCode()
     }
     

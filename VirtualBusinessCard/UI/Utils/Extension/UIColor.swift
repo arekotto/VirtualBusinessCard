@@ -22,6 +22,7 @@ extension UIColor {
     static let defaultText = UIColor(named:  AppColorTheme.defaultText.rawValue)!
     static let selectedCellBackgroundLight = UIColor(named:  AppColorTheme.selectedCellBackgroundLight.rawValue)!
     static let selectedCellBackgroundStrong = UIColor(named:  AppColorTheme.selectedCellBackgroundStrong.rawValue)!
+    static let secondaryText = UIColor(named:  AppColorTheme.secondaryText.rawValue)!
 }
 
 extension UIColor {

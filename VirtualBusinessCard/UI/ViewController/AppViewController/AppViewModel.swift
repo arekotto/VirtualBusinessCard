@@ -7,23 +7,5 @@
 //
 
 import Foundation
-import Firebase
 
-class AppViewModel {
-    
-    private static let sharedDataBase = Firestore.firestore()
-    
-    final let userID: UserID
-
-    init(userID: UserID) {
-        self.userID = userID
-    }
-    
-    final var db: Firestore {
-        Self.sharedDataBase
-    }
-
-    final var userPublicDocumentReference: DocumentReference {
-        Self.sharedDataBase.collection(UserPublic.collectionName).document(userID)
-    }
-}
+class AppViewModel { }

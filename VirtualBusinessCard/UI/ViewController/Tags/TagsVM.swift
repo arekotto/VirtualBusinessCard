@@ -14,7 +14,7 @@ protocol TagsVMDelegate: class {
     func presentNewTagVC(with viewModel: EditTagVM)
 }
 
-final class TagsVM: AppViewModel {
+final class TagsVM: PartialUserViewModel {
     
     weak var delegate: TagsVMDelegate?
     

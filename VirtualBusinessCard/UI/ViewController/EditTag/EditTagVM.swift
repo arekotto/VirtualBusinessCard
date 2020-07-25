@@ -17,11 +17,11 @@ protocol NewTagVMDelegate: class {
     func presentSaveOfflineAlert()
     func presentErrorAlert(message: String)
     func presentErrorAlert(title: String?, message: String)
-    func presentLoadingAlert()
+    func presentLoadingAlert(viewModel: LoadingPopoverVM)
     func dismissSelf()
 }
 
-final class EditTagVM: AppViewModel {
+final class EditTagVM: PartialUserViewModel {
     
     weak var delegate: NewTagVMDelegate?
     
@@ -115,7 +115,7 @@ extension EditTagVM {
     }
     
     func didConfirmDelete() {
-        delegate?.presentLoadingAlert()
+        delegate?.presentLoadingAlert(viewModel: LoadingPopoverVM(title: NSLocalizedString("Deleting tag", comment: "")))
         let tagIDs = ReceivedBusinessCard.CodingKeys.tagIDs.rawValue
         let query = receivedCardsCollectionReference.whereField(tagIDs, arrayContains: tag.id)
         query.getDocuments(source: .server) { snap, error in

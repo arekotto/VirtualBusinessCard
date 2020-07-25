@@ -34,9 +34,10 @@ class AppViewController<V: AppView, M: AppViewModel>: UIViewController {
         present(alert, animated: true)
     }
 
-    func presentLoadingAlert() {
-        let vc = SharingDataIndicatorVC(viewModel: AppViewModel(userID: viewModel.userID))
+    func presentLoadingAlert(viewModel: LoadingPopoverVM) {
+        let vc = LoadingPopoverVC(viewModel: viewModel)
         vc.modalPresentationStyle = .overFullScreen
+        vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true)
     }
 }

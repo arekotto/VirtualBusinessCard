@@ -1,5 +1,5 @@
 //
-//  UserViewModel.swift
+//  CompleteUserViewModel.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 23/07/2020.
@@ -8,7 +8,7 @@
 
 import Firebase
 
-class UserViewModel: AppViewModel {
+class CompleteUserViewModel: PartialUserViewModel {
 
     private(set) var user: UserMC?
 

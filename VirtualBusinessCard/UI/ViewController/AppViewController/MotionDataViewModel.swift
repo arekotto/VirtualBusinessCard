@@ -8,7 +8,7 @@
 
 import CoreMotion
 
-class MotionDataViewModel: AppViewModel {
+class MotionDataViewModel: PartialUserViewModel {
 
     private lazy var motionManager = CMMotionManager()
 

@@ -15,7 +15,7 @@ protocol GroupedCardsVMDelegate: class {
     func presentReceivedCards(with viewModel: ReceivedCardsVM)
 }
 
-final class GroupedCardsVM: AppViewModel {
+final class GroupedCardsVM: PartialUserViewModel {
     
     weak var delegate: GroupedCardsVMDelegate?
     

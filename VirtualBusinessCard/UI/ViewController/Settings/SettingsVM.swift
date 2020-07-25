@@ -15,7 +15,7 @@ protocol SettingsVMDelegate: class {
     func presentLogoutAlertController(title: String, actionTitle: String)
 }
 
-final class SettingsVM: AppViewModel {
+final class SettingsVM: PartialUserViewModel {
     
     weak var delegate: SettingsVMDelegate?
         

@@ -46,6 +46,12 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         bounceAnimatorsTimer = Timer.scheduledTimer(timeInterval: 2.1, target: self, selector: #selector(playBounceAnimation), userInfo: nil, repeats: true)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        bounceAnimatorsTimer?.invalidate()
+        bounceAnimatorsTimer = nil 
+    }
+
     private func setupContentView() {
         contentView.cardSceneView.setDataModel(viewModel.dataModel())
         contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:))))
@@ -64,7 +70,8 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
     private func makeBounceAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
-        animator.addAnimations {
+        animator.addAnimations { [weak self] in
+            guard let self = self else { return }
             UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [.calculationModeCubic], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1/2) {
                     self.contentView.cardSceneViewTopConstraint.constant += 10
@@ -81,7 +88,8 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
     private func makeSlideDownAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 2, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
-        animator.addAnimations {
+        animator.addAnimations { [weak self] in
+            guard let self = self else { return }
             UIView.animateKeyframes(withDuration: 2, delay: 0, options: [.calculationModeCubic], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
                     self.contentView.slideToAcceptStackView.alpha = 0.4
@@ -95,7 +103,8 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
     private func makeSlideUpAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 2, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
-        animator.addAnimations {
+        animator.addAnimations { [weak self] in
+            guard let self = self else { return }
             UIView.animateKeyframes(withDuration: 2, delay: 0, options: [.calculationModeCubic], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
                     self.contentView.slideToAcceptStackViewTopConstraint.constant = AcceptCardView.startingSlideToAcceptStackViewTopConstraint
@@ -109,7 +118,8 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
     private func makeFinishAcceptingAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
-        animator.addAnimations {
+        animator.addAnimations { [weak self] in
+            guard let self = self else { return }
             UIView.animateKeyframes(withDuration: 0.5, delay: 0, options: [.calculationModeCubic], animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1) {
                     self.contentView.cardSceneViewTopConstraint.constant = AcceptCardView.cardViewExpandedTopConstraint
@@ -123,8 +133,10 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
                 }
             })
         }
-        animator.addCompletion { _ in
+        animator.addCompletion { [weak self] _ in
+            guard let self = self else { return }
             self.bounceAnimatorsTimer?.invalidate()
+            self.bounceAnimatorsTimer = nil
             self.contentView.gestureRecognizers?.forEach {
                 self.contentView.removeGestureRecognizer($0)
             }
@@ -137,7 +149,8 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
     private func makeAcceptAnimator() -> UIViewPropertyAnimator {
         let timeParameter = UICubicTimingParameters(animationCurve: .linear)
         let animator = UIViewPropertyAnimator(duration: 1, timingParameters: timeParameter)
-        animator.addAnimations {
+        animator.addAnimations { [weak self] in
+            guard let self = self else { return }
             UIView.animateKeyframes(withDuration: 1, delay: 0, options: .calculationModeCubic, animations: {
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.6) {
                     self.contentView.cardSceneView.transform = CGAffineTransform(rotationAngle: 0)
@@ -158,7 +171,8 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
                 }
             })
         }
-        animator.addCompletion { state in
+        animator.addCompletion {  [weak self] state in
+            guard let self = self else { return }
             self.acceptAnimator = nil
             switch state {
             case .end: return
