@@ -75,7 +75,8 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
 
 // MARK: - Actions
 
-@objc extension ReceivedCardsVC {
+@objc
+extension ReceivedCardsVC {
     func didTapCellSizeModeButton() {
         viewModel.didChangeCellSizeMode()
     }

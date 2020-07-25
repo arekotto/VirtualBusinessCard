@@ -90,7 +90,8 @@ extension GroupedCardsVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
 // MARK: - Actions
 
-@objc private extension GroupedCardsVC {
+@objc
+private extension GroupedCardsVC {
     func didTapSeeAllButton() {
         viewModel.didTapSeeAll()
     }

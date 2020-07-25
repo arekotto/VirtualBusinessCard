@@ -25,7 +25,8 @@ final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add Test Data", style: .plain, target: self, action: #selector(testingAdd))
     }
     
-    @objc func testingAdd() {
+    @objc
+    func testingAdd() {
         let task = SampleBCUploadTask()
         task() {_ in }
     }

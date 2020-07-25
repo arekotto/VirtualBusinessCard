@@ -63,7 +63,8 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
 // MARK: - Actions
 
-@objc private extension CardDetailsVC {
+@objc
+private extension CardDetailsVC {
     func didTapCloseButton() {
         viewModel.didTapCloseButton()
     }

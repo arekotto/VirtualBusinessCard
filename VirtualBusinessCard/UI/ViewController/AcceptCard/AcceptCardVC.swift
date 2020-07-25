@@ -67,8 +67,77 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
             UIBarButtonItem(image: viewModel.addTagImage, style: .plain, target: self, action: #selector(didTapAddTagButton))
         ]
     }
+}
 
-    private func makeBounceAnimator() -> UIViewPropertyAnimator {
+// MARK: - Animation Handlers
+
+private extension AcceptCardVC {
+    func resetViewAfterDiscardedAcceptAnimation() {
+        self.contentView.cardSceneViewTopConstraint.constant = contentView.startingCardTopConstraintConstant
+        self.contentView.slideToAcceptStackViewTopConstraint.constant = AcceptCardView.startingSlideToAcceptStackViewTopConstraint
+        self.contentView.cardSceneViewHeightConstraint.constant = AcceptCardView.defaultCardViewSize.height
+        self.contentView.cardSceneViewWidthConstraint.constant = AcceptCardView.defaultCardViewSize.width
+        self.view.layoutIfNeeded()
+        UIView.animate(withDuration: 0.2) {
+            self.contentView.slideToAcceptStackView.alpha = 1
+            self.contentView.rejectButton.alpha = 1
+        }
+    }
+
+    func beginAcceptAnimation() {
+        bounceAnimator?.stopAnimation(true)
+        slideDownAnimator?.stopAnimation(true)
+        slideUpAnimator?.stopAnimation(true)
+
+        slideUpAnimator = nil
+        slideDownAnimator = nil
+
+        UIView.animate(withDuration: 0.2) {
+            self.contentView.slideToAcceptStackView.alpha = 0
+            self.contentView.rejectButton.alpha = 0
+        }
+
+        acceptAnimator = makeAcceptAnimator()
+
+        acceptAnimator?.startAnimation()
+        acceptAnimator?.pauseAnimation()
+    }
+
+    func updateAcceptAnimation(completeFraction: CGFloat) {
+        var complete = completeFraction
+        if complete > 0.6 {
+            if !didEnterAcceptingRangeInAnimationProgress {
+                self.strongEngine.play()
+            }
+            didEnterAcceptingRangeInAnimationProgress = true
+            let bounceValue = log10(1 + (complete - 3/5))
+            complete = 0.6 + 0.01 + bounceValue
+        } else {
+            if didEnterAcceptingRangeInAnimationProgress {
+                self.strongEngine.play()
+            }
+            didEnterAcceptingRangeInAnimationProgress = false
+        }
+        acceptAnimator?.fractionComplete = complete
+    }
+
+    func endAcceptAnimation() {
+        guard let animator = acceptAnimator else { return }
+        if animator.fractionComplete > 3/5 {
+            animator.stopAnimation(true)
+            makeFinishAcceptingAnimator().startAnimation()
+            viewModel.didAcceptCard()
+        } else {
+            animator.isReversed = true
+            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+        }
+    }
+}
+
+// MARK: - Animators Creation
+
+private extension AcceptCardVC {
+    func makeBounceAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
         animator.addAnimations { [weak self] in
             guard let self = self else { return }
@@ -76,7 +145,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
                 UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 1/2) {
                     self.contentView.cardSceneViewTopConstraint.constant += 10
                     self.view.layoutIfNeeded()
-                } 
+                }
                 UIView.addKeyframe(withRelativeStartTime: 1/2, relativeDuration: 1/2) {
                     self.contentView.cardSceneViewTopConstraint.constant = self.contentView.startingCardTopConstraintConstant
                     self.view.layoutIfNeeded()
@@ -86,7 +155,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         return animator
     }
 
-    private func makeSlideDownAnimator() -> UIViewPropertyAnimator {
+    func makeSlideDownAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 2, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
         animator.addAnimations { [weak self] in
             guard let self = self else { return }
@@ -101,7 +170,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         return animator
     }
 
-    private func makeSlideUpAnimator() -> UIViewPropertyAnimator {
+    func makeSlideUpAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 2, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
         animator.addAnimations { [weak self] in
             guard let self = self else { return }
@@ -116,7 +185,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         return animator
     }
 
-    private func makeFinishAcceptingAnimator() -> UIViewPropertyAnimator {
+    func makeFinishAcceptingAnimator() -> UIViewPropertyAnimator {
         let animator = UIViewPropertyAnimator(duration: 0.5, timingParameters: UICubicTimingParameters(animationCurve: .easeInOut))
         animator.addAnimations { [weak self] in
             guard let self = self else { return }
@@ -146,7 +215,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         return animator
     }
 
-    private func makeAcceptAnimator() -> UIViewPropertyAnimator {
+    func makeAcceptAnimator() -> UIViewPropertyAnimator {
         let timeParameter = UICubicTimingParameters(animationCurve: .linear)
         let animator = UIViewPropertyAnimator(duration: 1, timingParameters: timeParameter)
         animator.addAnimations { [weak self] in
@@ -182,70 +251,12 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         }
         return animator
     }
-
-    private func resetViewAfterDiscardedAcceptAnimation() {
-        self.contentView.cardSceneViewTopConstraint.constant = contentView.startingCardTopConstraintConstant
-        self.contentView.slideToAcceptStackViewTopConstraint.constant = AcceptCardView.startingSlideToAcceptStackViewTopConstraint
-        self.contentView.cardSceneViewHeightConstraint.constant = AcceptCardView.defaultCardViewSize.height
-        self.contentView.cardSceneViewWidthConstraint.constant = AcceptCardView.defaultCardViewSize.width
-        self.view.layoutIfNeeded()
-        UIView.animate(withDuration: 0.2) {
-            self.contentView.slideToAcceptStackView.alpha = 1
-            self.contentView.rejectButton.alpha = 1
-        }
-    }
-
-    private func beginAcceptAnimation() {
-        bounceAnimator?.stopAnimation(true)
-        slideDownAnimator?.stopAnimation(true)
-        slideUpAnimator?.stopAnimation(true)
-
-        slideUpAnimator = nil
-        slideDownAnimator = nil
-
-        UIView.animate(withDuration: 0.2) {
-            self.contentView.slideToAcceptStackView.alpha = 0
-            self.contentView.rejectButton.alpha = 0
-        }
-
-        acceptAnimator = makeAcceptAnimator()
-
-        acceptAnimator?.startAnimation()
-        acceptAnimator?.pauseAnimation()
-    }
-
-    private func updateAcceptAnimation(completeFraction: CGFloat) {
-        var complete = completeFraction
-        if complete > 0.6 {
-            if !didEnterAcceptingRangeInAnimationProgress {
-                self.strongEngine.play()
-            }
-            didEnterAcceptingRangeInAnimationProgress = true
-            let bounceValue = log10(1 + (complete - 3/5))
-            complete = 0.6 + 0.01 + bounceValue
-        } else {
-            if didEnterAcceptingRangeInAnimationProgress {
-                self.strongEngine.play()
-            }
-            didEnterAcceptingRangeInAnimationProgress = false
-        }
-        acceptAnimator?.fractionComplete = complete
-    }
-
-    private func endAcceptAnimation() {
-        guard let animator = acceptAnimator else { return }
-        if animator.fractionComplete > 3/5 {
-            animator.stopAnimation(true)
-            makeFinishAcceptingAnimator().startAnimation()
-            viewModel.didAcceptCard()
-        } else {
-            animator.isReversed = true
-            animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-        }
-    }
 }
 
-@objc private extension AcceptCardVC {
+// MARK: - Actions
+
+@objc
+private extension AcceptCardVC {
 
     func didTapAddNoteButton() {
         viewModel.didSelectAddNote()
@@ -299,6 +310,8 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
     }
 }
 
+// MARK: - AcceptCardVMDelegate
+
 extension AcceptCardVC: AcceptCardVMDelegate {
     func presentEditCardNotesVC(viewModel: EditCardNotesVM) {
         let vc = EditCardNotesVC(viewModel: viewModel)
@@ -334,6 +347,7 @@ extension AcceptCardVC: AcceptCardVMDelegate {
         alert.addAction(UIAlertAction(title: NSLocalizedString("Go Back", comment: ""), style: .cancel))
         present(alert, animated: true)
     }
+
     func dismissSelf() {
         dismiss(animated: true)
     }
@@ -348,5 +362,4 @@ extension AcceptCardVC: AcceptCardVMDelegate {
         alert.addCancelAction()
         present(alert, animated: true)
     }
-
 }
