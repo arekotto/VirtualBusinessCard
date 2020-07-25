@@ -31,7 +31,7 @@ final class EditCardNotesVC: AppViewController<EditCardNotesView, EditCardNotesV
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        notesCell?.becomeFirstResponder()
+        notesCell?.notesTextView.becomeFirstResponder()
     }
 
     private func setupNavigationItem() {
