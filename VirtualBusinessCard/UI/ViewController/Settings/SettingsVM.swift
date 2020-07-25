@@ -20,8 +20,8 @@ final class SettingsVM: PartialUserViewModel {
     weak var delegate: SettingsVMDelegate?
         
     private let sections: [Section] = [
-        Section(items: [.tags, .profile], title: ""),
-        Section(items: [.logOut], title: "")
+        Section(rows: [.tags, .profile], title: ""),
+        Section(rows: [.logOut], title: "")
     ]
 
     private func logout() {
@@ -42,11 +42,11 @@ extension SettingsVM {
     }
     
     func numberOfRows(in section: Int) -> Int {
-        sections[section].items.count
+        sections[section].rows.count
     }
     
-    func itemForRow(at indexPath: IndexPath) -> Item {
-        sections[indexPath.section].items[indexPath.row]
+    func itemForRow(at indexPath: IndexPath) -> Row {
+        sections[indexPath.section].rows[indexPath.row]
     }
     
     func didSelectRow(at indexPath: IndexPath) {
@@ -66,15 +66,15 @@ extension SettingsVM {
     }
 }
 
-// MARK: - Section, Row, RowType
+// MARK: - Section, Row
 
 extension SettingsVM {
     struct Section {
-        let items: [Item]
+        let rows: [Row]
         let title: String
     }
     
-    enum Item {
+    enum Row {
         case profile
         case tags
         case logOut
@@ -84,25 +84,16 @@ extension SettingsVM {
             return UIImage(systemName: "chevron.right", withConfiguration: imgConfig)!
         }()
         
-        var dataModel: DataModel {
+        var dataModel: TitleTableCell.DataModel {
             switch self {
-            case .logOut: return .buttonCell(NSLocalizedString("Log Out", comment: ""))
+            case .logOut:
+                return TitleTableCell.DataModel(title: NSLocalizedString("Log Out", comment: ""), titleColor: .appAccent)
             case .profile:
-                return .accessoryCell(TitleAccessoryImageCollectionCell.DataModel(
-                    title: NSLocalizedString("Profile", comment: ""),
-                    accessoryImage: Self.disclosureIndicatorImage
-                ))
+                return TitleTableCell.DataModel(title: NSLocalizedString("Profile", comment: ""), accessoryImage: Self.disclosureIndicatorImage)
             case .tags:
-                return .accessoryCell(TitleAccessoryImageCollectionCell.DataModel(
-                    title: NSLocalizedString("Tags", comment: ""),
-                    accessoryImage: Self.disclosureIndicatorImage
-                ))
+                return TitleTableCell.DataModel(title: NSLocalizedString("Tags", comment: ""), accessoryImage: Self.disclosureIndicatorImage)
             }
         }
     }
-    
-    enum DataModel {
-        case buttonCell(String)
-        case accessoryCell(TitleAccessoryImageCollectionCell.DataModel)
-    }
+
 }

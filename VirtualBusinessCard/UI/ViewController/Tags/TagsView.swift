@@ -17,7 +17,7 @@ final class TagsView: AppBackgroundView {
         this.tableFooterView = UIView()
         this.separatorStyle = .none
         this.rowHeight = 60
-        this.contentInset = UIEdgeInsets(top: 32, left: 0, bottom: 16, right: 0)
+        this.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         return this
     }()
     

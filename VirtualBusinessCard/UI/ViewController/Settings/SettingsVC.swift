@@ -15,8 +15,8 @@ final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
         extendedLayoutIncludesOpaqueBars = true
         hidesBottomBarWhenPushed = true
         viewModel.delegate = self
-        contentView.collectionView.dataSource = self
-        contentView.collectionView.delegate = self
+        contentView.tableView.dataSource = self
+        contentView.tableView.delegate = self
         setupNavigationItem()
     }
     
@@ -32,45 +32,31 @@ final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
     }
 }
 
-extension SettingsVC: UICollectionViewDelegate, UICollectionViewDataSource {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+// MARK: - UITableViewDataSource, UITableViewDelegate
+
+extension SettingsVC: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
         viewModel.numberOfSections()
     }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel.numberOfRows(in: section)
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let item = viewModel.itemForRow(at: indexPath)
-        switch item.dataModel {
-        case .buttonCell(let title):
-            let cell: TitleCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            cell.setTitle(title, color: .appAccent)
-            return cell
-        case .accessoryCell(let dataModel):
-            let cell: TitleAccessoryImageCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            cell.setDataModel(dataModel)
-            return cell
-        }
 
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.didSelectRow(at: indexPath)
-        collectionView.deselectItem(at: indexPath, animated: true)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let cell: RoundedCollectionCell = collectionView.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
-        switch UserProfileView.SupplementaryElementKind(rawValue: kind)! {
-        case .header: cell.configureRoundedCorners(mode: .top)
-        case .footer: cell.configureRoundedCorners(mode: .bottom)
-        }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let item = viewModel.itemForRow(at: indexPath)
+        let cell: TitleTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
+        cell.dataModel = item.dataModel
         return cell
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.didSelectRow(at: indexPath)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
+
+// MARK: - SettingsVMDelegate
 
 extension SettingsVC: SettingsVMDelegate {
     func presentLogoutAlertController(title: String, actionTitle: String) {
