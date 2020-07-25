@@ -15,7 +15,9 @@ protocol NewTagVMDelegate: class {
     func presentDismissAlert()
     func presentDeleteAlert()
     func presentSaveOfflineAlert()
-    func presentSaveErrorAlert(title: String)
+    func presentErrorAlert(message: String)
+    func presentErrorAlert(title: String?, message: String)
+    func presentLoadingAlert()
     func dismissSelf()
 }
 
@@ -113,8 +115,24 @@ extension EditTagVM {
     }
     
     func didConfirmDelete() {
-        tag.delete(in: tagsCollectionReference)
-        delegate?.dismissSelf()
+        delegate?.presentLoadingAlert()
+        let tagIDs = ReceivedBusinessCard.CodingKeys.tagIDs.rawValue
+        let query = receivedCardsCollectionReference.whereField(tagIDs, arrayContains: tag.id)
+        query.getDocuments(source: .server) { snap, error in
+            if let err = error {
+                print(err.localizedDescription)
+                let msg = NSLocalizedString("Please check your internet connection and try again.", comment: "")
+                self.delegate?.presentErrorAlert(message: msg)
+            } else {
+                snap?.documents.forEach {
+                    let card = EditReceivedBusinessCardMC(documentSnapshot: $0)
+                    card?.tagIDs.removeAll { $0 == self.tag.id }
+                    card?.save(in: self.receivedCardsCollectionReference, fields: [ReceivedBusinessCard.CodingKeys.tagIDs])
+                }
+                self.tag.delete(in: self.tagsCollectionReference)
+                self.delegate?.dismissSelf()
+            }
+        }
     }
     
     func didSelectCancel() {
@@ -127,7 +145,7 @@ extension EditTagVM {
     
     func didSelectDone() {
         guard !tag.title.isEmpty else {
-            delegate?.presentSaveErrorAlert(title: NSLocalizedString("Give the tag a name.", comment: ""))
+            delegate?.presentErrorAlert(message: NSLocalizedString("Give the tag a name.", comment: ""))
             return
         }
         guard isOnline() else {
@@ -157,7 +175,7 @@ extension EditTagVM {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             if let _ = encounteredError {
                 let errorTitle = AppError.localizedUnknownErrorDescription
-                self.delegate?.presentSaveErrorAlert(title: errorTitle)
+                self.delegate?.presentErrorAlert(message: errorTitle)
             } else {
                 self.delegate?.dismissSelf()
             }
@@ -170,5 +188,9 @@ extension EditTagVM {
 extension EditTagVM {
     private var tagsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(BusinessCardTag.collectionName)
+    }
+
+    private var receivedCardsCollectionReference: CollectionReference {
+        userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
 }

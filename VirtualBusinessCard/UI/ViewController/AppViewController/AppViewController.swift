@@ -28,10 +28,15 @@ class AppViewController<V: AppView, M: AppViewModel>: UIViewController {
         view = V()
     }
     
-    func presentErrorAlert(message: String = AppError.localizedUnknownErrorDescription, okActionHandler: ((UIAlertAction) -> Void)? = nil) {
-        let title = NSLocalizedString("Something went wrong", comment: "")
+    func presentErrorAlert(title: String? = NSLocalizedString("Something Went Wrong", comment: ""), message: String = AppError.localizedUnknownErrorDescription, okActionHandler: ((UIAlertAction) -> Void)? = nil) {
         let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .alert)
         alert.addOkAction(handler: okActionHandler)
         present(alert, animated: true)
+    }
+
+    func presentLoadingAlert() {
+        let vc = SharingDataIndicatorVC(viewModel: AppViewModel(userID: viewModel.userID))
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true)
     }
 }

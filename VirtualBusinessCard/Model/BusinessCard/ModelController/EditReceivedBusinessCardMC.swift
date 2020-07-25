@@ -103,6 +103,31 @@ extension EditReceivedBusinessCardMC {
             }
         }
     }
+
+    func save(in collectionReference: CollectionReference, fields: [ReceivedBusinessCard.CodingKeys], completion: ((Result<Void, Error>) -> Void)? = nil) {
+        let docRef: DocumentReference
+        if businessCard.id == Self.unsavedObjectID {
+            docRef = collectionReference.document()
+            businessCard.id = docRef.documentID
+        } else {
+            docRef = collectionReference.document(businessCard.id)
+        }
+
+        let businessCardDoc = businessCard.asDocument()
+
+        let updates = fields.reduce(into: [String: Any]()) { updates, key in
+            updates[key.rawValue] = businessCardDoc[key.rawValue]
+        }
+
+        docRef.updateData(updates) { error in
+            if let err = error {
+                print(err.localizedDescription)
+                completion?(.failure(err))
+            } else {
+                completion?(.success(()))
+            }
+        }
+    }
 }
 
 extension EditReceivedBusinessCardMC: Equatable {

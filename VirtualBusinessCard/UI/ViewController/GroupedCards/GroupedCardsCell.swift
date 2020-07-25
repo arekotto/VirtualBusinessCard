@@ -31,13 +31,30 @@ extension GroupedCardsView {
                 didUpdateSelected()
             }
         }
-        
+
+        private var tagColor: UIColor?
+
         private let imageViewStack = ImageViewStack()
         
         private let titleLabel: UILabel = {
             let this = UILabel()
             this.font = UIFont.appDefault(size: 17, weight: .semibold, design: .rounded)
             this.numberOfLines = 2
+            this.lineBreakMode = .byWordWrapping
+            return this
+        }()
+
+        private let tagImageView: UIImageView = {
+            let imgConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
+            let this = UIImageView(image: UIImage(systemName: "tag.fill", withConfiguration: imgConfig))
+            this.isHidden = true
+            this.contentMode = .scaleAspectFit
+            return this
+        }()
+
+        private lazy var titleStackView: UIStackView = {
+            let this = UIStackView(arrangedSubviews: [titleLabel, tagImageView, UIView()])
+            this.spacing = 4
             return this
         }()
         
@@ -50,12 +67,11 @@ extension GroupedCardsView {
         private let countLabel: UILabel = {
             let this = UILabel()
             this.font = UIFont.appDefault(size: 13, weight: .medium, design: .rounded)
-            //            this.numberOfLines = 2
             return this
         }()
         
         private lazy var labelStackView: UIStackView = {
-            let this = UIStackView(arrangedSubviews: [titleLabel, subtitleLabel, countLabel])
+            let this = UIStackView(arrangedSubviews: [titleStackView, subtitleLabel, countLabel])
             this.axis = .vertical
             this.spacing = 4
             return this
@@ -68,6 +84,9 @@ extension GroupedCardsView {
         
         override func configureConstraints() {
             super.configureConstraints()
+
+            tagImageView.constrainWidth(constant: 24)
+
             imageViewStack.constrainCenterYToSuperview()
             imageViewStack.constrainLeadingToSuperview(inset: 16)
             imageViewStack.constrainSizeToBusinessCardDimensions(width: 100)
@@ -84,6 +103,7 @@ extension GroupedCardsView {
             subtitleLabel.textColor = .secondaryLabel
             countLabel.textColor = .appAccent
             contentView.backgroundColor = .roundedTableViewCellBackground
+            tagImageView.tintColor = tagColor
         }
         
         func setDataModel(_ dm: DataModel) {
@@ -105,7 +125,15 @@ extension GroupedCardsView {
             } else {
                 imageViewStack.backImageView.image = nil
             }
-            
+
+            tagColor = dm.tagColor
+            if let tagColor = dm.tagColor {
+                tagImageView.tintColor = tagColor
+                tagImageView.isHidden = false
+            } else {
+                tagImageView.isHidden = true
+            }
+
             titleLabel.text = dm.title
             subtitleLabel.text = dm.subtitle
             countLabel.text = dm.cardCountText
@@ -129,6 +157,8 @@ extension GroupedCardsView {
             let title: String
             let subtitle: String
             let cardCountText: String
+
+            let tagColor: UIColor?
         }
     }
 }

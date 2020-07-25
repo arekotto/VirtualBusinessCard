@@ -115,12 +115,6 @@ extension DirectSharingVC: DirectSharingVMDelegate {
         }
     }
     
-    func presentLoadingAlert() {
-        let vc = SharingDataIndicatorVC(viewModel: AppViewModel(userID: viewModel.userID))
-        vc.modalPresentationStyle = .overFullScreen
-        present(vc, animated: true)
-    }
-    
     func presentErrorGeneratingQRCodeAlert() {
         presentErrorAlert(message: NSLocalizedString("We couldn't generate a QR code for your card. Please try again.", comment: ""))
     }

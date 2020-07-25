@@ -21,8 +21,9 @@ final class EditTagView: AppBackgroundView {
     
     let deleteButton: UIButton = {
         let this = UIButton()
-        this.setTitle(NSLocalizedString("Delete Tag", comment: ""), for: .normal)
-        this.contentEdgeInsets = UIEdgeInsets(top: 16, left: 24, bottom: 16, right: 24)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
+        this.setImage(UIImage(systemName: "trash.fill", withConfiguration: imgConfig), for: .normal)
+        this.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         this.layer.cornerRadius = 12
         this.clipsToBounds = true
         this.isHidden = true
@@ -112,13 +113,13 @@ final class EditTagView: AppBackgroundView {
         deleteButton.constrainCenterXToSuperview()
         deleteButton.constrainTop(to: editableBackgroundView.bottomAnchor, constant: 16)
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+
+    override func configureColors() {
+        super.configureColors()
         nameLabel.textColor = .secondaryLabel
         colorLabel.textColor = .secondaryLabel
         editableBackgroundView.backgroundColor = .roundedTableViewCellBackground
-        deleteButton.setTitleColor(.appAccent, for: .normal)
+        deleteButton.tintColor = .appAccent
         deleteButton.backgroundColor = .roundedTableViewCellBackground
     }
     
@@ -170,11 +171,8 @@ extension EditTagView {
             }
         }
         
-        private let colorView: UIView = {
-            let this = UIView()
-            return this
-        }()
-        
+        private let colorView = UIView()
+
         override func configureSubviews() {
             super.configureSubviews()
             contentView.addSubview(colorView)

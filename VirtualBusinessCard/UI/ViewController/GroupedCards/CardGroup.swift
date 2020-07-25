@@ -99,8 +99,7 @@ extension GroupedCardsVM.CardGroup {
             }
         }
         
-        var groupedCardsDict = [BusinessCardTagID: [BusinessCardID]]()
-        groupedCardsDict = taggedCards.reduce(into: groupedCardsDict) { dict, card in
+        let groupedCardsDict = taggedCards.reduce(into: [BusinessCardTagID: [BusinessCardID]]()) { dict, card in
             card.tagIDs.forEach { tagID in
                 let existingGroupedCardIDs = dict[tagID] ?? []
                 dict[tagID] = existingGroupedCardIDs + [card.id]
@@ -109,7 +108,6 @@ extension GroupedCardsVM.CardGroup {
         let taggedCardGroups = groupedCardsDict.map { tagID, groupedIDs in
             GroupedCardsVM.CardGroup(groupingProperty: .tag, groupingValue: tagID, cardIDs: groupedIDs)
         }
-
         
         if notTaggedCards.isEmpty {
             return taggedCardGroups
@@ -133,8 +131,7 @@ extension GroupedCardsVM.CardGroup {
     }
     
     private static func groupByReceivingDate(cards: [ReceivedBusinessCardMC], dateFormatter df: ISO8601DateFormatter, range: Set<Calendar.Component>) -> [GroupedCardsVM.CardGroup] {
-        var groupedCardsDict = [Date: [BusinessCardID]]()
-        groupedCardsDict = cards.reduce(into: groupedCardsDict) { dict, card in
+        let groupedCardsDict = cards.reduce(into: [Date: [BusinessCardID]]()) { dict, card in
             let components = Calendar.current.dateComponents(range, from: card.receivingDate)
             let date = Calendar.current.date(from: components)!
             let existingGroupedCardIDs = dict[date] ?? []

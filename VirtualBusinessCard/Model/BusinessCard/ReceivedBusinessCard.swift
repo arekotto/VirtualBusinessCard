@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ReceivedBusinessCard: Codable {
+struct ReceivedBusinessCard {
     var id: BusinessCardID
     var originalID: BusinessCardID
     var ownerID: UserID
@@ -36,4 +36,18 @@ extension ReceivedBusinessCard: Equatable {
 
 extension ReceivedBusinessCard: Firestoreable {
 
+}
+
+// MARK: - Coding Keys
+
+extension ReceivedBusinessCard: Codable {
+    enum CodingKeys: String, CodingKey {
+        case id
+        case originalID
+        case ownerID
+        case receivingDate
+        case cardData
+        case tagIDs
+        case notes
+    }
 }

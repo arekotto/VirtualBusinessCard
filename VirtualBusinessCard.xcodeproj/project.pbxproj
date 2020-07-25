@@ -425,8 +425,8 @@
 			isa = PBXGroup;
 			children = (
 				45174CE524B9DEC3009BFE58 /* EditTagVC.swift */,
-				45174CE724B9E32F009BFE58 /* EditTagView.swift */,
 				45174CE924B9E342009BFE58 /* EditTagVM.swift */,
+				45174CE724B9E32F009BFE58 /* EditTagView.swift */,
 			);
 			path = EditTag;
 			sourceTree = "<group>";

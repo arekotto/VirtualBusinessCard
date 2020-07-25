@@ -18,7 +18,7 @@ final class EditTagVC: AppViewController<EditTagView, EditTagVM> {
         setupNavigationItem()
         setupCollectionView()
         setupContentView()
-        applyNewTagColor(viewModel.selectedColor)
+        contentView.setTagColor(viewModel.selectedColor)
         viewModel.delegate = self
     }
     
@@ -70,7 +70,6 @@ private extension EditTagVC {
 // MARK: - NewTagVMDelegate
 
 extension EditTagVC: NewTagVMDelegate {
-    
     func presentDeleteAlert() {
         let title = NSLocalizedString("Delete Tag", comment: "")
 
@@ -93,11 +92,25 @@ extension EditTagVC: NewTagVMDelegate {
         alert.addAction(UIAlertAction(title: NSLocalizedString("Keep Editing", comment: ""), style: .cancel))
         present(alert, animated: true)
     }
-    
-    func presentSaveErrorAlert(title: String) {
-        let alert = UIAlertController.accentTinted(title: title, message: nil, preferredStyle: .alert)
-        alert.addOkAction()
-        present(alert, animated: true)
+
+    func presentErrorAlert(message: String) {
+        if let presentedVC = presentedViewController {
+            presentedVC.dismiss(animated: true) {
+                super.presentErrorAlert(message: message)
+            }
+        } else {
+            super.presentErrorAlert(message: message)
+        }
+    }
+
+    func presentErrorAlert(title: String?, message: String) {
+        if let presentedVC = presentedViewController {
+            presentedVC.dismiss(animated: true) {
+                super.presentErrorAlert(title: title, message: message)
+            }
+        } else {
+            super.presentErrorAlert(title: title, message: message)
+        }
     }
     
     func presentDismissAlert() {
@@ -111,7 +124,13 @@ extension EditTagVC: NewTagVMDelegate {
     }
     
     func dismissSelf() {
-        dismiss(animated: true)
+        if let presentedVC = presentedViewController {
+            presentedVC.dismiss(animated: true) {
+                self.dismiss(animated: true)
+            }
+        } else {
+            dismiss(animated: true)
+        }
     }
     
     func applyNewTagColor(_ color: UIColor) {

@@ -11,6 +11,7 @@ import Firebase
 
 protocol GroupedCardsVMDelegate: class {
     func refreshData(preUpdateItemCount: Int, postUpdateItemCount: Int, animated: Bool)
+    func refreshData()
     func presentReceivedCards(with viewModel: ReceivedCardsVM)
 }
 
@@ -37,7 +38,6 @@ final class GroupedCardsVM: AppViewModel {
     
     private var cards = [ReceivedBusinessCardMC]()
     private var tags = [BusinessCardTagID: BusinessCardTagMC]()
-    private var mostRecentFetch: Date?
     
     private var groups = [CardGroup]()
     private var displayedGroupIndexes = [Int]()
@@ -127,6 +127,13 @@ extension GroupedCardsVM {
         }
         return NSLocalizedString("Not Tagged", comment: "")
     }
+
+    private func itemTagColor(groupingValue: String?) -> UIColor? {
+        if let tagID = groupingValue {
+            return tags[tagID]?.displayColor
+        }
+        return nil
+    }
     
     private func itemTitleForCompany(groupingValue: String?) -> String {
         if let company = groupingValue {
@@ -180,7 +187,8 @@ extension GroupedCardsVM {
             backImageURL: cardsInGroup[optional: 2]?.cardData.frontImage.url,
             title: itemTitle(groupingValue: group.groupingValue),
             subtitle: Self.itemSubtitle(cards: cardsInGroup),
-            cardCountText: "\(cardsInGroup.count)"
+            cardCountText: "\(cardsInGroup.count)",
+            tagColor: itemTagColor(groupingValue: group.groupingValue)
         )
     }
     
@@ -248,9 +256,6 @@ extension GroupedCardsVM {
             return
         }
         DispatchQueue.global().async {
-            let preUpdateItemCount = self.numberOfItems()
-            let isFirstFetch = self.mostRecentFetch == nil
-        
             self.cards = querySnap.documents.compactMap {
                 guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
                     print(#file, "Error mapping business card:", $0.documentID)
@@ -258,11 +263,9 @@ extension GroupedCardsVM {
                 }
                 return ReceivedBusinessCardMC(card: bc)
             }
-            
             self.updateGrouping()
-            self.mostRecentFetch = Date()
             DispatchQueue.main.async {
-                self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: !isFirstFetch)
+                self.delegate?.refreshData()
             }
         }
     }
@@ -272,21 +275,25 @@ extension GroupedCardsVM {
             print(#file, error?.localizedDescription ?? "")
             return
         }
-        
-        let preUpdateItemCount = numberOfItems()
-        tags.removeAll()
-        querySnap.documents.forEach {
-            guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
-                print(#file, "Error mapping business card:", $0.documentID)
-                return
+
+        DispatchQueue.global().async {
+            var newTags = [BusinessCardTagID: BusinessCardTagMC]()
+            querySnap.documents.forEach {
+                guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
+                    print(#file, "Error mapping business card:", $0.documentID)
+                    return
+                }
+                newTags[tag.id] = BusinessCardTagMC(tag: tag)
             }
-            tags[tag.id] = BusinessCardTagMC(tag: tag)
-        }
-        if selectedGroupingProperty == .tag {
-            updateSorting()            
-        }
-        if !cards.isEmpty {
-            delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: numberOfItems(), animated: false)
+            self.tags = newTags
+            if self.selectedGroupingProperty == .tag {
+                self.updateGrouping()
+            }
+            if !self.cards.isEmpty {
+                DispatchQueue.main.async {
+                    self.delegate?.refreshData()
+                }
+            }
         }
     }
 }
