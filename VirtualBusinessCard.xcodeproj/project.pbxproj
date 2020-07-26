@@ -152,6 +152,8 @@
 		45D445A924C05D7800630C72 /* AcceptCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D445A824C05D7800630C72 /* AcceptCardView.swift */; };
 		45D445AB24C05DAF00630C72 /* AcceptCardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D445AA24C05DAF00630C72 /* AcceptCardVM.swift */; };
 		45D6BF7824169A41008B2498 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6BF7724169A41008B2498 /* Color.swift */; };
+		45D76DDF24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DDE24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift */; };
+		45D76DE124CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DE024CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift */; };
 		45E21C2724CC8FA900013E9E /* PartialUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */; };
 		45E21C2A24CC95CC00013E9E /* EditCardNotesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */; };
 		45E21C2C24CC95F400013E9E /* EditCardNotesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */; };
@@ -341,6 +343,8 @@
 		45D445A824C05D7800630C72 /* AcceptCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptCardView.swift; sourceTree = "<group>"; };
 		45D445AA24C05DAF00630C72 /* AcceptCardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptCardVM.swift; sourceTree = "<group>"; };
 		45D6BF7724169A41008B2498 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		45D76DDE24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactTagsCollectionView.swift; sourceTree = "<group>"; };
+		45D76DE024CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDirectionalEdgeInsets.swift; sourceTree = "<group>"; };
 		45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialUserViewModel.swift; sourceTree = "<group>"; };
 		45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVC.swift; sourceTree = "<group>"; };
 		45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVM.swift; sourceTree = "<group>"; };
@@ -701,6 +705,7 @@
 				454625E924A0DA78000D1D25 /* UITableView.swift */,
 				454CF7DD24A9F27E00074E0D /* AuthErrorCode.swift */,
 				454CF7DF24A9F52D00074E0D /* UIAlertController.swift */,
+				45D76DE024CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -836,6 +841,7 @@
 			isa = PBXGroup;
 			children = (
 				45B0F4C924AA1510007277BB /* CardFrontBackView.swift */,
+				45D76DDE24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1314,6 +1320,7 @@
 				459DC58723FEA496002F03DD /* Firestoreable.swift in Sources */,
 				452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */,
 				4510341E2492697E009C4B26 /* CGSize.swift in Sources */,
+				45D76DE124CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift in Sources */,
 				45F1ED9E24BC483A00AE1322 /* DirectSharingVC.swift in Sources */,
 				45CF2F5924CC5A4C003F9F91 /* EditCardTagsView.swift in Sources */,
 				45F1EDA224BC489700AE1322 /* DirectSharingVM.swift in Sources */,
@@ -1409,6 +1416,7 @@
 				45B25F272493B7AF006DD0F7 /* SampleBCUploadTask.swift in Sources */,
 				45C25D62249F4CB100945F29 /* GroupedCardsView.swift in Sources */,
 				45C1601324852EC500806718 /* AppControl.swift in Sources */,
+				45D76DDF24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift in Sources */,
 				454625E824A0D95A000D1D25 /* Collection.swift in Sources */,
 				4511A135246D760700AE3306 /* CreateAccountEmailPasswordView.swift in Sources */,
 				45944B0E24AF70530005CAF1 /* CardDetailsSectionFactory.swift in Sources */,

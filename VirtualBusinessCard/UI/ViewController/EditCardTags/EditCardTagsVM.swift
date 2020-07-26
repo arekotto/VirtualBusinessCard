@@ -18,7 +18,7 @@ protocol EditCardTagsVMDelegate: class {
 }
 
 protocol EditCardTagsVMSelectionDelegate: class {
-    func didChangeSelectedTagIDs(to tagIDs: [BusinessCardTagID])
+    func didChangeSelectedTags(to tags: [BusinessCardTagMC])
 }
 
 final class EditCardTagsVM: PartialUserViewModel {
@@ -88,7 +88,8 @@ extension EditCardTagsVM {
 
     func didApproveSelection() {
         if hasMadeChanges {
-            selectionDelegate?.didChangeSelectedTagIDs(to: selectedTagIDs)
+            let selectedTags = selectedTagIDs.compactMap { tagID in tags.first(where: { tag in tag.id == tagID }) }
+            selectionDelegate?.didChangeSelectedTags(to: selectedTags.sorted(by: BusinessCardTagMC.sortByPriority))
         }
         delegate?.dismiss()
     }

@@ -12,7 +12,7 @@ final class AcceptCardView: AppBackgroundView {
 
     static let defaultCardViewSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.8)
     static let startingSlideToAcceptStackViewTopConstraint = defaultCardViewSize.height * 1.3
-    static let cardViewExpandedSize = defaultCardViewSize.height * 2 + 32
+    static let cardViewExpandedSize = defaultCardViewSize.height * 2 + 24
     static let cardViewExpandedTopConstraint: CGFloat = 80
 
     var startingCardTopConstraintConstant: CGFloat {
@@ -87,24 +87,71 @@ final class AcceptCardView: AppBackgroundView {
         return this
     }()
 
-    private let tagsLabel: UILabel = {
+    private let tagsTitleLabel: UILabel = {
         let this = UILabel()
         this.text = NSLocalizedString("Tags", comment: "")
-        this.font = .appDefault(size: 18, weight: .medium, design: .default)
+        this.font = .appDefault(size: 22, weight: .semibold)
         return this
     }()
 
-    private let scrollView: UIScrollView = {
+    private let tagsCollectionViewContainer = UIView()
+    let tagsCollectionView: CompactTagsCollectionView = {
+        let this = CompactTagsCollectionView()
+        this.targetWidth = defaultCardViewSize.width
+        return this
+    }()
+
+    private let notesTitleLabel: UILabel = {
+        let this = UILabel()
+        this.text = NSLocalizedString("Notes", comment: "")
+        this.font = .appDefault(size: 22, weight: .semibold)
+        return this
+    }()
+
+    let notesLabel: UILabel = {
+        let this = UILabel()
+        this.text = NSLocalizedString("", comment: "")
+        this.font = .appDefault(size: 15, weight: .regular)
+        this.textColor = .secondaryText
+        this.numberOfLines = 0
+        return this
+    }()
+
+    private(set) lazy var tagStackView: UIStackView = {
+        let this = UIStackView(arrangedSubviews: [tagsTitleLabel, tagsCollectionViewContainer])
+        this.axis = .vertical
+        this.spacing = 4
+        this.isHidden = true
+        return this
+    }()
+
+    private(set) lazy var notesStackView: UIStackView = {
+        let this = UIStackView(arrangedSubviews: [notesTitleLabel, notesLabel])
+        this.axis = .vertical
+        this.spacing = 4
+        this.isHidden = true
+        return this
+    }()
+
+    private lazy var mainStackView: UIStackView = {
+        let this = UIStackView(arrangedSubviews: [tagStackView, notesStackView])
+        this.axis = .vertical
+        this.spacing = 20
+        return this
+    }()
+
+    let scrollView: UIScrollView = {
         let this = UIScrollView()
-        this.clipsToBounds = true
+        this.clipsToBounds = false
         return this
     }()
 
     override func configureSubviews() {
         super.configureSubviews()
         [doneButtonBackground, doneButton].forEach { doneButtonView.addSubview($0) }
-        [slideToAcceptStackView, scrollView, rejectButton, cardSceneView, doneButtonView].forEach { addSubview($0) }
-        cardSceneView.addSubview(cardSavedLabel)
+        [slideToAcceptStackView, cardSavedLabel, scrollView, rejectButton, cardSceneView, doneButtonView].forEach { addSubview($0) }
+        scrollView.addSubview(mainStackView)
+        tagsCollectionViewContainer.addSubview(tagsCollectionView)
     }
 
     override func configureConstraints() {
@@ -116,10 +163,24 @@ final class AcceptCardView: AppBackgroundView {
         cardSceneViewTopConstraint = cardSceneView.constrainTopToSuperviewSafeArea()
         cardSceneView.constrainCenterXToSuperview()
 
-        scrollView.constrainToSuperview()
+        scrollView.constrainToSuperviewSafeArea()
 
         cardSavedLabel.constrainCenterXToSuperview()
-        cardSavedLabel.constrainTop(to: cardSceneView.bottomAnchor, constant: 30)
+        cardSavedLabel.constrainTopGreaterOrEqual(to: safeAreaLayoutGuide.topAnchor, constant: 8)
+        cardSavedLabel.constrainCenterY(toView: doneButton, priority: .defaultHigh)
+
+        mainStackView.constrainCenterXToSuperview()
+        mainStackView.constrainWidth(constant: Self.defaultCardViewSize.width)
+        mainStackView.constrainBottomLessOrEqual(to: scrollView.bottomAnchor, constant: -24)
+
+        tagsTitleLabel.constrainHeight(constant: 26)
+        tagsCollectionViewContainer.constrainHeight(constant: 40)
+
+        tagsCollectionView.constrainVerticallyToSuperview()
+        tagsCollectionView.constrainCenterXToSuperview()
+        tagsCollectionView.constrainWidthEqualTo(self)
+
+        notesTitleLabel.constrainHeight(constant: 26)
 
         slideToAcceptStackView.constrainCenterXToSuperview()
         slideToAcceptStackViewTopConstraint = slideToAcceptStackView.constrainTopToSuperview(inset: Self.startingSlideToAcceptStackViewTopConstraint)
@@ -159,8 +220,9 @@ final class AcceptCardView: AppBackgroundView {
         scrollView.alwaysBounceVertical = true
 
         cardSceneViewTopConstraint = cardSceneView.constrainTopToSuperview(inset: Self.cardViewExpandedTopConstraint)
-        cardSceneView.constrainBottom(to: scrollView.bottomAnchor)
         cardSceneView.constrainCenterXToSuperview()
         cardSceneView.setDynamicLightingEnabled(true)
+
+        mainStackView.constrainTop(to: cardSceneView.bottomAnchor, constant: 38)
     }
 }

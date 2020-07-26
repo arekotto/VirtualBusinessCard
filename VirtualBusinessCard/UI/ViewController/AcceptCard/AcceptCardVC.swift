@@ -57,6 +57,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:))))
         contentView.rejectButton.addTarget(self, action: #selector(didTapRejectButton), for: .touchUpInside)
         contentView.doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
+        contentView.tagsCollectionView.tagDataSource = self
     }
 
     private func setupBars() {
@@ -210,6 +211,7 @@ private extension AcceptCardVC {
                 self.contentView.removeGestureRecognizer($0)
             }
             self.contentView.prepareForExpandedCardView()
+            self.contentView.scrollView.delegate = self
             self.navigationController?.setToolbarHidden(false, animated: true)
         }
         return animator
@@ -310,9 +312,36 @@ private extension AcceptCardVC {
     }
 }
 
+// MARK: - CompactTagsCollectionViewDataSource
+
+extension AcceptCardVC: CompactTagsCollectionViewDataSource {
+    var tagColors: [UIColor] {
+        viewModel.selectedTagColors
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension AcceptCardVC: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let newAlpha = 1 - scrollView.contentOffset.y / AcceptCardView.cardViewExpandedTopConstraint
+        contentView.cardSavedLabel.alpha = min(max(newAlpha, 0), 1)
+    }
+}
+
 // MARK: - AcceptCardVMDelegate
 
 extension AcceptCardVC: AcceptCardVMDelegate {
+    func refreshNotes() {
+        contentView.notesStackView.isHidden = viewModel.notes.isEmpty
+        contentView.notesLabel.text = viewModel.notes
+    }
+
+    func refreshTags() {
+        contentView.tagStackView.isHidden = viewModel.selectedTagColors.isEmpty
+        contentView.tagsCollectionView.reloadData()
+    }
+
     func presentEditCardNotesVC(viewModel: EditCardNotesVM) {
         let vc = EditCardNotesVC(viewModel: viewModel)
         let navVC = AppNavigationController(rootViewController: vc)
@@ -363,3 +392,4 @@ extension AcceptCardVC: AcceptCardVMDelegate {
         present(alert, animated: true)
     }
 }
+

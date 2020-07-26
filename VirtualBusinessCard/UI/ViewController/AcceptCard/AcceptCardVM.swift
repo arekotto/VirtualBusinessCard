@@ -18,6 +18,8 @@ protocol AcceptCardVMDelegate: class {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentEditCardTagsVC(viewModel: EditCardTagsVM)
     func presentEditCardNotesVC(viewModel: EditCardNotesVM)
+    func refreshTags()
+    func refreshNotes()
 }
 
 final class AcceptCardVM: MotionDataViewModel {
@@ -27,6 +29,8 @@ final class AcceptCardVM: MotionDataViewModel {
     let card: EditReceivedBusinessCardMC
     private var acceptedCard = SingleTimeToggleBool(ofInitialValue: false)
     private(set) var hasSavedCardToCollection = false
+
+    private lazy var selectedTags: [BusinessCardTagMC]? = nil
 
     init(userID: UserID, sharedCard: EditReceivedBusinessCardMC) {
         card = sharedCard
@@ -51,6 +55,14 @@ extension AcceptCardVM {
 
     var addTagImage: UIImage {
         UIImage(systemName: "tag", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))!
+    }
+
+    var selectedTagColors: [UIColor] {
+        selectedTags?.map(\.displayColor) ?? []
+    }
+
+    var notes: String {
+        card.notes
     }
 
     func willAppear() {
@@ -126,8 +138,9 @@ extension AcceptCardVM {
 // MARK: - EditCardTagsVMSelectionDelegate
 
 extension AcceptCardVM: EditCardTagsVMSelectionDelegate {
-    func didChangeSelectedTagIDs(to tagIDs: [BusinessCardTagID]) {
-        card.tagIDs = tagIDs
+    func didChangeSelectedTags(to tags: [BusinessCardTagMC]) {
+        selectedTags = tags
+        card.tagIDs = tags.map(\.id)
         card.save(in: receivedCardsCollectionReference, fields: [.tagIDs]) { [weak self] result in
             switch result {
             case .success(): return
@@ -137,6 +150,7 @@ extension AcceptCardVM: EditCardTagsVMSelectionDelegate {
                 self?.delegate?.presentSaveErrorAlert(title: errorTitle)
             }
         }
+        delegate?.refreshTags()
     }
 }
 
@@ -154,5 +168,6 @@ extension AcceptCardVM: EditCardNotesVMEditingDelegate {
                 self?.delegate?.presentSaveErrorAlert(title: errorTitle)
             }
         }
+        delegate?.refreshNotes()
     }
 }
