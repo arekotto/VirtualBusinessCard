@@ -41,7 +41,6 @@ extension GroupedCardsView {
             this.font = UIFont.appDefault(size: 17, weight: .semibold, design: .rounded)
             this.numberOfLines = 2
             this.lineBreakMode = .byWordWrapping
-            this.setContentCompressionResistancePriority(.required, for: .horizontal)
             return this
         }()
 
@@ -54,7 +53,7 @@ extension GroupedCardsView {
         }()
 
         private lazy var titleStackView: UIStackView = {
-            let this = UIStackView(arrangedSubviews: [titleLabel, tagImageView, UIView()])
+            let this = UIStackView(arrangedSubviews: [tagImageView, titleLabel])
             this.spacing = 4
             return this
         }()
