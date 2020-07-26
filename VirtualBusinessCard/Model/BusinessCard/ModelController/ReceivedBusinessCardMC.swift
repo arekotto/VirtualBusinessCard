@@ -22,6 +22,8 @@ class ReceivedBusinessCardMC {
     var receivingDate: Date { businessCard.receivingDate }
     
     var cardData: BusinessCardData { businessCard.cardData }
+
+    var notes: String { businessCard.notes }
     
     var tagIDs: [BusinessCardTagID] { businessCard.tagIDs }
     
@@ -61,6 +63,10 @@ class ReceivedBusinessCardMC {
         address.postalCode = addressData.postCode ?? ""
 
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+    }
+
+    func editReceivedBusinessCardMC() -> EditReceivedBusinessCardMC {
+        EditReceivedBusinessCardMC(card: businessCard)
     }
     
     init(card: ReceivedBusinessCard) {

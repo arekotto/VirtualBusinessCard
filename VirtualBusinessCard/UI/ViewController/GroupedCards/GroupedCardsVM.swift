@@ -216,14 +216,14 @@ extension GroupedCardsVM {
             delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: numberOfItems(), animated: true)
         } else {
             DispatchQueue.global().async {
-                self.displayedGroupIndexes = self.groups
+                let displayedGroupIndexes = self.groups
                     .enumerated()
                     .filter { _, group in self.shouldDisplayGroup(group, forQuery: query) }
                     .map { idx, _ in idx }
                 
                 DispatchQueue.main.async {
-                    self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: true
-                    )
+                    self.displayedGroupIndexes = displayedGroupIndexes
+                    self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: true)
                 }
             }
         }

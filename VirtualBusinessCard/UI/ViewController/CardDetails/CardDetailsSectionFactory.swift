@@ -15,12 +15,15 @@ struct CardDetailsSectionFactory {
     typealias Action = CardDetailsVM.Action
 
     let card: ReceivedBusinessCardMC
+    let tags: [BusinessCardTagMC]
+
     var imageProvider: (_ action: Action) -> UIImage?
     
     func makeRows() -> [Section] {
         let sections: [Section?] = [
             makeCardImagesSection(),
             makePersonalDataSection(),
+            makeEditableDataSection(),
             makeContactSection(),
             makeAddressSection()
         ]
@@ -37,7 +40,31 @@ struct CardDetailsSectionFactory {
             specular: CGFloat(cardData.texture.specular)
         )
         
-        return Section(items: [Item(dataModel: .cardImagesCell(imagesDataModel), actions: [.copy])])
+        return Section(items: [Item(dataModel: .cardImagesCell(imagesDataModel), actions: [])])
+    }
+
+    private func makeEditableDataSection() -> Section? {
+
+        let hasTags = !tags.isEmpty
+        let tagsItem = TitleValueImageCollectionViewCell.DataModel(
+            title: NSLocalizedString("Tags", comment: ""),
+            value: hasTags ? tags.map(\.title).joined(separator: ",\n") : NSLocalizedString("No tags.", comment: ""),
+            primaryImage: imageProvider(.editTags)
+        )
+
+        let hasNotes = !card.notes.isEmpty
+        let notesItem = TitleValueImageCollectionViewCell.DataModel(
+            title: NSLocalizedString("Notes", comment: ""),
+            value: hasNotes ? card.notes : NSLocalizedString("No notes.", comment: ""),
+            primaryImage: imageProvider(.editNotes)
+        )
+
+        let editableData: [(dataModel: TitleValueImageCollectionViewCell.DataModel, actions: [Action])] = [
+            (tagsItem, [.editTags]),
+            (notesItem, hasNotes ? [.copy, .editNotes] : [.editNotes]),
+        ]
+
+        return Section(items: editableData.map { Item(dataModel: .dataCellImage($0.dataModel), actions: $0.actions) })
     }
     
     private func makePersonalDataSection() -> Section? {

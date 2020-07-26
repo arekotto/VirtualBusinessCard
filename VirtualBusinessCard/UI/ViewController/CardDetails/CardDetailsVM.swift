@@ -15,6 +15,9 @@ protocol CardDetailsVMDelegate: class {
     func presentSendEmailViewController(recipient: String)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func dismissSelf()
+    func presentEditCardTagsVC(viewModel: EditCardTagsVM)
+    func presentEditCardNotesVC(viewModel: EditCardNotesVM)
+    func presentErrorAlert(message: String)
 }
 
 final class CardDetailsVM: PartialUserViewModel {
@@ -24,7 +27,9 @@ final class CardDetailsVM: PartialUserViewModel {
     }
     
     private let cardID: BusinessCardID
-    private var card: ReceivedBusinessCardMC?
+    private var card: EditReceivedBusinessCardMC?
+
+    private var tags = [BusinessCardTagMC]()
         
     private let prefetchedData: PrefetchedData
     
@@ -83,6 +88,8 @@ extension CardDetailsVM {
     func didSelect(action: Action, at indexPath: IndexPath) {
         let selectedItem = item(at: indexPath)
         guard selectedItem.actions.contains(action) else { return }
+        guard let card = self.card else { return }
+
         var actionValue = ""
         
         switch selectedItem.dataModel {
@@ -106,12 +113,21 @@ extension CardDetailsVM {
             guard let url = URL(string: actionValue) else { return }
             UIApplication.shared.open(url)
         case .navigate:
-            guard let address = card?.addressCondensed, !address.isEmpty else { return }
+            let address = card.addressCondensed
+            guard !address.isEmpty else { return }
             guard let addressEncoded = address.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
             guard let url = URL(string: "http://maps.apple.com/?address=" + addressEncoded) else { return }
             UIApplication.shared.open(url)
         case .copy:
             UIPasteboard.general.string = actionValue
+        case .editNotes:
+            let vm = EditCardNotesVM(notes: card.notes)
+            vm.editingDelegate = self
+            delegate?.presentEditCardNotesVC(viewModel: vm)
+        case .editTags:
+            let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
+            vm.selectionDelegate = self
+            delegate?.presentEditCardTagsVC(viewModel: vm)
         }
     }
     
@@ -133,6 +149,20 @@ extension CardDetailsVM {
         case .sendEmail: return UIImage(systemName: "envelope.fill", withConfiguration: Self.imageConfig)
         case .visitWebsite: return UIImage(systemName: "safari.fill", withConfiguration: Self.imageConfig)
         case .navigate: return UIImage(systemName: "map.fill", withConfiguration: Self.imageConfig)
+        case .editNotes: return UIImage(systemName: "pencil", withConfiguration: Self.imageConfig)
+        case .editTags: return UIImage(systemName: "tag.fill", withConfiguration: Self.imageConfig)
+        }
+    }
+
+    func makeSections() {
+        guard let card = self.card else { return }
+        DispatchQueue.global().async {
+            let selectedTags = self.tags.filter { card.tagIDs.contains($0.id) }
+            let newSections = CardDetailsSectionFactory(card: card.receivedBusinessCardMC(), tags: selectedTags, imageProvider: Self.iconImage).makeRows()
+            DispatchQueue.main.async {
+                self.sections = newSections
+                self.delegate?.reloadData()
+            }
         }
     }
 }
@@ -140,6 +170,10 @@ extension CardDetailsVM {
 // MARK: - Firebase fetch
 
 extension CardDetailsVM {
+
+    private var tagsCollectionReference: CollectionReference {
+        userPublicDocumentReference.collection(BusinessCardTag.collectionName)
+    }
     
     private var receivedCardCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
@@ -149,6 +183,9 @@ extension CardDetailsVM {
         receivedCardCollectionReference.document(cardID).addSnapshotListener { [weak self] documentSnapshot, error in
             self?.cardDidChange(documentSnapshot, error)
         }
+        tagsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
+            self?.cardTagsDidChange(querySnapshot, error)
+        }
     }
     
     private func cardDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
@@ -157,17 +194,81 @@ extension CardDetailsVM {
             print(#file, "Error fetching received card changed:", error?.localizedDescription ?? "No error info available.")
             return
         }
-        guard let card = ReceivedBusinessCardMC(documentSnapshot: doc) else {
-            print(#file, "Error mapping received card:", error?.localizedDescription ?? "No error info available.")
-            self.card = nil
-            sections = []
+        DispatchQueue.global().async {
+            guard let card = EditReceivedBusinessCardMC(documentSnapshot: doc) else {
+                print(#file, "Error mapping received card:", error?.localizedDescription ?? "No error info available.")
+                self.card = nil
+                self.sections = []
+                return
+            }
+            DispatchQueue.main.async {
+                self.card = card
+                self.makeSections()
+            }
+        }
+    }
+
+    private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
+        guard let querySnap = querySnapshot else {
+            print(#file, error?.localizedDescription ?? "")
             return
         }
-        self.card = card
-        sections = CardDetailsSectionFactory(card: card, imageProvider: Self.iconImage).makeRows()
-        delegate?.reloadData()
+
+        DispatchQueue.global().async {
+            var newTags: [BusinessCardTagMC] = querySnap.documents.compactMap {
+                guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
+                    print(#file, "Error mapping tag:", $0.documentID)
+                    return nil
+                }
+                return BusinessCardTagMC(tag: tag)
+            }
+            newTags.sort(by: BusinessCardTagMC.sortByPriority)
+            DispatchQueue.main.async {
+                self.tags = newTags
+                self.makeSections()
+            }
+        }
     }
 }
+
+// MARK: - EditCardTagsVMSelectionDelegate
+
+extension CardDetailsVM: EditCardTagsVMSelectionDelegate {
+    func didChangeSelectedTags(to tags: [BusinessCardTagMC]) {
+        guard let card = self.card else { return }
+        card.tagIDs = tags.map(\.id)
+        card.save(in: receivedCardCollectionReference, fields: [.tagIDs]) { [weak self] result in
+            switch result {
+            case .success(): return
+            case .failure(let error):
+                print(error.localizedDescription)
+                let errorMessage = AppError.localizedUnknownErrorDescription
+                self?.delegate?.presentErrorAlert(message: errorMessage)
+            }
+        }
+        makeSections()
+    }
+}
+
+// MARK: - EditCardNotesVMEditingDelegate
+
+extension CardDetailsVM: EditCardNotesVMEditingDelegate {
+    func didEditNotes(to editedNotes: String) {
+        guard let card = self.card else { return }
+        card.notes = editedNotes
+        card.save(in: receivedCardCollectionReference, fields: [.notes]) { [weak self] result in
+            switch result {
+            case .success(): return
+            case .failure(let error):
+                print(error.localizedDescription)
+                let errorMessage = AppError.localizedUnknownErrorDescription
+                self?.delegate?.presentErrorAlert(message: errorMessage)
+            }
+        }
+        makeSections()
+    }
+}
+
 
 // MARK: - Section, Item
 
@@ -205,6 +306,8 @@ extension CardDetailsVM {
         case sendEmail
         case visitWebsite
         case navigate
+        case editNotes
+        case editTags
         
         var title: String {
             switch self {
@@ -213,6 +316,8 @@ extension CardDetailsVM {
             case .sendEmail: return NSLocalizedString("Send an Email", comment: "")
             case .visitWebsite: return NSLocalizedString("Open Website in Browser", comment: "")
             case .navigate: return NSLocalizedString("Open in Maps", comment: "")
+            case .editNotes: return NSLocalizedString("Edit Notes", comment: "")
+            case .editTags: return NSLocalizedString("Edit Tags", comment: "")
             }
         }
     }

@@ -147,6 +147,24 @@ extension CardDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate {
 // MARK: - CardDetailsVMDelegate
 
 extension CardDetailsVC: CardDetailsVMDelegate {
+    func presentErrorAlert(message: String) {
+        super.presentErrorAlert(message: message)
+    }
+
+    func presentEditCardTagsVC(viewModel: EditCardTagsVM) {
+        let vc = EditCardTagsVC(viewModel: viewModel)
+        let navVC = AppNavigationController(rootViewController: vc)
+        navVC.presentationController?.delegate = vc
+        present(navVC, animated: true)
+    }
+
+    func presentEditCardNotesVC(viewModel: EditCardNotesVM) {
+        let vc = EditCardNotesVC(viewModel: viewModel)
+        let navVC = AppNavigationController(rootViewController: vc)
+        navVC.presentationController?.delegate = vc
+        present(navVC, animated: true)
+    }
+
     func dismissSelf() {
         guard let cell = cardImagesCell() else {
             dismiss(animated: false)

@@ -25,6 +25,8 @@ final class ReceivedCardsVM: MotionDataViewModel {
     
     let title: String
     let dataFetchMode: DataFetchMode
+
+    var presentedIndexPath: IndexPath?
     
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
@@ -86,6 +88,7 @@ extension ReceivedCardsVM {
     }
     
     func didSelectItem(at indexPath: IndexPath) {
+        presentedIndexPath = indexPath
         let card = displayedCard(at: indexPath)
         delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: CardDetailsVM.PrefetchedData(dataModel: itemForCell(at: indexPath), hapticSharpness: card.cardData.hapticFeedbackSharpness)))
     }

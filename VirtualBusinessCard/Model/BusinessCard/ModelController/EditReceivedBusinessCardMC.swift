@@ -73,6 +73,10 @@ final class EditReceivedBusinessCardMC {
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
 
+    func receivedBusinessCardMC() -> ReceivedBusinessCardMC {
+        ReceivedBusinessCardMC(card: businessCard)
+    }
+
     init(card: ReceivedBusinessCard) {
         self.businessCard = card
     }

@@ -332,6 +332,10 @@ extension AcceptCardVC: UIScrollViewDelegate {
 // MARK: - AcceptCardVMDelegate
 
 extension AcceptCardVC: AcceptCardVMDelegate {
+    func presentErrorAlert(message: String) {
+        super.presentErrorAlert(message: message)
+    }
+
     func refreshNotes() {
         contentView.notesStackView.isHidden = viewModel.notes.isEmpty
         contentView.notesLabel.text = viewModel.notes
@@ -358,12 +362,6 @@ extension AcceptCardVC: AcceptCardVMDelegate {
 
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         contentView.cardSceneView.updateMotionData(motion, over: timeFrame)
-    }
-
-    func presentSaveErrorAlert(title: String) {
-        let alert = UIAlertController.accentTinted(title: title, message: nil, preferredStyle: .alert)
-        alert.addOkAction()
-        present(alert, animated: true)
     }
 
     func presentSaveOfflineAlert() {

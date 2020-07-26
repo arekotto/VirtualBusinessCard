@@ -14,7 +14,7 @@ extension ReceivedCardsView {
 
         static let defaultHeight: CGFloat = {
             let screenSize = UIScreen.main.bounds
-            if screenSize.height / screenSize.width > 16/9 {
+            if screenSize.height / screenSize.width > 1.8 {
                 return screenSize.height / 3
             } else {
                 return screenSize.height / 2.5

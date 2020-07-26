@@ -14,7 +14,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     var animator: DetailsTransitionAnimator?
     
     var selectedCell: UICollectionViewCell? {
-        guard let indexPath = contentView.collectionView.indexPathsForSelectedItems?.first else { return nil }
+        guard let indexPath = viewModel.presentedIndexPath else { return nil }
         return contentView.collectionView.cellForItem(at: indexPath)
     }
 
@@ -38,6 +38,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         selectedCell?.isHidden = false
+        viewModel.presentedIndexPath = nil
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -106,6 +107,7 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: ReceivedCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
         cell.cardFrontBackView.setDataModel(viewModel.itemForCell(at: indexPath))
+        cell.isHidden = viewModel.presentedIndexPath == indexPath
         return cell
     }
     

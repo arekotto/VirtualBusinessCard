@@ -13,7 +13,7 @@ import CoreMotion
 protocol AcceptCardVMDelegate: class {
     func presentRejectAlert()
     func presentSaveOfflineAlert()
-    func presentSaveErrorAlert(title: String)
+    func presentErrorAlert(message: String)
     func dismissSelf()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentEditCardTagsVC(viewModel: EditCardTagsVM)
@@ -87,8 +87,8 @@ extension AcceptCardVM {
             case .success(): self?.hasSavedCardToCollection = true
             case .failure(let error):
                 print(error.localizedDescription)
-                let errorTitle = AppError.localizedUnknownErrorDescription
-                self?.delegate?.presentSaveErrorAlert(title: errorTitle)
+                let errorMessage = AppError.localizedUnknownErrorDescription
+                self?.delegate?.presentErrorAlert(message: errorMessage)
             }
         }
     }
@@ -146,8 +146,8 @@ extension AcceptCardVM: EditCardTagsVMSelectionDelegate {
             case .success(): return
             case .failure(let error):
                 print(error.localizedDescription)
-                let errorTitle = AppError.localizedUnknownErrorDescription
-                self?.delegate?.presentSaveErrorAlert(title: errorTitle)
+                let errorMessage = AppError.localizedUnknownErrorDescription
+                self?.delegate?.presentErrorAlert(message: errorMessage)
             }
         }
         delegate?.refreshTags()
@@ -164,8 +164,8 @@ extension AcceptCardVM: EditCardNotesVMEditingDelegate {
             case .success(): return
             case .failure(let error):
                 print(error.localizedDescription)
-                let errorTitle = AppError.localizedUnknownErrorDescription
-                self?.delegate?.presentSaveErrorAlert(title: errorTitle)
+                let errorMessage = AppError.localizedUnknownErrorDescription
+                self?.delegate?.presentErrorAlert(message: errorMessage)
             }
         }
         delegate?.refreshNotes()

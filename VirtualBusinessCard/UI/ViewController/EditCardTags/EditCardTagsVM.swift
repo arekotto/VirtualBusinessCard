@@ -138,15 +138,16 @@ extension EditCardTagsVM {
         }
 
         DispatchQueue.global().async {
-            let newTags: [BusinessCardTagMC] = querySnap.documents.compactMap {
+            var newTags: [BusinessCardTagMC] = querySnap.documents.compactMap {
                 guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
                     print(#file, "Error mapping business card:", $0.documentID)
                     return nil
                 }
                 return BusinessCardTagMC(tag: tag)
             }
-            self.tags = newTags.sorted(by: BusinessCardTagMC.sortByPriority)
+            newTags.sort(by: BusinessCardTagMC.sortByPriority)
             DispatchQueue.main.async {
+                self.tags = newTags
                 self.delegate?.refreshData()
             }
         }
