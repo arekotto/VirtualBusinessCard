@@ -42,7 +42,7 @@ extension PersonalCardsCompactVC {
     }
 
     func didTapSettingsButton() {
-        viewModel.didTapSettings()
+//        viewModel.didTapSettings()
     }
 }
 

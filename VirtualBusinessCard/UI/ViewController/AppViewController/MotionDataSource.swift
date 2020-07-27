@@ -1,5 +1,5 @@
 //
-//  MotionDataViewModel.swift
+//  MotionDataSource.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 23/07/2020.
@@ -8,10 +8,12 @@
 
 import CoreMotion
 
-class MotionDataViewModel: PartialUserViewModel {
+protocol MotionDataSource: class {
+    var motionManager: CMMotionManager { get }
+    func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
+}
 
-    private lazy var motionManager = CMMotionManager()
-
+extension MotionDataSource {
     func startUpdatingMotionData(in interval: TimeInterval) {
         motionManager.deviceMotionUpdateInterval = interval
         motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
@@ -22,9 +24,5 @@ class MotionDataViewModel: PartialUserViewModel {
 
     func pauseUpdatingMotionData() {
         motionManager.stopDeviceMotionUpdates()
-    }
-
-    func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        // override in subclass
     }
 }

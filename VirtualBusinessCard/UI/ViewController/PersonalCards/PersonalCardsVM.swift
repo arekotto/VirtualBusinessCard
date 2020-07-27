@@ -15,23 +15,21 @@ protocol PersonalCardsVMlDelegate: class {
     func reloadData()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentCardDetails(viewModel: CardDetailsVM)
-    func presentSettings(viewModel: SettingsVM)
-    func presentDirectSharingVC(viewModel: DirectSharingVM)
 }
 
-final class PersonalCardsVM: PartialUserViewModel {
+final class PersonalCardsVM: PartialUserViewModel, MotionDataSource {
     
     weak var delegate: PersonalCardsVMlDelegate?
         
-    private lazy var motionManager: CMMotionManager = {
-        let manager = CMMotionManager()
-        manager.deviceMotionUpdateInterval = 0.1
-        return manager
-    }()
+    private(set) lazy var motionManager = CMMotionManager()
     
     private var user: UserMC?
     private var cards: [PersonalBusinessCardMC] = []
-    
+
+    func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        delegate?.didUpdateMotionData(motion, over: timeFrame)
+    }
+
     private func cardForCell(at indexPath: IndexPath) -> PersonalBusinessCardMC {
         cards[indexPath.item]
     }
@@ -54,6 +52,14 @@ extension PersonalCardsVM {
     var settingsImage: UIImage {
         UIImage(named: "SettingsIcon")!
     }
+
+    func settingsViewModel() -> SettingsVM {
+        SettingsVM(userID: userID)
+    }
+
+    func sharingViewModel(for indexPath: IndexPath) -> DirectSharingVM {
+        DirectSharingVM(userID: userID, sharedCard: cardForCell(at: indexPath))
+    }
     
     func numberOfItems() -> Int {
         cards.count
@@ -74,26 +80,6 @@ extension PersonalCardsVM {
         let card = cardForCell(at: indexPath)
 //        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: item(for: indexPath)))
     }
-    
-    func didTapSettings() {
-        delegate?.presentSettings(viewModel: SettingsVM(userID: userID))
-    }
-    
-    func didSelectShareCard(at indexPath: IndexPath) {
-        delegate?.presentDirectSharingVC(viewModel: DirectSharingVM(userID: userID, sharedCard: cardForCell(at: indexPath)))
-    }
-    
-    func startUpdatingMotionData() {
-        motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
-            guard let self = self, let motion = motion else { return }
-            self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
-        }
-    }
-    
-    func stopUpdatingMotionData() {
-        motionManager.stopDeviceMotionUpdates()
-    }
-    
 }
 
 extension PersonalCardsVM {

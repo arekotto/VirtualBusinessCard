@@ -8,27 +8,32 @@
 
 import UIKit
 import Firebase
+import CoreMotion
 
 protocol DirectSharingVMDelegate: class {
     func didFetchData()
     func didGenerateQRCode(image: UIImage)
-    func presentErrorGeneratingQRCodeAlert()
-    func presentErrorReadingQRCodeAlert()
+    func didFailToGenerateQRCode()
+    func didFailReadingQRCode()
     func presentLoadingAlert(viewModel: LoadingPopoverVM)
-    func presentAcceptCardVC(with viewModel: AcceptCardVM)
+    func didBecomeReadyToAcceptCard(with viewModel: AcceptCardVM)
+    func didChangeDeviceOrientationX(_ orientation: DirectSharingVM.GeneralDeviceOrientationX)
 }
 
-final class DirectSharingVM: CompleteUserViewModel {
+final class DirectSharingVM: CompleteUserViewModel, MotionDataSource {
     
     weak var delegate: DirectSharingVMDelegate?
     
     private(set) var qrCode: UIImage?
+    private(set) lazy var motionManager = CMMotionManager()
+    private(set) var generalDeviceOrientationX = GeneralDeviceOrientationX.vertical
 
     private let card: PersonalBusinessCardMC
-    
-    private var directSharingExchangeData: DirectSharingExchangeData?
+
+    private var ownSharingExchangeData: DirectSharingExchangeData?
     private var joinedExchangeSnapshotListener: ListenerRegistration?
-    
+    private var ownExchangeSnapshotListener: ListenerRegistration?
+
     init(userID: UserID, sharedCard: PersonalBusinessCardMC) {
         card = sharedCard
         super.init(userID: userID)
@@ -40,6 +45,13 @@ final class DirectSharingVM: CompleteUserViewModel {
 
     private func playHapticFeedback(of sharpness: Float) {
         HapticFeedbackEngine(sharpness: sharpness, intensity: 0.6).play()
+    }
+
+    func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        let newOrientation = GeneralDeviceOrientationX.calculate(for: motion)
+        guard newOrientation != generalDeviceOrientationX else { return }
+        generalDeviceOrientationX = newOrientation
+        delegate?.didChangeDeviceOrientationX(newOrientation)
     }
 }
 
@@ -78,25 +90,26 @@ extension DirectSharingVM {
             
             guard error == nil else {
                 print(#file, "Error creating exchange:", docRef.documentID)
-                self.delegate?.presentErrorGeneratingQRCodeAlert()
+                self.delegate?.didFailToGenerateQRCode()
                 return
             }
-            
-            docRef.addSnapshotListener { [weak self] docSnapshot, error in
+
+            self.ownExchangeSnapshotListener?.remove()
+            self.ownExchangeSnapshotListener = docRef.addSnapshotListener { [weak self] docSnapshot, error in
                 self?.initiatedExchangeDidChange(docSnapshot, error)
             }
             
-            self.directSharingExchangeData = DirectSharingExchangeData(userID: self.userID, exchangeID: docRef.documentID, accessToken: accessToken)
-            guard let jsonData = try? JSONEncoder().encode(self.directSharingExchangeData!) else {
-                self.delegate?.presentErrorGeneratingQRCodeAlert()
+            self.ownSharingExchangeData = DirectSharingExchangeData(userID: self.userID, exchangeID: docRef.documentID, accessToken: accessToken)
+            guard let jsonData = try? JSONEncoder().encode(self.ownSharingExchangeData!) else {
+                self.delegate?.didFailToGenerateQRCode()
                 return
             }
             guard let jsonString = String(data: jsonData, encoding: .utf8) else {
-                self.delegate?.presentErrorGeneratingQRCodeAlert()
+                self.delegate?.didFailToGenerateQRCode()
                 return
             }
             guard let qrCode = QRCodeGenerator.shared.generate(from: jsonString) else {
-                self.delegate?.presentErrorGeneratingQRCodeAlert()
+                self.delegate?.didFailToGenerateQRCode()
                 return
             }
             self.qrCode = qrCode
@@ -106,17 +119,17 @@ extension DirectSharingVM {
     
     func didScanCode(string: String) {
         guard let jsonData = string.data(using: .utf8) else {
-            delegate?.presentErrorReadingQRCodeAlert()
+            delegate?.didFailReadingQRCode()
             return
         }
         
         guard let exchange = try? JSONDecoder().decode(DirectSharingExchangeData.self, from: jsonData) else {
-            delegate?.presentErrorReadingQRCodeAlert()
+            delegate?.didFailReadingQRCode()
             return
         }
 
         guard exchange.userID != userID else {
-            delegate?.presentErrorReadingQRCodeAlert()
+            delegate?.didFailReadingQRCode()
             return
         }
 
@@ -125,10 +138,10 @@ extension DirectSharingVM {
         user?.addCardExchangeAccessToken(exchange.accessToken)
         user?.save() { [weak self] result in
             switch result {
-            case .failure(_): self?.delegate?.presentErrorReadingQRCodeAlert()
+            case .failure(_): self?.delegate?.didFailReadingQRCode()
             case .success:
                 guard let joinedExchangeDoc = self?.directCardExchangeReference.document(exchange.exchangeID) else {
-                    self?.delegate?.presentErrorReadingQRCodeAlert()
+                    self?.delegate?.didFailReadingQRCode()
                     return
                 }
                 self?.joinedExchangeSnapshotListener?.remove()
@@ -166,19 +179,20 @@ extension DirectSharingVM {
 
         let receivedCard = EditReceivedBusinessCardMC(originalID: receivingUserCardID, ownerID: receivingUserID, cardData: receivingUserCardData)
 
+        ownExchangeSnapshotListener?.remove()
         playHapticFeedback(of: receivedCard.cardData.hapticFeedbackSharpness)
-        delegate?.presentAcceptCardVC(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
+        delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
     }
     
     private func joinedExchangeDidChange(_ documentSnapshot: DocumentSnapshot?, _ error: Error?) {
         guard let docSnap = documentSnapshot else {
-            delegate?.presentErrorReadingQRCodeAlert()
+            delegate?.didFailReadingQRCode()
             print(#file, error?.localizedDescription ?? "")
             return
         }
         
         guard let exchangeModel = DirectCardExchange(documentSnapshot: docSnap) else {
-            delegate?.presentErrorReadingQRCodeAlert()
+            delegate?.didFailReadingQRCode()
             print(#file, "Error mapping exchange:", docSnap.documentID)
             return
         }
@@ -195,7 +209,7 @@ extension DirectSharingVM {
             switch result {
             case .failure(let error):
                 print(#file, "Error uploading data to joined exchange:", error.localizedDescription)
-                self.delegate?.presentErrorReadingQRCodeAlert()
+                self.delegate?.didFailReadingQRCode()
             case .success:
 
                 let receivedCard = EditReceivedBusinessCardMC(
@@ -204,11 +218,23 @@ extension DirectSharingVM {
                     cardData: joinedExchange.sharingUserCardData
                 )
                 self.playHapticFeedback(of: receivedCard.cardData.hapticFeedbackSharpness)
-                self.delegate?.presentAcceptCardVC(with: AcceptCardVM(userID: self.userID, sharedCard: receivedCard))
+                self.delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: self.userID, sharedCard: receivedCard))
             }
         }
     }
 }
+
+extension DirectSharingVM {
+    enum GeneralDeviceOrientationX {
+        case horizontal, vertical
+
+        static func calculate(for deviceMotion: CMDeviceMotion) -> GeneralDeviceOrientationX {
+            deviceMotion.attitude.pitch <= 0.3 ? .horizontal : .vertical
+        }
+    }
+}
+
+// MARK: - DirectSharingExchangeData
 
 private extension DirectSharingVM {
     struct DirectSharingExchangeData: Codable {

@@ -41,7 +41,7 @@
 		452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */; };
 		452CEE8324AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452CEE8224AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift */; };
 		4533849C24C9EFFB0020AEF6 /* CompleteUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849B24C9EFFB0020AEF6 /* CompleteUserViewModel.swift */; };
-		4533849E24C9F0120020AEF6 /* MotionDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849D24C9F0120020AEF6 /* MotionDataViewModel.swift */; };
+		4533849E24C9F0120020AEF6 /* MotionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849D24C9F0120020AEF6 /* MotionDataSource.swift */; };
 		453384A024CB0C650020AEF6 /* HapticFeedbackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4533849F24CB0C650020AEF6 /* HapticFeedbackEngine.swift */; };
 		453384A224CB0D080020AEF6 /* QRCodeGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453384A124CB0D080020AEF6 /* QRCodeGenerator.swift */; };
 		453384A424CB29860020AEF6 /* LoadingPopoverVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453384A324CB29860020AEF6 /* LoadingPopoverVC.swift */; };
@@ -157,6 +157,7 @@
 		45D76DE424CED0BA008BDDE5 /* GroupSharingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DE324CED0BA008BDDE5 /* GroupSharingVC.swift */; };
 		45D76DE624CED0EA008BDDE5 /* GroupSharingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DE524CED0EA008BDDE5 /* GroupSharingVM.swift */; };
 		45D76DE824CED0FC008BDDE5 /* GroupSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DE724CED0FC008BDDE5 /* GroupSharingView.swift */; };
+		45D76DF124CF19AC008BDDE5 /* TransparentButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DF024CF19AC008BDDE5 /* TransparentButtonView.swift */; };
 		45E21C2724CC8FA900013E9E /* PartialUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */; };
 		45E21C2A24CC95CC00013E9E /* EditCardNotesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */; };
 		45E21C2C24CC95F400013E9E /* EditCardNotesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */; };
@@ -229,7 +230,7 @@
 		452B33C8248E4FF8006E6A7D /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		452CEE8224AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleValueImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		4533849B24C9EFFB0020AEF6 /* CompleteUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteUserViewModel.swift; sourceTree = "<group>"; };
-		4533849D24C9F0120020AEF6 /* MotionDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionDataViewModel.swift; sourceTree = "<group>"; };
+		4533849D24C9F0120020AEF6 /* MotionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionDataSource.swift; sourceTree = "<group>"; };
 		4533849F24CB0C650020AEF6 /* HapticFeedbackEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticFeedbackEngine.swift; sourceTree = "<group>"; };
 		453384A124CB0D080020AEF6 /* QRCodeGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeGenerator.swift; sourceTree = "<group>"; };
 		453384A324CB29860020AEF6 /* LoadingPopoverVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPopoverVC.swift; sourceTree = "<group>"; };
@@ -351,6 +352,7 @@
 		45D76DE324CED0BA008BDDE5 /* GroupSharingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSharingVC.swift; sourceTree = "<group>"; };
 		45D76DE524CED0EA008BDDE5 /* GroupSharingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSharingVM.swift; sourceTree = "<group>"; };
 		45D76DE724CED0FC008BDDE5 /* GroupSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSharingView.swift; sourceTree = "<group>"; };
+		45D76DF024CF19AC008BDDE5 /* TransparentButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentButtonView.swift; sourceTree = "<group>"; };
 		45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialUserViewModel.swift; sourceTree = "<group>"; };
 		45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVC.swift; sourceTree = "<group>"; };
 		45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVM.swift; sourceTree = "<group>"; };
@@ -849,6 +851,7 @@
 			children = (
 				45B0F4C924AA1510007277BB /* CardFrontBackView.swift */,
 				45D76DDE24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift */,
+				45D76DF024CF19AC008BDDE5 /* TransparentButtonView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -894,7 +897,7 @@
 				454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */,
 				454625E524A0C136000D1D25 /* AppTableViewCell.swift */,
 				4533849B24C9EFFB0020AEF6 /* CompleteUserViewModel.swift */,
-				4533849D24C9F0120020AEF6 /* MotionDataViewModel.swift */,
+				4533849D24C9F0120020AEF6 /* MotionDataSource.swift */,
 				45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */,
 			);
 			path = AppViewController;
@@ -1350,7 +1353,7 @@
 				454CF7E024A9F52D00074E0D /* UIAlertController.swift in Sources */,
 				459102F524B70D780064B12C /* PersonalCardsCompactView.swift in Sources */,
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
-				4533849E24C9F0120020AEF6 /* MotionDataViewModel.swift in Sources */,
+				4533849E24C9F0120020AEF6 /* MotionDataSource.swift in Sources */,
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
 				45B25F1F2493B2A3006DD0F7 /* CardDetailsVC.swift in Sources */,
@@ -1388,6 +1391,7 @@
 				45B0F4CA24AA1510007277BB /* CardFrontBackView.swift in Sources */,
 				45174CEA24B9E342009BFE58 /* EditTagVM.swift in Sources */,
 				45139C5424979CB600DE1E9F /* ReceivedCardsView.swift in Sources */,
+				45D76DF124CF19AC008BDDE5 /* TransparentButtonView.swift in Sources */,
 				45C160282485B0BD00806718 /* PersonalCardsVM.swift in Sources */,
 				45B0F4C524AA0A39007277BB /* TitleValueCollectionCell.swift in Sources */,
 				45139C5224979CA300DE1E9F /* ReceivedCardsVM.swift in Sources */,
@@ -1616,7 +1620,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"VirtualBusinessCard/Preview Content\"";
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_BITCODE = YES;
@@ -1652,7 +1656,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"VirtualBusinessCard/Preview Content\"";
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_BITCODE = YES;

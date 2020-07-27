@@ -32,7 +32,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.willAppear()
+        viewModel.startUpdatingMotionData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -43,7 +43,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        viewModel.didDisappear()
+        viewModel.pauseUpdatingMotionData()
     }
     
     private func setupCollectionView() {
@@ -72,6 +72,14 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
             return controller
         }()
     }
+
+    private func presentCardDetails(for indexPath: IndexPath) {
+        viewModel.presentedIndexPath = indexPath
+        let detailsVC = AppNavigationController(rootViewController: CardDetailsVC(viewModel: viewModel.detailsViewModel(for: indexPath)))
+        detailsVC.transitioningDelegate = self
+        detailsVC.modalPresentationStyle = .fullScreen
+        present(detailsVC, animated: true)
+    }
 }
 
 // MARK: - Actions
@@ -79,7 +87,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
 @objc
 extension ReceivedCardsVC {
     func didTapCellSizeModeButton() {
-        viewModel.didChangeCellSizeMode()
+        viewModel.toggleCellSizeMode()
     }
     
     func didTapSortButton() {
@@ -87,7 +95,7 @@ extension ReceivedCardsVC {
         let alert = UIAlertController.accentTinted(title: dataModel.title, message: nil, preferredStyle: .actionSheet)
         dataModel.actions.forEach { action in
             let alertAction = UIAlertAction(title: action.title, style: .default) { _ in
-                self.viewModel.didSelectSortMode(action.mode)
+                self.viewModel.setSortMode(action.mode)
             }
             alertAction.setValue(action.mode == viewModel.selectedSortMode, forKey: "checked")
             alert.addAction(alertAction)
@@ -119,7 +127,7 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
         if contentView.collectionView.contentOffset.y < -88 && !(navigationItem.searchController?.isActive ?? false) {
             contentView.collectionView.scrollToItem(at: IndexPath(item: 0), at: .top, animated: false)
         }
-        viewModel.didSelectItem(at: indexPath)
+        presentCardDetails(for: indexPath)
     }
 }
 
@@ -134,13 +142,6 @@ extension ReceivedCardsVC: UICollectionViewDelegateFlowLayout {
 // MARK: ReceivedBusinessCardsVMDelegate
 
 extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
-    func presentCardDetails(viewModel: CardDetailsVM) {
-        let detailsVC = AppNavigationController(rootViewController: CardDetailsVC(viewModel: viewModel))
-        detailsVC.transitioningDelegate = self
-        detailsVC.modalPresentationStyle = .fullScreen
-        present(detailsVC, animated: true)
-    }
-    
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         let cells = contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]
         cells.forEach { cell in
@@ -179,7 +180,7 @@ extension ReceivedCardsVC: TabBarDisplayable {
 
 extension ReceivedCardsVC: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.didSearch(for: searchController.searchBar.text ?? "")
+        viewModel.beginSearch(for: searchController.searchBar.text ?? "")
     }
 }
 

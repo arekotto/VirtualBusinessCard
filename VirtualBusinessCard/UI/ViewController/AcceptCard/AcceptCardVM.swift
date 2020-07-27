@@ -22,14 +22,16 @@ protocol AcceptCardVMDelegate: class {
     func refreshNotes()
 }
 
-final class AcceptCardVM: MotionDataViewModel {
+final class AcceptCardVM: PartialUserViewModel, MotionDataSource {
 
     weak var delegate: AcceptCardVMDelegate?
 
     let card: EditReceivedBusinessCardMC
-    private var acceptedCard = SingleTimeToggleBool(ofInitialValue: false)
-    private(set) var hasSavedCardToCollection = false
 
+    private(set) var hasSavedCardToCollection = false
+    private(set) lazy var motionManager = CMMotionManager()
+
+    private var acceptedCard = SingleTimeToggleBool(ofInitialValue: false)
     private lazy var selectedTags: [BusinessCardTagMC]? = nil
 
     init(userID: UserID, sharedCard: EditReceivedBusinessCardMC) {
@@ -37,8 +39,7 @@ final class AcceptCardVM: MotionDataViewModel {
         super.init(userID: userID)
     }
 
-    override func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        super.didReceiveMotionData(motion, over: timeFrame)
+    func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         delegate?.didUpdateMotionData(motion, over: timeFrame)
     }
 }

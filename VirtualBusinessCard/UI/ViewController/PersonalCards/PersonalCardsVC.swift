@@ -34,7 +34,7 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         contentView.visibleCells.forEach { $0.setDynamicLightingEnabled(to: true) }
-        viewModel.startUpdatingMotionData()
+        viewModel.startUpdatingMotionData(in: 0.1)
     }
     
     override func viewDidLayoutSubviews() {
@@ -46,7 +46,7 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        viewModel.stopUpdatingMotionData()
+        viewModel.pauseUpdatingMotionData()
         contentView.visibleCells.forEach { $0.setDynamicLightingEnabled(to: false) }
     }
     
@@ -85,30 +85,21 @@ private extension PersonalCardsVC {
     }
     
     func didTapSettingsButton() {
-        viewModel.didTapSettings()
+        show(SettingsVC(viewModel: viewModel.settingsViewModel()), sender: nil)
     }
     
     func didTapShareButton(_ button: PersonalCardsView.CollectionCell.ShareButton) {
         guard let indexPath = button.indexPath else { return }
-        viewModel.didSelectShareCard(at: indexPath)
-    }
-}
-
-
-
-extension PersonalCardsVC: PersonalCardsVMlDelegate {
-    
-    func presentDirectSharingVC(viewModel: DirectSharingVM) {
-        let navVC = AppNavigationController(rootViewController: DirectSharingVC(viewModel: viewModel))
+        let navVC = AppNavigationController(rootViewController: DirectSharingVC(viewModel: viewModel.sharingViewModel(for: indexPath)))
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
     }
-    
-    func presentSettings(viewModel: SettingsVM) {
-        let vc = SettingsVC(viewModel: viewModel)
-        show(vc, sender: nil)
-    }
-    
+}
+
+// MARK: - PersonalCardsVMlDelegate
+
+extension PersonalCardsVC: PersonalCardsVMlDelegate {
+
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         let cells = contentView.collectionView.visibleCells as! [PersonalCardsView.CollectionCell]
         cells.forEach { cell in

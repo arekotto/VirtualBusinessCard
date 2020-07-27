@@ -12,14 +12,13 @@ import Kingfisher
 
 final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingVM> {
     
-    private lazy var cancelButton = UIBarButtonItem(title: viewModel.cancelButtonTitle, style: .plain, target: self, action: #selector(didTapCancelButton))
-    
-    var captureSession: AVCaptureSession!
+    private var captureSession: AVCaptureSession!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCaptureSession()
-        setupNavigationItem()
+        navigationItem.title = viewModel.title
+        navigationController?.setNavigationBarHidden(true, animated: false)
         setupContentView()
         viewModel.delegate = self
         viewModel.fetchData()
@@ -27,6 +26,7 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.startUpdatingMotionData(in: 0.2)
         if captureSession?.isRunning == false {
             captureSession.startRunning()
         }
@@ -38,19 +38,19 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
             captureSession.stopRunning()
         }
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.pauseUpdatingMotionData()
+    }
     
     private func setupContentView() {
         contentView.goToSettingsButton.addTarget(self, action: #selector(didTapGoToSettingsButton), for: .touchUpInside)
         contentView.businessCardImageView.kf.setImage(with: viewModel.businessCardFrontImageURL)
+        contentView.cancelButtonView.button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         contentView.qrCodeActivityIndicator.startAnimating()
     }
-    
-    private func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = viewModel.title
-        navigationItem.leftBarButtonItem = cancelButton
-    }
-    
+
     private func setupCaptureSession() {
         captureSession = AVCaptureSession()
         
@@ -88,8 +88,20 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
 // MARK: - DirectSharingVMDelegate
 
 extension DirectSharingVC: DirectSharingVMDelegate {
+    func didChangeDeviceOrientationX(_ orientation: DirectSharingVM.GeneralDeviceOrientationX) {
+        switch orientation {
+        case .horizontal:
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                self.contentView.businessCardImageView.transform = CGAffineTransform.identity.rotated(by: .pi)
+            })
+        case .vertical:
+            UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+                self.contentView.businessCardImageView.transform = CGAffineTransform.identity
+            })
+        }
+    }
 
-    func presentAcceptCardVC(with viewModel: AcceptCardVM) {
+    func didBecomeReadyToAcceptCard(with viewModel: AcceptCardVM) {
         if let loadingAlert = presentedViewController {
             loadingAlert.dismiss(animated: true) {
                 self.show(AcceptCardVC(viewModel: viewModel), sender: nil)
@@ -104,7 +116,7 @@ extension DirectSharingVC: DirectSharingVMDelegate {
         viewModel.generateQRCode()
     }
     
-    func presentErrorReadingQRCodeAlert() {
+    func didFailReadingQRCode() {
         let message = NSLocalizedString("QR code could not be read. Try pointing the camera at it again.", comment: "")
         if let loadingAlert = presentedViewController {
             loadingAlert.dismiss(animated: true) {
@@ -115,7 +127,7 @@ extension DirectSharingVC: DirectSharingVMDelegate {
         }
     }
     
-    func presentErrorGeneratingQRCodeAlert() {
+    func didFailToGenerateQRCode() {
         presentErrorAlert(message: NSLocalizedString("We couldn't generate a QR code for your card. Please try again.", comment: ""))
     }
     

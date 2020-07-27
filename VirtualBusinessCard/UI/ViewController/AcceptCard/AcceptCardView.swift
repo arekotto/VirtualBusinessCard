@@ -46,22 +46,6 @@ final class AcceptCardView: AppBackgroundView {
         return this
     }()
 
-    let doneButton: UIButton = {
-        let this = UIButton()
-        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
-        this.setImage(UIImage(systemName: "xmark", withConfiguration: config), for: .normal)
-        return this
-    }()
-
-    let doneButtonView: UIView = {
-        let this = UIView()
-        this.clipsToBounds = true
-        this.isHidden = true
-        this.alpha = 0
-        this.layer.cornerRadius = 22
-        return this
-    }()
-
     let cardSavedLabel: UILabel = {
         let this = UILabel()
         this.text = NSLocalizedString("Saved to collection.", comment: "")
@@ -71,7 +55,34 @@ final class AcceptCardView: AppBackgroundView {
         return this
     }()
 
-    private let doneButtonBackground = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
+    private let tagsCollectionViewContainer = UIView()
+    let tagsCollectionView: CompactTagsCollectionView = {
+        let this = CompactTagsCollectionView()
+        this.targetWidth = defaultCardViewSize.width
+        return this
+    }()
+
+    let scrollView: UIScrollView = {
+        let this = UIScrollView()
+        this.clipsToBounds = false
+        return this
+    }()
+
+    let notesLabel: UILabel = {
+        let this = UILabel()
+        this.text = NSLocalizedString("", comment: "")
+        this.font = .appDefault(size: 15, weight: .regular)
+        this.textColor = .secondaryText
+        this.numberOfLines = 0
+        return this
+    }()
+    
+    let doneButtonView: TransparentButtonView = {
+        let this = TransparentButtonView(style: .systemUltraThinMaterial)
+        this.isHidden = true
+        this.alpha = 0
+        return this
+    }()
 
     private let slideToAcceptLabel: UILabel = {
         let this = UILabel()
@@ -94,26 +105,10 @@ final class AcceptCardView: AppBackgroundView {
         return this
     }()
 
-    private let tagsCollectionViewContainer = UIView()
-    let tagsCollectionView: CompactTagsCollectionView = {
-        let this = CompactTagsCollectionView()
-        this.targetWidth = defaultCardViewSize.width
-        return this
-    }()
-
     private let notesTitleLabel: UILabel = {
         let this = UILabel()
         this.text = NSLocalizedString("Notes", comment: "")
         this.font = .appDefault(size: 22, weight: .semibold)
-        return this
-    }()
-
-    let notesLabel: UILabel = {
-        let this = UILabel()
-        this.text = NSLocalizedString("", comment: "")
-        this.font = .appDefault(size: 15, weight: .regular)
-        this.textColor = .secondaryText
-        this.numberOfLines = 0
         return this
     }()
 
@@ -140,15 +135,8 @@ final class AcceptCardView: AppBackgroundView {
         return this
     }()
 
-    let scrollView: UIScrollView = {
-        let this = UIScrollView()
-        this.clipsToBounds = false
-        return this
-    }()
-
     override func configureSubviews() {
         super.configureSubviews()
-        [doneButtonBackground, doneButton].forEach { doneButtonView.addSubview($0) }
         [slideToAcceptStackView, cardSavedLabel, scrollView, rejectButton, cardSceneView, doneButtonView].forEach { addSubview($0) }
         scrollView.addSubview(mainStackView)
         tagsCollectionViewContainer.addSubview(tagsCollectionView)
@@ -167,7 +155,7 @@ final class AcceptCardView: AppBackgroundView {
 
         cardSavedLabel.constrainCenterXToSuperview()
         cardSavedLabel.constrainTopGreaterOrEqual(to: safeAreaLayoutGuide.topAnchor, constant: 8)
-        cardSavedLabel.constrainCenterY(toView: doneButton, priority: .defaultHigh)
+        cardSavedLabel.constrainCenterY(toView: doneButtonView, priority: .defaultHigh)
 
         mainStackView.constrainCenterXToSuperview()
         mainStackView.constrainWidth(constant: Self.defaultCardViewSize.width)
@@ -190,8 +178,7 @@ final class AcceptCardView: AppBackgroundView {
         rejectButton.constrainBottomToSuperviewSafeArea(inset: 20)
         rejectButton.constrainHeight(constant: 50)
 
-        doneButton.constrainToEdgesOfSuperview()
-        doneButtonBackground.constrainToEdgesOfSuperview()
+
         doneButtonView.constrainTopToSuperview(inset: 16)
         doneButtonView.constrainTrailingToSuperview(inset: 16)
         doneButtonView.constrainHeight(constant: 44)
@@ -208,8 +195,7 @@ final class AcceptCardView: AppBackgroundView {
         slideToAcceptLabel.textColor = .appGray
         slideToAcceptImageView.tintColor = .appGray
         rejectButton.tintColor = .appAccent
-        doneButton.backgroundColor = UIColor.appGray.withAlphaComponent(0.1)
-        doneButton.tintColor = .appAccent
+
         cardSavedLabel.textColor = .tertiaryLabel
     }
 

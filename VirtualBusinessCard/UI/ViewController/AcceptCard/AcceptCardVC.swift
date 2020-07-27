@@ -56,7 +56,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         contentView.cardSceneView.setDataModel(viewModel.dataModel())
         contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:))))
         contentView.rejectButton.addTarget(self, action: #selector(didTapRejectButton), for: .touchUpInside)
-        contentView.doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
+        contentView.doneButtonView.button.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
         contentView.tagsCollectionView.tagDataSource = self
     }
 
@@ -126,6 +126,7 @@ private extension AcceptCardVC {
         guard let animator = acceptAnimator else { return }
         if animator.fractionComplete > 3/5 {
             animator.stopAnimation(true)
+            contentView.cardSceneView.transform = CGAffineTransform(rotationAngle: 0)
             makeFinishAcceptingAnimator().startAnimation()
             viewModel.didAcceptCard()
         } else {

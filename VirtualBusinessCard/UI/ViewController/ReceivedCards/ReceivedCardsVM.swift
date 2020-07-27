@@ -14,35 +14,35 @@ protocol ReceivedBusinessCardsVMDelegate: class {
     func refreshData(animated: Bool)
     func refreshLayout(sizeMode: CardFrontBackView.SizeMode)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
-    func presentCardDetails(viewModel: CardDetailsVM)
 }
 
-final class ReceivedCardsVM: MotionDataViewModel {
+final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
     
     weak var delegate: ReceivedBusinessCardsVMDelegate?
 
+    var presentedIndexPath: IndexPath?
+
+    private(set) lazy var motionManager = CMMotionManager()
+
     private(set) var cellSizeMode = CardFrontBackView.SizeMode.expanded
-    
+    private(set) lazy var selectedSortMode = sortActions.first!.mode
+
     let title: String
     let dataFetchMode: DataFetchMode
 
-    var presentedIndexPath: IndexPath?
-    
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
     private var displayedCardIndexes = [Int]()
     
     private let sortActions = defaultSortActions()
-    
-    private(set) lazy var selectedSortMode = sortActions.first!.mode
-    
+
     init(userID: UserID, title: String, dataFetchMode: DataFetchMode) {
         self.title = title
         self.dataFetchMode = dataFetchMode
         super.init(userID: userID)
     }
 
-    override func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+    func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         delegate?.didUpdateMotionData(motion, over: timeFrame)
     }
 }
@@ -70,12 +70,8 @@ extension ReceivedCardsVM {
         return UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imgConfig)!
     }
 
-    func willAppear() {
+    func startUpdatingMotionData() {
         startUpdatingMotionData(in: cellSizeMode.motionDataUpdateInterval)
-    }
-
-    func didDisappear() {
-        pauseUpdatingMotionData()
     }
     
     func numberOfItems() -> Int {
@@ -86,14 +82,17 @@ extension ReceivedCardsVM {
         let cardData = displayedCard(at: indexPath).cardData
         return CardFrontBackView.DataModel(frontImageURL: cardData.frontImage.url, backImageURL: cardData.backImage.url, textureImageURL: cardData.texture.image.url, normal: CGFloat(cardData.texture.normal), specular: CGFloat(cardData.texture.specular))
     }
-    
-    func didSelectItem(at indexPath: IndexPath) {
-        presentedIndexPath = indexPath
+
+    func detailsViewModel(for indexPath: IndexPath) -> CardDetailsVM {
         let card = displayedCard(at: indexPath)
-        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: CardDetailsVM.PrefetchedData(dataModel: itemForCell(at: indexPath), hapticSharpness: card.cardData.hapticFeedbackSharpness)))
+        let prefetchedDM = CardDetailsVM.PrefetchedData(
+            dataModel: itemForCell(at: indexPath),
+            hapticSharpness: card.cardData.hapticFeedbackSharpness
+        )
+        return CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: prefetchedDM)
     }
     
-    func didChangeCellSizeMode() {
+    func toggleCellSizeMode() {
         switch cellSizeMode {
         case .compact:
             cellSizeMode = .expanded
@@ -105,7 +104,7 @@ extension ReceivedCardsVM {
         delegate?.refreshLayout(sizeMode: cellSizeMode)
     }
     
-    func didSearch(for query: String) {
+    func beginSearch(for query: String) {
         DispatchQueue.global().async {
             let newDisplayedCardIndexes: [Int]
             if query.isEmpty {
@@ -128,7 +127,7 @@ extension ReceivedCardsVM {
         SortingAlertControllerDataModel(title: NSLocalizedString("Sort cards by:", comment: ""), actions: sortActions)
     }
     
-    func didSelectSortMode(_ mode: SortMode) {
+    func setSortMode(_ mode: SortMode) {
         guard sortActions.contains(where: { $0.mode == mode}) else { return }
         selectedSortMode = mode
         DispatchQueue.global().async {

@@ -34,6 +34,8 @@ final class DirectSharingView: AppView {
         return this
     }()
 
+    let cancelButtonView = TransparentButtonView(style: .systemMaterial)
+
     private let cameraPreviewOverlay: UIImageView = {
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 40, weight: .ultraLight)
         let this = UIImageView(image: UIImage(systemName: "viewfinder", withConfiguration: imageConfig))
@@ -63,19 +65,19 @@ final class DirectSharingView: AppView {
         this.isHidden = true
         return this
     }()
-    
-    private let cameraDescriptionLabel: UILabel = {
+
+    private let qrCodeDescriptionLabel: UILabel = {
         let this = UILabel()
-        this.text = NSLocalizedString("Scan the QR code of your business partner's card", comment: "")
+        this.text = NSLocalizedString("Show the card's QR code to your business parnter", comment: "")
         this.textAlignment = .center
         this.numberOfLines = 2
         this.font = .appDefault(size: 13)
         return this
     }()
     
-    private let qrCodeDescriptionLabel: UILabel = {
+    private let cameraDescriptionLabel: UILabel = {
         let this = UILabel()
-        this.text = NSLocalizedString("let them scan your card's QR code.", comment: "")
+        this.text = NSLocalizedString("scan their card's code.", comment: "")
         this.textAlignment = .center
         this.numberOfLines = 2
         this.font = .appDefault(size: 13)
@@ -96,10 +98,16 @@ final class DirectSharingView: AppView {
     }()
 
     private let horizontalOrDivider = HorizontalOrDivider()
+
+    private lazy var dividerStackView: UIStackView = {
+        let this = UIStackView(arrangedSubviews: [qrCodeDescriptionLabel, horizontalOrDivider, cameraDescriptionLabel])
+        this.axis = .vertical
+        return this
+    }()
     
     override func configureSubviews() {
         super.configureSubviews()
-        [cameraPreviewView, cameraPreviewOverlay, horizontalOrDivider, cameraDescriptionLabel, qrCodeDescriptionLabel, qrCodeActivityIndicator, shareCardView].forEach { addSubview($0) }
+        [cameraPreviewView, cameraPreviewOverlay, dividerStackView, qrCodeActivityIndicator, shareCardView, cancelButtonView].forEach { addSubview($0) }
         cameraPreviewView.addSubview(cameraPreviewDisabledStackView)
     }
     
@@ -114,17 +122,11 @@ final class DirectSharingView: AppView {
         cameraPreviewDisabledStackView.constrainHorizontallyToSuperview(sideInset: 24)
 
         horizontalOrDivider.constrainHeight(constant: 20)
-        horizontalOrDivider.constrainHorizontallyToSuperview(sideInset: 40)
+        dividerStackView.constrainHorizontallyToSuperview(sideInset: 20)
         
         cameraPreviewView.constrainHorizontallyToSuperview()
-        cameraPreviewView.constrainTopToSuperviewSafeArea()
-        cameraPreviewView.constrainBottom(to: cameraDescriptionLabel.topAnchor, constant: -16)
-        
-        cameraDescriptionLabel.constrainHorizontallyToSuperview(sideInset: 16)
-        cameraDescriptionLabel.constrainBottom(to: horizontalOrDivider.topAnchor, constant: -4)
-
-        qrCodeDescriptionLabel.constrainHorizontallyToSuperview(sideInset: 16)
-        qrCodeDescriptionLabel.constrainTop(to: horizontalOrDivider.bottomAnchor, constant: 4)
+        cameraPreviewView.constrainBottomToSuperview()
+        cameraPreviewView.constrainTop(to: dividerStackView.bottomAnchor, constant: 16)
 
         qrCodeImageView.constrainWidthEqualTo(qrCodeImageView.heightAnchor)
         businessCardImageView.constrainHeight(to: businessCardImageView.widthAnchor, multiplier: CGSize.businessCardSizeRatio)
@@ -132,8 +134,13 @@ final class DirectSharingView: AppView {
         qrCodeActivityIndicator.constrainCenter(toView: qrCodeImageView)
 
         shareCardView.constrainHorizontallyToSuperview(sideInset: 20)
-        shareCardView.constrainTop(to: qrCodeDescriptionLabel.bottomAnchor, constant: 32)
-        shareCardView.constrainBottomToSuperviewSafeArea(inset: 32)
+        shareCardView.constrainBottom(to: dividerStackView.topAnchor, constant: -32)
+        shareCardView.constrainTopToSuperviewSafeArea(inset: 32)
+
+        cancelButtonView.constrainCenterXToSuperview()
+        cancelButtonView.constrainBottomToSuperviewSafeArea(inset: safeAreaInsets.bottom == 0 ? 16 : 4)
+        cancelButtonView.constrainHeight(constant: 50)
+        cancelButtonView.constrainWidth(constant: 50)
     }
     
     override func layoutSubviews() {
@@ -166,7 +173,7 @@ final class DirectSharingView: AppView {
 }
 
 extension DirectSharingView {
-    final class HorizontalOrDivider: AppView {
+    private final class HorizontalOrDivider: AppView {
         
         private let leadingHorizontalDivider: UIView = {
             let this = UIView()
