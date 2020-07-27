@@ -83,9 +83,15 @@ final class DirectSharingView: AppView {
     }()
 
     private lazy var shareCardView: UIStackView = {
-        let this = UIStackView(arrangedSubviews: [qrCodeImageView, businessCardImageView])
-        this.axis = .vertical
+        let this = UIStackView(arrangedSubviews: [businessCardImageView, qrCodeImageView])
+        this.axis = .horizontal
         this.spacing = 16
+        return this
+    }()
+
+    let qrCodeActivityIndicator: UIActivityIndicatorView = {
+        let this = UIActivityIndicatorView(style: .large)
+        this.hidesWhenStopped = true
         return this
     }()
 
@@ -93,7 +99,7 @@ final class DirectSharingView: AppView {
     
     override func configureSubviews() {
         super.configureSubviews()
-        [cameraPreviewView, cameraPreviewOverlay, horizontalOrDivider, cameraDescriptionLabel, qrCodeDescriptionLabel, shareCardView].forEach { addSubview($0) }
+        [cameraPreviewView, cameraPreviewOverlay, horizontalOrDivider, cameraDescriptionLabel, qrCodeDescriptionLabel, qrCodeActivityIndicator, shareCardView].forEach { addSubview($0) }
         cameraPreviewView.addSubview(cameraPreviewDisabledStackView)
     }
     
@@ -107,7 +113,6 @@ final class DirectSharingView: AppView {
         cameraPreviewDisabledStackView.constrainCenterYToSuperview()
         cameraPreviewDisabledStackView.constrainHorizontallyToSuperview(sideInset: 24)
 
-        horizontalOrDivider.constrainCenterYToSuperview()
         horizontalOrDivider.constrainHeight(constant: 20)
         horizontalOrDivider.constrainHorizontallyToSuperview(sideInset: 40)
         
@@ -121,24 +126,29 @@ final class DirectSharingView: AppView {
         qrCodeDescriptionLabel.constrainHorizontallyToSuperview(sideInset: 16)
         qrCodeDescriptionLabel.constrainTop(to: horizontalOrDivider.bottomAnchor, constant: 4)
 
-        qrCodeImageView.constrainWidth(constant: UIScreen.main.bounds.width - 64)
+        qrCodeImageView.constrainWidthEqualTo(qrCodeImageView.heightAnchor)
+        businessCardImageView.constrainHeight(to: businessCardImageView.widthAnchor, multiplier: CGSize.businessCardSizeRatio)
 
-        businessCardImageView.constrainHeightEqualTo(qrCodeImageView, multiplier: 0.3)
+        qrCodeActivityIndicator.constrainCenter(toView: qrCodeImageView)
 
-        shareCardView.constrainCenterXToSuperview()
-        shareCardView.constrainTop(to: qrCodeDescriptionLabel.bottomAnchor, constant: 16)
-        shareCardView.constrainBottomToSuperviewSafeArea(inset: 16)
+        shareCardView.constrainHorizontallyToSuperview(sideInset: 20)
+        shareCardView.constrainTop(to: qrCodeDescriptionLabel.bottomAnchor, constant: 32)
+        shareCardView.constrainBottomToSuperviewSafeArea(inset: 32)
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        previewLayer?.frame = cameraPreviewView.layer.bounds
+    }
+
+    override func configureColors() {
+        super.configureColors()
+        qrCodeActivityIndicator.color = .appAccent
         cameraPreviewDisabledLabel.textColor = .secondaryLabel
         cameraDescriptionLabel.textColor = .secondaryLabel
         qrCodeDescriptionLabel.textColor = .secondaryLabel
         cameraPreviewView.backgroundColor = .appBackground
         backgroundColor = .appBackgroundSecondary
-
-        previewLayer?.frame = cameraPreviewView.layer.bounds
     }
     
     func setupPreviewLayer(usingSession session: AVCaptureSession) {

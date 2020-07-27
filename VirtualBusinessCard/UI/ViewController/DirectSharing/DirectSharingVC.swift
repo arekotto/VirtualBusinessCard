@@ -20,15 +20,13 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
         super.viewDidLoad()
         setupCaptureSession()
         setupNavigationItem()
-        contentView.goToSettingsButton.addTarget(self, action: #selector(didTapGoToSettingsButton), for: .touchUpInside)
-        contentView.businessCardImageView.kf.setImage(with: viewModel.businessCardFrontImageURL)
+        setupContentView()
         viewModel.delegate = self
         viewModel.fetchData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         if captureSession?.isRunning == false {
             captureSession.startRunning()
         }
@@ -36,14 +34,15 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
         if captureSession?.isRunning == true {
             captureSession.stopRunning()
         }
     }
     
-    func found(code: String) {
-        print(code)
+    private func setupContentView() {
+        contentView.goToSettingsButton.addTarget(self, action: #selector(didTapGoToSettingsButton), for: .touchUpInside)
+        contentView.businessCardImageView.kf.setImage(with: viewModel.businessCardFrontImageURL)
+        contentView.qrCodeActivityIndicator.startAnimating()
     }
     
     private func setupNavigationItem() {
@@ -122,6 +121,7 @@ extension DirectSharingVC: DirectSharingVMDelegate {
     
     func didGenerateQRCode(image: UIImage) {
         contentView.qrCodeImageView.image = image
+        contentView.qrCodeActivityIndicator.stopAnimating()
     }
 }
 

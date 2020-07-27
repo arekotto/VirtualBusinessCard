@@ -154,6 +154,9 @@
 		45D6BF7824169A41008B2498 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D6BF7724169A41008B2498 /* Color.swift */; };
 		45D76DDF24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DDE24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift */; };
 		45D76DE124CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DE024CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift */; };
+		45D76DE424CED0BA008BDDE5 /* GroupSharingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DE324CED0BA008BDDE5 /* GroupSharingVC.swift */; };
+		45D76DE624CED0EA008BDDE5 /* GroupSharingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DE524CED0EA008BDDE5 /* GroupSharingVM.swift */; };
+		45D76DE824CED0FC008BDDE5 /* GroupSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D76DE724CED0FC008BDDE5 /* GroupSharingView.swift */; };
 		45E21C2724CC8FA900013E9E /* PartialUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */; };
 		45E21C2A24CC95CC00013E9E /* EditCardNotesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */; };
 		45E21C2C24CC95F400013E9E /* EditCardNotesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */; };
@@ -345,6 +348,9 @@
 		45D6BF7724169A41008B2498 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		45D76DDE24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompactTagsCollectionView.swift; sourceTree = "<group>"; };
 		45D76DE024CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDirectionalEdgeInsets.swift; sourceTree = "<group>"; };
+		45D76DE324CED0BA008BDDE5 /* GroupSharingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSharingVC.swift; sourceTree = "<group>"; };
+		45D76DE524CED0EA008BDDE5 /* GroupSharingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSharingVM.swift; sourceTree = "<group>"; };
+		45D76DE724CED0FC008BDDE5 /* GroupSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSharingView.swift; sourceTree = "<group>"; };
 		45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialUserViewModel.swift; sourceTree = "<group>"; };
 		45E21C2924CC95CC00013E9E /* EditCardNotesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVC.swift; sourceTree = "<group>"; };
 		45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVM.swift; sourceTree = "<group>"; };
@@ -595,6 +601,7 @@
 		4541B0E224A8B01B00BF8E0E /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				45D76DE224CED0A3008BDDE5 /* GroupSharing */,
 				45E21C2824CC95B600013E9E /* EditCardNotes */,
 				4576993F24CC8205008D3778 /* LoadingPopover */,
 				45CF2F5524CC59D7003F9F91 /* EditCardTags */,
@@ -962,6 +969,16 @@
 				45D445A824C05D7800630C72 /* AcceptCardView.swift */,
 			);
 			path = AcceptCard;
+			sourceTree = "<group>";
+		};
+		45D76DE224CED0A3008BDDE5 /* GroupSharing */ = {
+			isa = PBXGroup;
+			children = (
+				45D76DE324CED0BA008BDDE5 /* GroupSharingVC.swift */,
+				45D76DE524CED0EA008BDDE5 /* GroupSharingVM.swift */,
+				45D76DE724CED0FC008BDDE5 /* GroupSharingView.swift */,
+			);
+			path = GroupSharing;
 			sourceTree = "<group>";
 		};
 		45E21C2824CC95B600013E9E /* EditCardNotes */ = {
@@ -1357,6 +1374,7 @@
 				45C1602C2486484E00806718 /* PersonalCardsView.swift in Sources */,
 				4577CC77248903D70012EDC8 /* AppError.swift in Sources */,
 				453384A024CB0C650020AEF6 /* HapticFeedbackEngine.swift in Sources */,
+				45D76DE824CED0FC008BDDE5 /* GroupSharingView.swift in Sources */,
 				4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */,
 				45D445AB24C05DAF00630C72 /* AcceptCardVM.swift in Sources */,
 				453384A424CB29860020AEF6 /* LoadingPopoverVC.swift in Sources */,
@@ -1377,6 +1395,7 @@
 				457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */,
 				45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */,
 				45B25F232493B33B006DD0F7 /* CardDetailsView.swift in Sources */,
+				45D76DE624CED0EA008BDDE5 /* GroupSharingVM.swift in Sources */,
 				454CF7D324A8D39100074E0D /* UserProfileVM.swift in Sources */,
 				45B25F182493822C006DD0F7 /* UIFont.swift in Sources */,
 				4537CEE523F6D259003602EA /* SceneDelegate.swift in Sources */,
@@ -1425,6 +1444,7 @@
 				45D6BF7824169A41008B2498 /* Color.swift in Sources */,
 				4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */,
 				4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */,
+				45D76DE424CED0BA008BDDE5 /* GroupSharingVC.swift in Sources */,
 				45E62CFC24BCD1B500B96B17 /* DirectCardExchangeMC.swift in Sources */,
 				45C1603624865E7A00806718 /* AppUIState.swift in Sources */,
 				45B25F1C24938499006DD0F7 /* AppColorTheme.swift in Sources */,
