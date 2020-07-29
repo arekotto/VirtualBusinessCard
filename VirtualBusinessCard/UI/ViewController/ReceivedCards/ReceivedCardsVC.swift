@@ -92,7 +92,7 @@ extension ReceivedCardsVC {
     
     func didTapSortButton() {
         let dataModel = viewModel.sortingAlertControllerDataModel()
-        let alert = UIAlertController.accentTinted(title: dataModel.title, message: nil, preferredStyle: .actionSheet)
+        let alert = AppAlertController(title: dataModel.title, message: nil, preferredStyle: .actionSheet)
         dataModel.actions.forEach { action in
             let alertAction = UIAlertAction(title: action.title, style: .default) { _ in
                 self.viewModel.setSortMode(action.mode)

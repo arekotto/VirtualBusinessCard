@@ -31,7 +31,7 @@ class AppViewController<V: AppView, M: AppViewModel>: UIViewController {
 
 extension AppViewController {
     func presentErrorAlert(title: String? = NSLocalizedString("Something Went Wrong", comment: ""), message: String = AppError.localizedUnknownErrorDescription, okActionHandler: ((UIAlertAction) -> Void)? = nil) {
-        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .alert)
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addOkAction(handler: okActionHandler)
         present(alert, animated: true)
     }
@@ -45,7 +45,7 @@ extension AppViewController {
 
     func presentDismissAlert() {
         let title = NSLocalizedString("Are you sure you want to discard?", comment: "")
-        let alert = UIAlertController.accentTinted(title: title, message: nil, preferredStyle: .actionSheet)
+        let alert = AppAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Discard Changes", style: .destructive) { _ in
             self.dismiss(animated: true)
         })

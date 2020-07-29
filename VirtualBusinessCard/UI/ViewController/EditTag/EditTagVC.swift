@@ -74,7 +74,7 @@ extension EditTagVC: NewTagVMDelegate {
         let title = NSLocalizedString("Delete Tag", comment: "")
 
         let message = NSLocalizedString("Are you sure you want to delete this tag?", comment: "")
-        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .actionSheet)
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Delete Tag", style: .destructive) { _ in
             self.viewModel.didConfirmDelete()
         })
@@ -85,7 +85,7 @@ extension EditTagVC: NewTagVMDelegate {
     func presentSaveOfflineAlert() {
         let title = NSLocalizedString("Save Offline", comment: "")
         let message = NSLocalizedString("Your device appears to be disconnected from internet. You can still save the tag offline, and we'll sync it when the connection is restored.", comment: "")
-        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .actionSheet)
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Save Offline", style: .default) { _ in
             self.viewModel.didSelectSaveOffline()
         })

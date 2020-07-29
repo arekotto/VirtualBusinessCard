@@ -133,7 +133,7 @@ extension ScrollableSegmentedControl {
         
         override func layoutSubviews() {
             super.layoutSubviews()
-            selectionIndicator.backgroundColor = .scrollableSegmentedControlSelectionBackground
+            selectionIndicator.backgroundColor = Asset.Colors.scrollableSegmentedControlSelectionBackground.color
             hasPerformedInitialLayout.toggle()
             if !items.isEmpty && (collectionView.indexPathsForSelectedItems ?? []).isEmpty {
                 collectionView.selectItem(at: IndexPath(item: 0), animated: false, scrollPosition: .left)
@@ -243,7 +243,7 @@ extension ScrollableSegmentedControl {
         
         private func updateTitleTextColor() {
             if isSelected {
-                titleLabel.textColor = .scrollableSegmentedControlSelectionText
+                titleLabel.textColor = Asset.Colors.scrollableSegmentedControlSelectionText.color
             } else {
                 titleLabel.textColor = .systemGray
             }

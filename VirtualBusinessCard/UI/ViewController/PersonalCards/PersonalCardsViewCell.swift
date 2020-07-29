@@ -77,11 +77,11 @@ extension PersonalCardsView {
             shareButton.constrainCenterXToSuperview()
         }
         
-        override func layoutSubviews() {
-            super.layoutSubviews()
-            shareButton.tintColor = .appWhite
-            shareButton.layer.shadowColor = UIColor.appAccent.cgColor
-            shareButton.backgroundColor = .appAccent
+        override func configureColors() {
+            super.configureColors()
+            shareButton.tintColor = Asset.Colors.appWhite.color
+            shareButton.layer.shadowColor = Asset.Colors.appAccent.color.cgColor
+            shareButton.backgroundColor = Asset.Colors.appAccent.color
         }
 
         func setDataModel(_ dm: DataModel) {

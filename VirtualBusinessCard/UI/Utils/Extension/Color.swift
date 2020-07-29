@@ -9,8 +9,8 @@
 import SwiftUI
 
 extension Color {
-    static let appAccent = Color(AppColorTheme.appAccent.rawValue)
-    static let appGray = Color(AppColorTheme.appGray.rawValue)
-    static let googleBlue = Color(AppColorTheme.googleBlue.rawValue)
-    static let microsoftBlue = Color(AppColorTheme.microsoftBlue.rawValue)
+    static let appAccent = Color(Asset.Colors.appAccent.color)
+    static let appGray = Color(Asset.Colors.appGray.color)
+    static let googleBlue = Color(Asset.Colors.googleBlue.color)
+    static let microsoftBlue = Color(Asset.Colors.microsoftBlue.color)
 }

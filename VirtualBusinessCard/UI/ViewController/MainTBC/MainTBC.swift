@@ -42,9 +42,9 @@ class MainTBC: UITabBarController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        tabBar.tintColor = .appAccent
-        tabBar.backgroundColor = .appTabBar
-        tabBar.shadowImage = UIColor.barSeparator.as1ptImage()
+        tabBar.tintColor = Asset.Colors.appAccent.color
+        tabBar.backgroundColor = Asset.Colors.appTabBar.color
+        tabBar.shadowImage = Asset.Colors.barSeparator.color.as1ptImage()
     }
     
     private func setupTabBarStyle() {

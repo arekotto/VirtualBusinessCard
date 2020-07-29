@@ -34,9 +34,9 @@ final class CardDetailsView: AppBackgroundView {
         collectionView.constrainToEdgesOfSuperview()
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        collectionView.backgroundColor = .appBackground
+    override func configureColors() {
+        super.configureColors()
+        collectionView.backgroundColor = Asset.Colors.appBackground.color
     }
 }
 

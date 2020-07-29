@@ -60,7 +60,7 @@ extension SettingsVC: UITableViewDataSource, UITableViewDelegate {
 
 extension SettingsVC: SettingsVMDelegate {
     func presentLogoutAlertController(title: String, actionTitle: String) {
-        let alert = UIAlertController.accentTinted(title: title, message: nil, preferredStyle: .actionSheet)
+        let alert = AppAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: actionTitle, style: .destructive) { _ in
             self.viewModel.didSelectLogoutAction()
         })

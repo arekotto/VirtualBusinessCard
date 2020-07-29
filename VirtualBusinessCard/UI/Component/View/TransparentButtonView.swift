@@ -35,7 +35,7 @@ final class TransparentButtonView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = bounds.height / 2
-        button.backgroundColor = UIColor.appGray.withAlphaComponent(0.1)
-        button.tintColor = .appAccent
+        button.backgroundColor = Asset.Colors.appGray.color.withAlphaComponent(0.1)
+        button.tintColor = Asset.Colors.appAccent.color
     }
 }

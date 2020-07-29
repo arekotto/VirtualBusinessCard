@@ -55,9 +55,9 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
         labelStackView.constrainBottomLessOrEqual(to: contentView.bottomAnchor, constant: -10, priority: .defaultHigh)
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        contentView.backgroundColor = .roundedTableViewCellBackground
+    override func configureColors() {
+        super.configureColors()
+        contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
         titleLabel.textColor = .secondaryLabel
     }
     
@@ -68,10 +68,10 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
     
     private func didUpdateSelected() {
         if isSelected {
-            contentView.backgroundColor = .appBackground
+            contentView.backgroundColor = Asset.Colors.appBackground.color
         } else {
             UIView.animate(withDuration: 0.5) {
-                self.contentView.backgroundColor = .roundedTableViewCellBackground
+                self.contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
             }
         }
     }

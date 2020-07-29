@@ -30,7 +30,7 @@ final class DirectSharingView: AppView {
     let goToSettingsButton: UIButton = {
         let this = UIButton()
         this.setTitle(NSLocalizedString("Take me to Settings", comment: ""), for: .normal)
-        this.setTitleColor(.appAccent, for: .normal)
+        this.setTitleColor(Asset.Colors.appAccent.color, for: .normal)
         return this
     }()
 
@@ -150,12 +150,12 @@ final class DirectSharingView: AppView {
 
     override func configureColors() {
         super.configureColors()
-        qrCodeActivityIndicator.color = .appAccent
+        qrCodeActivityIndicator.color = Asset.Colors.appAccent.color
         cameraPreviewDisabledLabel.textColor = .secondaryLabel
         cameraDescriptionLabel.textColor = .secondaryLabel
         qrCodeDescriptionLabel.textColor = .secondaryLabel
-        cameraPreviewView.backgroundColor = .appBackground
-        backgroundColor = .appBackgroundSecondary
+        cameraPreviewView.backgroundColor = Asset.Colors.appBackground.color
+        backgroundColor = Asset.Colors.appBackgroundSecondary.color
     }
     
     func setupPreviewLayer(usingSession session: AVCaptureSession) {
@@ -217,9 +217,9 @@ extension DirectSharingView {
         
         override func layoutSubviews() {
             super.layoutSubviews()
-            leadingHorizontalDivider.backgroundColor = .appGray
-            trailingHorizontalDivider.backgroundColor = .appGray
-            orLabel.textColor = .appGray
+            leadingHorizontalDivider.backgroundColor = Asset.Colors.appGray.color
+            trailingHorizontalDivider.backgroundColor = Asset.Colors.appGray.color
+            orLabel.textColor = Asset.Colors.appGray.color
         }
     }
 }

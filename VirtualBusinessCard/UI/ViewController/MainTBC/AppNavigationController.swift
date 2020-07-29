@@ -17,7 +17,7 @@ class AppNavigationController: UINavigationController {
     var isShadowEnabled = false {
         didSet {
             if isShadowEnabled {
-                navigationBar.shadowImage = UIColor.barSeparator.as1ptImage()
+                navigationBar.shadowImage = Asset.Colors.barSeparator.color.as1ptImage()
                 navigationBar.layer.shadowColor = UIColor.black.cgColor
                 navigationBar.layer.shadowOffset = CGSize(width: 0.0, height: 0)
                 navigationBar.layer.shadowRadius = 2
@@ -52,12 +52,12 @@ class AppNavigationController: UINavigationController {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        navigationBar.barTintColor = .appBackground
-        navigationBar.tintColor = .appAccent
-        toolbar.tintColor = .appAccent
-        view.backgroundColor = .appBackground
+        navigationBar.barTintColor = Asset.Colors.appBackground.color
+        navigationBar.tintColor = Asset.Colors.appAccent.color
+        toolbar.tintColor = Asset.Colors.appAccent.color
+        view.backgroundColor = Asset.Colors.appBackground.color
         if isShadowEnabled {
-            navigationBar.shadowImage = UIColor.barSeparator.as1ptImage()
+            navigationBar.shadowImage = Asset.Colors.barSeparator.color.as1ptImage()
         }
     }
 }

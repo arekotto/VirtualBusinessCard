@@ -87,7 +87,7 @@ extension SettingsVM {
         var dataModel: TitleTableCell.DataModel {
             switch self {
             case .logOut:
-                return TitleTableCell.DataModel(title: NSLocalizedString("Log Out", comment: ""), titleColor: .appAccent)
+                return TitleTableCell.DataModel(title: NSLocalizedString("Log Out", comment: ""), titleColor: Asset.Colors.appAccent.color)
             case .profile:
                 return TitleTableCell.DataModel(title: NSLocalizedString("Profile", comment: ""), accessoryImage: Self.disclosureIndicatorImage)
             case .tags:

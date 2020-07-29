@@ -61,7 +61,7 @@ final class LoadingPopoverView: AppView {
 
     override func configureColors() {
         super.configureColors()
-        activityIndicator.color = .appAccent
-        titleLabel.textColor = .secondaryText
+        activityIndicator.color = Asset.Colors.appAccent.color
+        titleLabel.textColor = Asset.Colors.secondaryText.color
     }
 }

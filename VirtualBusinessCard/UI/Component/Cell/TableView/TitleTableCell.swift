@@ -16,7 +16,7 @@ final class TitleTableCell: AppTableViewCell, Reusable {
             titleLabel.text = dataModel?.title
             if let accessoryImage = dataModel?.accessoryImage {
                 let imageView = UIImageView(image: accessoryImage)
-                imageView.tintColor = .appAccent
+                imageView.tintColor = Asset.Colors.appAccent.color
                 accessoryView = imageView
             } else {
                 accessoryView = nil
@@ -51,8 +51,8 @@ final class TitleTableCell: AppTableViewCell, Reusable {
     override func layoutSubviews() {
         super.layoutSubviews()
         titleLabel.textColor = dataModel?.titleColor
-        selectedBackgroundView?.backgroundColor = .selectedCellBackgroundLight
-        accessoryView?.tintColor = .appAccent
+        selectedBackgroundView?.backgroundColor = Asset.Colors.selectedCellBackgroundLight.color
+        accessoryView?.tintColor = Asset.Colors.appAccent.color
     }
 
     struct DataModel {
@@ -60,7 +60,7 @@ final class TitleTableCell: AppTableViewCell, Reusable {
         let titleColor: UIColor
         let accessoryImage: UIImage?
 
-        init(title: String, titleColor: UIColor = .defaultText, accessoryImage: UIImage? = nil) {
+        init(title: String, titleColor: UIColor = Asset.Colors.defaultText.color, accessoryImage: UIImage? = nil) {
             self.title = title
             self.titleColor = titleColor
             self.accessoryImage = accessoryImage

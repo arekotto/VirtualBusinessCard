@@ -32,7 +32,7 @@ final class SettingsView: AppView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        tableView.backgroundColor = .appBackground
+        tableView.backgroundColor = Asset.Colors.appBackground.color
     }
 }
 

@@ -15,7 +15,6 @@ final class EditTagView: AppBackgroundView {
         this.placeholder = NSLocalizedString("Enter tag name", comment: "")
         this.textAlignment = .center
         this.font = UIFont.appDefault(size: 18, weight: .medium, design: .default)
-        this.tintColor = .appAccent
         return this
     }()
     
@@ -116,11 +115,12 @@ final class EditTagView: AppBackgroundView {
 
     override func configureColors() {
         super.configureColors()
+        nameField.tintColor = Asset.Colors.appAccent.color
         nameLabel.textColor = .secondaryLabel
         colorLabel.textColor = .secondaryLabel
-        editableBackgroundView.backgroundColor = .roundedTableViewCellBackground
-        deleteButton.tintColor = .appAccent
-        deleteButton.backgroundColor = .roundedTableViewCellBackground
+        editableBackgroundView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
+        deleteButton.tintColor = Asset.Colors.appAccent.color
+        deleteButton.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
     }
     
     func setTagColor(_ color: UIColor, animated: Bool = false) {
@@ -167,7 +167,7 @@ extension EditTagView {
             get { super.isSelected }
             set {
                 super.isSelected = newValue
-                contentView.backgroundColor = newValue ? .selectedCellBackgroundStrong : nil
+                contentView.backgroundColor = newValue ? Asset.Colors.selectedCellBackgroundStrong.color : nil
             }
         }
         
@@ -186,7 +186,7 @@ extension EditTagView {
         override func layoutSubviews() {
             super.layoutSubviews()
             colorView.backgroundColor = color
-            contentView.backgroundColor = isSelected ? .selectedCellBackgroundStrong : nil
+            contentView.backgroundColor = isSelected ? Asset.Colors.selectedCellBackgroundStrong.color : nil
             roundCorners()
         }
         

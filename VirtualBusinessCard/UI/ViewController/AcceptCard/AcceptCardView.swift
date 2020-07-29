@@ -72,7 +72,7 @@ final class AcceptCardView: AppBackgroundView {
         let this = UILabel()
         this.text = NSLocalizedString("", comment: "")
         this.font = .appDefault(size: 15, weight: .regular)
-        this.textColor = .secondaryText
+        this.textColor = Asset.Colors.secondaryText.color
         this.numberOfLines = 0
         return this
     }()
@@ -192,9 +192,9 @@ final class AcceptCardView: AppBackgroundView {
 
     override func configureColors() {
         super.configureColors()
-        slideToAcceptLabel.textColor = .appGray
-        slideToAcceptImageView.tintColor = .appGray
-        rejectButton.tintColor = .appAccent
+        slideToAcceptLabel.textColor = Asset.Colors.appGray.color
+        slideToAcceptImageView.tintColor = Asset.Colors.appGray.color
+        rejectButton.tintColor = Asset.Colors.appAccent.color
 
         cardSavedLabel.textColor = .tertiaryLabel
     }

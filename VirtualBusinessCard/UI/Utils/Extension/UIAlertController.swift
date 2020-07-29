@@ -9,20 +9,37 @@
 import UIKit
 
 extension UIAlertController {
-    static func accentTinted(title: String?, message: String?, preferredStyle: UIAlertController.Style) -> UIAlertController {
-        let ac = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
-        ac.view.tintColor = .appAccent
-        return ac
+//    static func accentTinted(title: String?, message: String?, preferredStyle: UIAlertController.Style) -> UIAlertController {
+//        let ac = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
+////        ac.
+//        return ac
+//    }
+//    
+//    func addCancelAction() {
+//        addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+//    }
+//
+//    func addOkAction(handler: ((UIAlertAction) -> Void)? = nil) {
+//        addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default) { action in
+//            handler?(action)
+//        })
+//    }
+}
+
+final class AppAlertController: UIAlertController {
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        view.tintColor = Asset.Colors.appAccent.color
     }
-    
+
     func addCancelAction() {
         addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
     }
-    
+
     func addOkAction(handler: ((UIAlertAction) -> Void)? = nil) {
         addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default) { action in
             handler?(action)
         })
     }
 }
-

@@ -12,6 +12,6 @@ class AppBackgroundView: AppView {
     
     override func configureColors() {
         super.configureColors()
-        backgroundColor = .appBackground
+        backgroundColor = Asset.Colors.appBackground.color
     }
 }

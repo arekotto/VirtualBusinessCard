@@ -49,9 +49,9 @@ final class TagTableCell: AppTableViewCell, Reusable {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        backgroundColor = .roundedTableViewCellBackground
-        selectedBackgroundView?.backgroundColor = .selectedCellBackgroundLight
-        accessoryView?.tintColor = .appAccent
+        backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
+        selectedBackgroundView?.backgroundColor = Asset.Colors.selectedCellBackgroundLight.color
+        accessoryView?.tintColor = Asset.Colors.appAccent.color
     }
 
     private func didSetDataModel() {
@@ -59,7 +59,7 @@ final class TagTableCell: AppTableViewCell, Reusable {
         tagImageView.tintColor = dataModel?.tagColor
         if let accessoryImage = dataModel?.accessoryImage {
             let imageView = UIImageView(image: accessoryImage)
-            imageView.tintColor = .appAccent
+            imageView.tintColor = Asset.Colors.appAccent.color
             accessoryView = imageView
         } else {
             accessoryView = nil

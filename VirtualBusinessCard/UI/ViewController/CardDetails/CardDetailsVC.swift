@@ -75,7 +75,7 @@ private extension CardDetailsVC {
 private extension CardDetailsVC {
     func displayAlertController(with actions: [CardDetailsVM.Action], for indexPath: IndexPath) {
         guard !actions.isEmpty else { return }
-        let alert = UIAlertController.accentTinted(title: nil, message: nil, preferredStyle: .actionSheet)
+        let alert = AppAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         actions.forEach { action in
             let alertAction = UIAlertAction(title: action.title, style: .default) { _ in
                 self.viewModel.didSelect(action: action, at: indexPath)

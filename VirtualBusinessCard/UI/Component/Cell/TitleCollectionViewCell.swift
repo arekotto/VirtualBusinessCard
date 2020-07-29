@@ -10,7 +10,7 @@ import UIKit
 
 final class TitleCollectionCell: AppCollectionViewCell, Reusable {
     
-    private var titleColor: UIColor = .defaultText {
+    private var titleColor: UIColor = Asset.Colors.defaultText.color {
         didSet {
             titleLabel.textColor = titleColor
         }
@@ -49,21 +49,21 @@ final class TitleCollectionCell: AppCollectionViewCell, Reusable {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.backgroundColor = .roundedTableViewCellBackground
+        contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
         titleLabel.textColor = titleColor
     }
     
     func setTitle(_ title: String, color: UIColor) {
         titleLabel.text = title
-        titleColor = .appAccent
+        titleColor = Asset.Colors.appAccent.color
     }
     
     private func didUpdateSelected() {
         if isSelected {
-            contentView.backgroundColor = .appBackground
+            contentView.backgroundColor = Asset.Colors.appBackground.color
         } else {
             UIView.animate(withDuration: 0.5) {
-                self.contentView.backgroundColor = .roundedTableViewCellBackground
+                self.contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
             }
         }
     }

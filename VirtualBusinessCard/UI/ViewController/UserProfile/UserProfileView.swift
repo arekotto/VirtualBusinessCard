@@ -32,7 +32,7 @@ final class UserProfileView: AppBackgroundView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.backgroundColor = .appBackground
+        collectionView.backgroundColor = Asset.Colors.appBackground.color
     }
 
     enum SupplementaryElementKind: String {

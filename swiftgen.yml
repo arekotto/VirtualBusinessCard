@@ -1,0 +1,7 @@
+xcassets:
+  inputs:
+    - VirtualBusinessCard/Resources/Images.xcassets
+    - VirtualBusinessCard/Resources/Colors.xcassets
+  outputs:
+    - templateName: swift5
+      output: VirtualBusinessCard/Generated/Assets.swift

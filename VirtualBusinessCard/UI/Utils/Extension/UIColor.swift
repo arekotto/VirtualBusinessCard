@@ -9,23 +9,6 @@
 import UIKit
 
 extension UIColor {
-    static let appAccent = UIColor(named: AppColorTheme.appAccent.rawValue)!
-    static let appBackground = UIColor(named: AppColorTheme.appBackground.rawValue)!
-    static let appBackgroundSecondary = UIColor(named: AppColorTheme.appBackgroundSecondary.rawValue)!
-    static let appGray = UIColor(named: AppColorTheme.appGray.rawValue)!
-    static let appWhite = UIColor(named: AppColorTheme.appWhite.rawValue)!
-    static let barSeparator = UIColor(named: AppColorTheme.barSeparator.rawValue)!
-    static let appTabBar = UIColor(named: AppColorTheme.appTabBar.rawValue)!
-    static let scrollableSegmentedControlSelectionBackground = UIColor(named:  AppColorTheme.scrollableSegmentedControlSelectionBackground.rawValue)!
-    static let scrollableSegmentedControlSelectionText = UIColor(named:  AppColorTheme.scrollableSegmentedControlSelectionText.rawValue)!
-    static let roundedTableViewCellBackground = UIColor(named:  AppColorTheme.roundedTableViewCellBackground.rawValue)!
-    static let defaultText = UIColor(named:  AppColorTheme.defaultText.rawValue)!
-    static let selectedCellBackgroundLight = UIColor(named:  AppColorTheme.selectedCellBackgroundLight.rawValue)!
-    static let selectedCellBackgroundStrong = UIColor(named:  AppColorTheme.selectedCellBackgroundStrong.rawValue)!
-    static let secondaryText = UIColor(named:  AppColorTheme.secondaryText.rawValue)!
-}
-
-extension UIColor {
     
     /// Converts this `UIColor` instance to a 1x1 `UIImage` instance and returns it.
     ///

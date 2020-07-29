@@ -73,8 +73,8 @@ final class TitleValueImageCollectionViewCell: AppCollectionViewCell, Reusable {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.backgroundColor = .roundedTableViewCellBackground
-        imageView.tintColor = .appAccent
+        contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
+        imageView.tintColor = Asset.Colors.appAccent.color
     }
     
     func setDataModel(_ dataModel: DataModel) {
@@ -85,10 +85,10 @@ final class TitleValueImageCollectionViewCell: AppCollectionViewCell, Reusable {
     
     func didUpdateSelected() {
         if isSelected {
-            contentView.backgroundColor = .appBackground
+            contentView.backgroundColor = Asset.Colors.appBackground.color
         } else {
             UIView.animate(withDuration: 0.5) {
-                self.contentView.backgroundColor = .roundedTableViewCellBackground
+                self.contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
             }
         }
     }

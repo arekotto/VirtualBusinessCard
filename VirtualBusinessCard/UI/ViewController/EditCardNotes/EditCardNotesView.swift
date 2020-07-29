@@ -57,7 +57,7 @@ extension EditCardNotesView {
 
         override func configureColors() {
             super.configureColors()
-            notesTextView.tintColor = .appAccent
+            notesTextView.tintColor = Asset.Colors.appAccent.color
             contentView.backgroundColor = notesTextView.backgroundColor
         }
     }

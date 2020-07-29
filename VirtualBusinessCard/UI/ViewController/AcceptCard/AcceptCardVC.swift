@@ -368,7 +368,7 @@ extension AcceptCardVC: AcceptCardVMDelegate {
     func presentSaveOfflineAlert() {
         let title = NSLocalizedString("Save Offline", comment: "")
         let message = NSLocalizedString("Your device appears to be disconnected from internet. The received business card has been saved offline and will be synced when the connection is restored.", comment: "")
-        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .actionSheet)
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Save Offline", style: .default) { _ in
             self.viewModel.didConfirmSaveOffline()
         })
@@ -383,7 +383,7 @@ extension AcceptCardVC: AcceptCardVMDelegate {
     func presentRejectAlert() {
         let title = NSLocalizedString("Reject Card", comment: "")
         let message = NSLocalizedString("This business card has not been saved to your collection yet. Are you sure you want to reject it?", comment: "")
-        let alert = UIAlertController.accentTinted(title: title, message: message, preferredStyle: .actionSheet)
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Reject Card", comment: ""), style: .destructive) { _ in
             self.viewModel.didConfirmReject()
         })

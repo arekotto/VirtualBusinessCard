@@ -18,7 +18,7 @@ final class RoundedCollectionCell: AppCollectionViewCell, Reusable {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.backgroundColor = .roundedTableViewCellBackground
+        contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
     }
     
     func configureRoundedCorners(mode: RoundedCornersMode) {
