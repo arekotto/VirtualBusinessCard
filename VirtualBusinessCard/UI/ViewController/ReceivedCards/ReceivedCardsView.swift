@@ -17,6 +17,7 @@ final class ReceivedCardsView: AppBackgroundView {
         cv.registerReusableCell(CollectionCell.self)
         cv.backgroundColor = nil
         cv.keyboardDismissMode = .onDrag
+        cv.alwaysBounceVertical = true
         return cv
     }()
     

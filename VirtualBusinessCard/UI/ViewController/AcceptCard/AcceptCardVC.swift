@@ -130,11 +130,25 @@ private extension AcceptCardVC {
             animator.stopAnimation(true)
             contentView.cardSceneView.transform = CGAffineTransform(rotationAngle: 0)
             makeFinishAcceptingAnimator().startAnimation()
-            viewModel.didAcceptCard()
+            viewModel.acceptCard()
         } else {
             animator.isReversed = true
             animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
         }
+    }
+
+    func playRejectAnimation(completion: @escaping () -> Void) {
+        bounceAnimatorsTimer?.invalidate()
+        bounceAnimator?.stopAnimation(true)
+        slideUpAnimator?.stopAnimation(true)
+        slideDownAnimator?.stopAnimation(true)
+        contentView.slideToAcceptStackView.isHidden = true
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            self.contentView.cardSceneViewTopConstraint.constant = self.contentView.startingCardTopConstraintConstant * 4
+            self.contentView.layoutIfNeeded()
+        }, completion: { _ in
+            completion()
+        })
     }
 }
 
@@ -266,15 +280,21 @@ private extension AcceptCardVC {
 private extension AcceptCardVC {
 
     func didTapAddNoteButton() {
-        viewModel.didSelectAddNote()
+        let vc = EditCardNotesVC(viewModel: viewModel.editCardNotesVM())
+        let navVC = AppNavigationController(rootViewController: vc)
+        navVC.presentationController?.delegate = vc
+        present(navVC, animated: true)
     }
 
     func didTapAddTagButton() {
-        viewModel.didSelectAddTag()
+        let vc = EditCardTagsVC(viewModel: viewModel.editCardTagsVM())
+        let navVC = AppNavigationController(rootViewController: vc)
+        navVC.presentationController?.delegate = vc
+        present(navVC, animated: true)
     }
 
     func didTapDoneButton() {
-        viewModel.didSelectDone()
+        viewModel.finishAcceptingProcess()
     }
 
     func didTapRejectButton() {
@@ -282,14 +302,16 @@ private extension AcceptCardVC {
         let message = NSLocalizedString("This business card has not been saved to your collection yet. Are you sure you want to reject it?", comment: "")
         let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Reject Card", comment: ""), style: .destructive) { _ in
-            self.viewModel.didConfirmReject()
+            self.playRejectAnimation {
+                self.dismissSelf()
+            }
         })
         alert.addCancelAction()
         present(alert, animated: true)
     }
 
     func didTapShareAgainButton() {
-        viewModel.didSelectShareAgain()
+        viewModel.shareCardAgain()
     }
 
     func playBounceAnimation() {
@@ -366,20 +388,6 @@ extension AcceptCardVC: AcceptCardVMDelegate {
         contentView.tagsCollectionView.reloadData()
     }
 
-    func presentEditCardNotesVC(viewModel: EditCardNotesVM) {
-        let vc = EditCardNotesVC(viewModel: viewModel)
-        let navVC = AppNavigationController(rootViewController: vc)
-        navVC.presentationController?.delegate = vc
-        present(navVC, animated: true)
-    }
-
-    func presentEditCardTagsVC(viewModel: EditCardTagsVM) {
-        let vc = EditCardTagsVC(viewModel: viewModel)
-        let navVC = AppNavigationController(rootViewController: vc)
-        navVC.presentationController?.delegate = vc
-        present(navVC, animated: true)
-    }
-
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         contentView.cardSceneView.updateMotionData(motion, over: timeFrame)
     }
@@ -392,7 +400,7 @@ extension AcceptCardVC: AcceptCardVMDelegate {
         )
         let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Save Offline", style: .default) { _ in
-            self.viewModel.didConfirmSaveOffline()
+            self.dismissSelf()
         })
         alert.addAction(UIAlertAction(title: NSLocalizedString("Go Back", comment: ""), style: .cancel))
         present(alert, animated: true)

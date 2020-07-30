@@ -16,8 +16,6 @@ protocol AcceptCardVMDelegate: class {
     func dismissSelf()
     func popSelf()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
-    func presentEditCardTagsVC(viewModel: EditCardTagsVM)
-    func presentEditCardNotesVC(viewModel: EditCardNotesVM)
     func refreshTags()
     func refreshNotes()
 }
@@ -81,7 +79,7 @@ extension AcceptCardVM {
         )
     }
 
-    func didAcceptCard() {
+    func acceptCard() {
         acceptedCard.toggle()
         card.save(in: receivedCardsCollectionReference) { [weak self] result in
             switch result {
@@ -94,19 +92,7 @@ extension AcceptCardVM {
         }
     }
 
-    func didSelectAddNote() {
-        let vm = EditCardNotesVM(notes: card.notes)
-        vm.editingDelegate = self
-        delegate?.presentEditCardNotesVC(viewModel: vm)
-    }
-
-    func didSelectAddTag() {
-        let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
-        vm.selectionDelegate = self
-        delegate?.presentEditCardTagsVC(viewModel: vm)
-    }
-
-    func didSelectDone() {
+    func finishAcceptingProcess() {
         guard hasAcceptedCard else { return }
         guard hasSavedCardToCollection else {
             delegate?.presentSaveOfflineAlert()
@@ -115,7 +101,7 @@ extension AcceptCardVM {
         delegate?.dismissSelf()
     }
 
-    func didSelectShareAgain() {
+    func shareCardAgain() {
         guard hasAcceptedCard else { return }
         guard hasSavedCardToCollection else {
             delegate?.presentSaveOfflineAlert()
@@ -124,12 +110,16 @@ extension AcceptCardVM {
         delegate?.popSelf()
     }
 
-    func didConfirmReject() {
-        delegate?.dismissSelf()
+    func editCardNotesVM() -> EditCardNotesVM {
+        let vm = EditCardNotesVM(notes: card.notes)
+        vm.editingDelegate = self
+        return vm
     }
 
-    func didConfirmSaveOffline() {
-        delegate?.dismissSelf()
+    func editCardTagsVM() -> EditCardTagsVM {
+        let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
+        vm.selectionDelegate = self
+        return vm
     }
 }
 
