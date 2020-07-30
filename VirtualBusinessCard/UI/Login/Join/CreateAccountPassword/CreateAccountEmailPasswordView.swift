@@ -18,7 +18,11 @@ struct CreateAccountEmailPasswordView: AppSwiftUIView {
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(trailing: closeButton)
         .alert(isPresented: $viewModel.isErrorAlertPresented) {
-            Alert(title: Text(""), message: Text(viewModel.createAccountErrorMessage), dismissButton: .default(Text(viewModel.text.createAccountAlertDismiss), action: viewModel.dismissAlertButtonTapped))
+            Alert(
+                title: Text(""),
+                message: Text(viewModel.createAccountErrorMessage),
+                dismissButton: .default(Text(viewModel.text.createAccountAlertDismiss), action: viewModel.dismissAlertButtonTapped)
+            )
         }
     }
     
@@ -107,6 +111,3 @@ struct CreateAccountPasswordView_Previews: PreviewProvider {
         }
     }
 }
-
-
-

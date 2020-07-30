@@ -40,9 +40,9 @@ final class UserSetupViewModel: AppSwiftUIViewModel {
             // Give the previous alert some time to disappear
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 switch result {
-                case .failure(_):
+                case .failure:
                     self.isErrorAlertPresented = true
-                case .success(_):
+                case .success:
                     self.title = self.text.setupCompletedTitle
                     self.subtitle = ""
                     self.isAnimatingActivityIndicator = false

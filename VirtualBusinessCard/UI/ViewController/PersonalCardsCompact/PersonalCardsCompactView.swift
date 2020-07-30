@@ -29,7 +29,6 @@ final class PersonalCardsCompactView: AppBackgroundView {
         collectionView.constrainToEdgesOfSuperview()
     }
 
-
     private static func makeCollectionViewExtendedLayout() -> UICollectionViewLayout {
 
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
@@ -57,7 +56,6 @@ final class PersonalCardsCompactView: AppBackgroundView {
 
             cardView.layer.cornerRadius = 16
             cardView.clipsToBounds = true
-
 
             [cardView].forEach { innerContentView.addSubview($0) }
             contentView.addSubview(innerContentView)

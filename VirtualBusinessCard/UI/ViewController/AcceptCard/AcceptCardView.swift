@@ -178,7 +178,6 @@ final class AcceptCardView: AppBackgroundView {
         rejectButton.constrainBottomToSuperviewSafeArea(inset: 20)
         rejectButton.constrainHeight(constant: 50)
 
-
         doneButtonView.constrainTopToSuperview(inset: 16)
         doneButtonView.constrainTrailingToSuperview(inset: 16)
         doneButtonView.constrainHeight(constant: 44)

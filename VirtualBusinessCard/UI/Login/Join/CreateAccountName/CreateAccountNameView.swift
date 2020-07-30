@@ -15,7 +15,10 @@ struct CreateAccountNameView: AppSwiftUIView {
     
     var body: some View {
         VStack {
-            NavigationLink(destination: CreateAccountEmailPasswordView(viewModel: viewModel.createAccountEmailPasswordViewModel()), tag: .createAccountEmailPassword, selection: $viewModel.navSelection) {
+            NavigationLink(
+                destination: CreateAccountEmailPasswordView(viewModel: viewModel.createAccountEmailPasswordViewModel()),
+                tag: .createAccountEmailPassword,
+                selection: $viewModel.navSelection) {
                 EmptyView()
             }
             bodyContent
@@ -111,5 +114,3 @@ struct CreateAccountNameView_Previews: PreviewProvider {
         }
     }
 }
-
-

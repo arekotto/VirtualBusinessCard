@@ -37,7 +37,7 @@ extension Firestoreable {
         self.init(dictionary: userData)
     }
     
-    init?(dictionary: [String : Any]) {
+    init?(dictionary: [String: Any]) {
         guard let json = try? JSONSerialization.data(withJSONObject: dictionary) else { return nil}
         guard let decodedBusinessCard = try? JSONDecoder().decode(Self.self, from: json) else { return nil }
         self = decodedBusinessCard

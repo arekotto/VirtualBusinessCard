@@ -5,12 +5,12 @@
 //  Created by Arek Otto on 06/04/2020.
 //  Copyright © 2020 Arek Otto. All rights reserved.
 //
-
+/*
 import UIKit
 import CoreHaptics
 
 class DisplayVC: UIViewController {
-    
+
     lazy var holderView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -19,25 +19,25 @@ class DisplayVC: UIViewController {
         view.addGestureRecognizer(panGesture)
         return view
     }()
-    
+
     let cardVC = CardView(imageName: "ExampleBC")
     let cardVC2 = CardView(imageName: "ExampleBCBack")
-    
+
     lazy var currentCard = cardVC
 
 //    lazy var actionButton: UIBarButtonItem = {
 //        UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(action))
 //    }()
-    
+
     var animator : UIViewPropertyAnimator!
     var animationDuration : TimeInterval = 3
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
 //        navigationItem.rightBarButtonItem = actionButton
-        
-        
+
+
         [cardVC2, cardVC].forEach { cardView in
             holderView.addSubview(cardView)
             NSLayoutConstraint.activate([
@@ -48,7 +48,7 @@ class DisplayVC: UIViewController {
             ])
         }
         cardVC2.isHidden = true
-        
+
         view.addSubview(holderView)
         NSLayoutConstraint.activate([
             holderView.heightAnchor.constraint(lessThanOrEqualToConstant: 250),
@@ -57,13 +57,13 @@ class DisplayVC: UIViewController {
             holderView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             holderView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-        
+
     }
-    
+
     func loadAnimator() -> UIViewPropertyAnimator {
         let fromView = currentCard
         let toView = currentCard == cardVC ? cardVC2 : cardVC
-        
+
         toView.isHidden = false
 
         guard let snapshot = toView.snapshotView(afterScreenUpdates: true) else {
@@ -78,7 +78,7 @@ class DisplayVC: UIViewController {
         // 3
 //        snapshot.layer.cornerRadius = 10//CardViewController.cardCornerRadius
 //        snapshot.layer.masksToBounds = true
-        
+
         snapshot.layer.shadowOffset = CGSize(width: 4, height: 4)
         snapshot.layer.shadowRadius = 8
         snapshot.layer.shadowOpacity = 0
@@ -95,10 +95,10 @@ class DisplayVC: UIViewController {
 //        let duration = transitionDuration(using: transitionContext)
 
         // 1
-        
+
         let timeParameter = UICubicTimingParameters(animationCurve: .linear)
         let animator = UIViewPropertyAnimator(duration: animationDuration, timingParameters: timeParameter)
-        
+
         animator.addAnimations {
             UIView.animateKeyframes(withDuration: 3, delay: 0, options: .calculationModeCubic,
                 animations: {
@@ -133,28 +133,28 @@ class DisplayVC: UIViewController {
                 fromView.isHidden = true
 
                 self.currentCard = toView
-                
+
             case .start:
                 fromView.isHidden = false
                 toView.isHidden = true
-                
+
             default:
                 return
             }
 
             snapshot.removeFromSuperview()
             fromView.layer.transform = CATransform3DIdentity
-            
+
             self.isFinishing = false
             self.animator = nil
         }
-                
+
         return animator
 //        animator.pausesOnCompletion = true
     }
-     
+
     var isFinishing = false
-    
+
     var engine: CHHapticEngine?
     var continuousPlayer: CHHapticAdvancedPatternPlayer!
 
@@ -164,18 +164,18 @@ class DisplayVC: UIViewController {
 
 @objc extension DisplayVC {
     private func pan(_ panGesture : UIPanGestureRecognizer){
-        
+
         guard !isFinishing else { return }
-        
+
         switch panGesture.state{
         case .began:
 
             animator = loadAnimator()
-            
+
             animator.startAnimation()
             animator.pauseAnimation()
-            
-            
+
+
             guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
 
             do {
@@ -184,25 +184,25 @@ class DisplayVC: UIViewController {
             } catch {
                 print("There was an error creating the engine: \(error.localizedDescription)")
             }
-            
+
             // create a dull, strong haptic
             let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.1)
             let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
 
-            
+
             guard let url = Bundle.main.url(forResource: "rec", withExtension: "wav") else {
                 return
             }
             let resourceId = (try! engine?.registerAudioResource(url, options: [:]))!
 
             // create a continuous haptic event starting immediately and lasting one second
-            
+
             var events = [CHHapticEvent(eventType: .hapticContinuous, parameters: [sharpness, intensity], relativeTime: 0, duration: 1)]
-            
+
             for i in 0..<100 {
                 events.append(CHHapticEvent(audioResourceID: resourceId, parameters: [], relativeTime: TimeInterval(i/4), duration: 0.25))
             }
-    
+
             // now attempt to play the haptic, with our fading parameter
             do {
                 let pattern = try CHHapticPattern(events: events, parameterCurves: [])
@@ -213,7 +213,7 @@ class DisplayVC: UIViewController {
                 // add your own meaningful error handling here!
                 print(error.localizedDescription)
             }
-            
+
             break
         case .changed:
             let complete = panGesture.translation(in: holderView).x / holderView.bounds.width
@@ -223,24 +223,24 @@ class DisplayVC: UIViewController {
 //            let intensityParameter = CHHapticDynamicParameter(parameterID: .hapticIntensityControl, value: final, relativeTime: 0)
 //            let intensityParameter2 = CHHapticDynamicParameter(parameterID: .audioBrightnessControl, value: Float(complete), relativeTime: 0)
 
-            
+
             // Send dynamic parameters to the haptic player.
             do {
 //                try continuousPlayer.sendParameters([intensityParameter], atTime: 0)
             } catch let error {
                 print("Dynamic Parameter Error: \(error)")
             }
-            
+
         case .ended:
-            
+
             isFinishing = true
-            
+
             do {
                 try continuousPlayer.stop(atTime: CHHapticTimeImmediate)
             } catch let error {
                 print("Error stopping the continuous haptic player: \(error)")
             }
-            
+
             if animator.fractionComplete > 0.5 {
                 animator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
             } else {
@@ -252,3 +252,4 @@ class DisplayVC: UIViewController {
         }
     }
 }
+*/

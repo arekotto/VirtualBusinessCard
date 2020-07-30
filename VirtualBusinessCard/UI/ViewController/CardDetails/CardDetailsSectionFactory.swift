@@ -61,7 +61,7 @@ struct CardDetailsSectionFactory {
 
         let editableData: [(dataModel: TitleValueImageCollectionViewCell.DataModel, actions: [Action])] = [
             (tagsItem, [.editTags]),
-            (notesItem, hasNotes ? [.copy, .editNotes] : [.editNotes]),
+            (notesItem, hasNotes ? [.copy, .editNotes] : [.editNotes])
         ]
 
         return Section(items: editableData.map { Item(dataModel: .dataCellImage($0.dataModel), actions: $0.actions) })

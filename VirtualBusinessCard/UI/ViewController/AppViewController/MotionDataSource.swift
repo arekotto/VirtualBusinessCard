@@ -16,7 +16,7 @@ protocol MotionDataSource: class {
 extension MotionDataSource {
     func startUpdatingMotionData(in interval: TimeInterval) {
         motionManager.deviceMotionUpdateInterval = interval
-        motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
+        motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, _ in
             guard let self = self, let motion = motion else { return }
             self.didReceiveMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
         }

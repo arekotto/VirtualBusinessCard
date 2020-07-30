@@ -179,7 +179,7 @@ extension GroupedCardsVM {
     func item(for indexPath: IndexPath) -> GroupedCardsView.CollectionCell.DataModel {
         let groupIndex = displayedGroupIndexes[indexPath.row]
         let group = groups[groupIndex]
-        let cardsInGroup = cards.filter{group.cardIDs.contains($0.id)}
+        let cardsInGroup = cards.filter { group.cardIDs.contains($0.id) }
 
         return GroupedCardsView.CollectionCell.DataModel(
             frontImageURL: cardsInGroup[optional: 0]?.cardData.frontImage.url,
@@ -326,4 +326,3 @@ extension GroupedCardsVM {
         }()
     }
 }
-

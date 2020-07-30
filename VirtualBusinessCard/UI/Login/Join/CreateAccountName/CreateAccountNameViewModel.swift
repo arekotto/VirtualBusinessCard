@@ -54,7 +54,7 @@ extension CreateAccountNameViewModel {
 }
 
 extension CreateAccountNameViewModel {
-    enum Navigation  {
+    enum Navigation {
         case createAccountEmailPassword
     }
 }

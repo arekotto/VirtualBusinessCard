@@ -38,4 +38,3 @@ class AppView: UIView {
 
     func configureColors() { }
 }
-

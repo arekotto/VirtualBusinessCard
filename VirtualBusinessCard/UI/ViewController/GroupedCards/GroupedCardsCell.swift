@@ -148,18 +148,22 @@ extension GroupedCardsView {
                 }
             }
         }
-        
-        struct DataModel {
-            let frontImageURL: URL?
-            let middleImageURL: URL?
-            let backImageURL: URL?
-            
-            let title: String
-            let subtitle: String
-            let cardCountText: String
+    }
+}
 
-            let tagColor: UIColor?
-        }
+// MARK: - DataModel
+
+extension GroupedCardsView.CollectionCell {
+    struct DataModel {
+        let frontImageURL: URL?
+        let middleImageURL: URL?
+        let backImageURL: URL?
+
+        let title: String
+        let subtitle: String
+        let cardCountText: String
+
+        let tagColor: UIColor?
     }
 }
 

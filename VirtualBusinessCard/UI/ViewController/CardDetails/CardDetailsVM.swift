@@ -49,7 +49,7 @@ final class CardDetailsVM: PartialUserViewModel {
     
     private func didSetDelegate() {
         if delegate != nil {
-            motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, error in
+            motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, _ in
                 guard let self = self, let motion = motion else { return }
                 self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
             }
@@ -57,7 +57,36 @@ final class CardDetailsVM: PartialUserViewModel {
             motionManager.stopDeviceMotionUpdates()
         }
     }
+
+    private func getActionValue(from selectedItem: Item) -> String {
+        switch selectedItem.dataModel {
+        case .dataCell(let dm): return dm.value ?? ""
+        case .dataCellImage(let dm): return dm.value ?? ""
+        case .cardImagesCell: return ""
+        }
+    }
+
+    private func performAction(_ action: Action, actionValue: String) {
+        guard let card = self.card else { return }
+
+        switch action {
+        case .call: Self.openPhone(with: actionValue)
+        case .sendEmail: delegate?.presentSendEmailViewController(recipient: actionValue)
+        case .visitWebsite: Self.openBrowser(with: actionValue)
+        case .navigate: Self.openMaps(with: actionValue, card: card)
+        case .copy: UIPasteboard.general.string = actionValue
+        case .editNotes:
+            let vm = EditCardNotesVM(notes: card.notes)
+            vm.editingDelegate = self
+            delegate?.presentEditCardNotesVC(viewModel: vm)
+        case .editTags:
+            let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
+            vm.selectionDelegate = self
+            delegate?.presentEditCardTagsVC(viewModel: vm)
+        }
+    }
 }
+
 // MARK: - Public API
 
 extension CardDetailsVM {
@@ -88,51 +117,38 @@ extension CardDetailsVM {
     func didSelect(action: Action, at indexPath: IndexPath) {
         let selectedItem = item(at: indexPath)
         guard selectedItem.actions.contains(action) else { return }
-        guard let card = self.card else { return }
 
-        var actionValue = ""
-        
-        switch selectedItem.dataModel {
-        case .dataCell(let dm): actionValue = dm.value ?? ""
-        case .dataCellImage(let dm): actionValue = dm.value ?? ""
-        case .cardImagesCell(_): actionValue = ""
-        }
+        let actionValue = getActionValue(from: selectedItem)
         
         guard !actionValue.isEmpty else { return }
-        
-        switch action {
-        case .call:
-            guard let number = URL(string: "tel://" + actionValue) else { return }
-            UIApplication.shared.open(number)
-        case .sendEmail:
-            delegate?.presentSendEmailViewController(recipient: actionValue)
-        case .visitWebsite:
-            if !actionValue.starts(with: "http") {
-                actionValue = "http://" + actionValue
-            }
-            guard let url = URL(string: actionValue) else { return }
-            UIApplication.shared.open(url)
-        case .navigate:
-            let address = card.addressCondensed
-            guard !address.isEmpty else { return }
-            guard let addressEncoded = address.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
-            guard let url = URL(string: "http://maps.apple.com/?address=" + addressEncoded) else { return }
-            UIApplication.shared.open(url)
-        case .copy:
-            UIPasteboard.general.string = actionValue
-        case .editNotes:
-            let vm = EditCardNotesVM(notes: card.notes)
-            vm.editingDelegate = self
-            delegate?.presentEditCardNotesVC(viewModel: vm)
-        case .editTags:
-            let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
-            vm.selectionDelegate = self
-            delegate?.presentEditCardTagsVC(viewModel: vm)
-        }
+        performAction(action, actionValue: actionValue)
     }
     
     func didTapCloseButton() {
         delegate?.dismissSelf()
+    }
+}
+
+// MARK: - Static Action Performers
+
+extension CardDetailsVM {
+    private static func openPhone(with actionValue: String) {
+        guard let number = URL(string: "tel://" + actionValue) else { return }
+        UIApplication.shared.open(number)
+    }
+
+    private static func openMaps(with actionValue: String, card: EditReceivedBusinessCardMC) {
+        let address = card.addressCondensed
+        guard !address.isEmpty else { return }
+        guard let addressEncoded = address.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
+        guard let url = URL(string: "http://maps.apple.com/?address=" + addressEncoded) else { return }
+        UIApplication.shared.open(url)
+    }
+
+    private static func openBrowser(with actionValue: String) {
+        let urlString = actionValue.starts(with: "http") ? "http://\(actionValue)" : actionValue
+        guard let url = URL(string: urlString) else { return }
+        UIApplication.shared.open(url)
     }
 }
 
@@ -239,7 +255,7 @@ extension CardDetailsVM: EditCardTagsVMSelectionDelegate {
         card.tagIDs = tags.map(\.id)
         card.save(in: receivedCardCollectionReference, fields: [.tagIDs]) { [weak self] result in
             switch result {
-            case .success(): return
+            case .success: return
             case .failure(let error):
                 print(error.localizedDescription)
                 let errorMessage = AppError.localizedUnknownErrorDescription
@@ -258,7 +274,7 @@ extension CardDetailsVM: EditCardNotesVMEditingDelegate {
         card.notes = editedNotes
         card.save(in: receivedCardCollectionReference, fields: [.notes]) { [weak self] result in
             switch result {
-            case .success(): return
+            case .success: return
             case .failure(let error):
                 print(error.localizedDescription)
                 let errorMessage = AppError.localizedUnknownErrorDescription
@@ -268,7 +284,6 @@ extension CardDetailsVM: EditCardNotesVMEditingDelegate {
         makeSections()
     }
 }
-
 
 // MARK: - Section, Item
 

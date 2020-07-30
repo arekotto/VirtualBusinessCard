@@ -126,7 +126,6 @@ extension CardDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate {
         return cell
     }
 
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         displayAlertController(with: viewModel.item(at: indexPath).actions, for: indexPath)
@@ -170,7 +169,7 @@ extension CardDetailsVC: CardDetailsVMDelegate {
             dismiss(animated: false)
             return
         }
-        cell.condenseWithAnimation() {
+        cell.condenseWithAnimation {
             self.dismiss(animated: true)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {

@@ -23,17 +23,17 @@ extension UIColor {
     }
     
     convenience init?(hex: String) {
-        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
-        if (cString.hasPrefix("#")) {
+        if cString.hasPrefix("#") {
             cString.remove(at: cString.startIndex)
         }
         
-        if ((cString.count) != 6) {
+        if cString.count != 6 {
             return nil
         }
         
-        var rgbValue:UInt64 = 0
+        var rgbValue: UInt64 = 0
         Scanner(string: cString).scanHexInt64(&rgbValue)
         
         self.init(
@@ -45,16 +45,16 @@ extension UIColor {
     }
     
     func toHexString() -> String {
-        var r:CGFloat = 0
-        var g:CGFloat = 0
-        var b:CGFloat = 0
-        var a:CGFloat = 0
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
         
         getRed(&r, green: &g, blue: &b, alpha: &a)
         
-        let rgb:Int = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
+        let rgb = (Int)(r*255)<<16 | (Int)(g*255)<<8 | (Int)(b*255)<<0
         
-        return NSString(format:"#%06x", rgb) as String
+        return NSString(format: "#%06x", rgb) as String
     }
     
     convenience init(red: Int, green: Int, blue: Int) {

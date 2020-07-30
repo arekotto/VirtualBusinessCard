@@ -71,14 +71,14 @@ extension TagsVM {
     
     func didApproveEditing() {
         DispatchQueue.global().async {
-            let editableTags = self.tags.map{ $0.editBusinessCardTagMC() }
+            let editableTags = self.tags.map { $0.editBusinessCardTagMC() }
             editableTags.enumerated().forEach { idx, tag in
                 tag.priorityIndex = idx
             }
             editableTags.forEach {
                 $0.save(in: self.tagsCollectionReference, fields: [.priorityIndex])
             }
-            let newTags = editableTags.map{ $0.businessCardTagMC() }
+            let newTags = editableTags.map { $0.businessCardTagMC() }
             DispatchQueue.main.async {
                 self.tags = newTags
                 self.delegate?.refreshData()

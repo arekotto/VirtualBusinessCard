@@ -53,7 +53,7 @@ extension CardDetailsView {
 
 private extension CardDetailsView {
     static func createCollectionViewLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { sectionIndex, layoutEnvironment -> NSCollectionLayoutSection? in
+        UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
             sectionIndex == 0 ? createCollectionViewLayoutCardImagesSection() : createCollectionViewLayoutDetailsSection()
         }
     }

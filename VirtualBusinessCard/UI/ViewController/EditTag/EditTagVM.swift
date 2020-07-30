@@ -163,7 +163,7 @@ extension EditTagVM {
         var encounteredError: Error?
         tag.save(in: tagsCollectionReference) { result in
             switch result {
-            case .success(): return
+            case .success: return
             case .failure(let error):
                 print(error.localizedDescription)
                 encounteredError = error
@@ -173,7 +173,7 @@ extension EditTagVM {
         // give firebase some time to return an error if something is very wrong
         // otherwise data will be stored in cache if offline
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            if let _ = encounteredError {
+            if encounteredError != nil {
                 let errorTitle = AppError.localizedUnknownErrorDescription
                 self.delegate?.presentErrorAlert(message: errorTitle)
             } else {

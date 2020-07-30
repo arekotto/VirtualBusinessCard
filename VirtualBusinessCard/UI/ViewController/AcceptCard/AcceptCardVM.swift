@@ -85,7 +85,7 @@ extension AcceptCardVM {
         acceptedCard.toggle()
         card.save(in: receivedCardsCollectionReference) { [weak self] result in
             switch result {
-            case .success(): self?.hasSavedCardToCollection = true
+            case .success: self?.hasSavedCardToCollection = true
             case .failure(let error):
                 print(error.localizedDescription)
                 let errorMessage = AppError.localizedUnknownErrorDescription
@@ -144,7 +144,7 @@ extension AcceptCardVM: EditCardTagsVMSelectionDelegate {
         card.tagIDs = tags.map(\.id)
         card.save(in: receivedCardsCollectionReference, fields: [.tagIDs]) { [weak self] result in
             switch result {
-            case .success(): return
+            case .success: return
             case .failure(let error):
                 print(error.localizedDescription)
                 let errorMessage = AppError.localizedUnknownErrorDescription
@@ -162,7 +162,7 @@ extension AcceptCardVM: EditCardNotesVMEditingDelegate {
         card.notes = editedNotes
         card.save(in: receivedCardsCollectionReference, fields: [.notes]) { [weak self] result in
             switch result {
-            case .success(): return
+            case .success: return
             case .failure(let error):
                 print(error.localizedDescription)
                 let errorMessage = AppError.localizedUnknownErrorDescription

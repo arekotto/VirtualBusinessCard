@@ -59,6 +59,3 @@ class MainTBC: UITabBarController {
 extension MainTBC: AppUIStateRoot {
     var appUIState: AppUIState { .appContent }
 }
-
-
-

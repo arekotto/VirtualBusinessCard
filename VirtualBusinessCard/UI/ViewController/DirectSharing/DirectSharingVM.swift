@@ -60,7 +60,7 @@ final class DirectSharingVM: CompleteUserViewModel, MotionDataSource {
 private extension DirectSharingVM {
     static func randomAccessToken(length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return String((0 ..< length).map{ _ in letters.randomElement()! })
+        return String((0 ..< length).map { _ in letters.randomElement()! })
     }
 }
 
@@ -136,9 +136,9 @@ extension DirectSharingVM {
         delegate?.presentLoadingAlert(viewModel: LoadingPopoverVM(title: NSLocalizedString("Sharing card", comment: "")))
 
         user?.addCardExchangeAccessToken(exchange.accessToken)
-        user?.save() { [weak self] result in
+        user?.save { [weak self] result in
             switch result {
-            case .failure(_): self?.delegate?.didFailReadingQRCode()
+            case .failure: self?.delegate?.didFailReadingQRCode()
             case .success:
                 guard let joinedExchangeDoc = self?.directCardExchangeReference.document(exchange.exchangeID) else {
                     self?.delegate?.didFailReadingQRCode()
@@ -243,4 +243,3 @@ private extension DirectSharingVM {
         var accessToken: String
     }
 }
-

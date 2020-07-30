@@ -75,10 +75,10 @@ extension PersonalCardsCompactVC: PersonalCardsVMlDelegate {
     }
 
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        let cells = contentView.collectionView.visibleCells as! [PersonalCardsCompactView.CollectionCell]
-        cells.forEach { cell in
+//        let cells = contentView.collectionView.visibleCells as! [PersonalCardsCompactView.CollectionCell]
+//        cells.forEach { cell in
 //            cell.updateMotionData(motion, over: timeFrame)
-        }
+//        }
     }
 
     func presentCardDetails(viewModel: CardDetailsVM) {

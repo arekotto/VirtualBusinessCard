@@ -19,46 +19,48 @@ extension GroupedCardsVM {
             self.groupingValue = groupingValue
             self.cardIDs = cardIDs
         }
-        
-        enum GroupingValue {
-            case none
-            case some(value: String)
-        }
-        
-        enum GroupingProperty: Int, Hashable {
-            case tag
-            case company
-            case dateDay
-            case dateMonth
-            case dateYear
-            //        case location
-            
-            var localizedName: String {
-                switch self {
-                case .tag: return NSLocalizedString("Tag", comment: "")
-                case .dateDay: return NSLocalizedString("Day", comment: "")
-                //            case .location: return NSLocalizedString("Location", comment: "")
-                case .company: return NSLocalizedString("Company", comment: "")
-                case .dateMonth: return NSLocalizedString("Month", comment: "")
-                case .dateYear: return NSLocalizedString("Year", comment: "")
-                }
-            }
-            
-            var defaultSorting: Sorting {
-                switch self {
-                case .tag: return .ascending
-                case .company: return .ascending
-                case .dateDay: return .descending
-                case .dateMonth: return .descending
-                case .dateYear: return .descending
-                }
+    }
+}
+
+extension GroupedCardsVM.CardGroup {
+    enum GroupingValue {
+        case none
+        case some(value: String)
+    }
+
+    enum GroupingProperty: Int, Hashable {
+        case tag
+        case company
+        case dateDay
+        case dateMonth
+        case dateYear
+        //        case location
+
+        var localizedName: String {
+            switch self {
+            case .tag: return NSLocalizedString("Tag", comment: "")
+            case .dateDay: return NSLocalizedString("Day", comment: "")
+            //            case .location: return NSLocalizedString("Location", comment: "")
+            case .company: return NSLocalizedString("Company", comment: "")
+            case .dateMonth: return NSLocalizedString("Month", comment: "")
+            case .dateYear: return NSLocalizedString("Year", comment: "")
             }
         }
-        
-        enum Sorting {
-            case ascending
-            case descending
+
+        var defaultSorting: Sorting {
+            switch self {
+            case .tag: return .ascending
+            case .company: return .ascending
+            case .dateDay: return .descending
+            case .dateMonth: return .descending
+            case .dateYear: return .descending
+            }
         }
+    }
+
+    enum Sorting {
+        case ascending
+        case descending
     }
 }
 

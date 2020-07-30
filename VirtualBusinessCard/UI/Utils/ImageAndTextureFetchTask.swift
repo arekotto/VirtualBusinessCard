@@ -20,7 +20,7 @@ struct ImageAndTextureFetchTask {
     func callAsFunction(completion: @escaping (Result<[UIImage], Error>) -> Void) {
         let dispatchGroup = DispatchGroup()
 
-        imageURLs.forEach{ _ in dispatchGroup.enter() }
+        imageURLs.forEach { _ in dispatchGroup.enter() }
 
         var imagesDict = [Int: UIImage]()
         var error: Error?
@@ -40,10 +40,8 @@ struct ImageAndTextureFetchTask {
                 completion(.failure(err))
             } else {
                 let indexes = Array(0 ..< self.imageURLs.count)
-                completion(.success(indexes.map{ imagesDict[$0]! }))
+                completion(.success(indexes.map { imagesDict[$0]! }))
             }
         }
     }
-    
-
 }

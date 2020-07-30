@@ -27,18 +27,6 @@ struct BusinessCardData: Codable {
     var name: Name
     var contact: Contact
     var address: Address
-    
-    internal init(id: BusinessCardID, originalID: BusinessCardID? = nil, frontImage: BusinessCardData.Image? = nil, backImage: BusinessCardData.Image? = nil, texture: BusinessCardData.Texture? = nil, position: BusinessCardData.Position, name: BusinessCardData.Name, contact: BusinessCardData.Contact, address: BusinessCardData.Address) {
-        self.id = id
-        self.originalID = originalID
-        self.frontImage = frontImage
-        self.backImage = backImage
-        self.texture = texture
-        self.position = position
-        self.name = name
-        self.contact = contact
-        self.address = address
-    }
 }
 
 extension BusinessCardData: Equatable {

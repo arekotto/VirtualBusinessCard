@@ -301,7 +301,7 @@ private extension AcceptCardVC {
         }
     }
 
-    func panGesture(_ panGesture : UIPanGestureRecognizer) {
+    func panGesture(_ panGesture: UIPanGestureRecognizer) {
         guard !viewModel.hasAcceptedCard else { return }
 
         switch panGesture.state {
@@ -367,7 +367,10 @@ extension AcceptCardVC: AcceptCardVMDelegate {
 
     func presentSaveOfflineAlert() {
         let title = NSLocalizedString("Save Offline", comment: "")
-        let message = NSLocalizedString("Your device appears to be disconnected from internet. The received business card has been saved offline and will be synced when the connection is restored.", comment: "")
+        let message = NSLocalizedString(
+            "Your device appears to be disconnected from internet. The received business card has been saved offline and will be synced when the connection is restored.",
+            comment: ""
+        )
         let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Save Offline", style: .default) { _ in
             self.viewModel.didConfirmSaveOffline()
@@ -391,4 +394,3 @@ extension AcceptCardVC: AcceptCardVMDelegate {
         present(alert, animated: true)
     }
 }
-

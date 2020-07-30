@@ -59,7 +59,7 @@ class SceneVC: UIViewController {
         super.viewWillAppear(animated)
         
         motionManager.deviceMotionUpdateInterval = 0.01
-        motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { (motion, error) in
+        motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { motion, _ in
             if let motionData = motion {
                 let deviceRotationInX = (motionData.attitude.pitch - deg2rad(45)) / 8
                 let potentialX = Double(self.lightNode.eulerAngles.x) - deviceRotationInX

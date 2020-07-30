@@ -47,4 +47,3 @@ final class PersonalCardsView: AppBackgroundView {
         super.layoutSubviews()
     }
 }
-

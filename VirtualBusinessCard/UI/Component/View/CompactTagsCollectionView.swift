@@ -22,7 +22,7 @@ final class CompactTagsCollectionView: UICollectionView {
     }
 
     private func makeLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { sectionIndex, environment in
+        UICollectionViewCompositionalLayout { _, environment in
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
                 heightDimension: .fractionalHeight(1)

@@ -22,17 +22,6 @@ struct DirectCardExchange: Codable {
     var receivingUserCardID: BusinessCardID?
     var receivingUserID: UserID?
     var receivingUserCardData: BusinessCardData?
-    
-    init(id: DirectCardExchangeID, accessToken: String, sharingUserID: UserID, sharingUserCardID: BusinessCardID, sharingUserCardData: BusinessCardData, receivingUserCardID: BusinessCardID? = nil, receivingUserID: UserID? = nil, receivingUserCardData: BusinessCardData? = nil) {
-        self.id = id
-        self.accessToken = accessToken
-        self.sharingUserID = sharingUserID
-        self.sharingUserCardID = sharingUserCardID
-        self.sharingUserCardData = sharingUserCardData
-        self.receivingUserCardID = receivingUserCardID
-        self.receivingUserID = receivingUserID
-        self.receivingUserCardData = receivingUserCardData
-    }
 }
 
 // MARK: - Equatable

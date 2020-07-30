@@ -67,7 +67,6 @@ class CardFrontBackView: AppView {
         frontSceneView.constrainLeadingToSuperview()
         frontSceneView.constrainTopToSuperview()
         
-        
         backSceneView.constrainTrailingToSuperview()
         backSceneView.constrainBottomToSuperview()
         

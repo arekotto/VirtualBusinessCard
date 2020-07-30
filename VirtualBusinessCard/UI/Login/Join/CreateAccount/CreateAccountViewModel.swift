@@ -50,7 +50,7 @@ final class CreateAccountViewModel: AppSwiftUIViewModel {
 }
 
 extension CreateAccountViewModel {
-    enum Navigation  {
+    enum Navigation {
         case createAccountWithEmail
     }
 }

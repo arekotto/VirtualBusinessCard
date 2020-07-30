@@ -74,18 +74,9 @@ struct LoginWithEmailView: AppSwiftUIView {
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
-    
-    struct LoginTextFieldStyle : TextFieldStyle {
-        func _body(configuration: TextField<Self._Label>) -> some View {
-            configuration
-                .font(.system(size: 18))
-                .padding(14)
-                .background(Color.appGray.opacity(0.1))
-        }
-    }
 }
-
-struct LoginTextFieldStyle : TextFieldStyle {
+// swiftlint:disable identifier_name
+struct LoginTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
             .font(.system(size: 18))
@@ -93,6 +84,7 @@ struct LoginTextFieldStyle : TextFieldStyle {
             .background(Color.appGray.opacity(0.1))
     }
 }
+// swiftlint:enable identifier_name
 
 struct LoginWithEmailView_Previews: PreviewProvider {
     static var previews: some View {
@@ -101,7 +93,6 @@ struct LoginWithEmailView_Previews: PreviewProvider {
                .previewDevice(PreviewDevice(rawValue: "iPhone SE"))
                .previewDisplayName("iPhone SE")
                     .environment(\.colorScheme, .dark)
-
 
             LoginWithEmailView(viewModel: LoginWithEmailViewModel(isPresented: .constant(true)))
                .previewDevice(PreviewDevice(rawValue: "iPhone 11"))

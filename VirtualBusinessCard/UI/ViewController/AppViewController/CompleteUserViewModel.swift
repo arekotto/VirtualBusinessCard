@@ -17,7 +17,7 @@ class CompleteUserViewModel: PartialUserViewModel {
     }
 
     func fetchData() {
-        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
+        userPublicDocumentReference.addSnapshotListener { [weak self] document, error in
             self?.userPublicDidChange(document, error)
         }
     }
@@ -39,7 +39,7 @@ class CompleteUserViewModel: PartialUserViewModel {
             return
         }
         self.user = user
-        userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
+        userPrivateDocumentReference.addSnapshotListener { [weak self] snapshot, error in
             self?.userPrivateDidChange(snapshot, error)
         }
     }

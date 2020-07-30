@@ -25,7 +25,7 @@ final class SettingsVM: PartialUserViewModel {
     ]
 
     private func logout() {
-        try! Auth.auth().signOut()
+        try? Auth.auth().signOut()
     }
 }
 

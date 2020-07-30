@@ -33,4 +33,3 @@ final class EditCardTagsView: AppBackgroundView {
         tableView.constrainHorizontallyToSuperview(sideInset: 0)
     }
 }
-

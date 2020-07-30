@@ -22,17 +22,6 @@ struct BusinessCardData: DocumentRepresentable {
     var address: Address
 
     var hapticFeedbackSharpness: Float
-    
-    init(frontImage: BusinessCardData.Image, backImage: BusinessCardData.Image, texture: BusinessCardData.Texture, position: BusinessCardData.Position, name: BusinessCardData.Name, contact: BusinessCardData.Contact, address: BusinessCardData.Address, hapticFeedbackSharpness: Float) {
-        self.frontImage = frontImage
-        self.backImage = backImage
-        self.texture = texture
-        self.position = position
-        self.name = name
-        self.contact = contact
-        self.address = address
-        self.hapticFeedbackSharpness = hapticFeedbackSharpness
-    }
 }
 
 extension BusinessCardData {

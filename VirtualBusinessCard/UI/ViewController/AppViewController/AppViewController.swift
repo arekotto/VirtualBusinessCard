@@ -30,7 +30,12 @@ class AppViewController<V: AppView, M: AppViewModel>: UIViewController {
 }
 
 extension AppViewController {
-    func presentErrorAlert(title: String? = NSLocalizedString("Something Went Wrong", comment: ""), message: String = AppError.localizedUnknownErrorDescription, okActionHandler: ((UIAlertAction) -> Void)? = nil) {
+
+    private static var defaultTitle: String {
+        NSLocalizedString("Something Went Wrong", comment: "")
+    }
+
+    func presentErrorAlert(title: String? = defaultTitle, message: String = AppError.localizedUnknownErrorDescription, okActionHandler: ((UIAlertAction) -> Void)? = nil) {
         let alert = AppAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addOkAction(handler: okActionHandler)
         present(alert, animated: true)

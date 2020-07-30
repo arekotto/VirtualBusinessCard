@@ -53,7 +53,7 @@ final class LoginViewModel: AppSwiftUIViewModel {
         LoginWithEmailViewModel(isPresented: $isPresented)
     }
     
-    enum Navigation  {
+    enum Navigation {
         case loginWithEmail
     }
 }

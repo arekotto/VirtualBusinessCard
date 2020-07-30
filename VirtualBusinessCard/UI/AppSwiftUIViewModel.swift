@@ -11,4 +11,3 @@ import Combine
 protocol AppSwiftUIViewModel: ObservableObject {
     
 }
-

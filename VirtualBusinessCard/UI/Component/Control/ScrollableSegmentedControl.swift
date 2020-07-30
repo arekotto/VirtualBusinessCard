@@ -114,7 +114,7 @@ extension ScrollableSegmentedControl {
         }()
         
         private var selectedIndexPath: IndexPath? {
-            get { collectionView.indexPathsForSelectedItems?.first }
+            collectionView.indexPathsForSelectedItems?.first
         }
 
         override func configureView() {

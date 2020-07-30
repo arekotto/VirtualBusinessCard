@@ -39,7 +39,7 @@ final class LoginWithEmailViewModel: AppSwiftUIViewModel {
     }
     
     func loginButtonTapped() {
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] _, error in
             guard let self = self else { return }
             if let err = error {
                 self.previousLoginAlertError = err
@@ -61,5 +61,3 @@ extension LoginWithEmailViewModel {
         fileprivate let unknownLoginError = NSLocalizedString("Unknown error has occurred. Please try again.", comment: "")
     }
 }
-
-

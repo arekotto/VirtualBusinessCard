@@ -33,7 +33,7 @@ struct UserSetupView: AppSwiftUIView {
         .alert(isPresented: $viewModel.isErrorAlertPresented) {
             Alert(title: Text(viewModel.text.errorTitle), message: Text(viewModel.text.errorMessage), dismissButton: .default(Text(viewModel.text.retryButton), action: viewModel.setupUserInFirebase))
         }
-        .onAppear() { self.viewModel.setupUserInFirebase() }
+        .onAppear { self.viewModel.setupUserInFirebase() }
     }
 }
 

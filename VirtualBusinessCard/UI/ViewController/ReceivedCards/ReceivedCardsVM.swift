@@ -80,7 +80,13 @@ extension ReceivedCardsVM {
     
     func itemForCell(at indexPath: IndexPath) -> CardFrontBackView.DataModel {
         let cardData = displayedCard(at: indexPath).cardData
-        return CardFrontBackView.DataModel(frontImageURL: cardData.frontImage.url, backImageURL: cardData.backImage.url, textureImageURL: cardData.texture.image.url, normal: CGFloat(cardData.texture.normal), specular: CGFloat(cardData.texture.specular))
+        return CardFrontBackView.DataModel(
+            frontImageURL: cardData.frontImage.url,
+            backImageURL: cardData.backImage.url,
+            textureImageURL: cardData.texture.image.url,
+            normal: CGFloat(cardData.texture.normal),
+            specular: CGFloat(cardData.texture.specular)
+        )
     }
 
     func detailsViewModel(for indexPath: IndexPath) -> CardDetailsVM {
@@ -242,7 +248,6 @@ extension ReceivedCardsVM {
     }
 }
 
-
 // MARK: - Firebase fetch
 
 extension ReceivedCardsVM {
@@ -305,14 +310,6 @@ extension ReceivedCardsVM {
     struct SortMode: Equatable {
         let property: Property
         let direction: Direction
-        
-        enum Property {
-            case firstName, lastName, receivingDate
-        }
-        
-        enum Direction {
-            case ascending, descending
-        }
     }
     
     struct SortAction {
@@ -320,6 +317,16 @@ extension ReceivedCardsVM {
         let title: String
     }
     
+}
+
+extension ReceivedCardsVM.SortMode {
+    enum Property {
+        case firstName, lastName, receivingDate
+    }
+
+    enum Direction {
+        case ascending, descending
+    }
 }
 
 private extension CardFrontBackView.SizeMode {

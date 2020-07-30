@@ -49,7 +49,6 @@ struct GreetingsView: AppSwiftUIView {
         }
     }
     
-    
     var createAccountButton: some View {
         Button(action: viewModel.didTapCreateAccount) {
             Text(viewModel.text.createAccountButtonText)

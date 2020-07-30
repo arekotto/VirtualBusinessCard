@@ -14,7 +14,7 @@ final class SignUpUserInfoStorage {
     
     private let userDefaults = UserDefaults()
     
-    private init(){}
+    private init() {}
     
     func storeInfo(firstName: String, lastName: String) {
         userDefaults.set(firstName, forKey: StorageKey.signUpUserInfoFirstName.rawValue)

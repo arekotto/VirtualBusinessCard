@@ -193,7 +193,13 @@ extension ReceivedCardsVC: UIViewControllerTransitioningDelegate {
         guard let cellSnap = selectedCell.contentView.snapshotView(afterScreenUpdates: false) else { return nil }
 
         let estimatedTopSafeAreaInset = (contentView.statusBarHeight ?? 0) + (navigationController?.navigationBar.bounds.height ?? 0)
-        animator = DetailsTransitionAnimator(type: .present, animatedCell: selectedCell, animatedCellSnapshot: cellSnap, availableAnimationBounds: view.safeAreaLayoutGuide.layoutFrame, estimatedTopSafeAreaInset: estimatedTopSafeAreaInset)
+        animator = DetailsTransitionAnimator(
+            type: .present,
+            animatedCell: selectedCell,
+            animatedCellSnapshot: cellSnap,
+            availableAnimationBounds: view.safeAreaLayoutGuide.layoutFrame,
+            estimatedTopSafeAreaInset: estimatedTopSafeAreaInset
+        )
         return animator
     }
     

@@ -51,7 +51,7 @@ class UserMC: ModelController {
         return self.userPublic == user
     }
     
-    func asDocument() -> [String : Any] {
+    func asDocument() -> [String: Any] {
         return userPublic.asDocument()
     }
     
@@ -121,6 +121,3 @@ extension UserMC {
         }
     }
 }
-
-
-

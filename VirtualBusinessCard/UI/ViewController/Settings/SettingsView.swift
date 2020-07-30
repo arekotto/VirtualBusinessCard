@@ -35,4 +35,3 @@ final class SettingsView: AppView {
         tableView.backgroundColor = Asset.Colors.appBackground.color
     }
 }
-

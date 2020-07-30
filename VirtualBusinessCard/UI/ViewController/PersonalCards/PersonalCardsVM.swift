@@ -77,7 +77,7 @@ extension PersonalCardsVM {
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        let card = cardForCell(at: indexPath)
+//        let card = cardForCell(at: indexPath)
 //        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: item(for: indexPath)))
     }
 }
@@ -93,7 +93,7 @@ extension PersonalCardsVM {
     }
     
     func fetchData() {
-        userPublicDocumentReference.addSnapshotListener() { [weak self] document, error in
+        userPublicDocumentReference.addSnapshotListener { [weak self] document, error in
             self?.userPublicDidChange(document, error)
         }
     }
@@ -116,7 +116,7 @@ extension PersonalCardsVM {
             return
         }
         self.user = user
-        userPrivateDocumentReference.addSnapshotListener() { [weak self] snapshot, error in
+        userPrivateDocumentReference.addSnapshotListener { [weak self] snapshot, error in
             self?.userPrivateDidChange(snapshot, error)
         }
         businessCardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in

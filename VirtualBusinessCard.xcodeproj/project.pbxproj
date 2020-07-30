@@ -1066,6 +1066,7 @@
 				4537CEDC23F6D259003602EA /* Frameworks */,
 				4537CEDD23F6D259003602EA /* Resources */,
 				31CADDA50BDECDB04DFB8B48 /* [CP] Copy Pods Resources */,
+				45B01C1924D16A85009BDABC /* Run SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -1259,6 +1260,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		45B01C1924D16A85009BDABC /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		65CB22F173129E7E8C081AA8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

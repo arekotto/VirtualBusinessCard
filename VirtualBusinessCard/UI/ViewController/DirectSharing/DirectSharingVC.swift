@@ -164,6 +164,3 @@ extension DirectSharingVC: AVCaptureMetadataOutputObjectsDelegate {
         viewModel.didScanCode(string: scannedString)
     }
 }
-
-
-

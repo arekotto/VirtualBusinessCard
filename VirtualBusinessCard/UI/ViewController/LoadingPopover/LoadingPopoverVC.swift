@@ -15,4 +15,3 @@ final class LoadingPopoverVC: AppViewController<LoadingPopoverView, LoadingPopov
         contentView.titleLabel.text = viewModel.title
     }
 }
-

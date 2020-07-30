@@ -28,7 +28,7 @@ final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
     @objc
     func testingAdd() {
         let task = SampleBCUploadTask()
-        task() {_ in }
+        task {_ in }
     }
 }
 

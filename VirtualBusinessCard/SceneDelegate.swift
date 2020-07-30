@@ -14,10 +14,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
-//    var isUserLoggedIn: Bool {
-//        return Auth.auth().currentUser != nil
-//    }
-    
     private var statePresented: AppUIState? {
         (window?.rootViewController as? AppUIStateRoot)?.appUIState
     }
@@ -107,10 +103,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func swapRootControllerWithAnimation(_ newRoot: UIViewController, animation: UIView.AnimationOptions) {
         UIView.transition(with: window!, duration: 0.5, options: animation, animations: {
             self.window!.rootViewController = newRoot
-        }, completion: { completed in
+        }, completion: { _ in
             // TODO: - REMEBER TO CHECK MEMORY LEAKSSSS
         })
     }
 }
-
-

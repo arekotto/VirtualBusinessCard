@@ -10,7 +10,8 @@ import Firebase
 import UIKit
 
 struct SampleBCUploadTask {
-    
+
+    // swiftlint:disable all
     func callAsFunction(completion: @escaping (Result<Void, Error>) -> Void) {
         
         // MARK: Data
@@ -81,8 +82,9 @@ struct SampleBCUploadTask {
             let personalBC = ReceivedBusinessCard(id: docRef.documentID, originalID: "some old ID", ownerID: "Test User", receivingDate: day(from: Date(), offset: idx % 5), cardData: bcData, tagIDs: cardTagIDs)
             docRef.setData(personalBC.asDocument())
         }
-    
     }
+
+    // swiftlint:enable all
     
     private struct Name {
         let firstName: String
@@ -112,7 +114,6 @@ struct SampleBCUploadTask {
         return Calendar.current.date(from: now)!
     }
 }
-
 
 private extension Array {
     func safeMod(_ idx: Int) -> Element {
