@@ -13,6 +13,7 @@ import Kingfisher
 final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingVM> {
     
     private var captureSession: AVCaptureSession!
+    private var appearanceCounter = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,12 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
         if captureSession?.isRunning == false {
             captureSession.startRunning()
         }
+        if appearanceCounter != 0 && viewModel.hasPerformedInitialFetch {
+            contentView.qrCodeActivityIndicator.startAnimating()
+            contentView.qrCodeImageView.image = nil
+            viewModel.generateQRCode()
+        }
+        appearanceCounter += 1
     }
     
     override func viewWillDisappear(_ animated: Bool) {

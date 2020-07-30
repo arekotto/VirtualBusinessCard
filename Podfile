@@ -12,7 +12,7 @@ target 'VirtualBusinessCard' do
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
   pod 'GoogleSignIn'
-  pod 'SwiftMessages'
+#  pod 'SwiftMessages'
 
   target 'VirtualBusinessCardTests' do
     inherit! :search_paths

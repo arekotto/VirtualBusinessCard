@@ -48,6 +48,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        navigationController?.setToolbarHidden(true, animated: false)
         bounceAnimatorsTimer?.invalidate()
         bounceAnimatorsTimer = nil 
     }
@@ -56,6 +57,7 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
         contentView.cardSceneView.setDataModel(viewModel.dataModel())
         contentView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:))))
         contentView.rejectButton.addTarget(self, action: #selector(didTapRejectButton), for: .touchUpInside)
+        contentView.shareAgainButtonView.button.addTarget(self, action: #selector(didTapShareAgainButton), for: .touchUpInside)
         contentView.doneButtonView.button.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
         contentView.tagsCollectionView.tagDataSource = self
     }
@@ -198,6 +200,8 @@ private extension AcceptCardVC {
                     self.contentView.cardSceneViewWidthConstraint.constant = AcceptCardView.defaultCardViewSize.width
                     self.contentView.doneButtonView.isHidden = false
                     self.contentView.doneButtonView.alpha = 1
+                    self.contentView.shareAgainButtonView.isHidden = false
+                    self.contentView.shareAgainButtonView.alpha = 1
                     self.contentView.cardSavedLabel.isHidden = false
                     self.contentView.cardSavedLabel.alpha = 1
                     self.view.layoutIfNeeded()
@@ -274,7 +278,18 @@ private extension AcceptCardVC {
     }
 
     func didTapRejectButton() {
-        viewModel.didSelectReject()
+        let title = NSLocalizedString("Reject Card", comment: "")
+        let message = NSLocalizedString("This business card has not been saved to your collection yet. Are you sure you want to reject it?", comment: "")
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Reject Card", comment: ""), style: .destructive) { _ in
+            self.viewModel.didConfirmReject()
+        })
+        alert.addCancelAction()
+        present(alert, animated: true)
+    }
+
+    func didTapShareAgainButton() {
+        viewModel.didSelectShareAgain()
     }
 
     func playBounceAnimation() {
@@ -333,6 +348,10 @@ extension AcceptCardVC: UIScrollViewDelegate {
 // MARK: - AcceptCardVMDelegate
 
 extension AcceptCardVC: AcceptCardVMDelegate {
+    func popSelf() {
+        navigationController?.popViewController(animated: true)
+    }
+
     func presentErrorAlert(message: String) {
         super.presentErrorAlert(message: message)
     }
@@ -381,16 +400,5 @@ extension AcceptCardVC: AcceptCardVMDelegate {
 
     func dismissSelf() {
         dismiss(animated: true)
-    }
-
-    func presentRejectAlert() {
-        let title = NSLocalizedString("Reject Card", comment: "")
-        let message = NSLocalizedString("This business card has not been saved to your collection yet. Are you sure you want to reject it?", comment: "")
-        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Reject Card", comment: ""), style: .destructive) { _ in
-            self.viewModel.didConfirmReject()
-        })
-        alert.addCancelAction()
-        present(alert, animated: true)
     }
 }

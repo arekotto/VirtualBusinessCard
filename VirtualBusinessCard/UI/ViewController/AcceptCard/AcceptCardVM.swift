@@ -11,10 +11,10 @@ import Firebase
 import CoreMotion
 
 protocol AcceptCardVMDelegate: class {
-    func presentRejectAlert()
     func presentSaveOfflineAlert()
     func presentErrorAlert(message: String)
     func dismissSelf()
+    func popSelf()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentEditCardTagsVC(viewModel: EditCardTagsVM)
     func presentEditCardNotesVC(viewModel: EditCardNotesVM)
@@ -106,10 +106,6 @@ extension AcceptCardVM {
         delegate?.presentEditCardTagsVC(viewModel: vm)
     }
 
-    func didSelectReject() {
-        delegate?.presentRejectAlert()
-    }
-
     func didSelectDone() {
         guard hasAcceptedCard else { return }
         guard hasSavedCardToCollection else {
@@ -117,6 +113,15 @@ extension AcceptCardVM {
             return
         }
         delegate?.dismissSelf()
+    }
+
+    func didSelectShareAgain() {
+        guard hasAcceptedCard else { return }
+        guard hasSavedCardToCollection else {
+            delegate?.presentSaveOfflineAlert()
+            return
+        }
+        delegate?.popSelf()
     }
 
     func didConfirmReject() {

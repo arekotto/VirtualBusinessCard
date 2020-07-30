@@ -26,7 +26,9 @@ final class DirectSharingVM: CompleteUserViewModel, MotionDataSource {
     
     private(set) var qrCode: UIImage?
     private(set) lazy var motionManager = CMMotionManager()
+
     private(set) var generalDeviceOrientationX = GeneralDeviceOrientationX.vertical
+    private var motionPitchForLastOrientationUpdate = 1.5
 
     private let card: PersonalBusinessCardMC
 
@@ -48,9 +50,18 @@ final class DirectSharingVM: CompleteUserViewModel, MotionDataSource {
     }
 
     func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        let newOrientation = GeneralDeviceOrientationX.calculate(for: motion)
+
+        let pitch = motion.attitude.pitch
+        let isDifferenceSignificantEnoughToUpdate = abs(pitch - motionPitchForLastOrientationUpdate) > 0.15
+        guard isDifferenceSignificantEnoughToUpdate else { return }
+        let newOrientation: GeneralDeviceOrientationX = pitch <= 0.3 ? .horizontal : .vertical
         guard newOrientation != generalDeviceOrientationX else { return }
+        changeOrientation(to: newOrientation, motionPitch: pitch)
+    }
+
+    private func changeOrientation(to newOrientation: GeneralDeviceOrientationX, motionPitch: Double) {
         generalDeviceOrientationX = newOrientation
+        motionPitchForLastOrientationUpdate = motionPitch
         delegate?.didChangeDeviceOrientationX(newOrientation)
     }
 }
@@ -77,6 +88,10 @@ extension DirectSharingVM {
 
     var businessCardFrontImageURL: URL? {
         card.frontImage.url
+    }
+
+    var hasPerformedInitialFetch: Bool {
+        user?.containsPrivateData ?? false
     }
     
     func generateQRCode() {

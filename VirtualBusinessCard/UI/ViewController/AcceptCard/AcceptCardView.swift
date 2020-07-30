@@ -76,11 +76,30 @@ final class AcceptCardView: AppBackgroundView {
         this.numberOfLines = 0
         return this
     }()
-    
+
+    private var doneButtonViewTopConstraint: NSLayoutConstraint!
     let doneButtonView: TransparentButtonView = {
-        let this = TransparentButtonView(style: .systemUltraThinMaterial)
+        let this = TransparentButtonView(style: .systemMaterial, shapeIntoCircle: false)
+        this.button.setTitle(NSLocalizedString("Done", comment: ""), for: .normal)
+        this.button.titleLabel?.lineBreakMode = .byWordWrapping
         this.isHidden = true
         this.alpha = 0
+        this.layer.cornerRadius = 16
+        this.button.titleLabel?.font = .appDefault(size: 15, weight: .medium, design: .rounded)
+        this.button.titleLabel?.textAlignment = .center
+        return this
+    }()
+
+    private var shareAgainButtonViewTopConstraint: NSLayoutConstraint!
+    let shareAgainButtonView: TransparentButtonView = {
+        let this = TransparentButtonView(style: .systemMaterial, shapeIntoCircle: false)
+        this.button.setTitle(NSLocalizedString("Share Again", comment: ""), for: .normal)
+        this.button.titleLabel?.lineBreakMode = .byWordWrapping
+        this.isHidden = true
+        this.alpha = 0
+        this.layer.cornerRadius = 16
+        this.button.titleLabel?.font = .appDefault(size: 15, weight: .medium, design: .rounded)
+        this.button.titleLabel?.textAlignment = .center
         return this
     }()
 
@@ -137,7 +156,7 @@ final class AcceptCardView: AppBackgroundView {
 
     override func configureSubviews() {
         super.configureSubviews()
-        [slideToAcceptStackView, cardSavedLabel, scrollView, rejectButton, cardSceneView, doneButtonView].forEach { addSubview($0) }
+        [slideToAcceptStackView, cardSavedLabel, scrollView, rejectButton, cardSceneView, doneButtonView, shareAgainButtonView].forEach { addSubview($0) }
         scrollView.addSubview(mainStackView)
         tagsCollectionViewContainer.addSubview(tagsCollectionView)
     }
@@ -154,8 +173,7 @@ final class AcceptCardView: AppBackgroundView {
         scrollView.constrainToSuperviewSafeArea()
 
         cardSavedLabel.constrainCenterXToSuperview()
-        cardSavedLabel.constrainTopGreaterOrEqual(to: safeAreaLayoutGuide.topAnchor, constant: 8)
-        cardSavedLabel.constrainCenterY(toView: doneButtonView, priority: .defaultHigh)
+        cardSavedLabel.constrainCenterY(toView: doneButtonView)
 
         mainStackView.constrainCenterXToSuperview()
         mainStackView.constrainWidth(constant: Self.defaultCardViewSize.width)
@@ -178,15 +196,27 @@ final class AcceptCardView: AppBackgroundView {
         rejectButton.constrainBottomToSuperviewSafeArea(inset: 20)
         rejectButton.constrainHeight(constant: 50)
 
-        doneButtonView.constrainTopToSuperview(inset: 16)
-        doneButtonView.constrainTrailingToSuperview(inset: 16)
-        doneButtonView.constrainHeight(constant: 44)
-        doneButtonView.constrainWidth(constant: 44)
+        doneButtonViewTopConstraint = doneButtonView.constrainTopToSuperviewSafeArea()
+        doneButtonView.constrainTrailingToSuperview(inset: 12)
+        doneButtonView.constrainHeight(constant: 50)
+        doneButtonView.constrainWidth(constant: 70)
+
+        shareAgainButtonViewTopConstraint = shareAgainButtonView.constrainTopToSuperviewSafeArea()
+        shareAgainButtonView.constrainLeadingToSuperview(inset: 12)
+        shareAgainButtonView.constrainHeight(constant: 50)
+        shareAgainButtonView.constrainWidth(constant: 70)
     }
 
     override func didMoveToWindow() {
         super.didMoveToWindow()
         cardSceneViewTopConstraint.constant = startingCardTopConstraintConstant
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let buttonsTopInset: CGFloat = safeAreaInsets.top == 0 ? 16 : -4
+        doneButtonViewTopConstraint.constant = buttonsTopInset
+        shareAgainButtonViewTopConstraint.constant = buttonsTopInset
     }
 
     override func configureColors() {

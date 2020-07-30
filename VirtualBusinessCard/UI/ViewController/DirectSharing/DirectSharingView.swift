@@ -34,7 +34,11 @@ final class DirectSharingView: AppView {
         return this
     }()
 
-    let cancelButtonView = TransparentButtonView(style: .systemMaterial)
+    let cancelButtonView: TransparentButtonView = {
+        let this = TransparentButtonView(style: .systemMaterial, shapeIntoCircle: true)
+        this.setSystemImage("xmark")
+        return this
+    }()
 
     private let cameraPreviewOverlay: UIImageView = {
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 40, weight: .ultraLight)

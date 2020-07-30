@@ -41,6 +41,10 @@ class UserMC: ModelController {
         get { userPrivate?.cardExchangeAccessTokens ?? [] }
         set { userPrivate?.cardExchangeAccessTokens = newValue }
     }
+
+    var containsPrivateData: Bool {
+        userPrivate != nil
+    }
     
     init(userPublic: UserPublic, userPrivate: UserPrivate? = nil) {
         self.userPublic = userPublic
