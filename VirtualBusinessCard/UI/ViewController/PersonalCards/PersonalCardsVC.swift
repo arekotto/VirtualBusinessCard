@@ -81,7 +81,8 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
 @objc
 private extension PersonalCardsVC {
     func didTapNewBusinessCardButton() {
-        
+        let navVC = AppNavigationController(rootViewController: EditCardVC(viewModel: viewModel.newCardViewModel()))
+        present(navVC, animated: true)
     }
     
     func didTapSettingsButton() {
