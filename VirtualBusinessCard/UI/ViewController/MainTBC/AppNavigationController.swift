@@ -49,9 +49,9 @@ class AppNavigationController: UINavigationController {
         navigationBar.isTranslucent = false
         isShadowEnabled = true
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         navigationBar.barTintColor = Asset.Colors.appBackground.color
         navigationBar.tintColor = Asset.Colors.appAccent.color
         toolbar.tintColor = Asset.Colors.appAccent.color

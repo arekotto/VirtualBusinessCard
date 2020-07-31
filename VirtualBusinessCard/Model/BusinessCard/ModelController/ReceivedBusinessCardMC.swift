@@ -65,6 +65,13 @@ class ReceivedBusinessCardMC {
         return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
     }
 
+    var receivingDataFormatted: String {
+        let df = DateFormatter()
+        df.timeStyle = .none
+        df.dateStyle = .long
+        return df.string(from: receivingDate)
+    }
+
     func editReceivedBusinessCardMC() -> EditReceivedBusinessCardMC {
         EditReceivedBusinessCardMC(card: businessCard)
     }

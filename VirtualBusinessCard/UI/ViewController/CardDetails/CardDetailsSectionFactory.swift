@@ -22,12 +22,21 @@ struct CardDetailsSectionFactory {
     func makeRows() -> [Section] {
         let sections: [Section?] = [
             makeCardImagesSection(),
-            makePersonalDataSection(),
             makeEditableDataSection(),
+            makeMetaSection(),
+            makePersonalDataSection(),
             makeContactSection(),
             makeAddressSection()
         ]
         return sections.compactMap { $0 }
+    }
+
+    private func makeMetaSection() -> Section? {
+        let metaData = [
+            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Date Received", comment: ""), value: card.receivingDataFormatted)
+        ]
+
+        return Section(items: metaData.map { Item(dataModel: .dataCell($0), actions: []) })
     }
     
     private func makeCardImagesSection() -> Section? {

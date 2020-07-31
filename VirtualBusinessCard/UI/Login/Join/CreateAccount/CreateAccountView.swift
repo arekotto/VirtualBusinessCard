@@ -32,6 +32,9 @@ struct CreateAccountView: AppSwiftUIView {
                 .background(Color.appAccent.opacity(0.1))
                 .clipShape(Circle())
             )
+            .background(NavigationConfigurator { nc in
+                nc.navigationBar.standardAppearance.configureWithTransparentBackground()
+            })
         }
         .accentColor(Color.appAccent)
     }
@@ -89,10 +92,6 @@ struct CreateAccountView: AppSwiftUIView {
     
     init(viewModel: CreateAccountViewModel) {
         self.viewModel = viewModel
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 
@@ -117,6 +116,19 @@ struct CreateAccountView_Previews: PreviewProvider {
                 .previewDevice(PreviewDevice(rawValue: "iPhone 11"))
                 .previewDisplayName("iPhone 11")
         }
-        
+    }
+}
+
+struct NavigationConfigurator: UIViewControllerRepresentable {
+    var configure: (UINavigationController) -> Void = { _ in }
+
+    func makeUIViewController(context: UIViewControllerRepresentableContext<NavigationConfigurator>) -> UIViewController {
+        UIViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<NavigationConfigurator>) {
+        if let nc = uiViewController.navigationController {
+            self.configure(nc)
+        }
     }
 }

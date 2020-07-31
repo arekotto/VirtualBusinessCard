@@ -69,10 +69,6 @@ struct LoginWithEmailView: AppSwiftUIView {
     
     init(viewModel: LoginWithEmailViewModel) {
         self.viewModel = viewModel
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
 }
 // swiftlint:disable identifier_name

@@ -46,10 +46,10 @@ extension ReceivedCardsVC {
             [views.presentingVC.view, views.shadowView, views.presentedView, views.availableAnimationBoundsView].forEach { containerView.addSubview($0) }
 
             let animatedCellOnPresentedViewOrigin: CGRect
-            if let exactBounds = views.cardDetailsVC.imageCellFrame(translatedTo: views.availableAnimationBoundsView) {
+            if let exactBounds = views.cardDetailsVC.cardImagesCellFrame(translatedTo: views.availableAnimationBoundsView) {
                 animatedCellOnPresentedViewOrigin = exactBounds
             } else {
-                let estimatedCellFrame = views.cardDetailsVC.estimatedImageCellFrame(estimatedTopSafeAreaInset: estimatedTopSafeAreaInset)
+                let estimatedCellFrame = views.cardDetailsVC.estimatedCardImagesCellFrame(estimatedTopSafeAreaInset: estimatedTopSafeAreaInset)
                 animatedCellOnPresentedViewOrigin = views.presentingVC.view.convert(estimatedCellFrame, to: views.availableAnimationBoundsView)
             }
             
@@ -64,7 +64,7 @@ extension ReceivedCardsVC {
             }
             
             animatedCell.isHidden = true
-            views.cardDetailsVC.setImageSectionHidden(true)
+            views.cardDetailsVC.setCardImagesSectionHidden(true)
 
             UIView.animate(withDuration: Self.duration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 if isPresenting {
@@ -82,7 +82,7 @@ extension ReceivedCardsVC {
                 if !isPresenting {
                     self.animatedCell.isHidden = false
                 } else {
-                    views.cardDetailsVC.setImageSectionHidden(false)
+                    views.cardDetailsVC.setCardImagesSectionHidden(false)
                 }
                 transitionContext.completeTransition(true)
             })

@@ -129,9 +129,7 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
         }
         presentCardDetails(for: indexPath)
     }
-}
 
-extension ReceivedCardsVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, targetContentOffsetForProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
         guard let firstVisibleItem = collectionView.indexPathsForVisibleItems.min() else { return proposedContentOffset }
         let isShowingFirstItem = firstVisibleItem.item == 0

@@ -14,19 +14,27 @@ import Kingfisher
 final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
     private var engine: HapticFeedbackEngine!
-    
-    func imageCellFrame(translatedTo targetView: UIView) -> CGRect? {
+
+    func cardImagesCellFrame(translatedTo targetView: UIView) -> CGRect? {
+        let indexPathsForVisibleItems = contentView.collectionView.indexPathsForVisibleItems
+        if !indexPathsForVisibleItems.contains(cardCellIndexPath) && !indexPathsForVisibleItems.isEmpty {
+            return hiddenCardCellFrame()
+        }
         guard let cell = cardImagesCell() else { return nil }
         return cell.contentView.convert(cell.contentView.bounds, to: targetView)
     }
     
-    func estimatedImageCellFrame(estimatedTopSafeAreaInset: CGFloat) -> CGRect {
+    func estimatedCardImagesCellFrame(estimatedTopSafeAreaInset: CGFloat) -> CGRect {
         let origin = CGPoint(x: 0, y: CardDetailsView.contentInsetTop + estimatedTopSafeAreaInset)
         return CGRect(origin: origin, size: CGSize(width: UIScreen.main.bounds.width, height: ReceivedCardsView.CollectionCell.defaultHeight))
     }
     
-    func setImageSectionHidden(_ isHidden: Bool) {
+    func setCardImagesSectionHidden(_ isHidden: Bool) {
         cardImagesCell()?.cardFrontBackView.isHidden = isHidden
+    }
+
+    private var cardCellIndexPath: IndexPath {
+        IndexPath(item: 0)
     }
     
     override func viewDidLoad() {
@@ -57,7 +65,13 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     }
     
     private func cardImagesCell() -> CardDetailsView.CardImagesCell? {
-        contentView.collectionView.cellForItem(at: IndexPath(item: 0)) as? CardDetailsView.CardImagesCell
+        contentView.collectionView.cellForItem(at: cardCellIndexPath) as? CardDetailsView.CardImagesCell
+    }
+
+    private func hiddenCardCellFrame() -> CGRect {
+        let height = ReceivedCardsView.CollectionCell.defaultHeight
+        let origin = CGPoint(x: 0, y: -height)
+        return CGRect(origin: origin, size: CGSize(width: UIScreen.main.bounds.width, height: height))
     }
 }
 
@@ -166,7 +180,7 @@ extension CardDetailsVC: CardDetailsVMDelegate {
 
     func dismissSelf() {
         guard let cell = cardImagesCell() else {
-            dismiss(animated: false)
+            dismiss(animated: true)
             return
         }
         cell.condenseWithAnimation {

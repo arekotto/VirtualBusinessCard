@@ -32,6 +32,9 @@ struct LoginView: AppSwiftUIView {
             .padding(Edge.Set.horizontal, 20)
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarItems(trailing: closeButton)
+            .background(NavigationConfigurator { nc in
+                nc.navigationBar.standardAppearance.configureWithTransparentBackground()
+            })
         }
         .accentColor(Color.appAccent)
     }
@@ -88,10 +91,6 @@ struct LoginView: AppSwiftUIView {
     
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        UINavigationBar.appearance().standardAppearance = appearance
-        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
     
     func destinationView(for target: ViewModel.Navigation) -> some View {
