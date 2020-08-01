@@ -133,7 +133,7 @@ final class DirectSharingView: AppView {
         cameraPreviewView.constrainTop(to: dividerStackView.bottomAnchor, constant: 16)
 
         qrCodeImageView.constrainWidthEqualTo(qrCodeImageView.heightAnchor)
-        businessCardImageView.constrainHeight(to: businessCardImageView.widthAnchor, multiplier: CGSize.businessCardSizeRatio)
+        businessCardImageView.constrainHeight(to: businessCardImageView.widthAnchor, multiplier: CGSize.businessCardHeightToWidthRatio)
 
         qrCodeActivityIndicator.constrainCenter(toView: qrCodeImageView)
 

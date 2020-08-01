@@ -7,11 +7,10 @@
 //
 
 import UIKit
-//import TOCropViewController
+import TOCropViewController
 
 protocol CardImagePickerDelegate: class {
-    func cardImagePicker(_ imagePicker: CardImagePicker, didSelect image: UIImage)
-    func cardImagePickerDidCancel(_ imagePicker: CardImagePicker)
+    func cardImagePicker(_ imagePicker: CardImagePicker, didSelect image: UIImage?)
 }
 
 final class CardImagePicker: NSObject, UINavigationControllerDelegate {
@@ -73,33 +72,32 @@ extension CardImagePicker: UIImagePickerControllerDelegate {
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
-        self.delegate?.cardImagePickerDidCancel(self)
+        self.delegate?.cardImagePicker(self, didSelect: nil)
     }
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
 
         guard let image = info[.originalImage] as? UIImage else {
             picker.dismiss(animated: true, completion: nil)
-            self.delegate?.cardImagePickerDidCancel(self)
+            self.delegate?.cardImagePicker(self, didSelect: nil)
             return
         }
 
-//        let cropViewController = TOCropViewController(image: image)
-//        cropViewController.delegate = self
-//        cropViewController.aspectRatioPickerButtonHidden = true
-//        cropViewController.aspectRatioPreset = .preset16x9
-//        cropViewController.resetButtonHidden = true
-//        cropViewController.aspectRatioLockEnabled = true
-//        picker.pushViewController(cropViewController, animated: true)
+        let cropViewController = TOCropViewController(image: image)
+        cropViewController.delegate = self
+        cropViewController.aspectRatioPickerButtonHidden = true
+        cropViewController.customAspectRatio = CGSize.businessCardAspectRatio
+        cropViewController.resetButtonHidden = true
+        cropViewController.aspectRatioLockEnabled = true
+        picker.pushViewController(cropViewController, animated: true)
     }
 }
 
 // MARK: - TOCropViewControllerDelegate
 
-//extension CardImagePicker: TOCropViewControllerDelegate {
-//    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
-//        self.pickerController.dismiss(animated: true, completion: nil)
-//        self.delegate?.cardImagePicker(self, didSelect: image)
-//    }
-//}
-
+extension CardImagePicker: TOCropViewControllerDelegate {
+    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
+        self.pickerController.dismiss(animated: true, completion: nil)
+        self.delegate?.cardImagePicker(self, didSelect: image)
+    }
+}

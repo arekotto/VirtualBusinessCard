@@ -56,9 +56,13 @@
 		4537CF0523F6D25A003602EA /* VirtualBusinessCardUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4537CF0423F6D25A003602EA /* VirtualBusinessCardUITests.swift */; };
 		453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453B5F1D24197171009E3AB2 /* ButtonStyle.swift */; };
 		4541B0E524A8B41300BF8E0E /* UserProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4541B0E424A8B41300BF8E0E /* UserProfileVC.swift */; };
+		4542A7CB24D563AD00B0DA99 /* EditCardPhysicalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4542A7CA24D563AD00B0DA99 /* EditCardPhysicalVC.swift */; };
+		4542A7CD24D563D600B0DA99 /* EditCardPhysicalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4542A7CC24D563D600B0DA99 /* EditCardPhysicalView.swift */; };
+		4542A7CF24D563F700B0DA99 /* EditCardPhysicalVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4542A7CE24D563F700B0DA99 /* EditCardPhysicalVM.swift */; };
 		4543D2D7249BBDCC003B1439 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D6249BBDCC003B1439 /* UIImage.swift */; };
 		4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */; };
 		4543D2DB249CA6F7003B1439 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4543D2DA249CA6F7003B1439 /* Colors.xcassets */; };
+		4543F1C824D46C52006F30A5 /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 4543F1C724D46C52006F30A5 /* TOCropViewController */; };
 		454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625DF24A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift */; };
 		454625E224A0C0EF000D1D25 /* AppCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */; };
 		454625E424A0C10C000D1D25 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E324A0C10C000D1D25 /* Reusable.swift */; };
@@ -255,6 +259,9 @@
 		4537CF0623F6D25A003602EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		453B5F1D24197171009E3AB2 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		4541B0E424A8B41300BF8E0E /* UserProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileVC.swift; sourceTree = "<group>"; };
+		4542A7CA24D563AD00B0DA99 /* EditCardPhysicalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardPhysicalVC.swift; sourceTree = "<group>"; };
+		4542A7CC24D563D600B0DA99 /* EditCardPhysicalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardPhysicalView.swift; sourceTree = "<group>"; };
+		4542A7CE24D563F700B0DA99 /* EditCardPhysicalVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardPhysicalVM.swift; sourceTree = "<group>"; };
 		4543D2D6249BBDCC003B1439 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
 		4543D2DA249CA6F7003B1439 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -389,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */,
+				4543F1C824D46C52006F30A5 /* TOCropViewController in Frameworks */,
 				45174D7A24BB4189009BFE58 /* Reachability in Frameworks */,
 				C89A3F0654015C8DABF7CBB3 /* libPods-VirtualBusinessCard.a in Frameworks */,
 				452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */,
@@ -652,6 +660,16 @@
 			path = UserProfile;
 			sourceTree = "<group>";
 		};
+		4542A7C924D5639100B0DA99 /* EditCardPhysical */ = {
+			isa = PBXGroup;
+			children = (
+				4542A7CA24D563AD00B0DA99 /* EditCardPhysicalVC.swift */,
+				4542A7CC24D563D600B0DA99 /* EditCardPhysicalView.swift */,
+				4542A7CE24D563F700B0DA99 /* EditCardPhysicalVM.swift */,
+			);
+			path = EditCardPhysical;
+			sourceTree = "<group>";
+		};
 		4543D2D5249BBAF1003B1439 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -677,6 +695,7 @@
 		4552F21F24D448070062FC2B /* EditCard */ = {
 			isa = PBXGroup;
 			children = (
+				4542A7C924D5639100B0DA99 /* EditCardPhysical */,
 				4552F22024D4481C0062FC2B /* EditCardVC.swift */,
 				4552F22224D448480062FC2B /* EditCardView.swift */,
 				4552F22424D4485E0062FC2B /* EditCardVM.swift */,
@@ -1097,6 +1116,7 @@
 				458EF404248B9B6D00EC76D6 /* Kingfisher */,
 				452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */,
 				45174D7924BB4189009BFE58 /* Reachability */,
+				4543F1C724D46C52006F30A5 /* TOCropViewController */,
 			);
 			productName = VirtualBusinessCard;
 			productReference = 4537CEDF23F6D259003602EA /* Virtual Business Card.app */;
@@ -1177,6 +1197,7 @@
 				458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */,
 				45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */,
+				4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 			);
 			productRefGroup = 4537CEE023F6D259003602EA /* Products */;
 			projectDirPath = "";
@@ -1422,6 +1443,7 @@
 				45E21C2E24CC960300013E9E /* EditCardNotesView.swift in Sources */,
 				45139C4D24979A3500DE1E9F /* ReceivedBusinessCard.swift in Sources */,
 				45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */,
+				4542A7CD24D563D600B0DA99 /* EditCardPhysicalView.swift in Sources */,
 				4552F22124D4481C0062FC2B /* EditCardVC.swift in Sources */,
 				45174CDB24B89772009BFE58 /* TagsVC.swift in Sources */,
 				45C1602C2486484E00806718 /* PersonalCardsView.swift in Sources */,
@@ -1432,6 +1454,7 @@
 				45D445AB24C05DAF00630C72 /* AcceptCardVM.swift in Sources */,
 				453384A424CB29860020AEF6 /* LoadingPopoverVC.swift in Sources */,
 				45C160202485AC6900806718 /* LoginHostingController.swift in Sources */,
+				4542A7CF24D563F700B0DA99 /* EditCardPhysicalVM.swift in Sources */,
 				45C1601E2485333F00806718 /* UserSetupViewModel.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
 				45AA873324499A5B004ACDDD /* CardView.swift in Sources */,
@@ -1495,6 +1518,7 @@
 				454625E824A0D95A000D1D25 /* Collection.swift in Sources */,
 				4511A135246D760700AE3306 /* CreateAccountEmailPasswordView.swift in Sources */,
 				45944B0E24AF70530005CAF1 /* CardDetailsSectionFactory.swift in Sources */,
+				4542A7CB24D563AD00B0DA99 /* EditCardPhysicalVC.swift in Sources */,
 				45C160262485AEF800806718 /* PersonalCardsVC.swift in Sources */,
 				45C25D68249F5EC900945F29 /* ScrollableSegmentedControl.swift in Sources */,
 				45D6BF7824169A41008B2498 /* Color.swift in Sources */,
@@ -1881,6 +1905,14 @@
 				minimumVersion = 0.1.5;
 			};
 		};
+		4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/TimOliver/TOCropViewController";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.4;
+			};
+		};
 		458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1901,6 +1933,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */;
 			productName = CollectionViewPagingLayout;
+		};
+		4543F1C724D46C52006F30A5 /* TOCropViewController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
+			productName = TOCropViewController;
 		};
 		458EF404248B9B6D00EC76D6 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -21,13 +21,15 @@ final class EditCardVC: AppViewController<EditCardView, EditCardVM> {
         setupNavigationItem()
         setupContentView()
         viewModel.delegate = self
+
     }
 
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = viewModel.title
-        navigationItem.rightBarButtonItem = nextButton
         navigationItem.leftBarButtonItem = cancelEditingButton
+        navigationItem.rightBarButtonItem = nextButton
+        nextButton.isEnabled = viewModel.nextButtonEnabled
     }
 
     private func setupContentView() {
@@ -43,16 +45,20 @@ private extension EditCardVC {
 
     func didTapFrontImageButton() {
         imagePicker = CardImagePicker(presentationController: self, targetCardSide: .front)
+        imagePicker?.delegate = self
         imagePicker?.present()
     }
 
     func didTapBackImageButton() {
         imagePicker = CardImagePicker(presentationController: self, targetCardSide: .back)
+        imagePicker?.delegate = self
         imagePicker?.present()
     }
 
     func didTapNextButton() {
-//        viewModel.didApproveSelection()
+        guard let nextViewModel = viewModel.editCardPhysicalViewModel() else { return }
+        let vc = EditCardPhysicalVC(viewModel: nextViewModel)
+        show(vc, sender: nil)
     }
 
     func didTapCancelButton() {
@@ -63,26 +69,23 @@ private extension EditCardVC {
 // MARK: - EditCardVMDelegate
 
 extension EditCardVC: EditCardVMDelegate {
-
+    func didUpdateNextButtonEnabled() {
+        nextButton.isEnabled = viewModel.nextButtonEnabled
+    }
 }
 
 // MARK: - CardImagePickerDelegate
 
 extension EditCardVC: CardImagePickerDelegate {
-    func cardImagePicker(_ imagePicker: CardImagePicker, didSelect image: UIImage) {
+    func cardImagePicker(_ imagePicker: CardImagePicker, didSelect image: UIImage?) {
         switch imagePicker.targetCardSide {
         case .front:
-            contentView.frontImageView.image = image
+            viewModel.frontImage = image
+            contentView.setFrontImage(image)
         case .back:
-            contentView.backImageView.image = image
-
+            viewModel.backImage = image
+            contentView.setBackImage(image)
         }
         self.imagePicker = nil
     }
-
-    func cardImagePickerDidCancel(_ imagePicker: CardImagePicker) {
-        
-    }
 }
-
-

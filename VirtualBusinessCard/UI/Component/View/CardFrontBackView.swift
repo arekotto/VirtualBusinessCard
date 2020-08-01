@@ -73,8 +73,8 @@ class CardFrontBackView: AppView {
         frontSceneViewHeightConstraint = frontSceneView.constrainHeightEqualTo(self, multiplier: subScenesHeightMultiplayer)
         backSceneViewHeightConstraint = backSceneView.constrainHeightEqualTo(self, multiplier: subScenesHeightMultiplayer)
         
-        frontSceneView.constrainWidthEqualTo(frontSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardSizeRatio)
-        backSceneView.constrainWidthEqualTo(backSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardSizeRatio)
+        frontSceneView.constrainWidthEqualTo(frontSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardHeightToWidthRatio)
+        backSceneView.constrainWidthEqualTo(backSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardHeightToWidthRatio)
     }
     
     func lockViewsToCurrentSizes() {
