@@ -57,8 +57,8 @@ extension PersonalCardsVM {
         SettingsVM(userID: userID)
     }
 
-    func newCardViewModel() -> EditCardVM {
-        EditCardVM(userID: userID)
+    func newCardViewModel() -> EditCardImagesVM {
+        EditCardImagesVM(userID: userID)
     }
 
     func sharingViewModel(for indexPath: IndexPath) -> DirectSharingVM {

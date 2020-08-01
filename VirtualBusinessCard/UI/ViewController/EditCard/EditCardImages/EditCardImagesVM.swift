@@ -1,5 +1,5 @@
 //
-//  EditCardVM.swift
+//  EditCardImagesVM.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 31/07/2020.
@@ -12,7 +12,7 @@ protocol EditCardVMDelegate: class {
     func didUpdateNextButtonEnabled()
 }
 
-final class EditCardVM: PartialUserViewModel {
+final class EditCardImagesVM: PartialUserViewModel {
 
     let title: String
 
@@ -36,7 +36,7 @@ final class EditCardVM: PartialUserViewModel {
     }
 }
 
-extension EditCardVM {
+extension EditCardImagesVM {
 
     var nextButtonTitle: String {
         NSLocalizedString("Next", comment: "")

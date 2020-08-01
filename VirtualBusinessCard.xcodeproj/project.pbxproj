@@ -73,9 +73,9 @@
 		454CF7D524A8D3A400074E0D /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CF7D424A8D3A400074E0D /* UserProfileView.swift */; };
 		454CF7DE24A9F27E00074E0D /* AuthErrorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CF7DD24A9F27E00074E0D /* AuthErrorCode.swift */; };
 		454CF7E024A9F52D00074E0D /* UIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454CF7DF24A9F52D00074E0D /* UIAlertController.swift */; };
-		4552F22124D4481C0062FC2B /* EditCardVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22024D4481C0062FC2B /* EditCardVC.swift */; };
-		4552F22324D448480062FC2B /* EditCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22224D448480062FC2B /* EditCardView.swift */; };
-		4552F22524D4485E0062FC2B /* EditCardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22424D4485E0062FC2B /* EditCardVM.swift */; };
+		4552F22124D4481C0062FC2B /* EditCardImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22024D4481C0062FC2B /* EditCardImagesVC.swift */; };
+		4552F22324D448480062FC2B /* EditCardImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22224D448480062FC2B /* EditCardImagesView.swift */; };
+		4552F22524D4485E0062FC2B /* EditCardImagesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22424D4485E0062FC2B /* EditCardImagesVM.swift */; };
 		4552F22924D45F580062FC2B /* CardImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22824D45F580062FC2B /* CardImagePicker.swift */; };
 		4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826724A4BEEF001C763B /* BusinessCardTag.swift */; };
 		4558826B24A4C576001C763B /* BusinessCardTagMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826A24A4C576001C763B /* BusinessCardTagMC.swift */; };
@@ -275,9 +275,9 @@
 		454CF7D424A8D3A400074E0D /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		454CF7DD24A9F27E00074E0D /* AuthErrorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthErrorCode.swift; sourceTree = "<group>"; };
 		454CF7DF24A9F52D00074E0D /* UIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertController.swift; sourceTree = "<group>"; };
-		4552F22024D4481C0062FC2B /* EditCardVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardVC.swift; sourceTree = "<group>"; };
-		4552F22224D448480062FC2B /* EditCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardView.swift; sourceTree = "<group>"; };
-		4552F22424D4485E0062FC2B /* EditCardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardVM.swift; sourceTree = "<group>"; };
+		4552F22024D4481C0062FC2B /* EditCardImagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardImagesVC.swift; sourceTree = "<group>"; };
+		4552F22224D448480062FC2B /* EditCardImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardImagesView.swift; sourceTree = "<group>"; };
+		4552F22424D4485E0062FC2B /* EditCardImagesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardImagesVM.swift; sourceTree = "<group>"; };
 		4552F22824D45F580062FC2B /* CardImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImagePicker.swift; sourceTree = "<group>"; };
 		4558826724A4BEEF001C763B /* BusinessCardTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTag.swift; sourceTree = "<group>"; };
 		4558826A24A4C576001C763B /* BusinessCardTagMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTagMC.swift; sourceTree = "<group>"; };
@@ -670,6 +670,16 @@
 			path = EditCardPhysical;
 			sourceTree = "<group>";
 		};
+		4542A7D024D5766E00B0DA99 /* EditCardImages */ = {
+			isa = PBXGroup;
+			children = (
+				4552F22024D4481C0062FC2B /* EditCardImagesVC.swift */,
+				4552F22224D448480062FC2B /* EditCardImagesView.swift */,
+				4552F22424D4485E0062FC2B /* EditCardImagesVM.swift */,
+			);
+			path = EditCardImages;
+			sourceTree = "<group>";
+		};
 		4543D2D5249BBAF1003B1439 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -695,10 +705,8 @@
 		4552F21F24D448070062FC2B /* EditCard */ = {
 			isa = PBXGroup;
 			children = (
+				4542A7D024D5766E00B0DA99 /* EditCardImages */,
 				4542A7C924D5639100B0DA99 /* EditCardPhysical */,
-				4552F22024D4481C0062FC2B /* EditCardVC.swift */,
-				4552F22224D448480062FC2B /* EditCardView.swift */,
-				4552F22424D4485E0062FC2B /* EditCardVM.swift */,
 			);
 			path = EditCard;
 			sourceTree = "<group>";
@@ -1426,7 +1434,7 @@
 				4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */,
 				45B5E319241FBE2800028B0A /* Font.swift in Sources */,
 				45B25F1F2493B2A3006DD0F7 /* CardDetailsVC.swift in Sources */,
-				4552F22324D448480062FC2B /* EditCardView.swift in Sources */,
+				4552F22324D448480062FC2B /* EditCardImagesView.swift in Sources */,
 				45174CDF24B8994E009BFE58 /* TagsVM.swift in Sources */,
 				4577CC84248908530012EDC8 /* UserMC.swift in Sources */,
 				458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */,
@@ -1444,7 +1452,7 @@
 				45139C4D24979A3500DE1E9F /* ReceivedBusinessCard.swift in Sources */,
 				45B25F1A24938489006DD0F7 /* UIColor.swift in Sources */,
 				4542A7CD24D563D600B0DA99 /* EditCardPhysicalView.swift in Sources */,
-				4552F22124D4481C0062FC2B /* EditCardVC.swift in Sources */,
+				4552F22124D4481C0062FC2B /* EditCardImagesVC.swift in Sources */,
 				45174CDB24B89772009BFE58 /* TagsVC.swift in Sources */,
 				45C1602C2486484E00806718 /* PersonalCardsView.swift in Sources */,
 				4577CC77248903D70012EDC8 /* AppError.swift in Sources */,
@@ -1511,7 +1519,7 @@
 				45C160232485AD3000806718 /* MainTBC.swift in Sources */,
 				45174D7724BB08C3009BFE58 /* EditBusinessCardTagMC.swift in Sources */,
 				45B25F272493B7AF006DD0F7 /* SampleBCUploadTask.swift in Sources */,
-				4552F22524D4485E0062FC2B /* EditCardVM.swift in Sources */,
+				4552F22524D4485E0062FC2B /* EditCardImagesVM.swift in Sources */,
 				45C25D62249F4CB100945F29 /* GroupedCardsView.swift in Sources */,
 				45C1601324852EC500806718 /* AppControl.swift in Sources */,
 				45D76DDF24CD6CD3008BDDE5 /* CompactTagsCollectionView.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  EditCardVC.swift
+//  EditCardImagesVC.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 31/07/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class EditCardVC: AppViewController<EditCardView, EditCardVM> {
+final class EditCardImagesVC: AppViewController<EditCardImagesView, EditCardImagesVM> {
 
     private var imagePicker: CardImagePicker?
 
@@ -41,7 +41,7 @@ final class EditCardVC: AppViewController<EditCardView, EditCardVM> {
 // MARK: - Actions
 
 @objc
-private extension EditCardVC {
+private extension EditCardImagesVC {
 
     func didTapFrontImageButton() {
         imagePicker = CardImagePicker(presentationController: self, targetCardSide: .front)
@@ -68,7 +68,7 @@ private extension EditCardVC {
 
 // MARK: - EditCardVMDelegate
 
-extension EditCardVC: EditCardVMDelegate {
+extension EditCardImagesVC: EditCardVMDelegate {
     func didUpdateNextButtonEnabled() {
         nextButton.isEnabled = viewModel.nextButtonEnabled
     }
@@ -76,7 +76,7 @@ extension EditCardVC: EditCardVMDelegate {
 
 // MARK: - CardImagePickerDelegate
 
-extension EditCardVC: CardImagePickerDelegate {
+extension EditCardImagesVC: CardImagePickerDelegate {
     func cardImagePicker(_ imagePicker: CardImagePicker, didSelect image: UIImage?) {
         switch imagePicker.targetCardSide {
         case .front:

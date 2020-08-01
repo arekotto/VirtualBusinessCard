@@ -1,5 +1,5 @@
 //
-//  EditCardView.swift
+//  EditCardImagesView.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 31/07/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class EditCardView: AppBackgroundView {
+final class EditCardImagesView: AppBackgroundView {
 
     static let defaultCardViewSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.8)
 
