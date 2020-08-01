@@ -22,7 +22,6 @@ final class EditCardView: AppBackgroundView {
     let backImageButton: UIButton = {
         let this = UIButton()
         this.setTitle(NSLocalizedString("Choose Back Image", comment: ""), for: .normal)
-        this.layer.cornerRadius = 12
         return this
     }()
 
@@ -59,8 +58,7 @@ final class EditCardView: AppBackgroundView {
         let this = UIStackView(arrangedSubviews: [frontImageView, frontImageButtonContainer])
         this.axis = .vertical
         switch DeviceDisplay.sizeType {
-        case .compact: this.spacing = 8
-        case .standard: this.spacing = 12
+        case .compact, .standard: this.spacing = 12
         case .commodious: this.spacing = 16
         }
         return this
@@ -70,8 +68,7 @@ final class EditCardView: AppBackgroundView {
         let this = UIStackView(arrangedSubviews: [backImageView, backImageButtonContainer])
         this.axis = .vertical
         switch DeviceDisplay.sizeType {
-        case .compact: this.spacing = 8
-        case .standard: this.spacing = 12
+        case .compact, .standard: this.spacing = 12
         case .commodious: this.spacing = 16
         }
         return this
@@ -81,10 +78,15 @@ final class EditCardView: AppBackgroundView {
         let this = UIStackView(arrangedSubviews: [frontImageStackView, backImageStackView])
         this.axis = .vertical
         switch DeviceDisplay.sizeType {
-        case .compact: this.spacing = 16
-        case .standard: this.spacing = 24
+        case .compact, .standard: this.spacing = 24
         case .commodious: this.spacing = 32
         }
+        return this
+    }()
+
+    private let mainScrollView: UIScrollView = {
+        let this = UIScrollView()
+        this.alwaysBounceVertical = true
         return this
     }()
 
@@ -92,16 +94,14 @@ final class EditCardView: AppBackgroundView {
         super.configureSubviews()
         frontImageButtonContainer.addSubview(frontImageButton)
         backImageButtonContainer.addSubview(backImageButton)
-        [frontSideLabel, backSideLabel, mainStackView].forEach { addSubview($0) }
+        [frontSideLabel, backSideLabel, mainStackView].forEach { mainScrollView.addSubview($0) }
+        addSubview(mainScrollView)
     }
 
     override func configureConstraints() {
         super.configureConstraints()
         frontImageView.constrainSizeToBusinessCardDimensions(width: UIScreen.main.bounds.width * 0.8)
         backImageView.constrainSizeToBusinessCardDimensions(width: UIScreen.main.bounds.width * 0.8)
-
-        mainStackView.constrainCenterXToSuperview()
-        mainStackView.constrainCenterYToSuperview(offset: 20)
 
         frontImageButtonContainer.constrainHeightEqualTo(frontImageView, multiplier: 0.22)
         backImageButtonContainer.constrainHeightEqualTo(frontImageView, multiplier: 0.22)
@@ -116,6 +116,24 @@ final class EditCardView: AppBackgroundView {
 
         frontSideLabel.constrainCenter(toView: frontImageView)
         backSideLabel.constrainCenter(toView: backImageView)
+
+        let verticalInsets: CGFloat
+        switch DeviceDisplay.sizeType {
+        case .compact, .standard: verticalInsets = 24
+        case .commodious: verticalInsets = 32
+        }
+        mainStackView.constrainCenterXToSuperview()
+        mainStackView.constrainCenterYToSuperview(offset: -50, priority: .defaultLow)
+        mainStackView.constrainTopGreaterOrEqual(to: mainScrollView.topAnchor, constant: verticalInsets)
+        mainStackView.constrainBottomLessOrEqual(to: mainScrollView.bottomAnchor, constant: -verticalInsets)
+
+        mainScrollView.constrainToEdgesOfSuperview()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        frontImageButton.layer.cornerRadius = frontImageButton.frame.height / 4
+        backImageButton.layer.cornerRadius = backImageButton.frame.height / 4
     }
 
     override func configureColors() {

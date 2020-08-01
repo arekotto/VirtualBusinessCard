@@ -50,7 +50,7 @@ final class EditTagVM: PartialUserViewModel {
     
     private func isOnline() -> Bool {
         switch (try? Reachability())?.connection {
-        case .wifi, .cellular, .some(.none), .none: return true
+        case .wifi, .cellular, .some(.none), nil: return true
         case .unavailable: return false
         }
     }
