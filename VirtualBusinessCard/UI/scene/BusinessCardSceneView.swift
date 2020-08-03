@@ -16,11 +16,11 @@ import CoreMotion
 class BusinessCardSceneView: AppView {
     
     let scene = SCNScene(named: "SceneKitAssets.scnassets/Main.scn")!
-    
+
     private(set) lazy var sceneView: SCNView = {
         let sceneView = SCNView()
         sceneView.scene = scene
-        sceneView.clipsToBounds = false
+        sceneView.clipsToBounds = true
         sceneView.preferredFramesPerSecond = 60
         return sceneView
     }()
@@ -32,6 +32,8 @@ class BusinessCardSceneView: AppView {
     private var businessCardGeometryMaterial: SCNMaterial {
         (businessCardNode.geometry as! SCNBox).firstMaterial!
     }
+
+    private var cornerRadiusHeightMultiplier: CGFloat = 0
     
     private let xLightAngleLowest = deg2rad(-120)
     private let xLightAngleHighest = deg2rad(-60)
@@ -50,6 +52,11 @@ class BusinessCardSceneView: AppView {
     override func configureConstraints() {
         super.configureConstraints()
         sceneView.constrainToEdgesOfSuperview()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        sceneView.layer.cornerRadius = cornerRadiusHeightMultiplier * frame.height
     }
 }
 
@@ -83,13 +90,15 @@ extension BusinessCardSceneView {
         self.dynamicLightingEnabled = dynamicLightingEnabled
     }
     
-    func setImage(image: UIImage, texture: UIImage?, normal: CGFloat, specular: CGFloat) {
+    func setImage(image: UIImage, texture: UIImage?, normal: CGFloat, specular: CGFloat, cornerRadiusHeightMultiplier: CGFloat) {
         let imageMaterial = businessCardGeometryMaterial
         imageMaterial.lightingModel = .blinn
         imageMaterial.diffuse.contents = image
         imageMaterial.normal.contents = texture
         imageMaterial.normal.intensity = normal
         imageMaterial.specular.intensity = specular
+        sceneView.layer.cornerRadius = cornerRadiusHeightMultiplier * frame.height
+        self.cornerRadiusHeightMultiplier = cornerRadiusHeightMultiplier
     }
     
     func updateMotionData(motion: CMDeviceMotion, over timeframe: TimeInterval) {

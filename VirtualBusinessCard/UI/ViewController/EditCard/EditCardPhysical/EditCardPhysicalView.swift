@@ -14,9 +14,10 @@ final class EditCardPhysicalView: AppBackgroundView {
         EditingViewType.allCases.map { editingView(of: $0) }
     }
 
+    private(set) var cardSceneViewTopConstraint: NSLayoutConstraint!
     let cardSceneView: CardFrontBackView = {
         let this = CardFrontBackView(sceneHeightAdjustMode: .fixed)
-        this.sceneShadowOpacity = 0.2
+        this.setSceneShadowOpacity(0.2)
         return this
     }()
 
@@ -44,10 +45,8 @@ final class EditCardPhysicalView: AppBackgroundView {
         return this
     }()
 
-    let hapticsEditingView: SingleSliderEditingView = {
-        let this = SingleSliderEditingView()
-        this.minLabel.text = NSLocalizedString("Soft", comment: "")
-        this.maxLabel.text = NSLocalizedString("Sharp", comment: "")
+    let hapticsEditingView: HapticsEditingView = {
+        let this = HapticsEditingView()
         this.isHidden = true
         this.alpha = 0
         return this
@@ -100,11 +99,12 @@ final class EditCardPhysicalView: AppBackgroundView {
         mainScrollView.constrainTopToSuperviewSafeArea()
         mainScrollView.constrainBottom(to: editingViewSegmentedControl.topAnchor, constant: -16)
 
+        let heightMultiplayer = CGSize.businessCardHeightToWidthRatio * 2
+        cardSceneView.constrainHeight(to: cardSceneView.widthAnchor, constant: cardSpacing, multiplier: heightMultiplayer)
         cardSceneView.constrainWidth(constant: DeviceDisplay.size.width * widthMultiplayer)
-        cardSceneView.constrainHeight(to: cardSceneView.widthAnchor, constant: cardSpacing, multiplier: CGSize.businessCardHeightToWidthRatio * 2)
         cardSceneView.constrainCenterXToSuperview()
         cardSceneView.constrainBottomToSuperview(inset: cardSpacing)
-        cardSceneView.constrainTopToSuperview(inset: cardSpacing)
+        cardSceneViewTopConstraint = cardSceneView.constrainTopToSuperview(inset: cardSpacing)
 
         editingViewSegmentedControl.constrainHeight(constant: 30)
         editingViewSegmentedControl.constrainCenterXToSuperview()
@@ -120,9 +120,7 @@ final class EditCardPhysicalView: AppBackgroundView {
         cornersEditingView.constrainHorizontallyToSuperview(sideInset: 32)
         cornersEditingView.constrainHeight(to: editingViewContainer.heightAnchor, constant: -20, multiplier: 0.5)
 
-        hapticsEditingView.constrainCenterYToSuperview()
-        hapticsEditingView.constrainHorizontallyToSuperview(sideInset: 32)
-        hapticsEditingView.constrainHeight(to: editingViewContainer.heightAnchor, constant: -20, multiplier: 0.5)
+        hapticsEditingView.constrainToEdgesOfSuperview()
 
         editingViewContainer.constrainHeight(constant: 150)
         editingViewContainer.constrainHorizontallyToSuperview()

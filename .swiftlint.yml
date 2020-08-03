@@ -5,6 +5,7 @@ line_length: 200
 disabled_rules:
   - trailing_whitespace
   - force_cast
+  - multiple_closures_with_trailing_closure
 identifier_name:
   max_length:
     warning: 50

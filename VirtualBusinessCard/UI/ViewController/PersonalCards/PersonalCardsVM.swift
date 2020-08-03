@@ -76,7 +76,8 @@ extension PersonalCardsVM {
             backImageURL: card.backImage.url,
             textureImageURL: card.texture.image.url,
             normal: CGFloat(card.texture.normal),
-            specular: CGFloat(card.texture.specular)
+            specular: CGFloat(card.texture.specular),
+            cornerRadiusHeightMultiplier: CGFloat(card.cornerRadiusHeightMultiplier)
         )
     }
     

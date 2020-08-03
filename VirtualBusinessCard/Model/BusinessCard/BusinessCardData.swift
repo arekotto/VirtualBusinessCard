@@ -22,6 +22,7 @@ struct BusinessCardData: DocumentRepresentable {
     var address: Address
 
     var hapticFeedbackSharpness: Float
+    var cornerRadiusHeightMultiplier: Float
 }
 
 extension BusinessCardData {

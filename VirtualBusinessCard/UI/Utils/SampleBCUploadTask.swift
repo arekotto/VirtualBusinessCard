@@ -42,6 +42,7 @@ struct SampleBCUploadTask {
             return docRef.documentID
         }
         let hapticSharpness: [Float] = [0.1, 0.2, 0.4, 0.6, 0.8, 1]
+        let cornerRadius: [Float] = [0, 0.05, 0.08, 0.1, 0.15, 0.2]
         // MARK: Data upload
 
         Name.samples.enumerated().forEach { idx, person in
@@ -54,7 +55,7 @@ struct SampleBCUploadTask {
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
                                   contact: BusinessCardData.Contact(email: "\(person.lastName.lowercased())@ibm.com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.ibm.com"),
                                   address: BusinessCardData.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"),
-                                  hapticFeedbackSharpness: hapticSharpness.randomElement()!)
+                hapticFeedbackSharpness: hapticSharpness.randomElement()!, cornerRadiusHeightMultiplier: cornerRadius.randomElement()!)
             let personalBC = PersonalBusinessCard(id: docRef.documentID, creationDate: day(from: Date(), offset: idx % 5), cardData: bcData)
             docRef.setData(personalBC.asDocument())
         }
@@ -70,7 +71,7 @@ struct SampleBCUploadTask {
                                   name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
                                   contact: BusinessCardData.Contact(email: "\(person.lastName.lowercased())@\(company.lowercased()).com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.\(company.lowercased()).com"),
                                   address: BusinessCardData.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"),
-                                  hapticFeedbackSharpness: hapticSharpness.randomElement()!)
+                hapticFeedbackSharpness: hapticSharpness.randomElement()!, cornerRadiusHeightMultiplier: cornerRadius.randomElement()!)
             
             let cardTagIDs: [BusinessCardTagID]
             switch idx % 3 {

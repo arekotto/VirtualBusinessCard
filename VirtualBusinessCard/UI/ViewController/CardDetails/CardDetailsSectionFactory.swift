@@ -46,7 +46,8 @@ struct CardDetailsSectionFactory {
             backImageURL: cardData.backImage.url,
             textureImageURL: cardData.texture.image.url,
             normal: CGFloat(cardData.texture.normal),
-            specular: CGFloat(cardData.texture.specular)
+            specular: CGFloat(cardData.texture.specular),
+            cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
         )
         
         return Section(items: [Item(dataModel: .cardImagesCell(imagesDataModel), actions: [])])

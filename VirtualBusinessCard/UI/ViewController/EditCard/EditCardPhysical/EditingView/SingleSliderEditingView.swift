@@ -10,10 +10,7 @@ import UIKit
 
 extension EditCardPhysicalView {
     final class SingleSliderEditingView: AppView {
-        let slider: UISlider = {
-            let this = UISlider()
-            return this
-        }()
+        let slider = UISlider()
 
         let minLabel: UILabel = {
             let this = UILabel()
@@ -59,3 +56,4 @@ extension EditCardPhysicalView {
         }
     }
 }
+

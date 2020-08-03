@@ -12,26 +12,30 @@ class PersonalBusinessCardMC {
 
     let storage = Storage.storage().reference()
     
-    let businessCard: PersonalBusinessCard
+    private let card: PersonalBusinessCard
     
-    var id: String { businessCard.id }
+    var id: String { card.id }
+
+    var cardData: BusinessCardData { card.cardData }
+
+    var cornerRadiusHeightMultiplier: Float { card.cardData.cornerRadiusHeightMultiplier }
         
-    var frontImage: BusinessCardData.Image { businessCard.cardData.frontImage }
+    var frontImage: BusinessCardData.Image { card.cardData.frontImage }
     
-    var backImage: BusinessCardData.Image { businessCard.cardData.backImage }
+    var backImage: BusinessCardData.Image { card.cardData.backImage }
 
-    var texture: BusinessCardData.Texture { businessCard.cardData.texture }
+    var texture: BusinessCardData.Texture { card.cardData.texture }
 
-    var position: BusinessCardData.Position { businessCard.cardData.position }
+    var position: BusinessCardData.Position { card.cardData.position }
 
-    var name: BusinessCardData.Name { businessCard.cardData.name }
+    var name: BusinessCardData.Name { card.cardData.name }
     
-    var contact: BusinessCardData.Contact { businessCard.cardData.contact }
+    var contact: BusinessCardData.Contact { card.cardData.contact }
     
-    var address: BusinessCardData.Address { businessCard.cardData.address }
+    var address: BusinessCardData.Address { card.cardData.address }
     
     init(businessCard: PersonalBusinessCard) {
-        self.businessCard = businessCard
+        card = businessCard
     }
 }
 
@@ -44,6 +48,6 @@ extension PersonalBusinessCardMC {
 
 extension PersonalBusinessCardMC: Equatable {
     static func == (lhs: PersonalBusinessCardMC, rhs: PersonalBusinessCardMC) -> Bool {
-        lhs.businessCard == rhs.businessCard
+        lhs.card == rhs.card
     }
 }

@@ -24,6 +24,7 @@ extension EditCardPhysicalView {
         let addTextureImageButton: UIButton = {
             let this = UIButton()
             this.setTitle(NSLocalizedString("Select Custom Image", comment: ""), for: .normal)
+            this.titleLabel?.font = .appDefault(size: 15)
             return this
         }()
 

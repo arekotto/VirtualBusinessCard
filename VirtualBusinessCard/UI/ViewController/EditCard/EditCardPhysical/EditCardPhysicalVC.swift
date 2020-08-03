@@ -9,9 +9,11 @@
 import UIKit
 import CoreMotion
 
-final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCardPhysicalVM> {
+final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCardPhysicalVM>, UINavigationControllerDelegate {
 
     private lazy var nextButton = UIBarButtonItem(title: viewModel.nextButtonTitle, style: .done, target: self, action: #selector(didTapNextButton))
+
+    private var hapticEngine: HapticFeedbackEngine?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,9 +39,28 @@ final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCard
 
     private func setupContentView() {
         contentView.cardSceneView.setDataModel(viewModel.dataModel())
+
+        contentView.editingViewSegmentedControl.addTarget(self, action: #selector(editingViewSegmentedControlDidChange(_:)), for: .valueChanged)
+
         contentView.textureEditingView.collectionView.dataSource = self
         contentView.textureEditingView.collectionView.delegate = self
-        contentView.editingViewSegmentedControl.addTarget(self, action: #selector(editingViewSegmentedControlDidChange(_:)), for: .valueChanged)
+        contentView.textureEditingView.addTextureImageButton.addTarget(self, action: #selector(didTapCustomTextureButton), for: .touchUpInside)
+
+        contentView.surfaceEditingView.normalSlider.value = viewModel.normal
+        contentView.surfaceEditingView.normalSlider.maximumValue = viewModel.normalMax
+        contentView.surfaceEditingView.normalSlider.addTarget(self, action: #selector(normalSliderValueDidChange(_:)), for: .valueChanged)
+
+        contentView.surfaceEditingView.specularSlider.value = viewModel.specular
+        contentView.surfaceEditingView.specularSlider.maximumValue = viewModel.specularMax
+        contentView.surfaceEditingView.specularSlider.addTarget(self, action: #selector(specularSliderValueDidChange(_:)), for: .valueChanged)
+
+        contentView.cornersEditingView.slider.value = viewModel.cornerRadiusHeightMultiplier
+        contentView.cornersEditingView.slider.maximumValue = viewModel.cornerRadiusHeightMultiplierMax
+        contentView.cornersEditingView.slider.addTarget(self, action: #selector(cornerRadiusSliderValueDidChange(_:)), for: .valueChanged)
+
+        contentView.hapticsEditingView.slider.value = viewModel.hapticSharpness
+        contentView.hapticsEditingView.slider.maximumValue = viewModel.hapticSharpnessMax
+        contentView.hapticsEditingView.slider.addTarget(self, action: #selector(hapticSharpnessSliderValueDidChange(_:)), for: .valueChanged)
     }
 
     private func setupNavigationItem() {
@@ -54,6 +75,37 @@ final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCard
 @objc
 private extension EditCardPhysicalVC {
 
+    func specularSliderValueDidChange(_ slider: UISlider) {
+        viewModel.specular = slider.value
+        contentView.cardSceneView.setDataModel(viewModel.dataModel())
+    }
+
+    func normalSliderValueDidChange(_ slider: UISlider) {
+        viewModel.normal = slider.value
+        contentView.cardSceneView.setDataModel(viewModel.dataModel())
+    }
+
+    func cornerRadiusSliderValueDidChange(_ slider: UISlider) {
+        viewModel.cornerRadiusHeightMultiplier = slider.value
+        contentView.cardSceneView.setDataModel(viewModel.dataModel())
+    }
+
+    func hapticSharpnessSliderValueDidChange(_ slider: UISlider) {
+        viewModel.hapticSharpness = slider.value
+        hapticEngine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
+        hapticEngine?.play()
+
+        UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseIn) {
+            self.contentView.cardSceneViewTopConstraint.constant -= 30
+            self.contentView.layoutIfNeeded()
+        } completion: { _ in
+            UIView.animate(withDuration: 0.1, delay: 0, options: .curveEaseOut, animations: {
+                self.contentView.cardSceneViewTopConstraint.constant += 30
+                self.contentView.layoutIfNeeded()
+            })
+        }
+    }
+
     func editingViewSegmentedControlDidChange(_ segmentedControl: UISegmentedControl) {
         guard let selectedEditingViewType = EditCardPhysicalView.EditingViewType(rawValue: segmentedControl.selectedSegmentIndex) else { return }
 
@@ -66,6 +118,15 @@ private extension EditCardPhysicalVC {
             viewToShow.isHidden = false
             viewToShow.alpha = 1
         }
+    }
+
+    func didTapCustomTextureButton() {
+        let imagePickerController = UIImagePickerController()
+        imagePickerController.allowsEditing = false
+        imagePickerController.mediaTypes = ["public.image"]
+        imagePickerController.sourceType = .photoLibrary
+        imagePickerController.delegate = self
+        present(imagePickerController, animated: true)
     }
 
     func didTapNextButton() {
@@ -89,6 +150,20 @@ extension EditCardPhysicalVC: UICollectionViewDelegate, UICollectionViewDataSour
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.didSelectTextureItem(at: indexPath)
+        contentView.cardSceneView.setDataModel(viewModel.dataModel())
+    }
+}
+
+// MARK: - UIImagePickerControllerDelegate
+
+extension EditCardPhysicalVC: UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        picker.dismiss(animated: true)
+        guard let image = info[.originalImage] as? UIImage else { return }
+        if let selectedIndexPath = viewModel.selectedTextureItemIndexPath {
+            contentView.textureEditingView.collectionView.deselectItem(at: selectedIndexPath, animated: false)
+        }
+        viewModel.texture = image
         contentView.cardSceneView.setDataModel(viewModel.dataModel())
     }
 }

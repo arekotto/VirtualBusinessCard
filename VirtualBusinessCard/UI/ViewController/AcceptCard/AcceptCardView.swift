@@ -35,7 +35,7 @@ final class AcceptCardView: AppBackgroundView {
     let cardSceneView: CardFrontBackView = {
         let this = CardFrontBackView(sceneHeightAdjustMode: .fixed)
         this.transform = CGAffineTransform(rotationAngle: .pi/4)
-        this.sceneShadowOpacity = 0.2
+        this.setSceneShadowOpacity(0.2)
         return this
     }()
 

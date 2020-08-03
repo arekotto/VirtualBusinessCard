@@ -11,6 +11,14 @@ import UIKit
 extension EditCardPhysicalView {
     final class SurfaceEditingView: AppView {
 
+        var specularSlider: UISlider {
+            specularEditingView.slider
+        }
+
+        var normalSlider: UISlider {
+            normalEditingView.slider
+        }
+
         private let specularEditingView: SingleSliderEditingView = {
             let this = SingleSliderEditingView()
             this.minLabel.text = NSLocalizedString("Matte", comment: "")

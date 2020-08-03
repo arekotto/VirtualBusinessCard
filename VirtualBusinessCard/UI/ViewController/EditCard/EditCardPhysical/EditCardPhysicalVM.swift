@@ -28,14 +28,20 @@ final class EditCardPhysicalVM: PartialUserViewModel, MotionDataSource {
 
     let images: (cardFront: UIImage, cardBack: UIImage)
 
-    private(set) var selectedTexture: UIImage
-    var specular: CGFloat = 0.5
-    var normal: CGFloat = 0.5
-    var cornerRadius: CGFloat = 0.5
+    let specularMax: Float = 2
+    let normalMax: Float = 2
+    let cornerRadiusHeightMultiplierMax: Float = 0.2
+    let hapticSharpnessMax: Float = 1
+
+    var texture: UIImage
+    var specular: Float = 0.5
+    var normal: Float = 0.5
+    var cornerRadiusHeightMultiplier: Float = 0
+    var hapticSharpness: Float = 0.5
 
     init(userID: UserID, frontCardImage: UIImage, backCardImage: UIImage) {
         images = (frontCardImage, backCardImage)
-        selectedTexture = preloadedTextures.first!
+        texture = preloadedTextures.first!
         super.init(userID: userID)
     }
 
@@ -57,7 +63,7 @@ extension EditCardPhysicalVM {
     }
 
     var selectedTextureItemIndexPath: IndexPath? {
-        guard let itemIdx = preloadedTextures.firstIndex(of: selectedTexture) else { return nil }
+        guard let itemIdx = preloadedTextures.firstIndex(of: texture) else { return nil }
         return IndexPath(item: itemIdx)
     }
 
@@ -71,16 +77,17 @@ extension EditCardPhysicalVM {
     }
 
     func didSelectTextureItem(at indexPath: IndexPath) {
-        selectedTexture = preloadedTextures[indexPath.item]
+        texture = preloadedTextures[indexPath.item]
     }
 
     func dataModel() -> CardFrontBackView.ImageDataModel {
         return CardFrontBackView.ImageDataModel(
             frontImage: images.cardFront,
             backImage: images.cardBack,
-            textureImage: selectedTexture,
-            normal: normal,
-            specular: specular
+            textureImage: texture,
+            normal: CGFloat(normal),
+            specular: CGFloat(specular),
+            cornerRadiusHeightMultiplier: CGFloat(cornerRadiusHeightMultiplier)
         )
     }
 }

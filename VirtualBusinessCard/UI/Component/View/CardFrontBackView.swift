@@ -13,20 +13,20 @@ final class CardFrontBackView: AppView {
 
     static let defaultSceneShadowOpacity: Float = 0.35
 
-    var sceneShadowOpacity = defaultSceneShadowOpacity {
-        didSet {
-            allSceneViews.forEach {
-                $0.layer.shadowOpacity = sceneShadowOpacity
-            }
-        }
-    }
-
     private var frontSceneViewHeightConstraint: NSLayoutConstraint!
-    let frontSceneView =  BusinessCardSceneView(dynamicLightingEnabled: true)
+    let frontSceneView: BusinessCardSceneView = {
+        let this = BusinessCardSceneView(dynamicLightingEnabled: true)
+        this.layer.shadowOpacity = defaultSceneShadowOpacity
+        return this
+    }()
 
     private var backSceneViewHeightConstraint: NSLayoutConstraint!
-    let backSceneView = BusinessCardSceneView(dynamicLightingEnabled: true)
-
+    let backSceneView: BusinessCardSceneView = {
+        let this = BusinessCardSceneView(dynamicLightingEnabled: true)
+        this.layer.shadowOpacity = defaultSceneShadowOpacity
+        return this
+    }()
+    
     private let sceneHeightAdjustMode: SceneHeightAdjustMode
     
     var allSceneViews: [BusinessCardSceneView] {
@@ -82,6 +82,10 @@ final class CardFrontBackView: AppView {
         frontSceneView.constrainWidthEqualTo(frontSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardHeightToWidthRatio)
         backSceneView.constrainWidthEqualTo(backSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardHeightToWidthRatio)
     }
+
+    func setSceneShadowOpacity(_ shadowOpacity: Float) {
+        allSceneViews.forEach { $0.layer.shadowOpacity = shadowOpacity }
+    }
     
     func lockScenesToCurrentHeights() {
         switch sceneHeightAdjustMode {
@@ -117,6 +121,7 @@ final class CardFrontBackView: AppView {
         let textureImageURL: URL
         let normal: CGFloat
         let specular: CGFloat
+        var cornerRadiusHeightMultiplier: CGFloat
     }
 
     struct ImageDataModel {
@@ -125,6 +130,7 @@ final class CardFrontBackView: AppView {
         let textureImage: UIImage
         let normal: CGFloat
         let specular: CGFloat
+        let cornerRadiusHeightMultiplier: CGFloat
     }
 
     enum SceneHeightAdjustMode: Equatable {
@@ -144,8 +150,8 @@ extension CardFrontBackView {
     }
 
     func setDataModel(_ dm: ImageDataModel) {
-        frontSceneView.setImage(image: dm.frontImage, texture: dm.textureImage, normal: dm.normal, specular: dm.specular)
-        backSceneView.setImage(image: dm.backImage, texture: dm.textureImage, normal: dm.normal, specular: dm.specular)
+        frontSceneView.setImage(image: dm.frontImage, texture: dm.textureImage, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
+        backSceneView.setImage(image: dm.backImage, texture: dm.textureImage, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
     }
     
     func setDataModel(_ dm: URLDataModel) {
@@ -154,9 +160,14 @@ extension CardFrontBackView {
             switch result {
             case .failure(let err): print(err.localizedDescription)
             case .success(let images):
-                let texture = images[1]
-                self?.frontSceneView.setImage(image: images[0], texture: texture, normal: dm.normal, specular: dm.specular)
-                self?.backSceneView.setImage(image: images[2], texture: texture, normal: dm.normal, specular: dm.specular)
+                self?.setDataModel(ImageDataModel(
+                    frontImage: images[0],
+                    backImage: images[2],
+                    textureImage: images[1],
+                    normal: dm.normal,
+                    specular: dm.specular,
+                    cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier
+                ))
             }
         }
     }

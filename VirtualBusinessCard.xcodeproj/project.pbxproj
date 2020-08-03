@@ -33,6 +33,7 @@
 		45174D7724BB08C3009BFE58 /* EditBusinessCardTagMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174D7624BB08C3009BFE58 /* EditBusinessCardTagMC.swift */; };
 		45174D7A24BB4189009BFE58 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 45174D7924BB4189009BFE58 /* Reachability */; };
 		451B799724D80A9E00EDC2B6 /* SingleSliderEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799624D80A9E00EDC2B6 /* SingleSliderEditingView.swift */; };
+		451B799A24D835D600EDC2B6 /* HapticsEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799924D835D600EDC2B6 /* HapticsEditingView.swift */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
 		451E20F324BC82940097BEDE /* DirectCardExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E20F224BC82940097BEDE /* DirectCardExchange.swift */; };
@@ -236,6 +237,7 @@
 		45174CE924B9E342009BFE58 /* EditTagVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTagVM.swift; sourceTree = "<group>"; };
 		45174D7624BB08C3009BFE58 /* EditBusinessCardTagMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBusinessCardTagMC.swift; sourceTree = "<group>"; };
 		451B799624D80A9E00EDC2B6 /* SingleSliderEditingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSliderEditingView.swift; sourceTree = "<group>"; };
+		451B799924D835D600EDC2B6 /* HapticsEditingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticsEditingView.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
 		451E20F224BC82940097BEDE /* DirectCardExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchange.swift; sourceTree = "<group>"; };
@@ -499,6 +501,17 @@
 			path = EditTag;
 			sourceTree = "<group>";
 		};
+		451B799824D835BC00EDC2B6 /* EditingView */ = {
+			isa = PBXGroup;
+			children = (
+				4532CDD124D7222900ACB597 /* SurfaceEditingView.swift */,
+				4532CDD324D723FB00ACB597 /* TextureEditingView.swift */,
+				451B799624D80A9E00EDC2B6 /* SingleSliderEditingView.swift */,
+				451B799924D835D600EDC2B6 /* HapticsEditingView.swift */,
+			);
+			path = EditingView;
+			sourceTree = "<group>";
+		};
 		451C664C240806610016DA68 /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -673,13 +686,11 @@
 		4542A7C924D5639100B0DA99 /* EditCardPhysical */ = {
 			isa = PBXGroup;
 			children = (
+				451B799824D835BC00EDC2B6 /* EditingView */,
 				4542A7CA24D563AD00B0DA99 /* EditCardPhysicalVC.swift */,
 				4542A7CE24D563F700B0DA99 /* EditCardPhysicalVM.swift */,
 				4542A7CC24D563D600B0DA99 /* EditCardPhysicalView.swift */,
 				4532CDCF24D716E500ACB597 /* TextureCollectionCell.swift */,
-				4532CDD124D7222900ACB597 /* SurfaceEditingView.swift */,
-				4532CDD324D723FB00ACB597 /* TextureEditingView.swift */,
-				451B799624D80A9E00EDC2B6 /* SingleSliderEditingView.swift */,
 			);
 			path = EditCardPhysical;
 			sourceTree = "<group>";
@@ -1479,6 +1490,7 @@
 				45D76DE824CED0FC008BDDE5 /* GroupSharingView.swift in Sources */,
 				4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */,
 				45D445AB24C05DAF00630C72 /* AcceptCardVM.swift in Sources */,
+				451B799A24D835D600EDC2B6 /* HapticsEditingView.swift in Sources */,
 				453384A424CB29860020AEF6 /* LoadingPopoverVC.swift in Sources */,
 				45C160202485AC6900806718 /* LoginHostingController.swift in Sources */,
 				4542A7CF24D563F700B0DA99 /* EditCardPhysicalVM.swift in Sources */,

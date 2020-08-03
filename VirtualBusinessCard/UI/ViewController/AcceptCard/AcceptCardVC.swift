@@ -249,7 +249,7 @@ private extension AcceptCardVC {
                 UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.01) {
                     self.contentView.cardSceneViewHeightConstraint.constant += 20
                     self.contentView.cardSceneViewWidthConstraint.constant += 20
-                    self.contentView.cardSceneView.sceneShadowOpacity = CardFrontBackView.defaultSceneShadowOpacity
+                    self.contentView.cardSceneView.setSceneShadowOpacity(CardFrontBackView.defaultSceneShadowOpacity)
                     self.view.layoutIfNeeded()
                 }
                 UIView.addKeyframe(withRelativeStartTime: 0.601, relativeDuration: 0.4) {

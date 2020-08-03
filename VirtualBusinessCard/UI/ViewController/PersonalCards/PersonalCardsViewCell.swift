@@ -91,8 +91,8 @@ extension PersonalCardsView {
                 case .failure(let err): print(err.localizedDescription)
                 case .success(let images):
                     let texture = images[1]
-                    self?.frontSceneView.setImage(image: images[0], texture: texture, normal: dm.normal, specular: dm.specular)
-                    self?.backSceneView.setImage(image: images[2], texture: texture, normal: dm.normal, specular: dm.specular)
+                    self?.frontSceneView.setImage(image: images[0], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
+                    self?.backSceneView.setImage(image: images[2], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
                 }
             }
         }
@@ -213,6 +213,7 @@ extension PersonalCardsView.CollectionCell {
         let textureImageURL: URL
         let normal: CGFloat
         let specular: CGFloat
+        let cornerRadiusHeightMultiplier: CGFloat
     }
 }
 

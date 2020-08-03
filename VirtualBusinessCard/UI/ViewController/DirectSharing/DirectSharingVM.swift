@@ -98,7 +98,7 @@ extension DirectSharingVM {
         let accessToken = Self.randomAccessToken(length: 20)
         
         let docRef = directCardExchangeReference.document()
-        let exchange = DirectCardExchange(id: docRef.documentID, accessToken: accessToken, sharingUserID: userID, sharingUserCardID: card.id, sharingUserCardData: card.businessCard.cardData)
+        let exchange = DirectCardExchange(id: docRef.documentID, accessToken: accessToken, sharingUserID: userID, sharingUserCardID: card.id, sharingUserCardData: card.cardData)
         docRef.setData(exchange.asDocument()) { [weak self] error in
             
             guard let self = self else { return }
@@ -216,7 +216,7 @@ extension DirectSharingVM {
         let joinedExchange = DirectCardExchangeMC(exchange: exchangeModel)
         joinedExchange.receivingUserID = userID
         joinedExchange.receivingUserCardID = card.id
-        joinedExchange.receivingUserCardData = card.businessCard.cardData
+        joinedExchange.receivingUserCardData = card.cardData
         joinedExchange.saveScanningUserData(in: directCardExchangeReference) { [weak self] result in
 
             guard let self = self else { return }
