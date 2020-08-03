@@ -165,7 +165,7 @@ extension GroupedCardsVM {
     }
     
     var tabBarIconImage: UIImage {
-        UIImage(named: "CollectionIcon")!
+        Asset.Images.Icon.collection.image
     }
     
     func numberOfItems() -> Int {

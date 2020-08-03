@@ -41,7 +41,6 @@ final class AcceptCardVC: AppViewController<AcceptCardView, AcceptCardVM> {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        contentView.cardSceneView.lockViewsToCurrentSizes()
         playBounceAnimation()
         bounceAnimatorsTimer = Timer.scheduledTimer(timeInterval: 2.1, target: self, selector: #selector(playBounceAnimation), userInfo: nil, repeats: true)
     }

@@ -42,16 +42,24 @@ internal enum Asset {
   }
   internal enum Images {
     internal static let appLogo = ImageAsset(name: "AppLogo")
-    internal static let appleLogo = ImageAsset(name: "AppleLogo")
     internal static let businessCard = ImageAsset(name: "BusinessCard")
     internal static let exampleBC = ImageAsset(name: "ExampleBC")
     internal static let exampleBCBack = ImageAsset(name: "ExampleBCBack")
+    internal enum Icon {
+      internal static let collection = ImageAsset(name: "Icon/Collection")
+      internal static let personalCards = ImageAsset(name: "Icon/PersonalCards")
+      internal static let profile = ImageAsset(name: "Icon/Profile")
+      internal static let settings = ImageAsset(name: "Icon/Settings")
+    }
+    internal static let appleLogo = ImageAsset(name: "AppleLogo")
     internal static let googleLogo = ImageAsset(name: "GoogleLogo")
-    internal static let collectionIcon = ImageAsset(name: "CollectionIcon")
-    internal static let personalCardsIcon = ImageAsset(name: "PersonalCardsIcon")
-    internal static let profileIcon = ImageAsset(name: "ProfileIcon")
-    internal static let settingsIcon = ImageAsset(name: "SettingsIcon")
     internal static let microsoftLogo = ImageAsset(name: "MicrosoftLogo")
+    internal enum PrebundledTexture {
+      internal static let texture1 = ImageAsset(name: "PrebundledTexture/Texture1")
+      internal static let texture2 = ImageAsset(name: "PrebundledTexture/Texture2")
+      internal static let texture3 = ImageAsset(name: "PrebundledTexture/Texture3")
+      internal static let texture4 = ImageAsset(name: "PrebundledTexture/Texture4")
+    }
   }
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name

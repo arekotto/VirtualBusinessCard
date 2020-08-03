@@ -41,7 +41,7 @@ extension PersonalCardsVM {
     }
     
     var tabBarIconImage: UIImage {
-        UIImage(named: "PersonalCardsIcon")!
+        Asset.Images.Icon.personalCards.image
     }
     
     var newBusinessCardImage: UIImage {
@@ -50,7 +50,7 @@ extension PersonalCardsVM {
     }
     
     var settingsImage: UIImage {
-        UIImage(named: "SettingsIcon")!
+        Asset.Images.Icon.settings.image
     }
 
     func settingsViewModel() -> SettingsVM {

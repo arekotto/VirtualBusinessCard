@@ -12,7 +12,7 @@ import UIKit
 
 protocol ReceivedBusinessCardsVMDelegate: class {
     func refreshData(animated: Bool)
-    func refreshLayout(sizeMode: CardFrontBackView.SizeMode)
+    func refreshLayout(style: CardFrontBackView.Style)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
 
@@ -24,7 +24,7 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
 
     private(set) lazy var motionManager = CMMotionManager()
 
-    private(set) var cellSizeMode = CardFrontBackView.SizeMode.expanded
+    private(set) var cellStyle = CardFrontBackView.Style.expanded
     private(set) lazy var selectedSortMode = sortActions.first!.mode
 
     let title: String
@@ -51,13 +51,9 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
 
 extension ReceivedCardsVM {
     
-    var tabBarIconImage: UIImage {
-        UIImage(named: "CollectionIcon")!
-    }
-    
     var cellSizeControlImage: UIImage {
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
-        switch cellSizeMode {
+        switch cellStyle {
         case .compact:
             return UIImage(systemName: "square.split.1x2.fill", withConfiguration: imgConfig)!
         case .expanded:
@@ -71,16 +67,16 @@ extension ReceivedCardsVM {
     }
 
     func startUpdatingMotionData() {
-        startUpdatingMotionData(in: cellSizeMode.motionDataUpdateInterval)
+        startUpdatingMotionData(in: cellStyle.motionDataUpdateInterval)
     }
     
     func numberOfItems() -> Int {
         displayedCardIndexes.count
     }
     
-    func itemForCell(at indexPath: IndexPath) -> CardFrontBackView.DataModel {
+    func itemForCell(at indexPath: IndexPath) -> CardFrontBackView.URLDataModel {
         let cardData = displayedCard(at: indexPath).cardData
-        return CardFrontBackView.DataModel(
+        return CardFrontBackView.URLDataModel(
             frontImageURL: cardData.frontImage.url,
             backImageURL: cardData.backImage.url,
             textureImageURL: cardData.texture.image.url,
@@ -99,15 +95,15 @@ extension ReceivedCardsVM {
     }
     
     func toggleCellSizeMode() {
-        switch cellSizeMode {
+        switch cellStyle {
         case .compact:
-            cellSizeMode = .expanded
+            cellStyle = .expanded
             startUpdatingMotionData(in: 0.1)
         case .expanded:
             startUpdatingMotionData(in: 0.2)
-            cellSizeMode = .compact
+            cellStyle = .compact
         }
-        delegate?.refreshLayout(sizeMode: cellSizeMode)
+        delegate?.refreshLayout(style: cellStyle)
     }
     
     func beginSearch(for query: String) {
@@ -329,7 +325,7 @@ extension ReceivedCardsVM.SortMode {
     }
 }
 
-private extension CardFrontBackView.SizeMode {
+private extension CardFrontBackView.Style {
     var motionDataUpdateInterval: TimeInterval {
         switch self {
         case .compact: return 0.1

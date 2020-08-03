@@ -21,7 +21,6 @@ final class EditCardImagesVC: AppViewController<EditCardImagesView, EditCardImag
         setupNavigationItem()
         setupContentView()
         viewModel.delegate = self
-
     }
 
     private func setupNavigationItem() {
@@ -35,6 +34,8 @@ final class EditCardImagesVC: AppViewController<EditCardImagesView, EditCardImag
     private func setupContentView() {
         contentView.frontImageButton.addTarget(self, action: #selector(didTapFrontImageButton), for: .touchUpInside)
         contentView.backImageButton.addTarget(self, action: #selector(didTapBackImageButton), for: .touchUpInside)
+        contentView.setFrontImage(viewModel.frontImage)
+        contentView.setBackImage(viewModel.backImage)
     }
 }
 

@@ -41,7 +41,7 @@ struct CardDetailsSectionFactory {
     
     private func makeCardImagesSection() -> Section? {
         let cardData = card.cardData
-        let imagesDataModel = CardFrontBackView.DataModel(
+        let imagesDataModel = CardFrontBackView.URLDataModel(
             frontImageURL: cardData.frontImage.url,
             backImageURL: cardData.backImage.url,
             textureImageURL: cardData.texture.image.url,

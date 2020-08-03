@@ -33,7 +33,7 @@ final class AcceptCardView: AppBackgroundView {
     private(set) var cardSceneViewWidthConstraint: NSLayoutConstraint!
 
     let cardSceneView: CardFrontBackView = {
-        let this = CardFrontBackView(subScenesHeightMultiplayer: 1)
+        let this = CardFrontBackView(sceneHeightAdjustMode: .fixed)
         this.transform = CGAffineTransform(rotationAngle: .pi/4)
         this.sceneShadowOpacity = 0.2
         return this

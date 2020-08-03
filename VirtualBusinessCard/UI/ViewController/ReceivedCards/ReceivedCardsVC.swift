@@ -47,7 +47,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
     
     private func setupCollectionView() {
-        let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(cellSize: viewModel.cellSizeMode)
+        let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(style: viewModel.cellStyle)
         contentView.collectionView.setCollectionViewLayout(layoutFactory.layout(), animated: false)
         contentView.collectionView.delegate = self
         contentView.collectionView.dataSource = self
@@ -120,7 +120,7 @@ extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as! ReceivedCardsView.CollectionCell).cardFrontBackView.sizeMode = viewModel.cellSizeMode
+        (cell as! ReceivedCardsView.CollectionCell).cardFrontBackView.style = viewModel.cellStyle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -157,20 +157,12 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
         }
     }
     
-    func refreshLayout(sizeMode: CardFrontBackView.SizeMode) {
+    func refreshLayout(style: CardFrontBackView.Style) {
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
-        let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(cellSize: sizeMode)
+        let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(style: style)
         contentView.collectionView.setCollectionViewLayout(layoutFactory.layout(), animated: true)
         let visibleCells = contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]
-        visibleCells.forEach { $0.cardFrontBackView.sizeMode = sizeMode }
-    }
-}
-
-// MARK: - TabBarDisplayable
-
-extension ReceivedCardsVC: TabBarDisplayable {
-    var tabBarIconImage: UIImage {
-        viewModel.tabBarIconImage
+        visibleCells.forEach { $0.cardFrontBackView.style = style }
     }
 }
 

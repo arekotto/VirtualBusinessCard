@@ -9,7 +9,7 @@
 import UIKit
 import CoreMotion
 
-class CardFrontBackView: AppView {
+final class CardFrontBackView: AppView {
 
     static let defaultSceneShadowOpacity: Float = 0.35
 
@@ -27,23 +27,23 @@ class CardFrontBackView: AppView {
     private var backSceneViewHeightConstraint: NSLayoutConstraint!
     let backSceneView = BusinessCardSceneView(dynamicLightingEnabled: true)
 
-    private let subScenesHeightMultiplayer: CGFloat
+    private let sceneHeightAdjustMode: SceneHeightAdjustMode
     
     var allSceneViews: [BusinessCardSceneView] {
         [backSceneView, frontSceneView]
     }
     
-    var sizeMode = SizeMode.expanded {
-        didSet { setSizeMode(sizeMode) }
+    var style = Style.expanded {
+        didSet { setStyle(style) }
     }
 
-    init(subScenesHeightMultiplayer: CGFloat) {
-        self.subScenesHeightMultiplayer = subScenesHeightMultiplayer
+    init(sceneHeightAdjustMode: SceneHeightAdjustMode) {
+        self.sceneHeightAdjustMode = sceneHeightAdjustMode
         super.init()
     }
 
     required init() {
-        self.subScenesHeightMultiplayer = 0.9
+        self.sceneHeightAdjustMode = .flexible(multiplayer: 0.9)
         super.init()
     }
 
@@ -53,7 +53,7 @@ class CardFrontBackView: AppView {
 
     override func configureView() {
         super.configureView()
-        setSizeMode(.expanded)
+        setStyle(.expanded)
     }
     
     override func configureSubviews() {
@@ -69,49 +69,70 @@ class CardFrontBackView: AppView {
         
         backSceneView.constrainTrailingToSuperview()
         backSceneView.constrainBottomToSuperview()
-        
-        frontSceneViewHeightConstraint = frontSceneView.constrainHeightEqualTo(self, multiplier: subScenesHeightMultiplayer)
-        backSceneViewHeightConstraint = backSceneView.constrainHeightEqualTo(self, multiplier: subScenesHeightMultiplayer)
+
+        switch sceneHeightAdjustMode {
+        case .flexible(let multiplayer):
+            frontSceneViewHeightConstraint = frontSceneView.constrainHeightEqualTo(self, multiplier: multiplayer)
+            backSceneViewHeightConstraint = backSceneView.constrainHeightEqualTo(self, multiplier: multiplayer)
+        case .fixed:
+            frontSceneView.constrainTrailingToSuperview()
+            backSceneView.constrainLeadingToSuperview()
+        }
         
         frontSceneView.constrainWidthEqualTo(frontSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardHeightToWidthRatio)
         backSceneView.constrainWidthEqualTo(backSceneView.heightAnchor, multiplier: 1 / CGSize.businessCardHeightToWidthRatio)
     }
     
-    func lockViewsToCurrentSizes() {
-        
-        frontSceneViewHeightConstraint.isActive = false
-        frontSceneView.constrainHeight(constant: frontSceneView.frame.size.height)
-        
-        backSceneViewHeightConstraint.isActive = false
-        backSceneView.constrainHeight(constant: backSceneView.frame.size.height)
+    func lockScenesToCurrentHeights() {
+        switch sceneHeightAdjustMode {
+        case .flexible:
+            frontSceneViewHeightConstraint.isActive = false
+            frontSceneView.constrainHeight(constant: frontSceneView.frame.size.height)
+
+            backSceneViewHeightConstraint.isActive = false
+            backSceneView.constrainHeight(constant: backSceneView.frame.size.height)
+        default:
+            return
+        }
     }
     
-    private func setSizeMode(_ sizeMode: SizeMode) {
-        switch sizeMode {
+    private func setStyle(_ style: Style) {
+        switch style {
         case .compact:
             allSceneViews.forEach {
                 $0.layer.shadowRadius = 4.5
-                $0.layer.shadowOpacity = sceneShadowOpacity
             }
         case .expanded:
             allSceneViews.forEach {
                 $0.layer.shadowRadius = 9
-                $0.layer.shadowOpacity = sceneShadowOpacity
             }
         }
     }
     
     // MARK: BusinessCardCellDM
     
-    struct DataModel {
+    struct URLDataModel {
         let frontImageURL: URL
         let backImageURL: URL
         let textureImageURL: URL
         let normal: CGFloat
         let specular: CGFloat
     }
-    
-    enum SizeMode {
+
+    struct ImageDataModel {
+        let frontImage: UIImage
+        let backImage: UIImage
+        let textureImage: UIImage
+        let normal: CGFloat
+        let specular: CGFloat
+    }
+
+    enum SceneHeightAdjustMode: Equatable {
+        case flexible(multiplayer: CGFloat)
+        case fixed
+    }
+
+    enum Style {
         case compact, expanded
     }
 }
@@ -121,8 +142,13 @@ extension CardFrontBackView {
     func setDynamicLightingEnabled(_ isEnabled: Bool) {
         allSceneViews.forEach { $0.dynamicLightingEnabled = isEnabled }
     }
+
+    func setDataModel(_ dm: ImageDataModel) {
+        frontSceneView.setImage(image: dm.frontImage, texture: dm.textureImage, normal: dm.normal, specular: dm.specular)
+        backSceneView.setImage(image: dm.backImage, texture: dm.textureImage, normal: dm.normal, specular: dm.specular)
+    }
     
-    func setDataModel(_ dm: DataModel) {
+    func setDataModel(_ dm: URLDataModel) {
         let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL])
         task { [weak self] result in
             switch result {
@@ -141,7 +167,7 @@ extension CardFrontBackView {
         let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
         let y = deviceRotationInZ * 10 / deg2rad(45)
         
-        switch sizeMode {
+        switch style {
         case .compact:  animateShadow(to: CGSize(width: y / 2, height: -x / 2), over: timeInterval)
         case .expanded: animateShadow(to: CGSize(width: y, height: -x), over: timeInterval)
         }

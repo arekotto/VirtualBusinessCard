@@ -190,7 +190,7 @@ extension CardDetailsView {
         }
         
         func extendWithAnimation() {
-            cardFrontBackView.lockViewsToCurrentSizes()
+            cardFrontBackView.lockScenesToCurrentHeights()
 
             cardFrontBackViewCompactHeightConstraint.isActive = false
             cardFrontBackViewCompactWidthConstraint.isActive = false

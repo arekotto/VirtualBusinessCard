@@ -312,7 +312,7 @@ extension CardDetailsVM {
     enum DataModel {
         case dataCell(TitleValueCollectionCell.DataModel)
         case dataCellImage(TitleValueImageCollectionViewCell.DataModel)
-        case cardImagesCell(CardFrontBackView.DataModel)
+        case cardImagesCell(CardFrontBackView.URLDataModel)
     }
     
     enum Action {
@@ -340,7 +340,7 @@ extension CardDetailsVM {
 
 extension CardDetailsVM {
     struct PrefetchedData {
-        let dataModel: CardFrontBackView.DataModel
+        let dataModel: CardFrontBackView.URLDataModel
         let hapticSharpness: Float
     }
 }

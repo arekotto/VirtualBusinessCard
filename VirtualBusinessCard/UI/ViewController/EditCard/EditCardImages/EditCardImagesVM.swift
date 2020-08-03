@@ -14,20 +14,17 @@ protocol EditCardVMDelegate: class {
 
 final class EditCardImagesVM: PartialUserViewModel {
 
-    let title: String
-
     weak var delegate: EditCardVMDelegate?
 
-    var frontImage: UIImage? {
+    var frontImage: UIImage? = UIImage(){
         didSet { didSetNewImage() }
     }
-
-    var backImage: UIImage? {
+    // TODO: remove
+    var backImage: UIImage? = UIImage() {
         didSet { didSetNewImage() }
     }
 
     override init(userID: UserID) {
-        title = NSLocalizedString("Select Images", comment: "")
         super.init(userID: userID)
     }
 
@@ -37,6 +34,10 @@ final class EditCardImagesVM: PartialUserViewModel {
 }
 
 extension EditCardImagesVM {
+
+    var title: String {
+        NSLocalizedString("Select Images", comment: "")
+    }
 
     var nextButtonTitle: String {
         NSLocalizedString("Next", comment: "")

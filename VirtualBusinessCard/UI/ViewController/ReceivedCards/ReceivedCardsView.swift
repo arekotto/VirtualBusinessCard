@@ -43,10 +43,10 @@ final class ReceivedCardsView: AppBackgroundView {
 
 extension ReceivedCardsView {
     struct CollectionViewLayoutFactory {
-        let cellSize: CardFrontBackView.SizeMode
+        let style: CardFrontBackView.Style
         
         func layout() -> UICollectionViewLayout {
-            switch cellSize {
+            switch style {
             case .compact: return makeCollectionViewCompactLayout()
             case .expanded: return makeCollectionViewExtendedLayout()
             }

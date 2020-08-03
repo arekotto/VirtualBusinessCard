@@ -82,6 +82,7 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
 private extension PersonalCardsVC {
     func didTapNewBusinessCardButton() {
         let navVC = AppNavigationController(rootViewController: EditCardImagesVC(viewModel: viewModel.newCardViewModel()))
+        navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
     }
     

@@ -68,9 +68,9 @@ extension AcceptCardVM {
         startUpdatingMotionData(in: 0.1)
     }
 
-    func dataModel() -> CardFrontBackView.DataModel {
+    func dataModel() -> CardFrontBackView.URLDataModel {
         let texture = card.cardData.texture
-        return CardFrontBackView.DataModel(
+        return CardFrontBackView.URLDataModel(
             frontImageURL: card.cardData.frontImage.url,
             backImageURL: card.cardData.backImage.url,
             textureImageURL: texture.image.url,
