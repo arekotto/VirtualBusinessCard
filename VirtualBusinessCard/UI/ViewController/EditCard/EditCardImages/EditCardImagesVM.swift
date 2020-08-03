@@ -16,16 +16,18 @@ final class EditCardImagesVM: PartialUserViewModel {
 
     weak var delegate: EditCardVMDelegate?
 
-    var frontImage: UIImage? = UIImage(){
-        didSet { didSetNewImage() }
-    }
-    // TODO: remove
-    var backImage: UIImage? = UIImage() {
+    var frontImage: UIImage? {
         didSet { didSetNewImage() }
     }
 
-    override init(userID: UserID) {
+    var backImage: UIImage? {
+        didSet { didSetNewImage() }
+    }
+
+    init(userID: UserID, frontImage: UIImage? = nil, backImage: UIImage? = nil) {
         super.init(userID: userID)
+        self.frontImage = frontImage
+        self.backImage = backImage
     }
 
     private func didSetNewImage() {
@@ -36,7 +38,7 @@ final class EditCardImagesVM: PartialUserViewModel {
 extension EditCardImagesVM {
 
     var title: String {
-        NSLocalizedString("Select Images", comment: "")
+        NSLocalizedString("Card Images", comment: "")
     }
 
     var nextButtonTitle: String {
@@ -49,12 +51,5 @@ extension EditCardImagesVM {
 
     var nextButtonEnabled: Bool {
         frontImage != nil && backImage != nil
-    }
-
-    func editCardPhysicalViewModel() -> EditCardPhysicalVM? {
-        guard let frontImage = self.frontImage, let backImage = self.backImage else {
-            return nil
-        }
-        return EditCardPhysicalVM(userID: userID, frontCardImage: frontImage, backCardImage: backImage)
     }
 }

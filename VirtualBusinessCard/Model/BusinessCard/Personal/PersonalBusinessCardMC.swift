@@ -44,6 +44,10 @@ extension PersonalBusinessCardMC {
         guard let businessCard = PersonalBusinessCard(documentSnapshot: userPublicDocument) else { return nil }
         self.init(businessCard: businessCard)
     }
+
+    func editPersonalBusinessCardMC() -> EditPersonalBusinessCardMC {
+        EditPersonalBusinessCardMC(businessCard: card)
+    }
 }
 
 extension PersonalBusinessCardMC: Equatable {

@@ -49,8 +49,7 @@ struct CardDetailsSectionFactory {
             specular: CGFloat(cardData.texture.specular),
             cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
         )
-        
-        return Section(items: [Item(dataModel: .cardImagesCell(imagesDataModel), actions: [])])
+        return Section(item: Item(dataModel: .cardImagesCell(imagesDataModel), actions: []))
     }
 
     private func makeEditableDataSection() -> Section? {
@@ -150,6 +149,6 @@ struct CardDetailsSectionFactory {
             value: address,
             primaryImage: imageProvider(.navigate)
         )
-        return Section(singleItem: Item(dataModel: .dataCellImage(dm), actions: [.copy, .navigate]))
+        return Section(item: Item(dataModel: .dataCellImage(dm), actions: [.copy, .navigate]))
     }
 }

@@ -12,7 +12,9 @@ import Firebase
 import CoreMotion
 
 final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsVM> {
-    
+
+    private var coordinator: Coordinator?
+
     override init(viewModel: PersonalCardsVM) {
         super.init(viewModel: viewModel)
         title = viewModel.title
@@ -72,7 +74,18 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        viewModel.didSelectItem(at: indexPath)
+        let card = self.viewModel.editableItem(for: indexPath)
+        coordinator = EditCardCoordinator(navigationController: AppNavigationController(), userID: viewModel.userID, businessCard: card)
+        coordinator?.start { [weak self] result in
+            guard let self = self, let navController = self.coordinator?.navigationController else { return }
+            switch result {
+            case .success:
+                navController.modalPresentationStyle = .fullScreen
+                self.present(navController, animated: true)
+            case .failure:
+                self.presentErrorAlert()
+            }
+        }
     }
 }
 
@@ -81,9 +94,17 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
 @objc
 private extension PersonalCardsVC {
     func didTapNewBusinessCardButton() {
-        let navVC = AppNavigationController(rootViewController: EditCardImagesVC(viewModel: viewModel.newCardViewModel()))
-        navVC.modalPresentationStyle = .fullScreen
-        present(navVC, animated: true)
+        let navController = AppNavigationController()
+        coordinator = EditCardCoordinator(navigationController: navController, userID: viewModel.userID)
+        coordinator?.start { [unowned self] result in
+            switch result {
+            case .success:
+                navController.modalPresentationStyle = .fullScreen
+                self.present(navController, animated: true)
+            case .failure:
+                self.presentErrorAlert()
+            }
+        }
     }
     
     func didTapSettingsButton() {

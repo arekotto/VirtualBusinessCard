@@ -31,16 +31,25 @@ class AppNavigationController: UINavigationController {
     
     override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
-        tabBarItem.title = nil
-        if let tabBarDisplayableController = rootViewController as? TabBarDisplayable {
-            tabBarItem.image = tabBarDisplayableController.tabBarIconImage
-            tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
-            rootViewController.navigationItem.largeTitleDisplayMode = .always
-        }
+        setup()
+    }
+
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        setup()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setup() {
+        tabBarItem.title = nil
+        if let tabBarDisplayableController = children.first as? TabBarDisplayable {
+            tabBarItem.image = tabBarDisplayableController.tabBarIconImage
+            tabBarItem.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
+            children.first?.navigationItem.largeTitleDisplayMode = .always
+        }
     }
     
     override func viewDidLoad() {

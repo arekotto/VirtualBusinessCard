@@ -13,6 +13,8 @@ final class CardFrontBackView: AppView {
 
     static let defaultSceneShadowOpacity: Float = 0.35
 
+    private var mostRecentFetchTaskTag = 0
+
     private var frontSceneViewHeightConstraint: NSLayoutConstraint!
     let frontSceneView: BusinessCardSceneView = {
         let this = BusinessCardSceneView(dynamicLightingEnabled: true)
@@ -155,12 +157,14 @@ extension CardFrontBackView {
     }
     
     func setDataModel(_ dm: URLDataModel) {
-        let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL])
-        task { [weak self] result in
+        mostRecentFetchTaskTag += 1
+        let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL], tag: mostRecentFetchTaskTag)
+        task { [weak self] result, tag in
+            guard let self = self, self.mostRecentFetchTaskTag == tag else { return }
             switch result {
             case .failure(let err): print(err.localizedDescription)
             case .success(let images):
-                self?.setDataModel(ImageDataModel(
+                self.setDataModel(ImageDataModel(
                     frontImage: images[0],
                     backImage: images[2],
                     textureImage: images[1],

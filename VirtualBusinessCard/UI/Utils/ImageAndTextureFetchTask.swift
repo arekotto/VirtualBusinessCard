@@ -12,12 +12,16 @@ import Kingfisher
 struct ImageAndTextureFetchTask {
    
     let imageURLs: [URL]
-    
-    init(imageURLs: [URL]) {
+    let tag: Int
+    let forceRefresh: Bool
+
+    init(imageURLs: [URL], tag: Int, forceRefresh: Bool = false) {
         self.imageURLs = imageURLs
+        self.tag = tag
+        self.forceRefresh = false
     }
     
-    func callAsFunction(completion: @escaping (Result<[UIImage], Error>) -> Void) {
+    func callAsFunction(completion: @escaping (Result<[UIImage], Error>, Int) -> Void) {
         let dispatchGroup = DispatchGroup()
 
         imageURLs.forEach { _ in dispatchGroup.enter() }
@@ -26,7 +30,8 @@ struct ImageAndTextureFetchTask {
         var error: Error?
 
         imageURLs.enumerated().forEach { idx, url in
-            KingfisherManager.shared.retrieveImage(with: url) { result in
+            let options: KingfisherOptionsInfo = forceRefresh ? [.forceRefresh] : []
+            KingfisherManager.shared.retrieveImage(with: url, options: options) { result in
                 switch result {
                 case .success(let imageResult): imagesDict[idx] = imageResult.image
                 case .failure(let err): error = err
@@ -37,10 +42,10 @@ struct ImageAndTextureFetchTask {
         
         dispatchGroup.notify(queue: .main) {
             if let err = error {
-                completion(.failure(err))
+                completion(.failure(err), tag)
             } else {
                 let indexes = Array(0 ..< self.imageURLs.count)
-                completion(.success(indexes.map { imagesDict[$0]! }))
+                completion(.success(indexes.map { imagesDict[$0]! }), tag)
             }
         }
     }

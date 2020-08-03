@@ -11,8 +11,8 @@ import UIKit
 
 final class EditBusinessCardTagMC {
     
-    static private let unsavedObjectID = ""
-    
+    private static let unsavedObjectID = ""
+
     private var tag: BusinessCardTag
     
     var id: String {

@@ -81,9 +81,8 @@ extension PersonalCardsVM {
         )
     }
     
-    func didSelectItem(at indexPath: IndexPath) {
-//        let card = cardForCell(at: indexPath)
-//        delegate?.presentCardDetails(viewModel: CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: item(for: indexPath)))
+    func editableItem(for indexPath: IndexPath) -> EditPersonalBusinessCardMC {
+        cards[indexPath.item].editPersonalBusinessCardMC()
     }
 }
 

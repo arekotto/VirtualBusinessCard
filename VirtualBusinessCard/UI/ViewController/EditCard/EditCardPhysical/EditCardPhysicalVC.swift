@@ -9,9 +9,15 @@
 import UIKit
 import CoreMotion
 
+protocol EditCardPhysicalVCDelegate: class {
+    func editCardPhysicalVC(_ editCardPhysicalVC: EditCardPhysicalVC, didFinishWith properties: EditCardPhysicalVM.CardPhysicalProperties)
+}
+
 final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCardPhysicalVM>, UINavigationControllerDelegate {
 
-    private lazy var nextButton = UIBarButtonItem(title: viewModel.nextButtonTitle, style: .done, target: self, action: #selector(didTapNextButton))
+    weak var delegate: EditCardPhysicalVCDelegate?
+
+    private lazy var nextButton = UIBarButtonItem(title: NSLocalizedString("Next", comment: ""), style: .done, target: self, action: #selector(didTapNextButton))
 
     private var hapticEngine: HapticFeedbackEngine?
 
@@ -130,9 +136,7 @@ private extension EditCardPhysicalVC {
     }
 
     func didTapNextButton() {
-//        guard let nextViewModel = viewModel.editCardPhysicalViewModel() else { return }
-//        let vc = EditCardPhysicalVC(viewModel: nextViewModel)
-//        show(vc, sender: nil)
+        delegate?.editCardPhysicalVC(self, didFinishWith: viewModel.cardProperties)
     }
 }
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource

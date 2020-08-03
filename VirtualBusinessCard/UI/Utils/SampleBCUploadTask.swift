@@ -32,7 +32,7 @@ struct SampleBCUploadTask {
             URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FpaperNormalMap2.jpg?alt=media&token=5634474e-1a98-4f98-afc1-2d8fb40f5c12")!
         ]
         
-        let specularValues = [0.1, 0.5, 1.5]
+        let specularValues: [Float] = [0.1, 0.5, 1.5]
         
         let companies = ["IBM", "Microsoft", "Sony", "Apple"]
         let tags = ["Important", "Conference in Copenhagen", "Can delete soon"]

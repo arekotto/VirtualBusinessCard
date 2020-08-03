@@ -18,6 +18,8 @@ extension PersonalCardsView {
 
         static private let screenWidth = UIScreen.main.bounds.size.width
 
+        private var mostRecentFetchTaskTag = 0
+
         private let frontSceneView: BusinessCardSceneView = {
             let view = BusinessCardSceneView(dynamicLightingEnabled: false)
             view.layer.shadowOpacity = 0.4
@@ -85,14 +87,16 @@ extension PersonalCardsView {
         }
 
         func setDataModel(_ dm: DataModel) {
-            let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL])
-            task { [weak self] result in
+            mostRecentFetchTaskTag += 1
+            let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL], tag: mostRecentFetchTaskTag)
+            task { [weak self] result, tag in
+                guard let self = self, self.mostRecentFetchTaskTag == tag else { return }
                 switch result {
                 case .failure(let err): print(err.localizedDescription)
                 case .success(let images):
                     let texture = images[1]
-                    self?.frontSceneView.setImage(image: images[0], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
-                    self?.backSceneView.setImage(image: images[2], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
+                    self.frontSceneView.setImage(image: images[0], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
+                    self.backSceneView.setImage(image: images[2], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
                 }
             }
         }

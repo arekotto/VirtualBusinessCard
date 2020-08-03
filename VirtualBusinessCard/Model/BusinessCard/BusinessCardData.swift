@@ -94,10 +94,10 @@ extension BusinessCardData {
     
     struct Texture: Codable {
         var image: Image
-        var specular: Double
-        var normal: Double
+        var specular: Float
+        var normal: Float
         
-        init(image: BusinessCardData.Image, specular: Double, normal: Double) {
+        init(image: BusinessCardData.Image, specular: Float, normal: Float) {
             self.image = image
             self.specular = specular
             self.normal = normal

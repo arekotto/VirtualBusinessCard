@@ -13,7 +13,7 @@ protocol EditCardPhysicalVMDelegate: class {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
 
-final class EditCardPhysicalVM: PartialUserViewModel, MotionDataSource {
+final class EditCardPhysicalVM: AppViewModel, MotionDataSource {
 
     private(set) lazy var motionManager = CMMotionManager()
 
@@ -33,16 +33,11 @@ final class EditCardPhysicalVM: PartialUserViewModel, MotionDataSource {
     let cornerRadiusHeightMultiplierMax: Float = 0.2
     let hapticSharpnessMax: Float = 1
 
-    var texture: UIImage
-    var specular: Float = 0.5
-    var normal: Float = 0.5
-    var cornerRadiusHeightMultiplier: Float = 0
-    var hapticSharpness: Float = 0.5
+    private(set) var cardProperties: CardPhysicalProperties
 
-    init(userID: UserID, frontCardImage: UIImage, backCardImage: UIImage) {
+    init(frontCardImage: UIImage, backCardImage: UIImage, physicalCardProperties: CardPhysicalProperties) {
         images = (frontCardImage, backCardImage)
-        texture = preloadedTextures.first!
-        super.init(userID: userID)
+        cardProperties = physicalCardProperties
     }
 
     func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
@@ -54,12 +49,33 @@ final class EditCardPhysicalVM: PartialUserViewModel, MotionDataSource {
 
 extension EditCardPhysicalVM {
 
-    var title: String {
-        NSLocalizedString("Edit Texture", comment: "")
+    var texture: UIImage {
+        get { cardProperties.texture }
+        set { cardProperties.texture = newValue }
     }
 
-    var nextButtonTitle: String {
-        NSLocalizedString("Next", comment: "")
+    var specular: Float {
+        get { cardProperties.specular }
+        set { cardProperties.specular = newValue }
+    }
+
+    var normal: Float {
+        get { cardProperties.normal }
+        set { cardProperties.normal = newValue }
+    }
+
+    var cornerRadiusHeightMultiplier: Float {
+        get { cardProperties.cornerRadiusHeightMultiplier }
+        set { cardProperties.cornerRadiusHeightMultiplier = newValue }
+    }
+
+    var hapticSharpness: Float {
+        get { cardProperties.hapticSharpness }
+        set { cardProperties.hapticSharpness = newValue }
+    }
+
+    var title: String {
+        NSLocalizedString("Card Properties", comment: "")
     }
 
     var selectedTextureItemIndexPath: IndexPath? {
@@ -89,5 +105,17 @@ extension EditCardPhysicalVM {
             specular: CGFloat(specular),
             cornerRadiusHeightMultiplier: CGFloat(cornerRadiusHeightMultiplier)
         )
+    }
+}
+
+// MARK: - CardPhysicalProperties
+
+extension EditCardPhysicalVM {
+    struct CardPhysicalProperties {
+        var texture: UIImage
+        var specular: Float
+        var normal: Float
+        var cornerRadiusHeightMultiplier: Float
+        var hapticSharpness: Float
     }
 }

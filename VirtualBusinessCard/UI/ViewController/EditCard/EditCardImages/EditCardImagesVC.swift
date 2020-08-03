@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol EditCardImagesVCDelegate: class {
+    func editCardImagesVC(_: EditCardImagesVC, didFinishWith frontImage: UIImage, and backImage: UIImage)
+}
+
 final class EditCardImagesVC: AppViewController<EditCardImagesView, EditCardImagesVM> {
+
+    weak var delegate: EditCardImagesVCDelegate?
 
     private var imagePicker: CardImagePicker?
 
@@ -57,9 +63,8 @@ private extension EditCardImagesVC {
     }
 
     func didTapNextButton() {
-        guard let nextViewModel = viewModel.editCardPhysicalViewModel() else { return }
-        let vc = EditCardPhysicalVC(viewModel: nextViewModel)
-        show(vc, sender: nil)
+        guard let frontImage = viewModel.frontImage, let backImage = viewModel.backImage else { return }
+        delegate?.editCardImagesVC(self, didFinishWith: frontImage, and: backImage)
     }
 
     func didTapCancelButton() {

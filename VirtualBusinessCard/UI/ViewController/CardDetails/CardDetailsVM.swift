@@ -33,7 +33,7 @@ final class CardDetailsVM: PartialUserViewModel {
         
     private let prefetchedData: PrefetchedData
     
-    private lazy var sections = [Section(singleItem: Item(dataModel: .cardImagesCell(prefetchedData.dataModel), actions: []))]
+    private lazy var sections = [Section(item: Item(dataModel: .cardImagesCell(prefetchedData.dataModel), actions: []))]
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -157,7 +157,7 @@ extension CardDetailsVM {
 extension CardDetailsVM {
     
     private static let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
-    
+
     static func iconImage(for action: Action) -> UIImage? {
         switch action {
         case .copy: return UIImage(systemName: "doc.on.doc.fill", withConfiguration: Self.imageConfig)
@@ -170,7 +170,7 @@ extension CardDetailsVM {
         }
     }
 
-    func makeSections() {
+    private func makeSections() {
         guard let card = self.card else { return }
         DispatchQueue.global().async {
             let selectedTags = self.tags.filter { card.tagIDs.contains($0.id) }
@@ -298,8 +298,8 @@ extension CardDetailsVM {
             self.title = title
         }
         
-        init(singleItem: CardDetailsVM.Item, title: String? = nil) {
-            self.items = [singleItem]
+        init(item: CardDetailsVM.Item, title: String? = nil) {
+            self.items = [item]
             self.title = title
         }
     }
