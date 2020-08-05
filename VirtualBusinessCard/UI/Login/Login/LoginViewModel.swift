@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 import Firebase
-import GoogleSignIn
+//import GoogleSignIn
 
 final class LoginViewModel: AppSwiftUIViewModel {
 
@@ -29,8 +29,8 @@ final class LoginViewModel: AppSwiftUIViewModel {
     }
     
     func didTapLoginWithGoogle() {
-        GIDSignIn.sharedInstance()?.presentingViewController = UIApplication.shared.windows.last?.rootViewController
-        GIDSignIn.sharedInstance().signIn()
+//        GIDSignIn.sharedInstance()?.presentingViewController = UIApplication.shared.windows.last?.rootViewController
+//        GIDSignIn.sharedInstance().signIn()
     }
     
     func didTapLoginWithMicrosoft() {
