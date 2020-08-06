@@ -41,5 +41,16 @@ extension ReceivedCardsView {
             cardFrontBackView.constrainWidthEqualTo(contentView, multiplier: Self.defaultWidthMultiplier)
             cardFrontBackView.constrainHeightEqualTo(contentView, multiplier: Self.defaultHeightMultiplier)
         }
+
+        func setDataModel(_ dataModel: DataModel) {
+            cardFrontBackView.setDataModel(dataModel.sceneDataModel)
+        }
+    }
+}
+
+extension ReceivedCardsView.CollectionCell {
+    struct DataModel: Hashable {
+        let modelNumber: Int
+        let sceneDataModel: CardFrontBackView.URLDataModel
     }
 }

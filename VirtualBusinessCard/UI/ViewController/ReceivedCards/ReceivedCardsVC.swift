@@ -10,8 +10,12 @@ import UIKit
 import CoreMotion
 
 final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsVM> {
-    
-    var animator: DetailsTransitionAnimator?
+
+    private typealias DataSource = UICollectionViewDiffableDataSource<ReceivedCardsVM.Section, ReceivedCardsView.CollectionCell.DataModel>
+
+    private lazy var collectionViewDataSource = makeTableViewDataSource()
+
+    private var animator: DetailsTransitionAnimator?
     
     var selectedCell: UICollectionViewCell? {
         guard let indexPath = viewModel.presentedIndexPath else { return nil }
@@ -50,7 +54,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(style: viewModel.cellStyle)
         contentView.collectionView.setCollectionViewLayout(layoutFactory.layout(), animated: false)
         contentView.collectionView.delegate = self
-        contentView.collectionView.dataSource = self
+        contentView.collectionView.dataSource = collectionViewDataSource
     }
     
     private func setupNavigationItem() {
@@ -80,6 +84,15 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         detailsVC.modalPresentationStyle = .fullScreen
         present(detailsVC, animated: true)
     }
+
+    private func makeTableViewDataSource() -> DataSource {
+        DataSource(collectionView: contentView.collectionView) { [weak self] collectionView, indexPath, dataModel in
+            let cell: ReceivedCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+            cell.setDataModel(dataModel)
+            cell.isHidden = self?.viewModel.presentedIndexPath == indexPath
+            return cell
+        }
+    }
 }
 
 // MARK: - Actions
@@ -105,19 +118,9 @@ extension ReceivedCardsVC {
     }
 }
 
-// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
-extension ReceivedCardsVC: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItems()
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: ReceivedCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-        cell.cardFrontBackView.setDataModel(viewModel.itemForCell(at: indexPath))
-        cell.isHidden = viewModel.presentedIndexPath == indexPath
-        return cell
-    }
+extension ReceivedCardsVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         (cell as! ReceivedCardsView.CollectionCell).cardFrontBackView.style = viewModel.cellStyle
@@ -148,13 +151,7 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     }
     
     func refreshData(animated: Bool) {
-        if animated {
-            contentView.collectionView.performBatchUpdates({
-                contentView.collectionView.reloadSections([0])
-            })
-        } else {
-            contentView.collectionView.reloadData()
-        }
+        collectionViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: animated)
     }
     
     func refreshLayout(style: CardFrontBackView.Style) {

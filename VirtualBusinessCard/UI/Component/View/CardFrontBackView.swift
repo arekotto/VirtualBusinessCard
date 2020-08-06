@@ -117,7 +117,7 @@ final class CardFrontBackView: AppView {
     
     // MARK: BusinessCardCellDM
     
-    struct URLDataModel {
+    struct URLDataModel: Hashable {
         let frontImageURL: URL
         let backImageURL: URL
         let textureImageURL: URL

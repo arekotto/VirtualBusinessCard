@@ -16,7 +16,7 @@ protocol TagsVMDelegate: class {
 
 final class TagsVM: PartialUserViewModel {
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<TagsVM.Section, TagTableCell.DataModel>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TagTableCell.DataModel>
 
     weak var delegate: TagsVMDelegate?
     

@@ -17,7 +17,9 @@ protocol ReceivedBusinessCardsVMDelegate: class {
 }
 
 final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
-    
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, ReceivedCardsView.CollectionCell.DataModel>
+
     weak var delegate: ReceivedBusinessCardsVMDelegate?
 
     var presentedIndexPath: IndexPath?
@@ -70,26 +72,17 @@ extension ReceivedCardsVM {
         startUpdatingMotionData(in: cellStyle.motionDataUpdateInterval)
     }
     
-    func numberOfItems() -> Int {
-        displayedCardIndexes.count
-    }
-    
-    func itemForCell(at indexPath: IndexPath) -> CardFrontBackView.URLDataModel {
-        let cardData = displayedCard(at: indexPath).cardData
-        return CardFrontBackView.URLDataModel(
-            frontImageURL: cardData.frontImage.url,
-            backImageURL: cardData.backImage.url,
-            textureImageURL: cardData.texture.image.url,
-            normal: CGFloat(cardData.texture.normal),
-            specular: CGFloat(cardData.texture.specular),
-            cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
-        )
+    func dataSnapshot() -> Snapshot {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(displayedCardIndexes.map { cellViewModel(for: cards[$0].cardData, withNumber: $0) })
+        return snapshot
     }
 
     func detailsViewModel(for indexPath: IndexPath) -> CardDetailsVM {
-        let card = displayedCard(at: indexPath)
+        let card = cards[displayedCardIndexes[indexPath.item]]
         let prefetchedDM = CardDetailsVM.PrefetchedData(
-            dataModel: itemForCell(at: indexPath),
+            dataModel: sceneViewModel(for: card.cardData),
             hapticSharpness: card.cardData.hapticFeedbackSharpness
         )
         return CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: prefetchedDM)
@@ -142,9 +135,19 @@ extension ReceivedCardsVM {
         }
     }
 
-    private func displayedCard(at indexPath: IndexPath) -> ReceivedBusinessCardMC {
-        let cardIdx = displayedCardIndexes[indexPath.item]
-        return cards[cardIdx]
+    private func cellViewModel(for cardData: BusinessCardData, withNumber number: Int) -> ReceivedCardsView.CollectionCell.DataModel {
+        ReceivedCardsView.CollectionCell.DataModel(modelNumber: number, sceneDataModel: sceneViewModel(for: cardData))
+    }
+
+    private func sceneViewModel(for cardData: BusinessCardData) -> CardFrontBackView.URLDataModel {
+        CardFrontBackView.URLDataModel(
+            frontImageURL: cardData.frontImage.url,
+            backImageURL: cardData.backImage.url,
+            textureImageURL: cardData.texture.image.url,
+            normal: CGFloat(cardData.texture.normal),
+            specular: CGFloat(cardData.texture.specular),
+            cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
+        )
     }
 }
 
@@ -245,6 +248,14 @@ extension ReceivedCardsVM {
     }
 }
 
+// MARK: - Section
+
+extension ReceivedCardsVM {
+    enum Section {
+        case main
+    }
+}
+
 // MARK: - Firebase fetch
 
 extension ReceivedCardsVM {
@@ -334,3 +345,4 @@ private extension CardFrontBackView.Style {
         }
     }
 }
+
