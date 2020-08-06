@@ -9,7 +9,7 @@
 import UIKit
 
 final class ScrollableSegmentedControl: AppControl {
-    
+
     weak var delegate: ScrollableSegmentedControlDelegate?
     
     let staticHeight: CGFloat?
@@ -58,25 +58,28 @@ final class ScrollableSegmentedControl: AppControl {
             mainComponent.constrainHeight(constant: height)
         }
     }
+
+    func setInsets(sideInsets: CGFloat, bottomInset: CGFloat) {
+        mainComponent.updateInsets(sideInsets: sideInsets, bottomInset: bottomInset)
+    }
 }
 
 extension ScrollableSegmentedControl {
     
     private final class MainComponent: AppControl, UICollectionViewDataSource, UICollectionViewDelegate {
                 
-        private static func collectionViewLayout() -> UICollectionViewLayout {
-            
-            let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
-                widthDimension: .estimated(100),
-                heightDimension: .fractionalHeight(1))
-            )
+        private static func collectionViewLayout(sideInset: CGFloat, bottomInset: CGFloat) -> UICollectionViewLayout {
+
+            let widthDimension = NSCollectionLayoutDimension.estimated(100)
+
+            let itemSize = NSCollectionLayoutSize(widthDimension: widthDimension, heightDimension: .fractionalHeight(1))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
                         
-            let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(500), heightDimension: .fractionalHeight(1))
+            let groupSize = NSCollectionLayoutSize(widthDimension: widthDimension, heightDimension: .fractionalHeight(1))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-            group.interItemSpacing = .fixed(10)
-            
+
             let section = NSCollectionLayoutSection(group: group)
-            section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: 16, bottom: 4, trailing: 16)
+            section.contentInsets = NSDirectionalEdgeInsets(top: 4, leading: sideInset, bottom: 4 + bottomInset, trailing: sideInset)
             section.orthogonalScrollingBehavior = .continuous
             return UICollectionViewCompositionalLayout(section: section)
         }
@@ -103,7 +106,7 @@ extension ScrollableSegmentedControl {
         }()
         
         private lazy var collectionView: UICollectionView = {
-            let this = UICollectionView(frame: .zero, collectionViewLayout: Self.collectionViewLayout())
+            let this = UICollectionView(frame: .zero, collectionViewLayout: Self.collectionViewLayout(sideInset: 0, bottomInset: 8))
             this.registerReusableCell(CollectionCell.self)
             this.dataSource = self
             this.delegate = self
@@ -120,7 +123,7 @@ extension ScrollableSegmentedControl {
         override func configureView() {
             clipsToBounds = true
         }
-        
+
         override func configureSubviews() {
             super.configureSubviews()
             [selectionIndicator, collectionView].forEach { addSubview($0) }
@@ -138,6 +141,10 @@ extension ScrollableSegmentedControl {
             if !items.isEmpty && (collectionView.indexPathsForSelectedItems ?? []).isEmpty {
                 collectionView.selectItem(at: IndexPath(item: 0), animated: false, scrollPosition: .left)
             }
+        }
+
+        func updateInsets(sideInsets: CGFloat, bottomInset: CGFloat) {
+            collectionView.setCollectionViewLayout(Self.collectionViewLayout(sideInset: sideInsets, bottomInset: bottomInset), animated: false)
         }
         
         // MARK: UICollectionViewDataSource, UICollectionViewDelegate
@@ -159,6 +166,12 @@ extension ScrollableSegmentedControl {
             
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+            let cellFrame = cell.convert(cell.contentView.bounds, to: collectionView)
+            if cellFrame.maxX > collectionView.frame.maxX {
+                collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
+            } else if cellFrame.minX < collectionView.frame.minX {
+                collectionView.scrollToItem(at: indexPath, at: .left, animated: true)
+            }
             moveSelectionIndicator(to: cell, animated: true)
             onSelection?(indexPath.item)
         }

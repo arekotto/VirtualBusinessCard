@@ -10,13 +10,14 @@ import UIKit
 import Firebase
 
 protocol GroupedCardsVMDelegate: class {
-    func refreshData(preUpdateItemCount: Int, postUpdateItemCount: Int, animated: Bool)
-    func refreshData()
+    func refreshData(animated: Bool)
     func presentReceivedCards(with viewModel: ReceivedCardsVM)
 }
 
 final class GroupedCardsVM: PartialUserViewModel {
-    
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<GroupedCardsVM.Section, GroupedCardsView.TableCell.DataModel>
+
     weak var delegate: GroupedCardsVMDelegate?
     
     var selectedGroupingProperty = CardGroup.GroupingProperty.tag {
@@ -24,7 +25,7 @@ final class GroupedCardsVM: PartialUserViewModel {
     }
     
     private let groupingProperties: [CardGroup.GroupingProperty] = [.tag, .company, .dateDay, .dateMonth, .dateYear]
-    
+
     private let encodeValueDateFormatter = ISO8601DateFormatter()
     private let dateTitleFormatter = DateTitleFormatter()
     
@@ -75,10 +76,9 @@ final class GroupedCardsVM: PartialUserViewModel {
     
     private func didSetGroupingProperty() {
         DispatchQueue.global().async {
-            let preUpdateItemCount = self.numberOfItems()
             self.updateGrouping()
             DispatchQueue.main.async {
-                self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: false)
+                self.delegate?.refreshData(animated: false)
             }
         }
     }
@@ -168,32 +168,19 @@ extension GroupedCardsVM {
         Asset.Images.Icon.collection.image
     }
     
-    func numberOfItems() -> Int {
-        displayedGroupIndexes.count
-    }
-    
     var availableGroupingModes: [String] {
         groupingProperties.map(\.localizedName)
     }
-    
-    func item(for indexPath: IndexPath) -> GroupedCardsView.CollectionCell.DataModel {
-        let groupIndex = displayedGroupIndexes[indexPath.row]
-        let group = groups[groupIndex]
-        let cardsInGroup = cards.filter { group.cardIDs.contains($0.id) }
 
-        return GroupedCardsView.CollectionCell.DataModel(
-            frontImageURL: cardsInGroup[optional: 0]?.cardData.frontImage.url,
-            middleImageURL: cardsInGroup[optional: 1]?.cardData.frontImage.url,
-            backImageURL: cardsInGroup[optional: 2]?.cardData.frontImage.url,
-            title: itemTitle(groupingValue: group.groupingValue),
-            subtitle: Self.itemSubtitle(cards: cardsInGroup),
-            cardCountText: "\(cardsInGroup.count)",
-            tagColor: itemTagColor(groupingValue: group.groupingValue)
-        )
+    func dataSnapshot() -> Snapshot {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(displayedGroupIndexes.map { displayedGroup(at: $0) })
+        return snapshot
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        let title = item(for: indexPath).title
+        let title = displayedGroup(at: indexPath.item).title
         let group = groups[indexPath.item]
         let vm = ReceivedCardsVM(userID: userID, title: title, dataFetchMode: .specifiedIDs(group.cardIDs))
         delegate?.presentReceivedCards(with: vm)
@@ -210,10 +197,9 @@ extension GroupedCardsVM {
     }
     
     func didSearch(for query: String) {
-        let preUpdateItemCount = numberOfItems()
         if query.isEmpty {
             displayedGroupIndexes = Array(0 ..< groups.count)
-            delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: numberOfItems(), animated: true)
+            delegate?.refreshData(animated: true)
         } else {
             DispatchQueue.global().async {
                 let displayedGroupIndexes = self.groups
@@ -223,10 +209,26 @@ extension GroupedCardsVM {
                 
                 DispatchQueue.main.async {
                     self.displayedGroupIndexes = displayedGroupIndexes
-                    self.delegate?.refreshData(preUpdateItemCount: preUpdateItemCount, postUpdateItemCount: self.numberOfItems(), animated: true)
+                    self.delegate?.refreshData(animated: true)
                 }
             }
         }
+    }
+
+    private func displayedGroup(at index: Int) -> GroupedCardsView.TableCell.DataModel {
+        let group = groups[index]
+        let cardsInGroup = cards.filter { group.cardIDs.contains($0.id) }
+
+        return GroupedCardsView.TableCell.DataModel(
+            modelNumber: index,
+            frontImageURL: cardsInGroup[optional: 0]?.cardData.frontImage.url,
+            middleImageURL: cardsInGroup[optional: 1]?.cardData.frontImage.url,
+            backImageURL: cardsInGroup[optional: 2]?.cardData.frontImage.url,
+            title: itemTitle(groupingValue: group.groupingValue),
+            subtitle: Self.itemSubtitle(cards: cardsInGroup),
+            cardCountText: "\(cardsInGroup.count)",
+            tagColor: itemTagColor(groupingValue: group.groupingValue)
+        )
     }
 }
 
@@ -265,7 +267,7 @@ extension GroupedCardsVM {
             }
             self.updateGrouping()
             DispatchQueue.main.async {
-                self.delegate?.refreshData()
+                self.delegate?.refreshData(animated: false)
             }
         }
     }
@@ -291,7 +293,7 @@ extension GroupedCardsVM {
             }
             if !self.cards.isEmpty {
                 DispatchQueue.main.async {
-                    self.delegate?.refreshData()
+                    self.delegate?.refreshData(animated: false)
                 }
             }
         }
@@ -324,5 +326,13 @@ extension GroupedCardsVM {
             this.dateFormat = DateFormatter.dateFormat(fromTemplate: "YYYY", options: 0, locale: Locale.current)
             return this
         }()
+    }
+}
+
+// MARK: - Section
+
+extension GroupedCardsVM {
+    enum Section {
+        case main
     }
 }

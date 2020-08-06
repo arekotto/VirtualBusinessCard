@@ -10,16 +10,21 @@ import UIKit
 import Kingfisher
 
 final class GroupedCardsView: AppBackgroundView {
-    
-    private(set) lazy var scrollableSegmentedControl = ScrollableSegmentedControl()
 
-    let collectionView: UICollectionView = {
-        let this = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
+    static let segmentedControlHeight: CGFloat = 58
+
+    private var segmentedControlAppliedInsets: CGFloat = 0
+    
+    let scrollableSegmentedControl = ScrollableSegmentedControl()
+
+    private(set) lazy var tableView: UITableView = {
+        let this = UITableView(frame: .zero, style: .insetGrouped)
         this.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
-        this.registerReusableCell(CollectionCell.self)
-        this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.collectionViewHeader.rawValue, CollectionHeader.self)
-        this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.sectionHeader.rawValue, RoundedCollectionCell.self)
-        this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.sectionFooter.rawValue, RoundedCollectionCell.self)
+        this.rowHeight = 110
+        this.separatorStyle = .none
+        this.registerReusableCell(TableCell.self)
+        scrollableSegmentedControl.frame = CGRect(x: 0, y: 0, width: 0, height: Self.segmentedControlHeight)
+        this.tableHeaderView = scrollableSegmentedControl
         this.isScrollEnabled = true
         this.alwaysBounceVertical = true
         return this
@@ -27,17 +32,23 @@ final class GroupedCardsView: AppBackgroundView {
     
     override func configureSubviews() {
         super.configureSubviews()
-        [collectionView].forEach { addSubview($0) }
+        addSubview(tableView)
     }
     
     override func configureConstraints() {
         super.configureConstraints()
-        collectionView.constrainToEdgesOfSuperview()
+        tableView.constrainToEdgesOfSuperview()
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        collectionView.backgroundColor = Asset.Colors.appBackground.color
+        tableView.backgroundColor = Asset.Colors.appBackground.color
+        scrollableSegmentedControl.backgroundColor = Asset.Colors.appBackground.color
+        let layoutInset = layoutMargins.left
+        if layoutInset != segmentedControlAppliedInsets {
+            segmentedControlAppliedInsets = layoutInset
+            scrollableSegmentedControl.setInsets(sideInsets: layoutInset, bottomInset: 8)
+        }
     }
 }
 
@@ -48,61 +59,6 @@ extension GroupedCardsView {
         case collectionViewHeader
         case sectionHeader
         case sectionFooter
-    }
-}
-
-// MARK: - Collection View Layout
-
-private extension GroupedCardsView {
-    static func collectionViewLayout() -> UICollectionViewLayout {
-        
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1))
-        )
-        
-        let sideInset: CGFloat = 16
-        
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(96))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: sideInset, bottom: 0, trailing: sideInset)
-        
-        let bottomOffset: CGFloat = 24
-        
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: bottomOffset, trailing: 0)
-        section.boundarySupplementaryItems = boundarySupplementaryItems(bottomOffset: bottomOffset, edgeInset: sideInset)
-
-        return UICollectionViewCompositionalLayout(section: section)
-    }
-    
-    static func boundarySupplementaryItems(bottomOffset: CGFloat, edgeInset: CGFloat) -> [NSCollectionLayoutBoundarySupplementaryItem] {
-        let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(10))
-        
-        let sectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerFooterSize,
-            elementKind: SupplementaryElementKind.sectionHeader.rawValue,
-            alignment: .top,
-            absoluteOffset: .init(x: 0, y: 20)
-        )
-        sectionHeader.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: edgeInset, bottom: 0, trailing: edgeInset)
-        
-        let sectionFooter = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerFooterSize,
-            elementKind: SupplementaryElementKind.sectionFooter.rawValue,
-            alignment: .bottom,
-            absoluteOffset: .init(x: 0, y: -bottomOffset)
-        )
-        sectionFooter.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: edgeInset, bottom: 0, trailing: edgeInset)
-        
-        let collectionHeader = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50)),
-            elementKind: SupplementaryElementKind.collectionViewHeader.rawValue,
-            alignment: .top,
-            absoluteOffset: .init(x: 0, y: 0)
-        )
-        collectionHeader.pinToVisibleBounds = true
-        return [sectionHeader, sectionFooter, collectionHeader]
     }
 }
 

@@ -16,7 +16,9 @@ protocol SettingsVMDelegate: class {
 }
 
 final class SettingsVM: PartialUserViewModel {
-    
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SettingsVM.Section, SettingsVM.Row>
+
     weak var delegate: SettingsVMDelegate?
         
     private let sections: [Section] = [
@@ -37,20 +39,15 @@ extension SettingsVM {
         NSLocalizedString("Settings", comment: "")
     }
     
-    func numberOfSections() -> Int {
-        sections.count
-    }
-    
-    func numberOfRows(in section: Int) -> Int {
-        sections[section].rows.count
-    }
-    
-    func itemForRow(at indexPath: IndexPath) -> Row {
-        sections[indexPath.section].rows[indexPath.row]
+    func dataSnapshot() -> Snapshot {
+        var snapshot = Snapshot()
+        snapshot.appendSections(sections)
+        sections.forEach { section in snapshot.appendItems(section.rows, toSection: section) }
+        return snapshot
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-        switch itemForRow(at: indexPath) {
+        switch sections[indexPath.section].rows[indexPath.row] {
         case .profile: delegate?.presentUserProfileVC(with: UserProfileVM(userID: userID))
         case .tags: delegate?.presentTagsVC(with: TagsVM(userID: userID))
         case .logOut:
@@ -69,12 +66,12 @@ extension SettingsVM {
 // MARK: - Section, Row
 
 extension SettingsVM {
-    struct Section {
+    struct Section: Hashable {
         let rows: [Row]
         let title: String
     }
     
-    enum Row {
+    enum Row: Equatable {
         case profile
         case tags
         case logOut
@@ -95,5 +92,4 @@ extension SettingsVM {
             }
         }
     }
-
 }

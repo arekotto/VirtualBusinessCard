@@ -9,15 +9,20 @@
 import UIKit
 
 final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
-    
+
+    private typealias DataSource = UITableViewDiffableDataSource<SettingsVM.Section, SettingsVM.Row>
+
+    private lazy var tableViewDataSource = makeTableViewDataSource()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         extendedLayoutIncludesOpaqueBars = true
         hidesBottomBarWhenPushed = true
         viewModel.delegate = self
-        contentView.tableView.dataSource = self
+        contentView.tableView.dataSource = tableViewDataSource
         contentView.tableView.delegate = self
         setupNavigationItem()
+        tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: false)
     }
     
     private func setupNavigationItem() {
@@ -30,26 +35,19 @@ final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
         let task = SampleBCUploadTask()
         task {_ in }
     }
+
+    private func makeTableViewDataSource() -> DataSource {
+        DataSource(tableView: contentView.tableView) { tableView, indexPath, row in
+            let cell: TitleTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
+            cell.dataModel = row.dataModel
+            return cell
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 
-extension SettingsVC: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        viewModel.numberOfSections()
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        viewModel.numberOfRows(in: section)
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let item = viewModel.itemForRow(at: indexPath)
-        let cell: TitleTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
-        cell.dataModel = item.dataModel
-        return cell
-    }
-
+extension SettingsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelectRow(at: indexPath)
         tableView.deselectRow(at: indexPath, animated: true)

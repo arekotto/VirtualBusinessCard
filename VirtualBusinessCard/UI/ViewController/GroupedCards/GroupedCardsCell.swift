@@ -10,7 +10,7 @@ import UIKit
 import Kingfisher
 
 extension GroupedCardsView {
-    final class CollectionCell: AppCollectionViewCell, Reusable {
+    final class TableCell: AppTableViewCell, Reusable {
         
         private static func fetchImage(url: URL, andSetTo imageView: UIImageView) {
             KingfisherManager.shared.retrieveImage(with: url) { result in
@@ -21,14 +21,6 @@ extension GroupedCardsView {
                     imageView.image = nil
                     print("Error fetching image:", err.localizedDescription)
                 }
-            }
-        }
-        
-        override var isSelected: Bool {
-            get { super.isSelected }
-            set {
-                super.isSelected = newValue
-                didUpdateSelected()
             }
         }
 
@@ -80,6 +72,7 @@ extension GroupedCardsView {
         override func configureSubviews() {
             super.configureSubviews()
             [imageViewStack, labelStackView].forEach { contentView.addSubview($0) }
+            selectedBackgroundView = UIView()
         }
         
         override func configureConstraints() {
@@ -97,12 +90,13 @@ extension GroupedCardsView {
             labelStackView.constrainTopGreaterOrEqual(to: contentView.topAnchor)
             labelStackView.constrainBottomGreaterOrEqual(to: contentView.topAnchor)
         }
-        
-        override func layoutSubviews() {
-            super.layoutSubviews()
+
+        override func configureColors() {
+            super.configureColors()
             subtitleLabel.textColor = .secondaryLabel
             countLabel.textColor = Asset.Colors.appAccent.color
-            contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
+            backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
+            selectedBackgroundView?.backgroundColor = Asset.Colors.selectedCellBackgroundLight.color
             tagImageView.tintColor = tagColor
         }
         
@@ -138,23 +132,15 @@ extension GroupedCardsView {
             subtitleLabel.text = dm.subtitle
             countLabel.text = dm.cardCountText
         }
-        
-        func didUpdateSelected() {
-            if isSelected {
-                contentView.backgroundColor = Asset.Colors.appBackground.color
-            } else {
-                UIView.animate(withDuration: 0.5) {
-                    self.contentView.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
-                }
-            }
-        }
     }
 }
 
 // MARK: - DataModel
 
-extension GroupedCardsView.CollectionCell {
-    struct DataModel {
+extension GroupedCardsView.TableCell {
+    struct DataModel: Hashable {
+        let modelNumber: Int
+
         let frontImageURL: URL?
         let middleImageURL: URL?
         let backImageURL: URL?
@@ -169,7 +155,7 @@ extension GroupedCardsView.CollectionCell {
 
 // MARK: - ImageViewStack
 
-extension GroupedCardsView.CollectionCell {
+extension GroupedCardsView.TableCell {
     
     private final class ImageViewStack: AppView {
         
