@@ -66,12 +66,15 @@ final class TagTableCell: AppTableViewCell, Reusable {
         }
     }
 
-    struct DataModel {
+    struct DataModel: Hashable {
+        let itemNumber: Int
+
         let tagName: String
         let tagColor: UIColor
         let accessoryImage: UIImage?
 
-        init(tagName: String, tagColor: UIColor, accessoryImage: UIImage? = nil) {
+        init(itemNumber: Int, tagName: String, tagColor: UIColor, accessoryImage: UIImage? = nil) {
+            self.itemNumber = itemNumber
             self.tagName = tagName
             self.tagColor = tagColor
             self.accessoryImage = accessoryImage

@@ -15,14 +15,13 @@ protocol TagsVMDelegate: class {
 }
 
 final class TagsVM: PartialUserViewModel {
-    
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<TagsVM.Section, TagTableCell.DataModel>
+
     weak var delegate: TagsVMDelegate?
     
     private var tags = [BusinessCardTagMC]()
- 
-    private func tagForRow(at indexPath: IndexPath) -> BusinessCardTagMC {
-        tags[indexPath.row]
-    }
+
 }
 
 // MARK: - ViewController API
@@ -49,18 +48,18 @@ extension TagsVM {
     var cancelEditingButtonTitle: String {
         NSLocalizedString("Cancel", comment: "")
     }
-    
-    func numberOfItems() -> Int {
-        tags.count
+
+    func dataSnapshot() -> Snapshot {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(tags.enumerated().map { index, tag in
+            TagTableCell.DataModel(itemNumber: index, tagName: tag.title, tagColor: tag.displayColor)
+        })
+        return snapshot
     }
-    
-    func itemForRow(at indexPath: IndexPath) -> TagTableCell.DataModel {
-        let tag = tagForRow(at: indexPath)
-        return TagTableCell.DataModel(tagName: tag.title, tagColor: tag.displayColor)
-    }
-    
+
     func didSelectItem(at indexPath: IndexPath) {
-        let editTag = tagForRow(at: indexPath).editBusinessCardTagMC()
+        let editTag = tags[indexPath.row].editBusinessCardTagMC()
         delegate?.presentNewTagVC(with: EditTagVM(userID: userID, editBusinessCardTagMC: editTag))
     }
     
@@ -129,5 +128,13 @@ extension TagsVM {
                 self.delegate?.refreshData()
             }
         }
+    }
+}
+
+// MARK: - Section
+
+extension TagsVM {
+    enum Section {
+        case main
     }
 }

@@ -70,6 +70,7 @@ extension EditCardTagsVM {
     func itemForRow(at indexPath: IndexPath) -> TagTableCell.DataModel {
         let tag = tagForRow(at: indexPath)
         return TagTableCell.DataModel(
+            itemNumber: indexPath.row,
             tagName: tag.title,
             tagColor: tag.displayColor,
             accessoryImage: accessoryImage(for: tag.id)
