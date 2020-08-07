@@ -105,21 +105,23 @@ private extension CardDetailsView {
 
 extension CardDetailsView {
     final class TitleView: AppView {
+
+        var cardCornerRadiusHeightMultiplier: CGFloat = 0 {
+            didSet { updateCornerRadius() }
+        }
         
         private(set) var isVisible = false
         
         private var imageViewCenterConstraint: NSLayoutConstraint!
         private let imageView: UIImageView = {
             let this = UIImageView()
-            this.contentMode = .scaleAspectFit
+            this.clipsToBounds = true
             return this
         }()
         
         override func configureView() {
             super.configureView()
             clipsToBounds = true
-            constrainWidth(constant: 70)
-            constrainHeight(constant: 44)
         }
         
         override func configureSubviews() {
@@ -129,12 +131,18 @@ extension CardDetailsView {
         
         override func configureConstraints() {
             super.configureConstraints()
+            constrainSizeToBusinessCardDimensions(width: 64)
             imageView.constrainWidthEqualTo(self)
-            imageView.constrainHeight(constant: 38)
+            imageView.constrainHeightEqualTo(self)
             imageView.constrainCenterXToSuperview()
             imageViewCenterConstraint = imageView.constrainCenterYToSuperview(offset: 50)
         }
-        
+
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            updateCornerRadius()
+        }
+
         func setImageURL(_ url: URL?) {
             imageView.kf.setImage(with: url)
         }
@@ -155,6 +163,10 @@ extension CardDetailsView {
                 self.alpha = 0
                 self.layoutIfNeeded()
             }
+        }
+
+        private func updateCornerRadius() {
+            imageView.layer.cornerRadius = imageView.frame.height * cardCornerRadiusHeightMultiplier
         }
     }
 }

@@ -93,7 +93,7 @@ final class TitleValueImageCollectionViewCell: AppCollectionViewCell, Reusable {
         }
     }
     
-    struct DataModel {
+    struct DataModel: Hashable {
         
         let title: String
         let value: String?

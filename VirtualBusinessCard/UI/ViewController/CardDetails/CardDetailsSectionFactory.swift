@@ -32,11 +32,8 @@ struct CardDetailsSectionFactory {
     }
 
     private func makeMetaSection() -> Section? {
-        let metaData = [
-            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Date Received", comment: ""), value: card.receivingDataFormatted)
-        ]
-
-        return Section(items: metaData.map { Item(dataModel: .dataCell($0), actions: []) })
+        let dataModel = TitleValueCollectionCell.DataModel(title: NSLocalizedString("Date Received", comment: ""), value: card.receivingDataFormatted)
+        return Section(item: Item(itemNumber: 0, dataModel: .dataCell(dataModel), actions: []))
     }
     
     private func makeCardImagesSection() -> Section? {
@@ -49,7 +46,7 @@ struct CardDetailsSectionFactory {
             specular: CGFloat(cardData.texture.specular),
             cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
         )
-        return Section(item: Item(dataModel: .cardImagesCell(imagesDataModel), actions: []))
+        return Section(item: Item(itemNumber: 0, dataModel: .cardImagesCell(imagesDataModel), actions: []))
     }
 
     private func makeEditableDataSection() -> Section? {
@@ -73,7 +70,9 @@ struct CardDetailsSectionFactory {
             (notesItem, hasNotes ? [.copy, .editNotes] : [.editNotes])
         ]
 
-        return Section(items: editableData.map { Item(dataModel: .dataCellImage($0.dataModel), actions: $0.actions) })
+        return Section(items: editableData.enumerated().map { index, dm in
+            Item(itemNumber: index, dataModel: .dataCellImage(dm.dataModel), actions: dm.actions)
+        })
     }
     
     private func makePersonalDataSection() -> Section? {
@@ -87,7 +86,9 @@ struct CardDetailsSectionFactory {
         if includedPersonalDataRows.isEmpty {
             return nil
         }
-        return Section(items: includedPersonalDataRows.map { Item(dataModel: .dataCell($0), actions: [.copy]) })
+        return Section(items: includedPersonalDataRows.enumerated().map { index, dm in
+            Item(itemNumber: index, dataModel: .dataCell(dm), actions: [.copy])
+        })
     }
     
     private func makeContactSection() -> Section? {
@@ -136,7 +137,9 @@ struct CardDetailsSectionFactory {
             return nil
         }
         
-        return Section(items: includedContactDataRows.map { Item(dataModel: .dataCellImage($0.dataModel), actions: $0.actions) })
+        return Section(items: includedContactDataRows.enumerated().map { index, dm in
+            Item(itemNumber: index, dataModel: .dataCellImage(dm.dataModel), actions: dm.actions)
+        })
     }
     
     private func makeAddressSection() -> Section? {
@@ -149,6 +152,6 @@ struct CardDetailsSectionFactory {
             value: address,
             primaryImage: imageProvider(.navigate)
         )
-        return Section(item: Item(dataModel: .dataCellImage(dm), actions: [.copy, .navigate]))
+        return Section(item: Item(itemNumber: 0, dataModel: .dataCellImage(dm), actions: [.copy, .navigate]))
     }
 }

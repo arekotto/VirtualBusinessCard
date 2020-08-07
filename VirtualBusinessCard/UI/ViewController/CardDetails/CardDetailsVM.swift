@@ -14,14 +14,15 @@ protocol CardDetailsVMDelegate: class {
     func reloadData()
     func presentSendEmailViewController(recipient: String)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
-    func dismissSelf()
     func presentEditCardTagsVC(viewModel: EditCardTagsVM)
     func presentEditCardNotesVC(viewModel: EditCardNotesVM)
     func presentErrorAlert(message: String)
 }
 
 final class CardDetailsVM: PartialUserViewModel {
-        
+
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Item>
+
     weak var delegate: CardDetailsVMDelegate? {
         didSet { didSetDelegate() }
     }
@@ -33,7 +34,7 @@ final class CardDetailsVM: PartialUserViewModel {
         
     private let prefetchedData: PrefetchedData
     
-    private lazy var sections = [Section(item: Item(dataModel: .cardImagesCell(prefetchedData.dataModel), actions: []))]
+    private lazy var sections = [Section(item: Item(itemNumber: 0, dataModel: .cardImagesCell(prefetchedData.dataModel), actions: []))]
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -97,35 +98,32 @@ extension CardDetailsVM {
     var hapticSharpness: Float {
         card?.cardData.hapticFeedbackSharpness ?? prefetchedData.hapticSharpness
     }
-    
-    func numberOrSections() -> Int {
-        sections.count
+
+    var cardCornerRadiusHeightMultiplier: CGFloat {
+        CGFloat(card?.cardData.cornerRadiusHeightMultiplier ?? 0)
     }
-    
-    func numberOfRows(in section: Int) -> Int {
-        sections[section].items.count
+
+    func dataSnapshot() -> Snapshot {
+        var snapshot = Snapshot()
+        snapshot.appendSections(Array(0..<sections.count))
+        sections.enumerated().forEach { index, section in
+            snapshot.appendItems(section.items, toSection: index)
+        }
+        return snapshot
     }
-    
-    func item(at indexPath: IndexPath) -> Item {
-        sections[indexPath.section].items[indexPath.row]
+
+    func actions(for indexPath: IndexPath) -> [Action] {
+        sections[indexPath.section].items[indexPath.item].actions
     }
-    
-    func title(for section: Int) -> String? {
-        sections[section].title
-    }
-    
+
     func didSelect(action: Action, at indexPath: IndexPath) {
-        let selectedItem = item(at: indexPath)
+        let selectedItem = sections[indexPath.section].items[indexPath.item]
         guard selectedItem.actions.contains(action) else { return }
 
         let actionValue = getActionValue(from: selectedItem)
         
         guard !actionValue.isEmpty else { return }
         performAction(action, actionValue: actionValue)
-    }
-    
-    func didTapCloseButton() {
-        delegate?.dismissSelf()
     }
 }
 
@@ -288,28 +286,26 @@ extension CardDetailsVM: EditCardNotesVMEditingDelegate {
 // MARK: - Section, Item
 
 extension CardDetailsVM {
-    struct Section {
+    struct Section: Hashable {
         
         var items: [Item]
-        var title: String?
-        
-        init(items: [CardDetailsVM.Item], title: String? = nil) {
+
+        init(items: [CardDetailsVM.Item]) {
             self.items = items
-            self.title = title
         }
         
-        init(item: CardDetailsVM.Item, title: String? = nil) {
+        init(item: CardDetailsVM.Item) {
             self.items = [item]
-            self.title = title
         }
     }
     
-    struct Item {
+    struct Item: Hashable {
+        let itemNumber: Int
         let dataModel: DataModel
         let actions: [Action]
     }
     
-    enum DataModel {
+    enum DataModel: Hashable {
         case dataCell(TitleValueCollectionCell.DataModel)
         case dataCellImage(TitleValueImageCollectionViewCell.DataModel)
         case cardImagesCell(CardFrontBackView.URLDataModel)

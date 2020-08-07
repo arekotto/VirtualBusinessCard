@@ -24,7 +24,23 @@ extension GroupedCardsView {
             }
         }
 
-        private var tagColor: UIColor?
+        var dataModel = DataModel() {
+            didSet {
+                imageViewStack.frontImageView.kf.setImage(with: dataModel.frontImageURL)
+                imageViewStack.middleImageView.kf.setImage(with: dataModel.middleImageURL)
+                imageViewStack.backImageView.kf.setImage(with: dataModel.backImageURL)
+
+                tagImageView.tintColor = dataModel.tagColor
+                tagImageView.isHidden = dataModel.tagColor == nil
+
+                titleLabel.text = dataModel.title
+                subtitleLabel.text = dataModel.subtitle
+                countLabel.text = dataModel.cardCountText
+
+                updateCardCorners()
+                imageViewStack.layoutIfNeeded()
+            }
+        }
 
         private let imageViewStack = ImageViewStack()
         
@@ -91,46 +107,24 @@ extension GroupedCardsView {
             labelStackView.constrainBottomGreaterOrEqual(to: contentView.topAnchor)
         }
 
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            updateCardCorners()
+        }
+
         override func configureColors() {
             super.configureColors()
             subtitleLabel.textColor = .secondaryLabel
             countLabel.textColor = Asset.Colors.appAccent.color
             backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
             selectedBackgroundView?.backgroundColor = Asset.Colors.selectedCellBackgroundLight.color
-            tagImageView.tintColor = tagColor
+            tagImageView.tintColor = dataModel.tagColor
         }
-        
-        func setDataModel(_ dm: DataModel) {
-            
-            if let frontImageURL = dm.frontImageURL {
-                Self.fetchImage(url: frontImageURL, andSetTo: imageViewStack.frontImageView)
-            } else {
-                imageViewStack.frontImageView.image = nil
-            }
-            
-            if let middleImageURL = dm.middleImageURL {
-                Self.fetchImage(url: middleImageURL, andSetTo: imageViewStack.middleImageView)
-            } else {
-                imageViewStack.middleImageView.image = nil
-            }
-            
-            if let backImageURL = dm.backImageURL {
-                Self.fetchImage(url: backImageURL, andSetTo: imageViewStack.backImageView)
-            } else {
-                imageViewStack.backImageView.image = nil
-            }
 
-            tagColor = dm.tagColor
-            if let tagColor = dm.tagColor {
-                tagImageView.tintColor = tagColor
-                tagImageView.isHidden = false
-            } else {
-                tagImageView.isHidden = true
-            }
-
-            titleLabel.text = dm.title
-            subtitleLabel.text = dm.subtitle
-            countLabel.text = dm.cardCountText
+        private func updateCardCorners() {
+            imageViewStack.frontImageView.layer.cornerRadius = imageViewStack.frontImageView.frame.height * dataModel.frontImageCornerRadiusHeightMultiplier
+            imageViewStack.middleImageView.layer.cornerRadius = imageViewStack.middleImageView.frame.height * dataModel.middleImageCornerRadiusHeightMultiplier
+            imageViewStack.backImageView.layer.cornerRadius = imageViewStack.backImageView.frame.height * dataModel.backImageCornerRadiusHeightMultiplier
         }
     }
 }
@@ -139,17 +133,22 @@ extension GroupedCardsView {
 
 extension GroupedCardsView.TableCell {
     struct DataModel: Hashable {
-        let modelNumber: Int
+        var modelNumber: Int = 0
 
-        let frontImageURL: URL?
-        let middleImageURL: URL?
-        let backImageURL: URL?
+        var frontImageURL: URL?
+        var frontImageCornerRadiusHeightMultiplier: CGFloat = 0
 
-        let title: String
-        let subtitle: String
-        let cardCountText: String
+        var middleImageURL: URL?
+        var middleImageCornerRadiusHeightMultiplier: CGFloat = 0
 
-        let tagColor: UIColor?
+        var backImageURL: URL?
+        var backImageCornerRadiusHeightMultiplier: CGFloat = 0
+
+        var title = ""
+        var subtitle = ""
+        var cardCountText = ""
+
+        var tagColor: UIColor?
     }
 }
 

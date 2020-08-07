@@ -56,9 +56,9 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
     }
 
     private func makeTableViewDataSource() -> DataSource {
-        DataSource(tableView: contentView.tableView) { collectionView, indexPath, dataModel in
-            let cell: GroupedCardsView.TableCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            cell.setDataModel(dataModel)
+        DataSource(tableView: contentView.tableView) { tableView, indexPath, dataModel in
+            let cell: GroupedCardsView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
+            cell.dataModel = dataModel
             return cell
         }
     }

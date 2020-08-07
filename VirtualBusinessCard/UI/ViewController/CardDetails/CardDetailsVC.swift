@@ -13,6 +13,10 @@ import Kingfisher
 
 final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
+    private typealias DataSource = UICollectionViewDiffableDataSource<Int, CardDetailsVM.Item>
+
+    private lazy var collectionViewDataSource = makeDataSource()
+
     private var engine: HapticFeedbackEngine!
 
     func cardImagesCellFrame(translatedTo targetView: UIView) -> CGRect? {
@@ -43,7 +47,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         hidesBottomBarWhenPushed = true
         extendedLayoutIncludesOpaqueBars = true
         contentView.collectionView.delegate = self
-        contentView.collectionView.dataSource = self
+        contentView.collectionView.dataSource = collectionViewDataSource
         viewModel.delegate = self
         viewModel.fetchData()
         engine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
@@ -73,20 +77,59 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         let origin = CGPoint(x: 0, y: -height)
         return CGRect(origin: origin, size: CGSize(width: UIScreen.main.bounds.width, height: height))
     }
+
+    private func makeDataSource() -> DataSource {
+        let source = DataSource(collectionView: contentView.collectionView) { collectionView, indexPath, item in
+            switch item.dataModel {
+            case .dataCell(let dataModel):
+                let cell: TitleValueCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.setDataModel(dataModel)
+                return cell
+            case .cardImagesCell(let dataModel):
+                let cell: CardDetailsView.CardImagesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.cardFrontBackView.setDataModel(dataModel)
+                return cell
+            case .dataCellImage(let dataModel):
+                let cell: TitleValueImageCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.setDataModel(dataModel)
+                return cell
+            }
+        }
+        source.supplementaryViewProvider = { collectionView, kind, indexPath in
+            let cell: RoundedCollectionCell = collectionView.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
+            switch UserProfileView.SupplementaryElementKind(rawValue: kind)! {
+            case .header: cell.configureRoundedCorners(mode: .top)
+            case .footer: cell.configureRoundedCorners(mode: .bottom)
+            }
+            return cell
+        }
+        return source
+    }
 }
 
 // MARK: - Actions
 
 @objc
 private extension CardDetailsVC {
+
     func didTapCloseButton() {
-        viewModel.didTapCloseButton()
+        guard let cell = cardImagesCell() else {
+            dismiss(animated: true)
+            return
+        }
+        cell.condenseWithAnimation {
+            self.dismiss(animated: true)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.engine.play()
+        }
     }
 }
 
 // MARK: - AlertController
 
 private extension CardDetailsVC {
+
     func displayAlertController(with actions: [CardDetailsVM.Action], for indexPath: IndexPath) {
         guard !actions.isEmpty else { return }
         let alert = AppAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -102,47 +145,13 @@ private extension CardDetailsVC {
     }
 }
 
-// MARK: - UICollectionViewDataSource, UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
 
-extension CardDetailsVC: UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        viewModel.numberOrSections()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfRows(in: section)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch viewModel.item(at: indexPath).dataModel {
-        case .dataCell(let dataModel):
-            let cell: TitleValueCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            cell.setDataModel(dataModel)
-            return cell
-        case .cardImagesCell(let dataModel):
-            let cell: CardDetailsView.CardImagesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            cell.cardFrontBackView.setDataModel(dataModel)
-            return cell
-        case .dataCellImage(let dataModel):
-            let cell: TitleValueImageCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-            cell.setDataModel(dataModel)
-            return cell
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let cell: RoundedCollectionCell = collectionView.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
-        switch UserProfileView.SupplementaryElementKind(rawValue: kind)! {
-        case .header: cell.configureRoundedCorners(mode: .top)
-        case .footer: cell.configureRoundedCorners(mode: .bottom)
-        }
-        return cell
-    }
+extension CardDetailsVC: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        displayAlertController(with: viewModel.item(at: indexPath).actions, for: indexPath)
+        displayAlertController(with: viewModel.actions(for: indexPath), for: indexPath)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -177,19 +186,6 @@ extension CardDetailsVC: CardDetailsVMDelegate {
         navVC.presentationController?.delegate = vc
         present(navVC, animated: true)
     }
-
-    func dismissSelf() {
-        guard let cell = cardImagesCell() else {
-            dismiss(animated: true)
-            return
-        }
-        cell.condenseWithAnimation {
-            self.dismiss(animated: true)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            self.engine.play()
-        }
-    }
     
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         cardImagesCell()?.cardFrontBackView.updateMotionData(motion, over: timeFrame)
@@ -205,7 +201,8 @@ extension CardDetailsVC: CardDetailsVMDelegate {
     
     func reloadData() {
         contentView.titleView.setImageURL(viewModel.titleImageURL)
-        contentView.collectionView.reloadData()
+        contentView.titleView.cardCornerRadiusHeightMultiplier = viewModel.cardCornerRadiusHeightMultiplier
+        collectionViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: false)
     }
 }
 

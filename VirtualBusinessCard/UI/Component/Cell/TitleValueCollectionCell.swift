@@ -76,7 +76,7 @@ final class TitleValueCollectionCell: AppCollectionViewCell, Reusable {
         }
     }
     
-    struct DataModel {
+    struct DataModel: Hashable {
         let title: String
         let value: String?
     }
