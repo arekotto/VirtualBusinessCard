@@ -9,7 +9,7 @@
 import UIKit
 
 final class TagsView: AppBackgroundView {
-    
+
     let tableView: UITableView = {
         let this = UITableView(frame: .zero, style: .insetGrouped)
         this.backgroundColor = .clear
@@ -28,7 +28,6 @@ final class TagsView: AppBackgroundView {
     
     override func configureConstraints() {
         super.configureConstraints()
-        tableView.constrainVerticallyToSuperview()
-        tableView.constrainHorizontallyToSuperview()
+        tableView.constrainToEdgesOfSuperview()
     }
 }

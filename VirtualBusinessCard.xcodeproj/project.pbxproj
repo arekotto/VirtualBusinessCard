@@ -613,7 +613,6 @@
 				4537CEF823F6D25A003602EA /* VirtualBusinessCardTests */,
 				4537CF0323F6D25A003602EA /* VirtualBusinessCardUITests */,
 				4537CEE023F6D259003602EA /* Products */,
-				F388864307D67D160A73D633 /* Pods */,
 				A043EB3D702FD4AD55973A83 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -1141,13 +1140,6 @@
 				4580E98F2437FD1400184AA4 /* CoreNFC.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F388864307D67D160A73D633 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

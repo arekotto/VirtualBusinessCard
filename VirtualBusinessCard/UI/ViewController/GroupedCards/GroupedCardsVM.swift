@@ -161,7 +161,7 @@ extension GroupedCardsVM {
     }
     
     var seeAllCardsButtonTitle: String {
-        NSLocalizedString("See all", comment: "")
+        NSLocalizedString("See All", comment: "")
     }
     
     var tabBarIconImage: UIImage {

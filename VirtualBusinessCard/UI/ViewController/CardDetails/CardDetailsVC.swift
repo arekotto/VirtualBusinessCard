@@ -28,8 +28,9 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         return cell.contentView.convert(cell.contentView.bounds, to: targetView)
     }
     
-    func estimatedCardImagesCellFrame(estimatedTopSafeAreaInset: CGFloat) -> CGRect {
-        let origin = CGPoint(x: 0, y: CardDetailsView.contentInsetTop + estimatedTopSafeAreaInset)
+    func estimatedCardImagesCellFrame() -> CGRect {
+        let topInset = (navigationController?.navigationBar.frame.height ?? 0) + (contentView.statusBarHeight ?? 0)
+        let origin = CGPoint(x: 0, y: CardDetailsView.contentInsetTop + topInset)
         return CGRect(origin: origin, size: CGSize(width: UIScreen.main.bounds.width, height: ReceivedCardsView.CollectionCell.defaultHeight))
     }
     

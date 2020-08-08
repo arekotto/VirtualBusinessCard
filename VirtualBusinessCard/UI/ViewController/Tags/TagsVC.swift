@@ -15,8 +15,8 @@ final class TagsVC: AppViewController<TagsView, TagsVM> {
         UIBarButtonItem(image: viewModel.sortControlImage, style: .plain, target: self, action: #selector(didTapSortButton))
     ]
     
-    private lazy var doneEditingButton = UIBarButtonItem(title: viewModel.doneEditingButtonTitle, style: .done, target: self, action: #selector(didTapDoneEditingButton))
-    private lazy var cancelEditingButton = UIBarButtonItem(title: viewModel.cancelEditingButtonTitle, style: .plain, target: self, action: #selector(didTapCancelEditingButton))
+    private lazy var doneEditingButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: .done, target: self, action: #selector(didTapDoneEditingButton))
+    private lazy var cancelEditingButton = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: .plain, target: self, action: #selector(didTapCancelEditingButton))
 
     private lazy var tableViewDataSource = makeTableViewDataSource()
 
@@ -32,7 +32,7 @@ final class TagsVC: AppViewController<TagsView, TagsVM> {
     
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.rightBarButtonItems = nonEditingButtons
+        navigationItem.setRightBarButtonItems(nonEditingButtons, animated: false)
     }
 
     private func makeTableViewDataSource() -> DataSource {

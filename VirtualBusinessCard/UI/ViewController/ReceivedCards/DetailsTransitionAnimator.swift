@@ -17,14 +17,12 @@ extension ReceivedCardsVC {
         private let animatedCell: UICollectionViewCell
         private let animatedCellSnapshot: UIView
         private let availableAnimationBounds: CGRect
-        private let estimatedTopSafeAreaInset: CGFloat
-        
-        init?(type: PresentationType, animatedCell: UICollectionViewCell, animatedCellSnapshot: UIView, availableAnimationBounds: CGRect, estimatedTopSafeAreaInset: CGFloat) {
+
+        init?(type: PresentationType, animatedCell: UICollectionViewCell, animatedCellSnapshot: UIView, availableAnimationBounds: CGRect) {
             self.type = type
             self.animatedCellSnapshot = animatedCellSnapshot
             self.animatedCell = animatedCell
             self.availableAnimationBounds = availableAnimationBounds
-            self.estimatedTopSafeAreaInset = estimatedTopSafeAreaInset
         }
         
         func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -33,7 +31,7 @@ extension ReceivedCardsVC {
 
         func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
             let containerView = transitionContext.containerView
-            
+
             let isPresenting = type.isPresenting
             
             guard let views = requiredViews(using: transitionContext) else {
@@ -45,11 +43,13 @@ extension ReceivedCardsVC {
 
             [views.presentingVC.view, views.shadowView, views.presentedView, views.availableAnimationBoundsView].forEach { containerView.addSubview($0) }
 
+            views.presentedView.setNeedsLayout()
+            views.presentedView.layoutIfNeeded()
             let animatedCellOnPresentedViewOrigin: CGRect
             if let exactBounds = views.cardDetailsVC.cardImagesCellFrame(translatedTo: views.availableAnimationBoundsView) {
                 animatedCellOnPresentedViewOrigin = exactBounds
             } else {
-                let estimatedCellFrame = views.cardDetailsVC.estimatedCardImagesCellFrame(estimatedTopSafeAreaInset: estimatedTopSafeAreaInset)
+                let estimatedCellFrame = views.cardDetailsVC.estimatedCardImagesCellFrame()
                 animatedCellOnPresentedViewOrigin = views.presentingVC.view.convert(estimatedCellFrame, to: views.availableAnimationBoundsView)
             }
             

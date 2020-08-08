@@ -54,17 +54,17 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
 extension ReceivedCardsVM {
     
     var cellSizeControlImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium, scale: .large)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
         switch cellStyle {
         case .compact:
-            return UIImage(systemName: "square.split.1x2.fill", withConfiguration: imgConfig)!
+            return UIImage(systemName: "arrow.up.left.and.arrow.down.right", withConfiguration: imgConfig)!
         case .expanded:
-            return UIImage(systemName: "table.fill", withConfiguration: imgConfig)!
+            return UIImage(systemName: "arrow.down.right.and.arrow.up.left", withConfiguration: imgConfig)!
         }
     }
     
     var sortControlImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         return UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imgConfig)!
     }
 

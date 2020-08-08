@@ -32,21 +32,13 @@ extension TagsVM {
     }
     
     var newTagImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
         return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
     }
     
     var sortControlImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         return UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imgConfig)!
-    }
-    
-    var doneEditingButtonTitle: String {
-        NSLocalizedString("Done", comment: "")
-    }
-    
-    var cancelEditingButtonTitle: String {
-        NSLocalizedString("Cancel", comment: "")
     }
 
     func dataSnapshot() -> Snapshot {

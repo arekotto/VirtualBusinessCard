@@ -45,7 +45,7 @@ extension PersonalCardsVM {
     }
     
     var newBusinessCardImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
         return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
     }
     

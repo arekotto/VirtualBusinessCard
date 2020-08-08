@@ -23,7 +23,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
 
     private var isSearchActive = false
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.delegate = self
@@ -179,13 +179,15 @@ extension ReceivedCardsVC: UIViewControllerTransitioningDelegate {
         guard let selectedCell = self.selectedCell else { return nil }
         guard let cellSnap = selectedCell.contentView.snapshotView(afterScreenUpdates: false) else { return nil }
 
-        let estimatedTopSafeAreaInset = (contentView.statusBarHeight ?? 0) + (navigationController?.navigationBar.bounds.height ?? 0)
+        let searchBarHeight = navigationItem.searchController?.searchBar.bounds.height ?? 0
+        let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
+        let availableAnimationBoundsOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y - searchBarHeight)
+        let availableAnimationBoundsSize = CGSize(width: safeAreaFrame.width, height: safeAreaFrame.height + searchBarHeight)
         animator = DetailsTransitionAnimator(
             type: .present,
             animatedCell: selectedCell,
             animatedCellSnapshot: cellSnap,
-            availableAnimationBounds: view.safeAreaLayoutGuide.layoutFrame,
-            estimatedTopSafeAreaInset: estimatedTopSafeAreaInset
+            availableAnimationBounds: CGRect(origin: availableAnimationBoundsOrigin, size: availableAnimationBoundsSize)
         )
         return animator
     }
