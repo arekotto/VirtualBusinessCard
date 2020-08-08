@@ -31,14 +31,13 @@
 		45174CE824B9E32F009BFE58 /* EditTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE724B9E32F009BFE58 /* EditTagView.swift */; };
 		45174CEA24B9E342009BFE58 /* EditTagVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE924B9E342009BFE58 /* EditTagVM.swift */; };
 		45174D7724BB08C3009BFE58 /* EditBusinessCardTagMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174D7624BB08C3009BFE58 /* EditBusinessCardTagMC.swift */; };
-		45174D7A24BB4189009BFE58 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 45174D7924BB4189009BFE58 /* SwiftPackageProductDependency */; };
+		45174D7A24BB4189009BFE58 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 45174D7924BB4189009BFE58 /* Reachability */; };
 		451B799724D80A9E00EDC2B6 /* SingleSliderEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799624D80A9E00EDC2B6 /* SingleSliderEditingView.swift */; };
 		451B799A24D835D600EDC2B6 /* HapticsEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799924D835D600EDC2B6 /* HapticsEditingView.swift */; };
 		451B799D24D83E2200EDC2B6 /* EditCardInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799C24D83E2200EDC2B6 /* EditCardInfoVC.swift */; };
 		451B799F24D83E4600EDC2B6 /* EditCardInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799E24D83E4600EDC2B6 /* EditCardInfoView.swift */; };
 		451B79A124D83E5E00EDC2B6 /* EditCardInfoVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B79A024D83E5E00EDC2B6 /* EditCardInfoVM.swift */; };
 		451B79A524D842A600EDC2B6 /* EditPersonalBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B79A424D842A600EDC2B6 /* EditPersonalBusinessCardMC.swift */; };
-		451B79A724D8484100EDC2B6 /* EditCardInfoSectionFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B79A624D8484100EDC2B6 /* EditCardInfoSectionFactory.swift */; };
 		451B79A924D8510100EDC2B6 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B79A824D8510100EDC2B6 /* Coordinator.swift */; };
 		451B79AC24D8511D00EDC2B6 /* EditCardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B79AB24D8511D00EDC2B6 /* EditCardCoordinator.swift */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
@@ -48,7 +47,7 @@
 		452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C4248E4F91006E6A7D /* SettingsView.swift */; };
 		452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C6248E4FCA006E6A7D /* SettingsVM.swift */; };
 		452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C8248E4FF8006E6A7D /* SettingsVC.swift */; };
-		452B33CC248E6462006E6A7D /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 452B33CB248E6462006E6A7D /* SwiftPackageProductDependency */; };
+		452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */ = {isa = PBXBuildFile; productRef = 452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */; };
 		452CEE8324AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452CEE8224AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift */; };
 		4532CDCE24D5C81800ACB597 /* HorizontalOrDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4532CDCD24D5C81800ACB597 /* HorizontalOrDivider.swift */; };
 		4532CDD024D716E600ACB597 /* TextureCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4532CDCF24D716E500ACB597 /* TextureCollectionCell.swift */; };
@@ -75,7 +74,7 @@
 		4543D2D7249BBDCC003B1439 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D6249BBDCC003B1439 /* UIImage.swift */; };
 		4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */; };
 		4543D2DB249CA6F7003B1439 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4543D2DA249CA6F7003B1439 /* Colors.xcassets */; };
-		4543F1C824D46C52006F30A5 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 4543F1C724D46C52006F30A5 /* SwiftPackageProductDependency */; };
+		4543F1C824D46C52006F30A5 /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 4543F1C724D46C52006F30A5 /* TOCropViewController */; };
 		454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625DF24A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift */; };
 		454625E224A0C0EF000D1D25 /* AppCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */; };
 		454625E424A0C10C000D1D25 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E324A0C10C000D1D25 /* Reusable.swift */; };
@@ -90,10 +89,10 @@
 		4552F22324D448480062FC2B /* EditCardImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22224D448480062FC2B /* EditCardImagesView.swift */; };
 		4552F22524D4485E0062FC2B /* EditCardImagesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22424D4485E0062FC2B /* EditCardImagesVM.swift */; };
 		4552F22924D45F580062FC2B /* CardImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22824D45F580062FC2B /* CardImagePicker.swift */; };
-		4558801E24D9FD1400729FA9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 4558801D24D9FD1400729FA9 /* SwiftPackageProductDependency */; };
-		4558802024D9FD1400729FA9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 4558801F24D9FD1400729FA9 /* SwiftPackageProductDependency */; };
-		4558802224D9FD1400729FA9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 4558802124D9FD1400729FA9 /* SwiftPackageProductDependency */; };
-		4558802424D9FD1400729FA9 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 4558802324D9FD1400729FA9 /* SwiftPackageProductDependency */; };
+		4558801E24D9FD1400729FA9 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4558801D24D9FD1400729FA9 /* FirebaseFirestoreSwift */; };
+		4558802024D9FD1400729FA9 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4558801F24D9FD1400729FA9 /* FirebaseAuth */; };
+		4558802224D9FD1400729FA9 /* FirebaseStorageSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4558802124D9FD1400729FA9 /* FirebaseStorageSwift */; };
+		4558802424D9FD1400729FA9 /* Firebase in Frameworks */ = {isa = PBXBuildFile; productRef = 4558802324D9FD1400729FA9 /* Firebase */; };
 		4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826724A4BEEF001C763B /* BusinessCardTag.swift */; };
 		4558826B24A4C576001C763B /* BusinessCardTagMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826A24A4C576001C763B /* BusinessCardTagMC.swift */; };
 		4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826C24A4D4AF001C763B /* CardGroup.swift */; };
@@ -120,7 +119,7 @@
 		4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E994243B084000184AA4 /* ReceiveVC.swift */; };
 		4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E999243B6A7500184AA4 /* DisplayVC.swift */; };
 		458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */; };
-		458EF405248B9B6D00EC76D6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 458EF404248B9B6D00EC76D6 /* SwiftPackageProductDependency */; };
+		458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 458EF404248B9B6D00EC76D6 /* Kingfisher */; };
 		458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF409248BC7A000EC76D6 /* PersonalBusinessCardMC.swift */; };
 		459102F324B708A60064B12C /* PersonalCardsCompactVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459102F224B708A60064B12C /* PersonalCardsCompactVC.swift */; };
 		459102F524B70D780064B12C /* PersonalCardsCompactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459102F424B70D780064B12C /* PersonalCardsCompactView.swift */; };
@@ -130,6 +129,7 @@
 		459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */; };
 		459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */; };
 		45AA873324499A5B004ACDDD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AA873224499A5B004ACDDD /* CardView.swift */; };
+		45AF8B0224DE961300070707 /* AppTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF8B0124DE961300070707 /* AppTableViewController.swift */; };
 		45B0F4C524AA0A39007277BB /* TitleValueCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C424AA0A39007277BB /* TitleValueCollectionCell.swift */; };
 		45B0F4C724AA0A66007277BB /* RoundedCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C624AA0A66007277BB /* RoundedCollectionCell.swift */; };
 		45B0F4CA24AA1510007277BB /* CardFrontBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C924AA1510007277BB /* CardFrontBackView.swift */; };
@@ -245,7 +245,6 @@
 		451B799E24D83E4600EDC2B6 /* EditCardInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardInfoView.swift; sourceTree = "<group>"; };
 		451B79A024D83E5E00EDC2B6 /* EditCardInfoVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardInfoVM.swift; sourceTree = "<group>"; };
 		451B79A424D842A600EDC2B6 /* EditPersonalBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPersonalBusinessCardMC.swift; sourceTree = "<group>"; };
-		451B79A624D8484100EDC2B6 /* EditCardInfoSectionFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardInfoSectionFactory.swift; sourceTree = "<group>"; };
 		451B79A824D8510100EDC2B6 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		451B79AB24D8511D00EDC2B6 /* EditCardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardCoordinator.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
@@ -337,6 +336,7 @@
 		459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserPublic+Firestorable.swift"; sourceTree = "<group>"; };
 		459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45AA873224499A5B004ACDDD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		45AF8B0124DE961300070707 /* AppTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTableViewController.swift; sourceTree = "<group>"; };
 		45B0F4C424AA0A39007277BB /* TitleValueCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleValueCollectionCell.swift; sourceTree = "<group>"; };
 		45B0F4C624AA0A66007277BB /* RoundedCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCollectionCell.swift; sourceTree = "<group>"; };
 		45B0F4C924AA1510007277BB /* CardFrontBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFrontBackView.swift; sourceTree = "<group>"; };
@@ -409,14 +409,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				458EF405248B9B6D00EC76D6 /* BuildFile in Frameworks */,
-				4543F1C824D46C52006F30A5 /* BuildFile in Frameworks */,
-				45174D7A24BB4189009BFE58 /* BuildFile in Frameworks */,
-				452B33CC248E6462006E6A7D /* BuildFile in Frameworks */,
-				4558802424D9FD1400729FA9 /* BuildFile in Frameworks */,
-				4558802024D9FD1400729FA9 /* BuildFile in Frameworks */,
-				4558801E24D9FD1400729FA9 /* BuildFile in Frameworks */,
-				4558802224D9FD1400729FA9 /* BuildFile in Frameworks */,
+				458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */,
+				4543F1C824D46C52006F30A5 /* TOCropViewController in Frameworks */,
+				45174D7A24BB4189009BFE58 /* Reachability in Frameworks */,
+				452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */,
+				4558802424D9FD1400729FA9 /* Firebase in Frameworks */,
+				4558802024D9FD1400729FA9 /* FirebaseAuth in Frameworks */,
+				4558801E24D9FD1400729FA9 /* FirebaseFirestoreSwift in Frameworks */,
+				4558802224D9FD1400729FA9 /* FirebaseStorageSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,7 +521,6 @@
 				451B799C24D83E2200EDC2B6 /* EditCardInfoVC.swift */,
 				451B799E24D83E4600EDC2B6 /* EditCardInfoView.swift */,
 				451B79A024D83E5E00EDC2B6 /* EditCardInfoVM.swift */,
-				451B79A624D8484100EDC2B6 /* EditCardInfoSectionFactory.swift */,
 			);
 			path = EditCardInfo;
 			sourceTree = "<group>";
@@ -1012,6 +1011,7 @@
 				454625E524A0C136000D1D25 /* AppTableViewCell.swift */,
 				4533849B24C9EFFB0020AEF6 /* CompleteUserViewModel.swift */,
 				45E21C2624CC8FA900013E9E /* PartialUserViewModel.swift */,
+				45AF8B0124DE961300070707 /* AppTableViewController.swift */,
 			);
 			path = AppViewController;
 			sourceTree = "<group>";
@@ -1168,14 +1168,14 @@
 			);
 			name = VirtualBusinessCard;
 			packageProductDependencies = (
-				458EF404248B9B6D00EC76D6 /* SwiftPackageProductDependency */,
-				452B33CB248E6462006E6A7D /* SwiftPackageProductDependency */,
-				45174D7924BB4189009BFE58 /* SwiftPackageProductDependency */,
-				4543F1C724D46C52006F30A5 /* SwiftPackageProductDependency */,
-				4558801D24D9FD1400729FA9 /* SwiftPackageProductDependency */,
-				4558801F24D9FD1400729FA9 /* SwiftPackageProductDependency */,
-				4558802124D9FD1400729FA9 /* SwiftPackageProductDependency */,
-				4558802324D9FD1400729FA9 /* SwiftPackageProductDependency */,
+				458EF404248B9B6D00EC76D6 /* Kingfisher */,
+				452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */,
+				45174D7924BB4189009BFE58 /* Reachability */,
+				4543F1C724D46C52006F30A5 /* TOCropViewController */,
+				4558801D24D9FD1400729FA9 /* FirebaseFirestoreSwift */,
+				4558801F24D9FD1400729FA9 /* FirebaseAuth */,
+				4558802124D9FD1400729FA9 /* FirebaseStorageSwift */,
+				4558802324D9FD1400729FA9 /* Firebase */,
 			);
 			productName = VirtualBusinessCard;
 			productReference = 4537CEDF23F6D259003602EA /* Virtual Business Card.app */;
@@ -1250,11 +1250,11 @@
 			);
 			mainGroup = 4537CED623F6D259003602EA;
 			packageReferences = (
-				458EF403248B9B6D00EC76D6 /* RemoteSwiftPackageReference */,
-				452B33CA248E6462006E6A7D /* RemoteSwiftPackageReference */,
-				45174D7824BB4189009BFE58 /* RemoteSwiftPackageReference */,
-				4543F1C624D46C52006F30A5 /* RemoteSwiftPackageReference */,
-				4558801C24D9FD1400729FA9 /* RemoteSwiftPackageReference */,
+				458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */,
+				45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */,
+				4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
+				4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 4537CEE023F6D259003602EA /* Products */;
 			projectDirPath = "";
@@ -1323,7 +1323,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				451B79A724D8484100EDC2B6 /* EditCardInfoSectionFactory.swift in Sources */,
 				4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */,
 				45139C5024979C3800DE1E9F /* ReceivedCardsVC.swift in Sources */,
 				451B799724D80A9E00EDC2B6 /* SingleSliderEditingView.swift in Sources */,
@@ -1454,6 +1453,7 @@
 				45C1601524852EF100806718 /* AppViewModel.swift in Sources */,
 				45F41FA324600D0A002BC37F /* BusinessCardSceneView.swift in Sources */,
 				4577CC8724890B900012EDC8 /* SingletonFirestoreable.swift in Sources */,
+				45AF8B0224DE961300070707 /* AppTableViewController.swift in Sources */,
 				4537CEE723F6D259003602EA /* ContentView.swift in Sources */,
 				45139C4B249794AF00DE1E9F /* PersonalBusinessCard.swift in Sources */,
 				451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */,
@@ -1853,7 +1853,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		45174D7824BB4189009BFE58 /* RemoteSwiftPackageReference */ = {
+		45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
 			requirement = {
@@ -1861,7 +1861,7 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		452B33CA248E6462006E6A7D /* RemoteSwiftPackageReference */ = {
+		452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/amirdew/CollectionViewPagingLayout";
 			requirement = {
@@ -1869,7 +1869,7 @@
 				minimumVersion = 0.1.5;
 			};
 		};
-		4543F1C624D46C52006F30A5 /* RemoteSwiftPackageReference */ = {
+		4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/TimOliver/TOCropViewController";
 			requirement = {
@@ -1877,7 +1877,7 @@
 				minimumVersion = 2.5.4;
 			};
 		};
-		4558801C24D9FD1400729FA9 /* RemoteSwiftPackageReference */ = {
+		4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
@@ -1885,7 +1885,7 @@
 				kind = branch;
 			};
 		};
-		458EF403248B9B6D00EC76D6 /* RemoteSwiftPackageReference */ = {
+		458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
 			requirement = {
@@ -1896,44 +1896,44 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		45174D7924BB4189009BFE58 /* SwiftPackageProductDependency */ = {
+		45174D7924BB4189009BFE58 /* Reachability */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 45174D7824BB4189009BFE58 /* RemoteSwiftPackageReference */;
+			package = 45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */;
 			productName = Reachability;
 		};
-		452B33CB248E6462006E6A7D /* SwiftPackageProductDependency */ = {
+		452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 452B33CA248E6462006E6A7D /* RemoteSwiftPackageReference */;
+			package = 452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */;
 			productName = CollectionViewPagingLayout;
 		};
-		4543F1C724D46C52006F30A5 /* SwiftPackageProductDependency */ = {
+		4543F1C724D46C52006F30A5 /* TOCropViewController */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4543F1C624D46C52006F30A5 /* RemoteSwiftPackageReference */;
+			package = 4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
 			productName = TOCropViewController;
 		};
-		4558801D24D9FD1400729FA9 /* SwiftPackageProductDependency */ = {
+		4558801D24D9FD1400729FA9 /* FirebaseFirestoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4558801C24D9FD1400729FA9 /* RemoteSwiftPackageReference */;
+			package = 4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
 		};
-		4558801F24D9FD1400729FA9 /* SwiftPackageProductDependency */ = {
+		4558801F24D9FD1400729FA9 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4558801C24D9FD1400729FA9 /* RemoteSwiftPackageReference */;
+			package = 4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		4558802124D9FD1400729FA9 /* SwiftPackageProductDependency */ = {
+		4558802124D9FD1400729FA9 /* FirebaseStorageSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4558801C24D9FD1400729FA9 /* RemoteSwiftPackageReference */;
+			package = 4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorageSwift;
 		};
-		4558802324D9FD1400729FA9 /* SwiftPackageProductDependency */ = {
+		4558802324D9FD1400729FA9 /* Firebase */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4558801C24D9FD1400729FA9 /* RemoteSwiftPackageReference */;
+			package = 4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = Firebase;
 		};
-		458EF404248B9B6D00EC76D6 /* SwiftPackageProductDependency */ = {
+		458EF404248B9B6D00EC76D6 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 458EF403248B9B6D00EC76D6 /* RemoteSwiftPackageReference */;
+			package = 458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */

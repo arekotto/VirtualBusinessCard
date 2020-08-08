@@ -25,7 +25,10 @@ extension EditCardPhysicalView {
 
         private let descriptionLabel: UILabel = {
             let this = UILabel()
-            this.text = NSLocalizedString("Select the sharpness of haptic feedback played to users interacting with your card on their devices. This feature is only supported on iPhone 7 or newer.", comment: "")
+            this.text = NSLocalizedString(
+                "Select the sharpness of haptic feedback played to users interacting with your card on their devices. This feature is only supported on iPhone 7 or newer.",
+                comment: ""
+            )
             this.font = .appDefault(size: 13)
             this.textAlignment = .center
             this.numberOfLines = 0

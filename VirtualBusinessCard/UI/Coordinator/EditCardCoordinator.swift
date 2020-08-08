@@ -23,7 +23,7 @@ final class EditCardCoordinator: Coordinator {
             self.card = card
         } else {
             self.card = EditPersonalBusinessCardMC()
-            self.images = Images(front: nil, back: nil, texture: Asset.Images.PrebundledTexture.texture1.image)
+            self.images = Images(front: UIImage(), back: UIImage(), texture: Asset.Images.PrebundledTexture.texture1.image)
         }
     }
 
@@ -78,7 +78,18 @@ extension EditCardCoordinator: EditCardImagesVCDelegate {
 
 extension EditCardCoordinator: EditCardPhysicalVCDelegate {
     func editCardPhysicalVC(_ editCardPhysicalVC: EditCardPhysicalVC, didFinishWith properties: EditCardPhysicalVM.CardPhysicalProperties) {
-        print("yayy")
+        let transformableData = EditCardInfoVM.TransformableData(position: card.position, name: card.name, contact: card.contact, address: card.address)
+        let vc = EditCardInfoVC(viewModel: EditCardInfoVM(transformableData: transformableData))
+        vc.delegate = self
+        navigationController.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - EditCardInfoVCDelegate
+
+extension EditCardCoordinator: EditCardInfoVCDelegate {
+    func editCardInfoVC(_ viewController: EditCardInfoVC, didFinishWith transformedData: EditCardInfoVM.TransformableData) {
+
     }
 }
 

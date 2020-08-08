@@ -345,4 +345,3 @@ private extension CardFrontBackView.Style {
         }
     }
 }
-
