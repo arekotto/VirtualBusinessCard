@@ -56,6 +56,19 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewBusinessCardButton))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: viewModel.settingsImage, style: .plain, target: self, action: #selector(didTapSettingsButton))
     }
+
+    private func presentCoordinator() {
+        coordinator?.start { [weak self] result in
+            guard let self = self, let navController = self.coordinator?.navigationController else { return }
+            switch result {
+            case .success:
+                navController.modalPresentationStyle = .fullScreen
+                self.present(navController, animated: true)
+            case .failure:
+                self.presentErrorAlert()
+            }
+        }
+    }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
@@ -74,18 +87,8 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let card = self.viewModel.editableItem(for: indexPath)
-        coordinator = EditCardCoordinator(navigationController: AppNavigationController(), userID: viewModel.userID, businessCard: card)
-        coordinator?.start { [weak self] result in
-            guard let self = self, let navController = self.coordinator?.navigationController else { return }
-            switch result {
-            case .success:
-                navController.modalPresentationStyle = .fullScreen
-                self.present(navController, animated: true)
-            case .failure:
-                self.presentErrorAlert()
-            }
-        }
+        coordinator = viewModel.editCardCoordinator(root: AppNavigationController(), for: indexPath)
+        presentCoordinator()
     }
 }
 
@@ -94,17 +97,8 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
 @objc
 private extension PersonalCardsVC {
     func didTapNewBusinessCardButton() {
-        let navController = AppNavigationController()
-        coordinator = EditCardCoordinator(navigationController: navController, userID: viewModel.userID)
-        coordinator?.start { [unowned self] result in
-            switch result {
-            case .success:
-                navController.modalPresentationStyle = .fullScreen
-                self.present(navController, animated: true)
-            case .failure:
-                self.presentErrorAlert()
-            }
-        }
+        coordinator = viewModel.newCardCoordinator(root: AppNavigationController())
+        presentCoordinator()
     }
     
     func didTapSettingsButton() {

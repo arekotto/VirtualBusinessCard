@@ -130,6 +130,7 @@
 		459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */; };
 		45AA873324499A5B004ACDDD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AA873224499A5B004ACDDD /* CardView.swift */; };
 		45AF8B0224DE961300070707 /* AppTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF8B0124DE961300070707 /* AppTableViewController.swift */; };
+		45AF8B0824DF1D9500070707 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF8B0724DF1D9500070707 /* UIViewController.swift */; };
 		45B0F4C524AA0A39007277BB /* TitleValueCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C424AA0A39007277BB /* TitleValueCollectionCell.swift */; };
 		45B0F4C724AA0A66007277BB /* RoundedCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C624AA0A66007277BB /* RoundedCollectionCell.swift */; };
 		45B0F4CA24AA1510007277BB /* CardFrontBackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B0F4C924AA1510007277BB /* CardFrontBackView.swift */; };
@@ -337,6 +338,7 @@
 		459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		45AA873224499A5B004ACDDD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		45AF8B0124DE961300070707 /* AppTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTableViewController.swift; sourceTree = "<group>"; };
+		45AF8B0724DF1D9500070707 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		45B0F4C424AA0A39007277BB /* TitleValueCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleValueCollectionCell.swift; sourceTree = "<group>"; };
 		45B0F4C624AA0A66007277BB /* RoundedCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCollectionCell.swift; sourceTree = "<group>"; };
 		45B0F4C924AA1510007277BB /* CardFrontBackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardFrontBackView.swift; sourceTree = "<group>"; };
@@ -837,6 +839,7 @@
 				454CF7DD24A9F27E00074E0D /* AuthErrorCode.swift */,
 				454CF7DF24A9F52D00074E0D /* UIAlertController.swift */,
 				45D76DE024CDA5A8008BDDE5 /* NSDirectionalEdgeInsets.swift */,
+				45AF8B0724DF1D9500070707 /* UIViewController.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1316,6 +1319,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */,
+				45AF8B0824DF1D9500070707 /* UIViewController.swift in Sources */,
 				45139C5024979C3800DE1E9F /* ReceivedCardsVC.swift in Sources */,
 				451B799724D80A9E00EDC2B6 /* SingleSliderEditingView.swift in Sources */,
 				4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */,

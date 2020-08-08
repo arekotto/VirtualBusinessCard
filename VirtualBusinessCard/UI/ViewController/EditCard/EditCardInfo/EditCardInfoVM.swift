@@ -63,7 +63,7 @@ extension EditCardInfoVM {
         case .email: return contact.email
         case .phoneNumberPrimary: return contact.phoneNumberPrimary
         case .phoneNumberSecondary: return contact.phoneNumberSecondary
-        case .fax: return contact.phoneNumberSecondary
+        case .fax: return contact.fax
         case .website: return contact.website
         case .country: return address.country
         case .city: return address.city
@@ -73,6 +73,7 @@ extension EditCardInfoVM {
     }
 
     func setNewValue(text: String, for row: Row) {
+        print("setting Text", text)
         switch row {
         case .firstName: name.first = text
         case .lastName: name.last = text
@@ -83,7 +84,7 @@ extension EditCardInfoVM {
         case .email: contact.email = text
         case .phoneNumberPrimary: contact.phoneNumberPrimary = text
         case .phoneNumberSecondary: contact.phoneNumberSecondary = text
-        case .fax: contact.phoneNumberSecondary = text
+        case .fax: contact.fax = text
         case .website: contact.website = text
         case .country: address.country = text
         case .city: address.city = text

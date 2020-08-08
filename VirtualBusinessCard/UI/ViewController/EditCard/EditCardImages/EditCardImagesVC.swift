@@ -9,7 +9,7 @@
 import UIKit
 
 protocol EditCardImagesVCDelegate: class {
-    func editCardImagesVC(_: EditCardImagesVC, didFinishWith frontImage: UIImage, and backImage: UIImage)
+    func editCardImagesVC(_ viewController: EditCardImagesVC, didFinishWith frontImage: UIImage, and backImage: UIImage)
 }
 
 final class EditCardImagesVC: AppViewController<EditCardImagesView, EditCardImagesVM> {
@@ -84,13 +84,15 @@ extension EditCardImagesVC: EditCardVMDelegate {
 
 extension EditCardImagesVC: CardImagePickerDelegate {
     func cardImagePicker(_ imagePicker: CardImagePicker, didSelect image: UIImage?) {
-        switch imagePicker.targetCardSide {
-        case .front:
-            viewModel.frontImage = image
-            contentView.setFrontImage(image)
-        case .back:
-            viewModel.backImage = image
-            contentView.setBackImage(image)
+        if let newImage = image {
+            switch imagePicker.targetCardSide {
+            case .front:
+                viewModel.frontImage = newImage
+                contentView.setFrontImage(newImage)
+            case .back:
+                viewModel.backImage = newImage
+                contentView.setBackImage(newImage)
+            }
         }
         self.imagePicker = nil
     }

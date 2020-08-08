@@ -79,6 +79,7 @@ final class EditCardInfoVC: AppTableViewController<EditCardInfoVM> {
 @objc
 private extension EditCardInfoVC {
     func didTapDoneButton() {
+        view.endEditing(true)
         delegate?.editCardInfoVC(self, didFinishWith: viewModel.transformedData())
     }
 }
@@ -92,15 +93,17 @@ extension EditCardInfoVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let cardInfoTextField = textField as? EditCardInfoView.EditCardInfoTextField else { return true }
         guard let indexPath = cardInfoTextField.indexPath, let nextIndexPath = nextIndexPath(for: indexPath) else { return true }
-        guard let nextCell = tableView.cellForRow(at: nextIndexPath) as? EditCardInfoView.TextFieldTableCell else { return true }
+        guard let nextCell = tableView.cellForRow(at: nextIndexPath) as? EditCardInfoView.TextFieldTableCell else {
+            textField.resignFirstResponder()
+            return true
+        }
         nextCell.textField.becomeFirstResponder()
         return true
     }
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let row = (textField as? EditCardInfoView.EditCardInfoTextField)?.row else { return false }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let row = (textField as? EditCardInfoView.EditCardInfoTextField)?.row else { return }
         viewModel.setNewValue(text: textField.text ?? "", for: row)
-        return true
     }
 
     private func nextIndexPath(for indexPath: IndexPath) -> IndexPath? {

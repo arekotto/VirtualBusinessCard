@@ -12,7 +12,7 @@ protocol EditCardVMDelegate: class {
     func didUpdateNextButtonEnabled()
 }
 
-final class EditCardImagesVM: PartialUserViewModel {
+final class EditCardImagesVM: AppViewModel {
 
     weak var delegate: EditCardVMDelegate?
 
@@ -24,8 +24,8 @@ final class EditCardImagesVM: PartialUserViewModel {
         didSet { didSetNewImage() }
     }
 
-    init(userID: UserID, frontImage: UIImage? = nil, backImage: UIImage? = nil) {
-        super.init(userID: userID)
+    init(frontImage: UIImage? = nil, backImage: UIImage? = nil) {
+        super.init()
         self.frontImage = frontImage
         self.backImage = backImage
     }

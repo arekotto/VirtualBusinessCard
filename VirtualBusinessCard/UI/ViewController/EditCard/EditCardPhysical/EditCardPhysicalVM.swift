@@ -11,6 +11,7 @@ import CoreMotion
 
 protocol EditCardPhysicalVMDelegate: class {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
+    func didCalculateSelectedTextureIndexPath(_ indexPath: IndexPath?)
 }
 
 final class EditCardPhysicalVM: AppViewModel, MotionDataSource {
@@ -78,9 +79,14 @@ extension EditCardPhysicalVM {
         NSLocalizedString("Card Properties", comment: "")
     }
 
-    var selectedTextureItemIndexPath: IndexPath? {
-        guard let itemIdx = preloadedTextures.firstIndex(of: texture) else { return nil }
-        return IndexPath(item: itemIdx)
+    func calculateSelectedIndexPath() {
+        DispatchQueue.global().async {
+            let textureData = self.texture.pngData()
+            let itemIdx = self.preloadedTextures.firstIndex(where: {$0.pngData() == textureData})
+            DispatchQueue.main.async {
+                self.delegate?.didCalculateSelectedTextureIndexPath(itemIdx != nil ? IndexPath(item: itemIdx!) : nil)
+            }
+        }
     }
 
     func numberOfItems() -> Int {

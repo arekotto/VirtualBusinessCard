@@ -26,16 +26,12 @@ final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCard
         viewModel.delegate = self
         setupContentView()
         setupNavigationItem()
+        viewModel.calculateSelectedIndexPath()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.startUpdatingMotionData(in: 0.1)
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        contentView.textureEditingView.collectionView.selectItem(at: viewModel.selectedTextureItemIndexPath, animated: false, scrollPosition: .left)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -52,20 +48,20 @@ final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCard
         contentView.textureEditingView.collectionView.delegate = self
         contentView.textureEditingView.addTextureImageButton.addTarget(self, action: #selector(didTapCustomTextureButton), for: .touchUpInside)
 
-        contentView.surfaceEditingView.normalSlider.value = viewModel.normal
         contentView.surfaceEditingView.normalSlider.maximumValue = viewModel.normalMax
+        contentView.surfaceEditingView.normalSlider.value = viewModel.normal
         contentView.surfaceEditingView.normalSlider.addTarget(self, action: #selector(normalSliderValueDidChange(_:)), for: .valueChanged)
 
-        contentView.surfaceEditingView.specularSlider.value = viewModel.specular
         contentView.surfaceEditingView.specularSlider.maximumValue = viewModel.specularMax
+        contentView.surfaceEditingView.specularSlider.value = viewModel.specular
         contentView.surfaceEditingView.specularSlider.addTarget(self, action: #selector(specularSliderValueDidChange(_:)), for: .valueChanged)
 
-        contentView.cornersEditingView.slider.value = viewModel.cornerRadiusHeightMultiplier
         contentView.cornersEditingView.slider.maximumValue = viewModel.cornerRadiusHeightMultiplierMax
+        contentView.cornersEditingView.slider.value = viewModel.cornerRadiusHeightMultiplier
         contentView.cornersEditingView.slider.addTarget(self, action: #selector(cornerRadiusSliderValueDidChange(_:)), for: .valueChanged)
 
-        contentView.hapticsEditingView.slider.value = viewModel.hapticSharpness
         contentView.hapticsEditingView.slider.maximumValue = viewModel.hapticSharpnessMax
+        contentView.hapticsEditingView.slider.value = viewModel.hapticSharpness
         contentView.hapticsEditingView.slider.addTarget(self, action: #selector(hapticSharpnessSliderValueDidChange(_:)), for: .valueChanged)
     }
 
@@ -164,7 +160,7 @@ extension EditCardPhysicalVC: UIImagePickerControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true)
         guard let image = info[.originalImage] as? UIImage else { return }
-        if let selectedIndexPath = viewModel.selectedTextureItemIndexPath {
+        if let selectedIndexPath = contentView.textureEditingView.collectionView.indexPathsForSelectedItems?.first {
             contentView.textureEditingView.collectionView.deselectItem(at: selectedIndexPath, animated: false)
         }
         viewModel.texture = image
@@ -175,6 +171,11 @@ extension EditCardPhysicalVC: UIImagePickerControllerDelegate {
 // MARK: - EditCardPhysicalVMDelegate
 
 extension EditCardPhysicalVC: EditCardPhysicalVMDelegate {
+    func didCalculateSelectedTextureIndexPath(_ indexPath: IndexPath?) {
+        guard let indexPathToSelect = indexPath else { return }
+        contentView.textureEditingView.collectionView.selectItem(at: indexPathToSelect, animated: true, scrollPosition: .left)
+    }
+
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         contentView.cardSceneView.updateMotionData(motion, over: timeFrame)
     }

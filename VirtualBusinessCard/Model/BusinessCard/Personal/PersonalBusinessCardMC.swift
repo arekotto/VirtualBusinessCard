@@ -16,6 +16,8 @@ class PersonalBusinessCardMC {
     
     var id: String { card.id }
 
+    var creationDate: Date { card.creationDate }
+
     var cardData: BusinessCardData { card.cardData }
 
     var cornerRadiusHeightMultiplier: Float { card.cardData.cornerRadiusHeightMultiplier }
@@ -45,8 +47,8 @@ extension PersonalBusinessCardMC {
         self.init(businessCard: businessCard)
     }
 
-    func editPersonalBusinessCardMC() -> EditPersonalBusinessCardMC {
-        EditPersonalBusinessCardMC(businessCard: card)
+    func editPersonalBusinessCardMC(userID: UserID) -> EditPersonalBusinessCardMC {
+        EditPersonalBusinessCardMC(userID: userID, businessCard: card)
     }
 }
 

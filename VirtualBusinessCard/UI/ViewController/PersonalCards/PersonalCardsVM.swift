@@ -57,10 +57,6 @@ extension PersonalCardsVM {
         SettingsVM(userID: userID)
     }
 
-    func newCardViewModel() -> EditCardImagesVM {
-        EditCardImagesVM(userID: userID)
-    }
-
     func sharingViewModel(for indexPath: IndexPath) -> DirectSharingVM {
         DirectSharingVM(userID: userID, sharedCard: cardForCell(at: indexPath))
     }
@@ -82,7 +78,19 @@ extension PersonalCardsVM {
     }
     
     func editableItem(for indexPath: IndexPath) -> EditPersonalBusinessCardMC {
-        cards[indexPath.item].editPersonalBusinessCardMC()
+        cards[indexPath.item].editPersonalBusinessCardMC(userID: userID)
+    }
+
+    func newCardCoordinator(root: AppNavigationController) -> Coordinator {
+        EditCardCoordinator(collectionReference: cardCollectionReference, navigationController: root, userID: userID)
+    }
+
+    func editCardCoordinator(root: AppNavigationController, for indexPath: IndexPath) -> Coordinator {
+        EditCardCoordinator(
+            collectionReference: cardCollectionReference,
+            navigationController: root,
+            userID: userID,
+            businessCard: cards[indexPath.item].editPersonalBusinessCardMC(userID: userID))
     }
 }
 
@@ -92,7 +100,7 @@ extension PersonalCardsVM {
         userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
     }
     
-    private var businessCardCollectionReference: CollectionReference {
+    private var cardCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
     }
     
@@ -123,7 +131,7 @@ extension PersonalCardsVM {
         userPrivateDocumentReference.addSnapshotListener { [weak self] snapshot, error in
             self?.userPrivateDidChange(snapshot, error)
         }
-        businessCardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
+        cardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
             self?.personalBusinessCardCollectionDidChange(querySnapshot: querySnapshot, error: error)
         }
     }
@@ -143,14 +151,22 @@ extension PersonalCardsVM {
             print(#file, error?.localizedDescription ?? "")
             return
         }
-        
-        cards = querySnap.documents.compactMap {
-            guard let bc = PersonalBusinessCard(queryDocumentSnapshot: $0) else {
-                print(#file, "Error mapping business card:", $0.documentID)
-                return nil
+
+        DispatchQueue.global().async {
+            var cards: [PersonalBusinessCardMC] = querySnap.documents.compactMap {
+                guard let bc = PersonalBusinessCard(queryDocumentSnapshot: $0) else {
+                    print(#file, "Error mapping business card:", $0.documentID)
+                    return nil
+                }
+                return PersonalBusinessCardMC(businessCard: bc)
             }
-            return PersonalBusinessCardMC(businessCard: bc)
+
+            cards.sort { $0.creationDate < $1.creationDate }
+
+            DispatchQueue.main.async {
+                self.cards = cards
+                self.delegate?.reloadData()
+            }
         }
-        delegate?.reloadData()
     }
 }

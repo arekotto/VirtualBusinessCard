@@ -18,6 +18,8 @@ class EditPersonalBusinessCardMC {
 
     private var card: PersonalBusinessCard
 
+    let userID: UserID
+
     var id: String { card.id }
 
     var cardData: BusinessCardData {
@@ -30,21 +32,42 @@ class EditPersonalBusinessCardMC {
         set { card.cardData.cornerRadiusHeightMultiplier = newValue }
     }
 
-    var frontImage: BusinessCardData.Image { card.cardData.frontImage }
+    var frontImage: BusinessCardData.Image  {
+        get { card.cardData.frontImage }
+        set { card.cardData.frontImage = newValue }
+    }
 
-    var backImage: BusinessCardData.Image { card.cardData.backImage }
+    var backImage: BusinessCardData.Image {
+        get { card.cardData.backImage }
+        set { card.cardData.backImage = newValue }
+    }
+    var texture: BusinessCardData.Texture {
+        get { card.cardData.texture }
+        set { card.cardData.texture = newValue }
+    }
 
-    var texture: BusinessCardData.Texture { card.cardData.texture }
+    var position: BusinessCardData.Position {
+        get { card.cardData.position }
+        set { card.cardData.position = newValue }
+    }
 
-    var position: BusinessCardData.Position { card.cardData.position }
+    var name: BusinessCardData.Name {
+        get { card.cardData.name }
+        set { card.cardData.name = newValue }
+    }
 
-    var name: BusinessCardData.Name { card.cardData.name }
+    var contact: BusinessCardData.Contact {
+        get { card.cardData.contact }
+        set { card.cardData.contact = newValue }
+    }
 
-    var contact: BusinessCardData.Contact { card.cardData.contact }
+    var address: BusinessCardData.Address {
+        get { card.cardData.address }
+        set { card.cardData.address = newValue }
+    }
 
-    var address: BusinessCardData.Address { card.cardData.address }
-
-    init(businessCard: PersonalBusinessCard) {
+    init(userID: UserID, businessCard: PersonalBusinessCard) {
+        self.userID = userID
         card = businessCard
     }
 }
@@ -55,7 +78,7 @@ extension EditPersonalBusinessCardMC {
         PersonalBusinessCardMC(businessCard: card)
     }
 
-    convenience init() {
+    convenience init(userID: UserID) {
         let data = BusinessCardData(
             frontImage: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
             backImage: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
@@ -67,17 +90,56 @@ extension EditPersonalBusinessCardMC {
             hapticFeedbackSharpness: 0.5,
             cornerRadiusHeightMultiplier: 0
         )
-        self.init(businessCard: PersonalBusinessCard(id: Self.unsavedImageID, creationDate: Date(), cardData: data))
-    }
-
-    convenience init?(userPublicDocument: DocumentSnapshot) {
-        guard let businessCard = PersonalBusinessCard(documentSnapshot: userPublicDocument) else { return nil }
-        self.init(businessCard: businessCard)
+        self.init(userID: userID, businessCard: PersonalBusinessCard(id: Self.unsavedImageID, creationDate: Date(), cardData: data))
     }
 }
 
 extension EditPersonalBusinessCardMC: Equatable {
     static func == (lhs: EditPersonalBusinessCardMC, rhs: EditPersonalBusinessCardMC) -> Bool {
         lhs.card == rhs.card
+    }
+}
+
+extension EditPersonalBusinessCardMC {
+    var imageStoragePath: String {
+        "\(userID)/\(id)"
+    }
+
+    var frontImageStoragePath: String? {
+        let frontImageID = frontImage.id
+        guard frontImageID != Self.unsavedImageID else { return nil }
+        return "\(imageStoragePath)/\(frontImageID)"
+    }
+
+    var backImageStoragePath: String? {
+        let backImageID = backImage.id
+        guard backImageID != Self.unsavedImageID else { return nil }
+        return "\(imageStoragePath)/\(backImageID)"
+    }
+
+    var textureImageStoragePath: String? {
+        let textureImageID = texture.image.id
+        guard textureImageID != Self.unsavedImageID else { return nil }
+        return "\(imageStoragePath)/\(textureImageID)"
+    }
+
+    func save(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
+
+        let docRef: DocumentReference
+        if card.id == Self.unsavedObjectID {
+            docRef = collectionReference.document()
+            card.id = docRef.documentID
+        } else {
+            docRef = collectionReference.document(card.id)
+        }
+
+        docRef.setData(card.asDocument()) { error in
+            if let err = error {
+                print(err.localizedDescription)
+                completion?(.failure(err))
+            } else {
+                completion?(.success(()))
+            }
+        }
     }
 }
