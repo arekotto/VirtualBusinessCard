@@ -76,21 +76,13 @@ extension PersonalCardsVM {
             cornerRadiusHeightMultiplier: CGFloat(card.cornerRadiusHeightMultiplier)
         )
     }
-    
-    func editableItem(for indexPath: IndexPath) -> EditPersonalBusinessCardMC {
-        cards[indexPath.item].editPersonalBusinessCardMC(userID: userID)
+
+    func personaCardVersionsVM(for indexPath: IndexPath) -> PersonalCardVersionsVM {
+        PersonalCardVersionsVM(userID: userID, cardID: cards[indexPath.row].id)
     }
 
     func newCardCoordinator(root: AppNavigationController) -> Coordinator {
         EditCardCoordinator(collectionReference: cardCollectionReference, navigationController: root, userID: userID)
-    }
-
-    func editCardCoordinator(root: AppNavigationController, for indexPath: IndexPath) -> Coordinator {
-        EditCardCoordinator(
-            collectionReference: cardCollectionReference,
-            navigationController: root,
-            userID: userID,
-            businessCard: cards[indexPath.item].editPersonalBusinessCardMC(userID: userID))
     }
 }
 

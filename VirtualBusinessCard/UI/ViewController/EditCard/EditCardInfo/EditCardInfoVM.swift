@@ -72,7 +72,6 @@ extension EditCardInfoVM {
     }
 
     func setNewValue(text: String, for row: Row) {
-        print("setting Text", text)
         switch row {
         case .firstName: name.first = text
         case .lastName: name.last = text

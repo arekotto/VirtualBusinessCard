@@ -85,14 +85,9 @@ class EditPersonalBusinessCardMC {
 
 extension EditPersonalBusinessCardMC {
 
-    func personalBusinessCardMC() -> PersonalBusinessCardMC {
-        PersonalBusinessCardMC(businessCard: card)
-    }
-
-    convenience init(userID: UserID) {
-        let cardDataID = UUID()
-        let cardData = BusinessCardData(
-            id: cardDataID,
+    static func makeLanguageVersion(isDefault: Bool) -> BusinessCardData {
+        BusinessCardData(
+            id: UUID(),
             frontImage: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
             backImage: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
             texture: BusinessCardData.Texture(image: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL), specular: 0.5, normal: 0.5),
@@ -102,9 +97,25 @@ extension EditPersonalBusinessCardMC {
             address: BusinessCardData.Address(),
             hapticFeedbackSharpness: 0.5,
             cornerRadiusHeightMultiplier: 0,
-            isDefault: true
+            isDefault: isDefault
         )
-        self.init(userID: userID, editedCardDataID: cardDataID, card: PersonalBusinessCard(id: Self.unsavedObjectID, creationDate: Date(), languageVersions: [cardData]))
+    }
+
+    func personalBusinessCardMC() -> PersonalBusinessCardMC {
+        PersonalBusinessCardMC(businessCard: card)
+    }
+
+    convenience init(userID: UserID, card: PersonalBusinessCard) {
+        var editedCard = card
+        let newLanguageVersion = Self.makeLanguageVersion(isDefault: false)
+        editedCard.languageVersions.append(newLanguageVersion)
+        self.init(userID: userID, editedCardDataID: newLanguageVersion.id, card: editedCard)
+    }
+
+    convenience init(userID: UserID) {
+        let defaultLanguageVersion = Self.makeLanguageVersion(isDefault: true)
+        let newCard = PersonalBusinessCard(id: Self.unsavedObjectID, creationDate: Date(), languageVersions: [defaultLanguageVersion])
+        self.init(userID: userID, editedCardDataID: defaultLanguageVersion.id, card: newCard)
     }
 }
 

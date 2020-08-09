@@ -211,8 +211,11 @@ extension CardDetailsVM {
         DispatchQueue.global().async {
             guard let card = EditReceivedBusinessCardMC(documentSnapshot: doc) else {
                 print(#file, "Error mapping received card:", error?.localizedDescription ?? "No error info available.")
-                self.card = nil
-                self.sections = []
+                DispatchQueue.main.async {
+                    self.card = nil
+                    self.sections = []
+                    self.delegate?.reloadData()
+                }
                 return
             }
             DispatchQueue.main.async {

@@ -56,19 +56,6 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewBusinessCardButton))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: viewModel.settingsImage, style: .plain, target: self, action: #selector(didTapSettingsButton))
     }
-
-    private func presentCoordinator() {
-        coordinator?.start { [weak self] result in
-            guard let self = self, let navController = self.coordinator?.navigationController else { return }
-            switch result {
-            case .success:
-                navController.modalPresentationStyle = .fullScreen
-                self.present(navController, animated: true)
-            case .failure:
-                self.presentErrorAlert()
-            }
-        }
-    }
 }
 
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
@@ -87,8 +74,7 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        coordinator = viewModel.editCardCoordinator(root: AppNavigationController(), for: indexPath)
-        presentCoordinator()
+        show(PersonalCardVersionsVC(viewModel: viewModel.personaCardVersionsVM(for: indexPath)), sender: nil)
     }
 }
 
@@ -98,7 +84,16 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
 private extension PersonalCardsVC {
     func didTapNewBusinessCardButton() {
         coordinator = viewModel.newCardCoordinator(root: AppNavigationController())
-        presentCoordinator()
+        coordinator?.start { [weak self] result in
+            guard let self = self, let navController = self.coordinator?.navigationController else { return }
+            switch result {
+            case .success:
+                navController.modalPresentationStyle = .fullScreen
+                self.present(navController, animated: true)
+            case .failure:
+                self.presentErrorAlert()
+            }
+        }
     }
     
     func didTapSettingsButton() {

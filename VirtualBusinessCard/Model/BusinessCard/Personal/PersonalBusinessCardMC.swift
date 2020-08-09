@@ -49,13 +49,17 @@ class PersonalBusinessCardMC {
 }
 
 extension PersonalBusinessCardMC {
-    convenience init?(userPublicDocument: DocumentSnapshot) {
-        guard let businessCard = PersonalBusinessCard(documentSnapshot: userPublicDocument) else { return nil }
+    convenience init?(documentSnapshot: DocumentSnapshot) {
+        guard let businessCard = PersonalBusinessCard(documentSnapshot: documentSnapshot) else { return nil }
         self.init(businessCard: businessCard)
     }
 
-    func editPersonalBusinessCardMC(userID: UserID) -> EditPersonalBusinessCardMC {
-        EditPersonalBusinessCardMC(userID: userID, editedCardDataID: defaultCardData.id, card: card)
+    func editPersonalBusinessCardMC(userID: UserID, editedCardDataID: UUID? = nil) -> EditPersonalBusinessCardMC {
+        if let editedCardDataID = editedCardDataID {
+            return EditPersonalBusinessCardMC(userID: userID, editedCardDataID: editedCardDataID, card: card)
+        } else {
+            return EditPersonalBusinessCardMC(userID: userID, card: card)
+        }
     }
 }
 

@@ -23,15 +23,19 @@ final class EditCardCoordinator: Coordinator {
     private let collectionReference: CollectionReference
     private let title: String
 
-    init(collectionReference: CollectionReference, navigationController: UINavigationController, userID: UserID, businessCard: EditPersonalBusinessCardMC? = nil) {
+    init(collectionReference: CollectionReference, navigationController: UINavigationController, userID: UserID, card: PersonalBusinessCardMC? = nil, editedCardDataID: UUID? = nil) {
         self.collectionReference = collectionReference
         self.navigationController = navigationController
-        if let card = businessCard {
-            self.card = card
+        if let card = card, let editedCardDataID = editedCardDataID {
+            self.card = card.editPersonalBusinessCardMC(userID: userID, editedCardDataID: editedCardDataID)
             title = NSLocalizedString("Edit Card", comment: "")
+        } else if let card = card {
+            self.card = card.editPersonalBusinessCardMC(userID: userID)
+            originalImages = Images()
+            title = NSLocalizedString("New Card Localization", comment: "")
         } else {
             self.card = EditPersonalBusinessCardMC(userID: userID)
-            self.originalImages = Images()
+            originalImages = Images()
             title = NSLocalizedString("New Card", comment: "")
         }
     }

@@ -10,6 +10,7 @@ import UIKit
 import Kingfisher
 
 extension GroupedCardsView {
+    
     final class TableCell: AppTableViewCell, Reusable {
         
         private static func fetchImage(url: URL, andSetTo imageView: UIImageView) {
@@ -132,7 +133,9 @@ extension GroupedCardsView {
 // MARK: - DataModel
 
 extension GroupedCardsView.TableCell {
+
     struct DataModel: Hashable {
+
         var modelNumber: Int = 0
 
         var frontImageURL: URL?

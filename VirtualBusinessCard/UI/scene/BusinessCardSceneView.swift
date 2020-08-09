@@ -38,6 +38,13 @@ class BusinessCardSceneView: AppView {
     private let xLightAngleLowest = deg2rad(-120)
     private let xLightAngleHighest = deg2rad(-60)
     private let zLightAngleHighestABS = deg2rad(30)
+
+    private let activityIndicator: UIActivityIndicatorView = {
+        let this = UIActivityIndicatorView(style: .medium)
+        this.hidesWhenStopped = true
+        this.startAnimating()
+        return this
+    }()
     
     override func configureView() {
         super.configureView()
@@ -46,17 +53,23 @@ class BusinessCardSceneView: AppView {
     
     override func configureSubviews() {
         super.configureSubviews()
-        addSubview(sceneView)
+        [sceneView, activityIndicator].forEach { addSubview($0) }
     }
     
     override func configureConstraints() {
         super.configureConstraints()
         sceneView.constrainToEdgesOfSuperview()
+        activityIndicator.constrainCenterToSuperview()
     }
 
     override func layoutSubviews() {
         super.layoutSubviews()
         sceneView.layer.cornerRadius = cornerRadiusHeightMultiplier * frame.height
+    }
+
+    override func configureColors() {
+        super.configureColors()
+        activityIndicator.color = Asset.Colors.appAccent.color
     }
 }
 
@@ -91,6 +104,7 @@ extension BusinessCardSceneView {
     }
     
     func setImage(image: UIImage, texture: UIImage?, normal: CGFloat, specular: CGFloat, cornerRadiusHeightMultiplier: CGFloat) {
+        activityIndicator.stopAnimating()
         let imageMaterial = businessCardGeometryMaterial
         imageMaterial.lightingModel = .blinn
         imageMaterial.diffuse.contents = image
