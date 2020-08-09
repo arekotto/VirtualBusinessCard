@@ -14,6 +14,8 @@ final class EditCardPhysicalView: AppBackgroundView {
         EditingViewType.allCases.map { editingView(of: $0) }
     }
 
+    let titleView = NavigationTitleView()
+
     private(set) var cardSceneViewTopConstraint: NSLayoutConstraint!
     let cardSceneView: CardFrontBackView = {
         let this = CardFrontBackView(sceneHeightAdjustMode: .fixed)

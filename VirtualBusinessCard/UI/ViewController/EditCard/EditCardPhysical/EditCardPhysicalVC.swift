@@ -41,6 +41,7 @@ final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCard
 
     private func setupContentView() {
         contentView.cardSceneView.setDataModel(viewModel.dataModel())
+        contentView.titleView.setTitle(NSLocalizedString("Appearance", comment: ""), subtitle: viewModel.subtitle)
 
         contentView.editingViewSegmentedControl.addTarget(self, action: #selector(editingViewSegmentedControlDidChange(_:)), for: .valueChanged)
 
@@ -67,7 +68,7 @@ final class EditCardPhysicalVC: AppViewController<EditCardPhysicalView, EditCard
 
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = viewModel.title
+        navigationItem.titleView = contentView.titleView
         navigationItem.rightBarButtonItem = nextButton
     }
 }

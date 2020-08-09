@@ -18,14 +18,17 @@ final class EditCardInfoVM: AppViewModel {
 
     weak var delegate: EditCardInfoVMDelegate?
 
-    private lazy var sections = [(type: Section, items: [Row])]()
-
     var position: BusinessCardData.Position
     var name: BusinessCardData.Name
     var contact: BusinessCardData.Contact
     var address: BusinessCardData.Address
 
-    init(transformableData: TransformableData) {
+    private(set) var subtitle: String
+
+    private lazy var sections = [(type: Section, items: [Row])]()
+
+    init(subtitle: String, transformableData: TransformableData) {
+        self.subtitle = subtitle
         self.position = transformableData.position
         self.name = transformableData.name
         self.contact = transformableData.contact
@@ -36,10 +39,6 @@ final class EditCardInfoVM: AppViewModel {
 // MARK: - ViewController API
 
 extension EditCardInfoVM {
-
-    var title: String {
-        NSLocalizedString("Card Info", comment: "")
-    }
 
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()

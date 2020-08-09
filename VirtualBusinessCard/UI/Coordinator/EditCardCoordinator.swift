@@ -21,15 +21,18 @@ final class EditCardCoordinator: Coordinator {
     private var newImages: Images?
     private var storage = Storage.storage().reference()
     private let collectionReference: CollectionReference
+    private let title: String
 
     init(collectionReference: CollectionReference, navigationController: UINavigationController, userID: UserID, businessCard: EditPersonalBusinessCardMC? = nil) {
         self.collectionReference = collectionReference
         self.navigationController = navigationController
         if let card = businessCard {
             self.card = card
+            title = NSLocalizedString("Edit Card", comment: "")
         } else {
             self.card = EditPersonalBusinessCardMC(userID: userID)
             self.originalImages = Images()
+            title = NSLocalizedString("New Card", comment: "")
         }
     }
 
@@ -55,7 +58,7 @@ final class EditCardCoordinator: Coordinator {
     }
 
     private func pushEditCardImagesVC() {
-        let vc = EditCardImagesVC(viewModel: EditCardImagesVM(frontImage: originalImages.front, backImage: originalImages.back))
+        let vc = EditCardImagesVC(viewModel: EditCardImagesVM(subtitle: title, frontImage: originalImages.front, backImage: originalImages.back))
         vc.delegate = self
         navigationController.pushViewController(vc, animated: false)
     }
@@ -94,14 +97,14 @@ extension EditCardCoordinator: EditCardImagesVCDelegate {
 
     func editCardImagesVC(_ viewController: EditCardImagesVC, didFinishWith frontImage: UIImage, and backImage: UIImage) {
         let cardProperties = EditCardPhysicalVM.CardPhysicalProperties(
-            texture: originalImages.texture ?? Asset.Images.PrebundledTexture.texture1.image,
+            texture: originalImages.texture ?? Asset.Images.BundledTexture.texture1.image,
             specular: card.texture.specular,
             normal: card.texture.normal,
             cornerRadiusHeightMultiplier: card.cornerRadiusHeightMultiplier,
             hapticSharpness: card.cardData.hapticFeedbackSharpness
         )
         newImages = Images(front: frontImage, back: backImage, texture: nil)
-        let vc = EditCardPhysicalVC(viewModel: EditCardPhysicalVM(frontCardImage: frontImage, backCardImage: backImage, physicalCardProperties: cardProperties))
+        let vc = EditCardPhysicalVC(viewModel: EditCardPhysicalVM(subtitle: title, frontCardImage: frontImage, backCardImage: backImage, physicalCardProperties: cardProperties))
         vc.delegate = self
         navigationController.pushViewController(vc, animated: true)
     }
@@ -115,7 +118,7 @@ extension EditCardCoordinator: EditCardPhysicalVCDelegate {
         updateCard(properties: properties)
 
         let transformableData = EditCardInfoVM.TransformableData(position: card.position, name: card.name, contact: card.contact, address: card.address)
-        let vc = EditCardInfoVC(viewModel: EditCardInfoVM(transformableData: transformableData))
+        let vc = EditCardInfoVC(viewModel: EditCardInfoVM(subtitle: title, transformableData: transformableData))
         vc.delegate = self
         navigationController.pushViewController(vc, animated: true)
     }

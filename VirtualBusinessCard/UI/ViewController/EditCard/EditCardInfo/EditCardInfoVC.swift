@@ -61,8 +61,10 @@ final class EditCardInfoVC: AppTableViewController<EditCardInfoVM> {
     }
 
     private func setupNavigationItem() {
+        let titleView = NavigationTitleView()
+        titleView.setTitle(NSLocalizedString("Information", comment: ""), subtitle: viewModel.subtitle)
+        navigationItem.titleView = titleView
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = viewModel.title
         navigationItem.rightBarButtonItem = nextButton
     }
 

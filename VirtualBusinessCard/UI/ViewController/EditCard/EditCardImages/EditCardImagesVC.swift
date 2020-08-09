@@ -30,8 +30,8 @@ final class EditCardImagesVC: AppViewController<EditCardImagesView, EditCardImag
     }
 
     private func setupNavigationItem() {
+        navigationItem.titleView = contentView.titleView
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = viewModel.title
         navigationItem.leftBarButtonItem = cancelEditingButton
         navigationItem.rightBarButtonItem = nextButton
         nextButton.isEnabled = viewModel.nextButtonEnabled
@@ -42,6 +42,7 @@ final class EditCardImagesVC: AppViewController<EditCardImagesView, EditCardImag
         contentView.backImageButton.addTarget(self, action: #selector(didTapBackImageButton), for: .touchUpInside)
         contentView.setFrontImage(viewModel.frontImage)
         contentView.setBackImage(viewModel.backImage)
+        contentView.titleView.setTitle(NSLocalizedString("Images", comment: ""), subtitle: viewModel.subtitle)
     }
 }
 

@@ -16,6 +16,8 @@ final class EditCardImagesVM: AppViewModel {
 
     weak var delegate: EditCardVMDelegate?
 
+    private(set) var subtitle: String
+
     var frontImage: UIImage? {
         didSet { didSetNewImage() }
     }
@@ -24,7 +26,8 @@ final class EditCardImagesVM: AppViewModel {
         didSet { didSetNewImage() }
     }
 
-    init(frontImage: UIImage? = nil, backImage: UIImage? = nil) {
+    init(subtitle: String, frontImage: UIImage? = nil, backImage: UIImage? = nil) {
+        self.subtitle = subtitle
         super.init()
         self.frontImage = frontImage
         self.backImage = backImage
@@ -36,11 +39,6 @@ final class EditCardImagesVM: AppViewModel {
 }
 
 extension EditCardImagesVM {
-
-    var title: String {
-        NSLocalizedString("Card Images", comment: "")
-    }
-
     var nextButtonTitle: String {
         NSLocalizedString("Next", comment: "")
     }

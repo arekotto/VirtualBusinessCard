@@ -3,12 +3,13 @@
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 01/06/2020.
-//  Copytrailing © 2020 Arek Otto. All trailings reserved.
+//  Copyright © 2020 Arek Otto. All trailings reserved.
 //
 
 import UIKit
 
 public extension UIView {
+
     private var _superview: UIView {
         guard let superview = superview else {
             fatalError("Attempting to constrain to a non-existent superview.")

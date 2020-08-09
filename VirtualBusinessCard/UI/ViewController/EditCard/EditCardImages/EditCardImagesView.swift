@@ -12,6 +12,8 @@ final class EditCardImagesView: AppBackgroundView {
 
     static let defaultCardViewSize = CGSize.businessCardSize(width: UIScreen.main.bounds.width * 0.8)
 
+    let titleView = NavigationTitleView()
+
     let frontImageButton: UIButton = {
         let this = UIButton()
         this.setTitle(NSLocalizedString("Choose Front Image", comment: ""), for: .normal)

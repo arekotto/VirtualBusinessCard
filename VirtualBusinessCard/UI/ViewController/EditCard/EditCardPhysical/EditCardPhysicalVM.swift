@@ -18,14 +18,9 @@ final class EditCardPhysicalVM: AppViewModel, MotionDataSource {
 
     private(set) lazy var motionManager = CMMotionManager()
 
-    private var preloadedTextures: [UIImage] = [
-        Asset.Images.PrebundledTexture.texture1.image,
-        Asset.Images.PrebundledTexture.texture2.image,
-        Asset.Images.PrebundledTexture.texture3.image,
-        Asset.Images.PrebundledTexture.texture4.image
-    ]
-
     weak var delegate: EditCardPhysicalVMDelegate?
+
+    private(set) var subtitle: String
 
     let images: (cardFront: UIImage, cardBack: UIImage)
 
@@ -36,9 +31,18 @@ final class EditCardPhysicalVM: AppViewModel, MotionDataSource {
 
     private(set) var cardProperties: CardPhysicalProperties
 
-    init(frontCardImage: UIImage, backCardImage: UIImage, physicalCardProperties: CardPhysicalProperties) {
+    private var preloadedTextures: [UIImage] = [
+        Asset.Images.BundledTexture.texture1.image,
+        Asset.Images.BundledTexture.texture2.image,
+        Asset.Images.BundledTexture.texture3.image,
+        Asset.Images.BundledTexture.texture4.image
+    ]
+
+    init(subtitle: String, frontCardImage: UIImage, backCardImage: UIImage, physicalCardProperties: CardPhysicalProperties) {
         images = (frontCardImage, backCardImage)
         cardProperties = physicalCardProperties
+        self.subtitle = subtitle
+        super.init()
     }
 
     func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
