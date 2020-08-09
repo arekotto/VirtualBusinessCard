@@ -92,15 +92,15 @@ final class CardDetailsVM: PartialUserViewModel {
 
 extension CardDetailsVM {
     var titleImageURL: URL? {
-        card?.cardData.frontImage.url
+        card?.displayedCardData.frontImage.url
     }
 
     var hapticSharpness: Float {
-        card?.cardData.hapticFeedbackSharpness ?? prefetchedData.hapticSharpness
+        card?.displayedCardData.hapticFeedbackSharpness ?? prefetchedData.hapticSharpness
     }
 
     var cardCornerRadiusHeightMultiplier: CGFloat {
-        CGFloat(card?.cardData.cornerRadiusHeightMultiplier ?? 0)
+        CGFloat(card?.displayedCardData.cornerRadiusHeightMultiplier ?? 0)
     }
 
     func dataSnapshot() -> Snapshot {

@@ -17,11 +17,11 @@ struct DirectCardExchange: Codable {
     
     var sharingUserID: UserID
     var sharingUserCardID: BusinessCardID
-    var sharingUserCardData: BusinessCardData
+    var sharingUserCardData: [BusinessCardData]
 
     var receivingUserCardID: BusinessCardID?
     var receivingUserID: UserID?
-    var receivingUserCardData: BusinessCardData?
+    var receivingUserCardData: [BusinessCardData]?
 }
 
 // MARK: - Equatable

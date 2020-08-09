@@ -37,7 +37,7 @@ struct CardDetailsSectionFactory {
     }
     
     private func makeCardImagesSection() -> Section? {
-        let cardData = card.cardData
+        let cardData = card.displayedCardData
         let imagesDataModel = CardFrontBackView.URLDataModel(
             frontImageURL: cardData.frontImage.url,
             backImageURL: cardData.backImage.url,
@@ -78,8 +78,8 @@ struct CardDetailsSectionFactory {
     private func makePersonalDataSection() -> Section? {
         let personalData = [
             TitleValueCollectionCell.DataModel(title: NSLocalizedString("Name", comment: ""), value: card.ownerDisplayName),
-            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Position", comment: ""), value: card.cardData.position.title),
-            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Company", comment: ""), value: card.cardData.position.company)
+            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Position", comment: ""), value: card.displayedCardData.position.title),
+            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Company", comment: ""), value: card.displayedCardData.position.company)
         ]
         
         let includedPersonalDataRows = personalData.filter { $0.value ?? "" != "" }
@@ -92,7 +92,7 @@ struct CardDetailsSectionFactory {
     }
     
     private func makeContactSection() -> Section? {
-        let cardData = card.cardData
+        let cardData = card.displayedCardData
         
         let phoneItem = TitleValueImageCollectionViewCell.DataModel(
             title: NSLocalizedString("Phone", comment: ""),

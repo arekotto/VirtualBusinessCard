@@ -11,31 +11,32 @@ import Contacts
 
 class ReceivedBusinessCardMC {
     
-    let businessCard: ReceivedBusinessCard
+    let card: ReceivedBusinessCard
+    let displayedCardData: BusinessCardData
     
-    var id: String { businessCard.id }
+    var id: String { card.id }
     
-    var originalID: BusinessCardID { businessCard.originalID }
+    var originalID: BusinessCardID { card.originalID }
     
-    var ownerID: UserID { businessCard.ownerID }
+    var ownerID: UserID { card.ownerID }
     
-    var receivingDate: Date { businessCard.receivingDate }
-    
-    var cardData: BusinessCardData { businessCard.cardData }
+    var receivingDate: Date { card.receivingDate }
 
-    var notes: String { businessCard.notes }
+    var notes: String { card.notes }
     
-    var tagIDs: [BusinessCardTagID] { businessCard.tagIDs }
+    var tagIDs: [BusinessCardTagID] { card.tagIDs }
+
+    var languageVersions: [BusinessCardData] { card.languageVersions }
     
     var ownerDisplayName: String {
-        if let firstName = businessCard.cardData.name.first, let lastName = businessCard.cardData.name.last {
+        if let firstName = displayedCardData.name.first, let lastName = displayedCardData.name.last {
             return "\(firstName) \(lastName)"
         }
-        return businessCard.cardData.name.first ?? businessCard.cardData.name.last ?? ""
+        return displayedCardData.name.first ?? displayedCardData.name.last ?? ""
     }
     
     var addressCondensed: String {
-        let addressData = cardData.address
+        let addressData = displayedCardData.address
         var address = ""
         if let street = addressData.street, !street.isEmpty {
             address.append(street + ",")
@@ -54,7 +55,7 @@ class ReceivedBusinessCardMC {
     
     var addressFormatted: String {
         
-        let addressData = cardData.address
+        let addressData = displayedCardData.address
         
         let address = CNMutablePostalAddress()
         address.street = addressData.street ?? ""
@@ -73,11 +74,16 @@ class ReceivedBusinessCardMC {
     }
 
     func editReceivedBusinessCardMC() -> EditReceivedBusinessCardMC {
-        EditReceivedBusinessCardMC(card: businessCard)
+        EditReceivedBusinessCardMC(card: card)
     }
     
     init(card: ReceivedBusinessCard) {
-        self.businessCard = card
+        self.card = card
+        // TODO: change to detect lang version
+        guard let displayedCardData = card.languageVersions.first(where: { $0.isDefault == true }) else {
+            fatalError("The card \(card.id) does not contain a default language version")
+        }
+        self.displayedCardData = displayedCardData
     }
 }
 
@@ -90,6 +96,6 @@ extension ReceivedBusinessCardMC {
 
 extension ReceivedBusinessCardMC: Equatable {
     static func == (lhs: ReceivedBusinessCardMC, rhs: ReceivedBusinessCardMC) -> Bool {
-        lhs.businessCard == rhs.businessCard
+        lhs.card == rhs.card
     }
 }

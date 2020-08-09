@@ -12,6 +12,8 @@ typealias BusinessCardID = String
 
 struct BusinessCardData: DocumentRepresentable {
 
+    var id: UUID
+
     var frontImage: Image
     var backImage: Image
     var texture: Texture
@@ -23,6 +25,9 @@ struct BusinessCardData: DocumentRepresentable {
 
     var hapticFeedbackSharpness: Float
     var cornerRadiusHeightMultiplier: Float
+
+    var isDefault: Bool
+    var languageVersionCode: String?
 }
 
 extension BusinessCardData {

@@ -221,12 +221,12 @@ extension GroupedCardsVM {
 
         return GroupedCardsView.TableCell.DataModel(
             modelNumber: index,
-            frontImageURL: cardsInGroup[optional: 0]?.cardData.frontImage.url,
-            frontImageCornerRadiusHeightMultiplier: CGFloat(cardsInGroup[optional: 0]?.cardData.cornerRadiusHeightMultiplier ?? 0),
-            middleImageURL: cardsInGroup[optional: 1]?.cardData.frontImage.url,
-            middleImageCornerRadiusHeightMultiplier: CGFloat(cardsInGroup[optional: 1]?.cardData.cornerRadiusHeightMultiplier ?? 0),
-            backImageURL: cardsInGroup[optional: 2]?.cardData.frontImage.url,
-            backImageCornerRadiusHeightMultiplier: CGFloat(cardsInGroup[optional: 2]?.cardData.cornerRadiusHeightMultiplier ?? 0),
+            frontImageURL: cardsInGroup[optional: 0]?.displayedCardData.frontImage.url,
+            frontImageCornerRadiusHeightMultiplier: CGFloat(cardsInGroup[optional: 0]?.displayedCardData.cornerRadiusHeightMultiplier ?? 0),
+            middleImageURL: cardsInGroup[optional: 1]?.displayedCardData.frontImage.url,
+            middleImageCornerRadiusHeightMultiplier: CGFloat(cardsInGroup[optional: 1]?.displayedCardData.cornerRadiusHeightMultiplier ?? 0),
+            backImageURL: cardsInGroup[optional: 2]?.displayedCardData.frontImage.url,
+            backImageCornerRadiusHeightMultiplier: CGFloat(cardsInGroup[optional: 2]?.displayedCardData.cornerRadiusHeightMultiplier ?? 0),
             title: itemTitle(groupingValue: group.groupingValue),
             subtitle: Self.itemSubtitle(cards: cardsInGroup),
             cardCountText: "\(cardsInGroup.count)",

@@ -41,7 +41,7 @@ final class EditCardCoordinator: Coordinator {
             completion(.success(()))
             pushEditCardImagesVC()
         } else {
-            let cardData = card.cardData
+            let cardData = card.editedCardData
             let fetchImages = ImageAndTextureFetchTask(imageURLs: [cardData.frontImage.url, cardData.backImage.url, card.texture.image.url], tag: 0, forceRefresh: true)
             fetchImages { [weak self] result, _ in
                 guard let self = self else { return }
@@ -68,7 +68,7 @@ final class EditCardCoordinator: Coordinator {
         card.cornerRadiusHeightMultiplier = properties.cornerRadiusHeightMultiplier
         card.texture.specular = properties.specular
         card.texture.normal = properties.normal
-        card.cardData.hapticFeedbackSharpness = properties.hapticSharpness
+        card.editedCardData.hapticFeedbackSharpness = properties.hapticSharpness
     }
 
     private func updateCard(transformedData: EditCardInfoVM.TransformableData) {
@@ -101,7 +101,7 @@ extension EditCardCoordinator: EditCardImagesVCDelegate {
             specular: card.texture.specular,
             normal: card.texture.normal,
             cornerRadiusHeightMultiplier: card.cornerRadiusHeightMultiplier,
-            hapticSharpness: card.cardData.hapticFeedbackSharpness
+            hapticSharpness: card.editedCardData.hapticFeedbackSharpness
         )
         newImages = Images(front: frontImage, back: backImage, texture: nil)
         let vc = EditCardPhysicalVC(viewModel: EditCardPhysicalVM(subtitle: title, frontCardImage: frontImage, backCardImage: backImage, physicalCardProperties: cardProperties))
@@ -142,7 +142,7 @@ private extension EditCardCoordinator {
 }
 
 // MARK: - EditCardInfoVCDelegate
-
+import Kingfisher
 extension EditCardCoordinator: EditCardInfoVCDelegate {
 
     func editCardInfoVC(_ viewController: EditCardInfoVC, didFinishWith transformedData: EditCardInfoVM.TransformableData) {

@@ -15,60 +15,71 @@ class EditPersonalBusinessCardMC {
     private static let unsavedImageURL = URL(string: "0")!
 
     let storage = Storage.storage().reference()
+    let userID: UserID
+    let editedCardDataID: UUID
 
     private var card: PersonalBusinessCard
 
-    let userID: UserID
+    var cardID: String { card.id }
 
-    var id: String { card.id }
-
-    var cardData: BusinessCardData {
-        get { card.cardData }
-        set { card.cardData = newValue }
+    var editedCardData: BusinessCardData {
+        get {
+            guard let editedCardData = card.languageVersions.first(where: { $0.id == editedCardDataID }) else {
+                fatalError("The card \(cardID) does not contain a language version with id \(editedCardDataID)")
+            }
+            return editedCardData
+        }
+        set {
+            guard let editedCardDataIndex = card.languageVersions.firstIndex(where: { $0.id == editedCardDataID }) else {
+                fatalError("The card \(cardID) does not contain a language version with id \(editedCardDataID)")
+            }
+            card.languageVersions[editedCardDataIndex] = newValue
+        }
     }
 
     var cornerRadiusHeightMultiplier: Float {
-        get { card.cardData.cornerRadiusHeightMultiplier }
-        set { card.cardData.cornerRadiusHeightMultiplier = newValue }
+        get { editedCardData.cornerRadiusHeightMultiplier }
+        set { editedCardData.cornerRadiusHeightMultiplier = newValue }
     }
 
-    var frontImage: BusinessCardData.Image  {
-        get { card.cardData.frontImage }
-        set { card.cardData.frontImage = newValue }
+    var frontImage: BusinessCardData.Image {
+        get { editedCardData.frontImage }
+        set { editedCardData.frontImage = newValue }
     }
 
     var backImage: BusinessCardData.Image {
-        get { card.cardData.backImage }
-        set { card.cardData.backImage = newValue }
+        get { editedCardData.backImage }
+        set { editedCardData.backImage = newValue }
     }
     var texture: BusinessCardData.Texture {
-        get { card.cardData.texture }
-        set { card.cardData.texture = newValue }
+        get { editedCardData.texture }
+        set { editedCardData.texture = newValue }
     }
 
     var position: BusinessCardData.Position {
-        get { card.cardData.position }
-        set { card.cardData.position = newValue }
+        get { editedCardData.position }
+        set { editedCardData.position = newValue }
     }
 
     var name: BusinessCardData.Name {
-        get { card.cardData.name }
-        set { card.cardData.name = newValue }
+        get { editedCardData.name }
+        set { editedCardData.name = newValue }
     }
 
     var contact: BusinessCardData.Contact {
-        get { card.cardData.contact }
-        set { card.cardData.contact = newValue }
+        get { editedCardData.contact }
+        set { editedCardData.contact = newValue }
     }
 
     var address: BusinessCardData.Address {
-        get { card.cardData.address }
-        set { card.cardData.address = newValue }
+        get { editedCardData.address }
+        set { editedCardData.address = newValue }
     }
 
-    init(userID: UserID, businessCard: PersonalBusinessCard) {
+    init(userID: UserID, editedCardDataID: UUID, card: PersonalBusinessCard) {
         self.userID = userID
-        card = businessCard
+        self.editedCardDataID = editedCardDataID
+        self.card = card
     }
 }
 
@@ -79,7 +90,9 @@ extension EditPersonalBusinessCardMC {
     }
 
     convenience init(userID: UserID) {
-        let data = BusinessCardData(
+        let cardDataID = UUID()
+        let cardData = BusinessCardData(
+            id: cardDataID,
             frontImage: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
             backImage: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
             texture: BusinessCardData.Texture(image: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL), specular: 0.5, normal: 0.5),
@@ -88,9 +101,10 @@ extension EditPersonalBusinessCardMC {
             contact: BusinessCardData.Contact(),
             address: BusinessCardData.Address(),
             hapticFeedbackSharpness: 0.5,
-            cornerRadiusHeightMultiplier: 0
+            cornerRadiusHeightMultiplier: 0,
+            isDefault: true
         )
-        self.init(userID: userID, businessCard: PersonalBusinessCard(id: Self.unsavedImageID, creationDate: Date(), cardData: data))
+        self.init(userID: userID, editedCardDataID: cardDataID, card: PersonalBusinessCard(id: Self.unsavedObjectID, creationDate: Date(), languageVersions: [cardData]))
     }
 }
 
@@ -102,7 +116,7 @@ extension EditPersonalBusinessCardMC: Equatable {
 
 extension EditPersonalBusinessCardMC {
     var imageStoragePath: String {
-        "\(userID)/\(id)"
+        "\(userID)/\(editedCardDataID)"
     }
 
     var frontImageStoragePath: String? {

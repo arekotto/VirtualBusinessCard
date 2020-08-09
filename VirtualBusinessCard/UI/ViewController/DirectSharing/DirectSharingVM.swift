@@ -98,7 +98,7 @@ extension DirectSharingVM {
         let accessToken = Self.randomAccessToken(length: 20)
         
         let docRef = directCardExchangeReference.document()
-        let exchange = DirectCardExchange(id: docRef.documentID, accessToken: accessToken, sharingUserID: userID, sharingUserCardID: card.id, sharingUserCardData: card.cardData)
+        let exchange = DirectCardExchange(id: docRef.documentID, accessToken: accessToken, sharingUserID: userID, sharingUserCardID: card.id, sharingUserCardData: card.languageVersions)
         docRef.setData(exchange.asDocument()) { [weak self] error in
             
             guard let self = self else { return }
@@ -192,10 +192,10 @@ extension DirectSharingVM {
 
         guard receivingUserID != self.userID else { return }
 
-        let receivedCard = EditReceivedBusinessCardMC(originalID: receivingUserCardID, ownerID: receivingUserID, cardData: receivingUserCardData)
+        let receivedCard = EditReceivedBusinessCardMC(originalID: receivingUserCardID, ownerID: receivingUserID, languageVersions: receivingUserCardData)
 
         ownExchangeSnapshotListener?.remove()
-        playHapticFeedback(of: receivedCard.cardData.hapticFeedbackSharpness)
+        playHapticFeedback(of: receivedCard.displayedCardData.hapticFeedbackSharpness)
         delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
     }
     
@@ -216,7 +216,7 @@ extension DirectSharingVM {
         let joinedExchange = DirectCardExchangeMC(exchange: exchangeModel)
         joinedExchange.receivingUserID = userID
         joinedExchange.receivingUserCardID = card.id
-        joinedExchange.receivingUserCardData = card.cardData
+        joinedExchange.receivingUserCardData = card.languageVersions
         joinedExchange.saveScanningUserData(in: directCardExchangeReference) { [weak self] result in
 
             guard let self = self else { return }
@@ -230,9 +230,9 @@ extension DirectSharingVM {
                 let receivedCard = EditReceivedBusinessCardMC(
                     originalID: joinedExchange.sharingUserID,
                     ownerID: joinedExchange.sharingUserID,
-                    cardData: joinedExchange.sharingUserCardData
+                    languageVersions: joinedExchange.sharingUserCardData
                 )
-                self.playHapticFeedback(of: receivedCard.cardData.hapticFeedbackSharpness)
+                self.playHapticFeedback(of: receivedCard.displayedCardData.hapticFeedbackSharpness)
                 self.delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: self.userID, sharedCard: receivedCard))
             }
         }

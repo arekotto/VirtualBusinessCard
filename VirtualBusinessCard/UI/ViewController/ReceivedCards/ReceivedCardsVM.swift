@@ -75,15 +75,15 @@ extension ReceivedCardsVM {
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(displayedCardIndexes.map { cellViewModel(for: cards[$0].cardData, withNumber: $0) })
+        snapshot.appendItems(displayedCardIndexes.map { cellViewModel(for: cards[$0].displayedCardData, withNumber: $0) })
         return snapshot
     }
 
     func detailsViewModel(for indexPath: IndexPath) -> CardDetailsVM {
         let card = cards[displayedCardIndexes[indexPath.item]]
         let prefetchedDM = CardDetailsVM.PrefetchedData(
-            dataModel: sceneViewModel(for: card.cardData),
-            hapticSharpness: card.cardData.hapticFeedbackSharpness
+            dataModel: sceneViewModel(for: card.displayedCardData),
+            hapticSharpness: card.displayedCardData.hapticFeedbackSharpness
         )
         return CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: prefetchedDM)
     }
@@ -187,19 +187,19 @@ extension ReceivedCardsVM {
     }
     
     private static func cardSorterFirstNameAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.cardData.name.first ?? "") <= (rhs.cardData.name.first ?? "")
+        (lhs.displayedCardData.name.first ?? "") <= (rhs.displayedCardData.name.first ?? "")
     }
     
     private static func cardSorterFirstNameDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.cardData.name.first ?? "") >= (rhs.cardData.name.first ?? "")
+        (lhs.displayedCardData.name.first ?? "") >= (rhs.displayedCardData.name.first ?? "")
     }
     
     private static func cardSorterLastNameAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.cardData.name.last ?? "") <= (rhs.cardData.name.last ?? "")
+        (lhs.displayedCardData.name.last ?? "") <= (rhs.displayedCardData.name.last ?? "")
     }
     
     private static func cardSorterLastNameDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.cardData.name.last ?? "") >= (rhs.cardData.name.last ?? "")
+        (lhs.displayedCardData.name.last ?? "") >= (rhs.displayedCardData.name.last ?? "")
     }
     
     private static func cardSorterDateAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
@@ -242,7 +242,7 @@ extension ReceivedCardsVM {
     }
     
     private static func shouldDisplayCard(_ card: ReceivedBusinessCardMC, forQuery query: String) -> Bool {
-        let name = card.cardData.name
+        let name = card.displayedCardData.name
         let names = [name.first ?? "", name.last ?? "", name.middle ?? "" ]
         return names.contains(where: { $0.contains(query) })
     }

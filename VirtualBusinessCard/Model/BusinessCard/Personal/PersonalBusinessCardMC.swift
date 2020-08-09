@@ -18,23 +18,30 @@ class PersonalBusinessCardMC {
 
     var creationDate: Date { card.creationDate }
 
-    var cardData: BusinessCardData { card.cardData }
+    var defaultCardData: BusinessCardData {
+        guard let defaultData = card.languageVersions.first(where: { $0.isDefault }) else {
+            fatalError("No Default version found for card: \(id)")
+        }
+        return defaultData
+    }
 
-    var cornerRadiusHeightMultiplier: Float { card.cardData.cornerRadiusHeightMultiplier }
+    var languageVersions: [BusinessCardData] { card.languageVersions }
+
+    var cornerRadiusHeightMultiplier: Float { defaultCardData.cornerRadiusHeightMultiplier }
         
-    var frontImage: BusinessCardData.Image { card.cardData.frontImage }
+    var frontImage: BusinessCardData.Image { defaultCardData.frontImage }
     
-    var backImage: BusinessCardData.Image { card.cardData.backImage }
+    var backImage: BusinessCardData.Image { defaultCardData.backImage }
 
-    var texture: BusinessCardData.Texture { card.cardData.texture }
+    var texture: BusinessCardData.Texture { defaultCardData.texture }
 
-    var position: BusinessCardData.Position { card.cardData.position }
+    var position: BusinessCardData.Position { defaultCardData.position }
 
-    var name: BusinessCardData.Name { card.cardData.name }
+    var name: BusinessCardData.Name { defaultCardData.name }
     
-    var contact: BusinessCardData.Contact { card.cardData.contact }
+    var contact: BusinessCardData.Contact { defaultCardData.contact }
     
-    var address: BusinessCardData.Address { card.cardData.address }
+    var address: BusinessCardData.Address { defaultCardData.address }
     
     init(businessCard: PersonalBusinessCard) {
         card = businessCard
@@ -48,7 +55,7 @@ extension PersonalBusinessCardMC {
     }
 
     func editPersonalBusinessCardMC(userID: UserID) -> EditPersonalBusinessCardMC {
-        EditPersonalBusinessCardMC(userID: userID, businessCard: card)
+        EditPersonalBusinessCardMC(userID: userID, editedCardDataID: defaultCardData.id, card: card)
     }
 }
 

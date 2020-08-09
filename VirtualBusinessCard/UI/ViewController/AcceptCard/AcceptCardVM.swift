@@ -69,8 +69,8 @@ extension AcceptCardVM {
     }
 
     func dataModel() -> CardFrontBackView.URLDataModel {
-        let cardData = card.cardData
-        let texture = card.cardData.texture
+        let cardData = card.displayedCardData
+        let texture = card.displayedCardData.texture
         return CardFrontBackView.URLDataModel(
             frontImageURL: cardData.frontImage.url,
             backImageURL: cardData.backImage.url,
