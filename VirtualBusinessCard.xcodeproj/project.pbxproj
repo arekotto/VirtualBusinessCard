@@ -112,7 +112,7 @@
 		4576993E24CC66A0008D3778 /* TagTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4576993D24CC66A0008D3778 /* TagTableCell.swift */; };
 		4576994124CC8216008D3778 /* LoadingPopoverVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4576994024CC8216008D3778 /* LoadingPopoverVM.swift */; };
 		4576994324CC8225008D3778 /* LoadingPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4576994224CC8225008D3778 /* LoadingPopoverView.swift */; };
-		4577CC722488EE9F0012EDC8 /* BusinessCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC712488EE9F0012EDC8 /* BusinessCardData.swift */; };
+		4577CC722488EE9F0012EDC8 /* BusinessCardLocalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC712488EE9F0012EDC8 /* BusinessCardLocalization.swift */; };
 		4577CC77248903D70012EDC8 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC76248903D70012EDC8 /* AppError.swift */; };
 		4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */; };
 		4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC7C248906FE0012EDC8 /* UserPrivate.swift */; };
@@ -326,7 +326,7 @@
 		4576993D24CC66A0008D3778 /* TagTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagTableCell.swift; sourceTree = "<group>"; };
 		4576994024CC8216008D3778 /* LoadingPopoverVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPopoverVM.swift; sourceTree = "<group>"; };
 		4576994224CC8225008D3778 /* LoadingPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPopoverView.swift; sourceTree = "<group>"; };
-		4577CC712488EE9F0012EDC8 /* BusinessCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardData.swift; sourceTree = "<group>"; };
+		4577CC712488EE9F0012EDC8 /* BusinessCardLocalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardLocalization.swift; sourceTree = "<group>"; };
 		4577CC76248903D70012EDC8 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpUserInfoStorage.swift; sourceTree = "<group>"; };
 		4577CC7C248906FE0012EDC8 /* UserPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrivate.swift; sourceTree = "<group>"; };
@@ -840,7 +840,7 @@
 			children = (
 				451B79A324D8428300EDC2B6 /* Received */,
 				451B79A224D8425100EDC2B6 /* Personal */,
-				4577CC712488EE9F0012EDC8 /* BusinessCardData.swift */,
+				4577CC712488EE9F0012EDC8 /* BusinessCardLocalization.swift */,
 			);
 			path = BusinessCard;
 			sourceTree = "<group>";
@@ -1499,7 +1499,7 @@
 				45C1602E24864C5700806718 /* UserSetupHC.swift in Sources */,
 				4511A132246D75AA00AE3306 /* CreateAccountEmailPasswordViewModel.swift in Sources */,
 				45174CD824B8842D009BFE58 /* GroupedCardsCell.swift in Sources */,
-				4577CC722488EE9F0012EDC8 /* BusinessCardData.swift in Sources */,
+				4577CC722488EE9F0012EDC8 /* BusinessCardLocalization.swift in Sources */,
 				451B79A524D842A600EDC2B6 /* EditPersonalBusinessCardLocalizationMC.swift in Sources */,
 				4558F1F32423B52000D44526 /* LoginWithGoogleButton.swift in Sources */,
 				45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */,

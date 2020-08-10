@@ -75,15 +75,15 @@ extension ReceivedCardsVM {
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(displayedCardIndexes.map { cellViewModel(for: cards[$0].displayedCardData, withNumber: $0) })
+        snapshot.appendItems(displayedCardIndexes.map { cellViewModel(for: cards[$0].displayedLocalization, withNumber: $0) })
         return snapshot
     }
 
     func detailsViewModel(for indexPath: IndexPath) -> CardDetailsVM {
         let card = cards[displayedCardIndexes[indexPath.item]]
         let prefetchedDM = CardDetailsVM.PrefetchedData(
-            dataModel: sceneViewModel(for: card.displayedCardData),
-            hapticSharpness: card.displayedCardData.hapticFeedbackSharpness
+            dataModel: sceneViewModel(for: card.displayedLocalization),
+            hapticSharpness: card.displayedLocalization.hapticFeedbackSharpness
         )
         return CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: prefetchedDM)
     }
@@ -135,18 +135,18 @@ extension ReceivedCardsVM {
         }
     }
 
-    private func cellViewModel(for cardData: BusinessCardData, withNumber number: Int) -> ReceivedCardsView.CollectionCell.DataModel {
-        ReceivedCardsView.CollectionCell.DataModel(modelNumber: number, sceneDataModel: sceneViewModel(for: cardData))
+    private func cellViewModel(for localization: BusinessCardLocalization, withNumber number: Int) -> ReceivedCardsView.CollectionCell.DataModel {
+        ReceivedCardsView.CollectionCell.DataModel(modelNumber: number, sceneDataModel: sceneViewModel(for: localization))
     }
 
-    private func sceneViewModel(for cardData: BusinessCardData) -> CardFrontBackView.URLDataModel {
+    private func sceneViewModel(for localization: BusinessCardLocalization) -> CardFrontBackView.URLDataModel {
         CardFrontBackView.URLDataModel(
-            frontImageURL: cardData.frontImage.url,
-            backImageURL: cardData.backImage.url,
-            textureImageURL: cardData.texture.image.url,
-            normal: CGFloat(cardData.texture.normal),
-            specular: CGFloat(cardData.texture.specular),
-            cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
+            frontImageURL: localization.frontImage.url,
+            backImageURL: localization.backImage.url,
+            textureImageURL: localization.texture.image.url,
+            normal: CGFloat(localization.texture.normal),
+            specular: CGFloat(localization.texture.specular),
+            cornerRadiusHeightMultiplier: CGFloat(localization.cornerRadiusHeightMultiplier)
         )
     }
 }
@@ -187,19 +187,19 @@ extension ReceivedCardsVM {
     }
     
     private static func cardSorterFirstNameAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.displayedCardData.name.first ?? "") <= (rhs.displayedCardData.name.first ?? "")
+        (lhs.displayedLocalization.name.first ?? "") <= (rhs.displayedLocalization.name.first ?? "")
     }
     
     private static func cardSorterFirstNameDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.displayedCardData.name.first ?? "") >= (rhs.displayedCardData.name.first ?? "")
+        (lhs.displayedLocalization.name.first ?? "") >= (rhs.displayedLocalization.name.first ?? "")
     }
     
     private static func cardSorterLastNameAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.displayedCardData.name.last ?? "") <= (rhs.displayedCardData.name.last ?? "")
+        (lhs.displayedLocalization.name.last ?? "") <= (rhs.displayedLocalization.name.last ?? "")
     }
     
     private static func cardSorterLastNameDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.displayedCardData.name.last ?? "") >= (rhs.displayedCardData.name.last ?? "")
+        (lhs.displayedLocalization.name.last ?? "") >= (rhs.displayedLocalization.name.last ?? "")
     }
     
     private static func cardSorterDateAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
@@ -242,7 +242,7 @@ extension ReceivedCardsVM {
     }
     
     private static func shouldDisplayCard(_ card: ReceivedBusinessCardMC, forQuery query: String) -> Bool {
-        let name = card.displayedCardData.name
+        let name = card.displayedLocalization.name
         let names = [name.first ?? "", name.last ?? "", name.middle ?? "" ]
         return names.contains(where: { $0.contains(query) })
     }

@@ -12,7 +12,7 @@ import Contacts
 class ReceivedBusinessCardMC {
     
     let card: ReceivedBusinessCard
-    let displayedCardData: BusinessCardData
+    let displayedLocalization: BusinessCardLocalization
     
     var id: String { card.id }
     
@@ -26,17 +26,17 @@ class ReceivedBusinessCardMC {
     
     var tagIDs: [BusinessCardTagID] { card.tagIDs }
 
-    var languageVersions: [BusinessCardData] { card.languageVersions }
+    var languageVersions: [BusinessCardLocalization] { card.localizations }
     
     var ownerDisplayName: String {
-        if let firstName = displayedCardData.name.first, let lastName = displayedCardData.name.last {
+        if let firstName = displayedLocalization.name.first, let lastName = displayedLocalization.name.last {
             return "\(firstName) \(lastName)"
         }
-        return displayedCardData.name.first ?? displayedCardData.name.last ?? ""
+        return displayedLocalization.name.first ?? displayedLocalization.name.last ?? ""
     }
     
     var addressCondensed: String {
-        let addressData = displayedCardData.address
+        let addressData = displayedLocalization.address
         var address = ""
         if let street = addressData.street, !street.isEmpty {
             address.append(street + ",")
@@ -55,7 +55,7 @@ class ReceivedBusinessCardMC {
     
     var addressFormatted: String {
         
-        let addressData = displayedCardData.address
+        let addressData = displayedLocalization.address
         
         let address = CNMutablePostalAddress()
         address.street = addressData.street ?? ""
@@ -80,10 +80,10 @@ class ReceivedBusinessCardMC {
     init(card: ReceivedBusinessCard) {
         self.card = card
         // TODO: change to detect lang version
-        guard let displayedCardData = card.languageVersions.first(where: { $0.isDefault == true }) else {
+        guard let displayedLocalization = card.localizations.first(where: { $0.isDefault == true }) else {
             fatalError("The card \(card.id) does not contain a default language version")
         }
-        self.displayedCardData = displayedCardData
+        self.displayedLocalization = displayedLocalization
     }
 }
 

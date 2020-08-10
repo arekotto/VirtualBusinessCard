@@ -38,7 +38,7 @@ final class EditCardCoordinator: Coordinator {
             let titleFormat = NSLocalizedString("New %@ Localization", comment: "")
             title = String.localizedStringWithFormat(titleFormat, Locale.current.localizedString(forLanguageCode: localizationLanguageCode) ?? "")
         case .editLocalization(let card, let localizationID):
-            self.card = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedCardDataID: localizationID)
+            self.card = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedLocalizationID: localizationID)
             if let langCode = card.localization(withID: localizationID)?.languageCode {
                 let titleFormat = NSLocalizedString("Edit %@ Localization", comment: "")
                 let localizationName = Locale.current.localizedString(forLanguageCode: langCode) ?? ""
@@ -54,8 +54,8 @@ final class EditCardCoordinator: Coordinator {
             completion(.success(()))
             pushEditCardImagesVC()
         } else {
-            let cardData = card.editedCardData
-            let fetchImages = ImageAndTextureFetchTask(imageURLs: [cardData.frontImage.url, cardData.backImage.url, card.texture.image.url], tag: 0, forceRefresh: true)
+            let localization = card.editedLocalization
+            let fetchImages = ImageAndTextureFetchTask(imageURLs: [localization.frontImage.url, localization.backImage.url, card.texture.image.url], tag: 0, forceRefresh: true)
             fetchImages { [weak self] result, _ in
                 guard let self = self else { return }
                 switch result {
@@ -81,7 +81,7 @@ final class EditCardCoordinator: Coordinator {
         card.cornerRadiusHeightMultiplier = properties.cornerRadiusHeightMultiplier
         card.texture.specular = properties.specular
         card.texture.normal = properties.normal
-        card.editedCardData.hapticFeedbackSharpness = properties.hapticSharpness
+        card.editedLocalization.hapticFeedbackSharpness = properties.hapticSharpness
     }
 
     private func updateCard(transformedData: EditCardInfoVM.TransformableData) {
@@ -114,7 +114,7 @@ extension EditCardCoordinator: EditCardImagesVCDelegate {
             specular: card.texture.specular,
             normal: card.texture.normal,
             cornerRadiusHeightMultiplier: card.cornerRadiusHeightMultiplier,
-            hapticSharpness: card.editedCardData.hapticFeedbackSharpness
+            hapticSharpness: card.editedLocalization.hapticFeedbackSharpness
         )
         newImages = Images(front: frontImage, back: backImage, texture: nil)
         let vc = EditCardPhysicalVC(viewModel: EditCardPhysicalVM(subtitle: title, frontCardImage: frontImage, backCardImage: backImage, physicalCardProperties: cardProperties))
@@ -142,9 +142,9 @@ extension EditCardCoordinator: EditCardPhysicalVCDelegate {
 private extension EditCardCoordinator {
 
     private struct UploadedImages {
-        var front: BusinessCardData.Image?
-        var back: BusinessCardData.Image?
-        var texture: BusinessCardData.Image?
+        var front: BusinessCardLocalization.Image?
+        var back: BusinessCardLocalization.Image?
+        var texture: BusinessCardLocalization.Image?
     }
 
     struct Images {
@@ -270,7 +270,7 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
         }
     }
 
-    private func replaceImage(newImageData: Data, originalImagePath: String?, completion: @escaping (Result<BusinessCardData.Image, Error>) -> Void) {
+    private func replaceImage(newImageData: Data, originalImagePath: String?, completion: @escaping (Result<BusinessCardLocalization.Image, Error>) -> Void) {
 
         let newImageID = UUID().uuidString
         let cardFolderPath = card.imageStoragePath
@@ -295,7 +295,7 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
                         }
                     }
                 }
-                completion(.success(BusinessCardData.Image(id: newImageID, url: downloadURL)))
+                completion(.success(BusinessCardLocalization.Image(id: newImageID, url: downloadURL)))
             }
         }
 

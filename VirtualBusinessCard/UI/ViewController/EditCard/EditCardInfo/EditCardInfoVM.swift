@@ -18,10 +18,10 @@ final class EditCardInfoVM: AppViewModel {
 
     weak var delegate: EditCardInfoVMDelegate?
 
-    var position: BusinessCardData.Position
-    var name: BusinessCardData.Name
-    var contact: BusinessCardData.Contact
-    var address: BusinessCardData.Address
+    var position: BusinessCardLocalization.Position
+    var name: BusinessCardLocalization.Name
+    var contact: BusinessCardLocalization.Contact
+    var address: BusinessCardLocalization.Address
 
     private(set) var subtitle: String
 
@@ -101,10 +101,10 @@ extension EditCardInfoVM {
 
 extension EditCardInfoVM {
     struct TransformableData {
-        let position: BusinessCardData.Position
-        let name: BusinessCardData.Name
-        let contact: BusinessCardData.Contact
-        let address: BusinessCardData.Address
+        let position: BusinessCardLocalization.Position
+        let name: BusinessCardLocalization.Name
+        let contact: BusinessCardLocalization.Contact
+        let address: BusinessCardLocalization.Address
     }
 }
 

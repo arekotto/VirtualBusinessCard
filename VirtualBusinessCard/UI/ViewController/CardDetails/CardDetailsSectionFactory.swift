@@ -37,14 +37,14 @@ struct CardDetailsSectionFactory {
     }
     
     private func makeCardImagesSection() -> Section? {
-        let cardData = card.displayedCardData
+        let localization = card.displayedLocalization
         let imagesDataModel = CardFrontBackView.URLDataModel(
-            frontImageURL: cardData.frontImage.url,
-            backImageURL: cardData.backImage.url,
-            textureImageURL: cardData.texture.image.url,
-            normal: CGFloat(cardData.texture.normal),
-            specular: CGFloat(cardData.texture.specular),
-            cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
+            frontImageURL: localization.frontImage.url,
+            backImageURL: localization.backImage.url,
+            textureImageURL: localization.texture.image.url,
+            normal: CGFloat(localization.texture.normal),
+            specular: CGFloat(localization.texture.specular),
+            cornerRadiusHeightMultiplier: CGFloat(localization.cornerRadiusHeightMultiplier)
         )
         return Section(item: Item(itemNumber: 0, dataModel: .cardImagesCell(imagesDataModel), actions: []))
     }
@@ -78,8 +78,8 @@ struct CardDetailsSectionFactory {
     private func makePersonalDataSection() -> Section? {
         let personalData = [
             TitleValueCollectionCell.DataModel(title: NSLocalizedString("Name", comment: ""), value: card.ownerDisplayName),
-            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Position", comment: ""), value: card.displayedCardData.position.title),
-            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Company", comment: ""), value: card.displayedCardData.position.company)
+            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Position", comment: ""), value: card.displayedLocalization.position.title),
+            TitleValueCollectionCell.DataModel(title: NSLocalizedString("Company", comment: ""), value: card.displayedLocalization.position.company)
         ]
         
         let includedPersonalDataRows = personalData.filter { $0.value ?? "" != "" }
@@ -92,35 +92,35 @@ struct CardDetailsSectionFactory {
     }
     
     private func makeContactSection() -> Section? {
-        let cardData = card.displayedCardData
+        let localization = card.displayedLocalization
         
         let phoneItem = TitleValueImageCollectionViewCell.DataModel(
             title: NSLocalizedString("Phone", comment: ""),
-            value: cardData.contact.phoneNumberPrimary,
+            value: localization.contact.phoneNumberPrimary,
             primaryImage: imageProvider(.call)
         )
         
         let phoneSecondaryItem = TitleValueImageCollectionViewCell.DataModel(
             title: NSLocalizedString("Phone Secondary", comment: ""),
-            value: cardData.contact.phoneNumberSecondary,
+            value: localization.contact.phoneNumberSecondary,
             primaryImage: imageProvider(.call)
         )
         
         let emailItem = TitleValueImageCollectionViewCell.DataModel(
             title: NSLocalizedString("Email", comment: ""),
-            value: cardData.contact.email,
+            value: localization.contact.email,
             primaryImage: imageProvider(.sendEmail)
         )
         
         let websiteItem = TitleValueImageCollectionViewCell.DataModel(
             title: NSLocalizedString("Website", comment: ""),
-            value: cardData.contact.website,
+            value: localization.contact.website,
             primaryImage: imageProvider(.visitWebsite)
         )
         
         let faxItem = TitleValueImageCollectionViewCell.DataModel(
             title: NSLocalizedString("Fax", comment: ""),
-            value: cardData.contact.fax,
+            value: localization.contact.fax,
             primaryImage: nil
         )
         

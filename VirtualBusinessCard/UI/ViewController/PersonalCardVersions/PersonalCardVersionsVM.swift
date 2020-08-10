@@ -102,8 +102,8 @@ extension PersonalCardVersionsVM {
     func setLanguage(code: String, cardVersionID: UUID) {
         guard let card = self.card else { return }
         guard !card.languageVersions.contains(where: { $0.languageCode == code }) else { return }
-        let editableCard = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedCardDataID: cardVersionID)
-        editableCard.editedCardData.languageCode = code
+        let editableCard = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedLocalizationID: cardVersionID)
+        editableCard.editedLocalization.languageCode = code
         editableCard.save(in: cardCollectionReference)
     }
 
@@ -155,18 +155,18 @@ extension PersonalCardVersionsVM {
         }
     }
 
-    private func cellDataModel(for cardData: BusinessCardData) -> DataModel {
+    private func cellDataModel(for localization: BusinessCardLocalization) -> DataModel {
         DataModel(
-            id: cardData.id,
-            title: cellTitle(forCardLanguageCode: cardData.languageCode),
-            isDefault: cardData.isDefault,
+            id: localization.id,
+            title: cellTitle(forCardLanguageCode: localization.languageCode),
+            isDefault: localization.isDefault,
             sceneDataModel: CardFrontBackView.URLDataModel(
-                frontImageURL: cardData.frontImage.url,
-                backImageURL: cardData.backImage.url,
-                textureImageURL: cardData.texture.image.url,
-                normal: CGFloat(cardData.texture.normal),
-                specular: CGFloat(cardData.texture.specular),
-                cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
+                frontImageURL: localization.frontImage.url,
+                backImageURL: localization.backImage.url,
+                textureImageURL: localization.texture.image.url,
+                normal: CGFloat(localization.texture.normal),
+                specular: CGFloat(localization.texture.specular),
+                cornerRadiusHeightMultiplier: CGFloat(localization.cornerRadiusHeightMultiplier)
             )
         )
     }

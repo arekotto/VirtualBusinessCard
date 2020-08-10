@@ -14,7 +14,7 @@ final class EditReceivedBusinessCardMC {
     static private let unsavedObjectID = ""
 
     private(set) var businessCard: ReceivedBusinessCard
-    let displayedCardData: BusinessCardData
+    let displayedLocalization: BusinessCardLocalization
 
     var id: String { businessCard.id }
 
@@ -35,14 +35,14 @@ final class EditReceivedBusinessCardMC {
     }
 
     var ownerDisplayName: String {
-        if let firstName = displayedCardData.name.first, let lastName = displayedCardData.name.last {
+        if let firstName = displayedLocalization.name.first, let lastName = displayedLocalization.name.last {
             return "\(firstName) \(lastName)"
         }
-        return displayedCardData.name.first ?? displayedCardData.name.last ?? ""
+        return displayedLocalization.name.first ?? displayedLocalization.name.last ?? ""
     }
 
     var addressCondensed: String {
-        let addressData = displayedCardData.address
+        let addressData = displayedLocalization.address
         var address = ""
         if let street = addressData.street, !street.isEmpty {
             address.append(street + ",")
@@ -61,7 +61,7 @@ final class EditReceivedBusinessCardMC {
 
     var addressFormatted: String {
 
-        let addressData = displayedCardData.address
+        let addressData = displayedLocalization.address
 
         let address = CNMutablePostalAddress()
         address.street = addressData.street ?? ""
@@ -79,16 +79,16 @@ final class EditReceivedBusinessCardMC {
     init(card: ReceivedBusinessCard) {
         self.businessCard = card
         // TODO: change to detect lang version
-        guard let displayedCardData = card.languageVersions.first(where: { $0.isDefault == true }) else {
+        guard let displayedLocalization = card.localizations.first(where: { $0.isDefault == true }) else {
             fatalError("The card \(card.id) does not contain a default language version")
         }
-        self.displayedCardData = displayedCardData
+        self.displayedLocalization = displayedLocalization
     }
 }
 
 extension EditReceivedBusinessCardMC {
 
-    convenience init(originalID: BusinessCardID, ownerID: UserID, languageVersions: [BusinessCardData]) {
+    convenience init(originalID: BusinessCardID, ownerID: UserID, languageVersions: [BusinessCardLocalization]) {
         let newCard = ReceivedBusinessCard(id: Self.unsavedObjectID, originalID: originalID, ownerID: ownerID, receivingDate: Date(), languageVersions: languageVersions)
         self.init(card: newCard)
     }

@@ -16,90 +16,90 @@ class EditPersonalBusinessCardLocalizationMC {
 
     let storage = Storage.storage().reference()
     let userID: UserID
-    let editedCardDataID: UUID
+    let editedLocalizationID: UUID
 
     private var card: PersonalBusinessCard
 
     var cardID: String { card.id }
 
-    var editedCardData: BusinessCardData {
+    var editedLocalization: BusinessCardLocalization {
         get {
-            guard let editedCardData = card.languageVersions.first(where: { $0.id == editedCardDataID }) else {
-                fatalError("The card \(cardID) does not contain a language version with id \(editedCardDataID)")
+            guard let editedLocalization = card.languageVersions.first(where: { $0.id == editedLocalizationID }) else {
+                fatalError("The card \(cardID) does not contain a language version with id \(editedLocalizationID)")
             }
-            return editedCardData
+            return editedLocalization
         }
         set {
-            guard let editedCardDataIndex = card.languageVersions.firstIndex(where: { $0.id == editedCardDataID }) else {
-                fatalError("The card \(cardID) does not contain a language version with id \(editedCardDataID)")
+            guard let editedLocalizationIndex = card.languageVersions.firstIndex(where: { $0.id == editedLocalizationID }) else {
+                fatalError("The card \(cardID) does not contain a language version with id \(editedLocalizationID)")
             }
-            card.languageVersions[editedCardDataIndex] = newValue
+            card.languageVersions[editedLocalizationIndex] = newValue
         }
     }
 
     var cornerRadiusHeightMultiplier: Float {
-        get { editedCardData.cornerRadiusHeightMultiplier }
-        set { editedCardData.cornerRadiusHeightMultiplier = newValue }
+        get { editedLocalization.cornerRadiusHeightMultiplier }
+        set { editedLocalization.cornerRadiusHeightMultiplier = newValue }
     }
 
-    var frontImage: BusinessCardData.Image {
-        get { editedCardData.frontImage }
-        set { editedCardData.frontImage = newValue }
+    var frontImage: BusinessCardLocalization.Image {
+        get { editedLocalization.frontImage }
+        set { editedLocalization.frontImage = newValue }
     }
 
-    var backImage: BusinessCardData.Image {
-        get { editedCardData.backImage }
-        set { editedCardData.backImage = newValue }
+    var backImage: BusinessCardLocalization.Image {
+        get { editedLocalization.backImage }
+        set { editedLocalization.backImage = newValue }
     }
-    var texture: BusinessCardData.Texture {
-        get { editedCardData.texture }
-        set { editedCardData.texture = newValue }
-    }
-
-    var position: BusinessCardData.Position {
-        get { editedCardData.position }
-        set { editedCardData.position = newValue }
+    var texture: BusinessCardLocalization.Texture {
+        get { editedLocalization.texture }
+        set { editedLocalization.texture = newValue }
     }
 
-    var name: BusinessCardData.Name {
-        get { editedCardData.name }
-        set { editedCardData.name = newValue }
+    var position: BusinessCardLocalization.Position {
+        get { editedLocalization.position }
+        set { editedLocalization.position = newValue }
     }
 
-    var contact: BusinessCardData.Contact {
-        get { editedCardData.contact }
-        set { editedCardData.contact = newValue }
+    var name: BusinessCardLocalization.Name {
+        get { editedLocalization.name }
+        set { editedLocalization.name = newValue }
     }
 
-    var address: BusinessCardData.Address {
-        get { editedCardData.address }
-        set { editedCardData.address = newValue }
+    var contact: BusinessCardLocalization.Contact {
+        get { editedLocalization.contact }
+        set { editedLocalization.contact = newValue }
     }
 
-    var localizations: [BusinessCardData] {
+    var address: BusinessCardLocalization.Address {
+        get { editedLocalization.address }
+        set { editedLocalization.address = newValue }
+    }
+
+    var localizations: [BusinessCardLocalization] {
         get { card.languageVersions }
         set { card.languageVersions = newValue }
     }
 
-    init(userID: UserID, editedCardDataID: UUID, card: PersonalBusinessCard) {
+    init(userID: UserID, editedLocalizationID: UUID, card: PersonalBusinessCard) {
         self.userID = userID
-        self.editedCardDataID = editedCardDataID
+        self.editedLocalizationID = editedLocalizationID
         self.card = card
     }
 }
 
 extension EditPersonalBusinessCardLocalizationMC {
 
-    static func makeLanguageVersion(isDefault: Bool, languageCode: String?) -> BusinessCardData {
-        BusinessCardData(
+    static func makeLanguageVersion(isDefault: Bool, languageCode: String?) -> BusinessCardLocalization {
+        BusinessCardLocalization(
             id: UUID(),
-            frontImage: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
-            backImage: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
-            texture: BusinessCardData.Texture(image: BusinessCardData.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL), specular: 0.5, normal: 0.5),
-            position: BusinessCardData.Position(),
-            name: BusinessCardData.Name(),
-            contact: BusinessCardData.Contact(),
-            address: BusinessCardData.Address(),
+            frontImage: BusinessCardLocalization.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
+            backImage: BusinessCardLocalization.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL),
+            texture: BusinessCardLocalization.Texture(image: BusinessCardLocalization.Image(id: Self.unsavedImageID, url: Self.unsavedImageURL), specular: 0.5, normal: 0.5),
+            position: BusinessCardLocalization.Position(),
+            name: BusinessCardLocalization.Name(),
+            contact: BusinessCardLocalization.Contact(),
+            address: BusinessCardLocalization.Address(),
             hapticFeedbackSharpness: 0.5,
             cornerRadiusHeightMultiplier: 0,
             isDefault: isDefault,
@@ -115,13 +115,13 @@ extension EditPersonalBusinessCardLocalizationMC {
         var editedCard = card
         let newLanguageVersion = Self.makeLanguageVersion(isDefault: false, languageCode: langCode)
         editedCard.languageVersions.append(newLanguageVersion)
-        self.init(userID: userID, editedCardDataID: newLanguageVersion.id, card: editedCard)
+        self.init(userID: userID, editedLocalizationID: newLanguageVersion.id, card: editedCard)
     }
 
     convenience init(userID: UserID) {
         let defaultLanguageVersion = Self.makeLanguageVersion(isDefault: true, languageCode: nil)
         let newCard = PersonalBusinessCard(id: Self.unsavedObjectID, creationDate: Date(), languageVersions: [defaultLanguageVersion])
-        self.init(userID: userID, editedCardDataID: defaultLanguageVersion.id, card: newCard)
+        self.init(userID: userID, editedLocalizationID: defaultLanguageVersion.id, card: newCard)
     }
 }
 
@@ -133,7 +133,7 @@ extension EditPersonalBusinessCardLocalizationMC: Equatable {
 
 extension EditPersonalBusinessCardLocalizationMC {
     var imageStoragePath: String {
-        "\(userID)/\(editedCardDataID)"
+        "\(userID)/\(editedLocalizationID)"
     }
 
     var frontImageStoragePath: String? {

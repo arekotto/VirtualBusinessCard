@@ -47,15 +47,15 @@ struct SampleBCUploadTask {
 
         Name.samples.enumerated().forEach { idx, person in
             let docRef = personalBCCollectionRef.document()
-            let bcData = BusinessCardData(
+            let bcData = BusinessCardLocalization(
                 id: UUID(),
                 frontImage: .init(id: "card1front", url: imageURLs.randomElement()!),
                 backImage: .init(id: "fasfds", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!),
-                texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs.randomElement()!), specular: specularValues.randomElement()!, normal: specularValues.randomElement()!),
-                position: BusinessCardData.Position(title: "Manager", company: "IBM"),
-                name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
-                contact: BusinessCardData.Contact(email: "\(person.lastName.lowercased())@ibm.com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.ibm.com"),
-                address: BusinessCardData.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"),
+                texture: .init(image: BusinessCardLocalization.Image(id: "test", url: texturesURLs.randomElement()!), specular: specularValues.randomElement()!, normal: specularValues.randomElement()!),
+                position: BusinessCardLocalization.Position(title: "Manager", company: "IBM"),
+                name: BusinessCardLocalization.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
+                contact: BusinessCardLocalization.Contact(email: "\(person.lastName.lowercased())@ibm.com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.ibm.com"),
+                address: BusinessCardLocalization.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"),
                 hapticFeedbackSharpness: hapticSharpness.randomElement()!, cornerRadiusHeightMultiplier: cornerRadius.randomElement()!,
                 isDefault: true
             )
@@ -66,15 +66,15 @@ struct SampleBCUploadTask {
         (Name.samples + Name.samples).enumerated().forEach { idx, person in
             let docRef = receivedBCCollectionRef.document()
             let company = companies.safeMod(idx)
-            let bcData = BusinessCardData(
+            let bcData = BusinessCardLocalization(
                 id: UUID(),
                 frontImage: .init(id: "card1front", url: imageURLs[idx % imageURLs.count]),
                 backImage: .init(id: "fasfds", url: URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!),
-                texture: .init(image: BusinessCardData.Image(id: "test", url: texturesURLs.randomElement()!), specular: specularValues.randomElement()!, normal: specularValues.randomElement()!),
-                position: BusinessCardData.Position(title: "Manager", company: company),
-                name: BusinessCardData.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
-                contact: BusinessCardData.Contact(email: "\(person.lastName.lowercased())@\(company.lowercased()).com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.\(company.lowercased()).com"),
-                address: BusinessCardData.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"),
+                texture: .init(image: BusinessCardLocalization.Image(id: "test", url: texturesURLs.randomElement()!), specular: specularValues.randomElement()!, normal: specularValues.randomElement()!),
+                position: BusinessCardLocalization.Position(title: "Manager", company: company),
+                name: BusinessCardLocalization.Name(prefix: nil, first: person.firstName, middle: nil, last: person.lastName),
+                contact: BusinessCardLocalization.Contact(email: "\(person.lastName.lowercased())@\(company.lowercased()).com", phoneNumberPrimary: "123321123", phoneNumberSecondary: "648265932", website: "www.\(company.lowercased()).com"),
+                address: BusinessCardLocalization.Address(country: "Denmark", city: "Copenhagen", postCode: "2100", street: "Tasingegade 33"),
                 hapticFeedbackSharpness: hapticSharpness.randomElement()!, cornerRadiusHeightMultiplier: cornerRadius.randomElement()!,
                 isDefault: true
             )

@@ -69,14 +69,14 @@ extension GroupedCardsVM.CardGroup {
         var privateCards = [ReceivedBusinessCardMC]()
         var companyCards = [ReceivedBusinessCardMC]()
         cards.forEach { card in
-            if card.displayedCardData.position.company != nil {
+            if card.displayedLocalization.position.company != nil {
                 companyCards.append(card)
             } else {
                 privateCards.append(card)
             }
         }
         
-        let groupedDict = Dictionary(grouping: companyCards) { $0.displayedCardData.position.company }
+        let groupedDict = Dictionary(grouping: companyCards) { $0.displayedLocalization.position.company }
         let companyCardGroups = groupedDict.map { company, groupedCards in
             GroupedCardsVM.CardGroup(groupingProperty: .company, groupingValue: company, cardIDs: groupedCards.map(\.id))
         }

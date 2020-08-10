@@ -69,15 +69,15 @@ extension AcceptCardVM {
     }
 
     func dataModel() -> CardFrontBackView.URLDataModel {
-        let cardData = card.displayedCardData
-        let texture = card.displayedCardData.texture
+        let localization = card.displayedLocalization
+        let texture = card.displayedLocalization.texture
         return CardFrontBackView.URLDataModel(
-            frontImageURL: cardData.frontImage.url,
-            backImageURL: cardData.backImage.url,
+            frontImageURL: localization.frontImage.url,
+            backImageURL: localization.backImage.url,
             textureImageURL: texture.image.url,
             normal: CGFloat(texture.normal),
             specular: CGFloat(texture.specular),
-            cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
+            cornerRadiusHeightMultiplier: CGFloat(localization.cornerRadiusHeightMultiplier)
         )
     }
 

@@ -17,7 +17,7 @@ class EditPersonalBusinessCardMC {
 
     var cardID: String { card.id }
 
-    var localizations: [BusinessCardData] {
+    var localizations: [BusinessCardLocalization] {
         get { card.languageVersions }
         set { card.languageVersions = newValue }
     }

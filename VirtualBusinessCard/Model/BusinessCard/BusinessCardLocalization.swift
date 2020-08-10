@@ -1,5 +1,5 @@
 //
-//  BusinessCardData.swift
+//  BusinessCardLocalization.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 04/06/2020.
@@ -10,7 +10,7 @@ import Foundation
 
 typealias BusinessCardID = String
 
-struct BusinessCardData: DocumentRepresentable {
+struct BusinessCardLocalization: DocumentRepresentable {
 
     var id: UUID
 
@@ -30,7 +30,7 @@ struct BusinessCardData: DocumentRepresentable {
     var languageCode: String?
 }
 
-extension BusinessCardData {
+extension BusinessCardLocalization {
     struct Address: Codable {
         var country: String?
         var city: String?
@@ -102,7 +102,7 @@ extension BusinessCardData {
         var specular: Float
         var normal: Float
         
-        init(image: BusinessCardData.Image, specular: Float, normal: Float) {
+        init(image: BusinessCardLocalization.Image, specular: Float, normal: Float) {
             self.image = image
             self.specular = specular
             self.normal = normal

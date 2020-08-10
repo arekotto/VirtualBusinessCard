@@ -18,36 +18,36 @@ class PersonalBusinessCardMC {
 
     var creationDate: Date { card.creationDate }
 
-    var defaultCardData: BusinessCardData {
+    var defaultLocalization: BusinessCardLocalization {
         guard let defaultData = card.languageVersions.first(where: { $0.isDefault }) else {
             fatalError("No Default version found for card: \(id)")
         }
         return defaultData
     }
 
-    var languageVersions: [BusinessCardData] { card.languageVersions }
+    var languageVersions: [BusinessCardLocalization] { card.languageVersions }
 
-    var cornerRadiusHeightMultiplier: Float { defaultCardData.cornerRadiusHeightMultiplier }
+    var cornerRadiusHeightMultiplier: Float { defaultLocalization.cornerRadiusHeightMultiplier }
         
-    var frontImage: BusinessCardData.Image { defaultCardData.frontImage }
+    var frontImage: BusinessCardLocalization.Image { defaultLocalization.frontImage }
     
-    var backImage: BusinessCardData.Image { defaultCardData.backImage }
+    var backImage: BusinessCardLocalization.Image { defaultLocalization.backImage }
 
-    var texture: BusinessCardData.Texture { defaultCardData.texture }
+    var texture: BusinessCardLocalization.Texture { defaultLocalization.texture }
 
-    var position: BusinessCardData.Position { defaultCardData.position }
+    var position: BusinessCardLocalization.Position { defaultLocalization.position }
 
-    var name: BusinessCardData.Name { defaultCardData.name }
+    var name: BusinessCardLocalization.Name { defaultLocalization.name }
     
-    var contact: BusinessCardData.Contact { defaultCardData.contact }
+    var contact: BusinessCardLocalization.Contact { defaultLocalization.contact }
     
-    var address: BusinessCardData.Address { defaultCardData.address }
+    var address: BusinessCardLocalization.Address { defaultLocalization.address }
     
     init(businessCard: PersonalBusinessCard) {
         card = businessCard
     }
 
-    func localization(withID id: UUID) -> BusinessCardData? {
+    func localization(withID id: UUID) -> BusinessCardLocalization? {
         card.languageVersions.first { $0.id == id }
     }
 }
@@ -62,8 +62,8 @@ extension PersonalBusinessCardMC {
         EditPersonalBusinessCardMC(userID: userID, existingCard: card)
     }
 
-    func editPersonalBusinessCardLocalizationMC(userID: UserID, editedCardDataID: UUID) -> EditPersonalBusinessCardLocalizationMC {
-        EditPersonalBusinessCardLocalizationMC(userID: userID, editedCardDataID: editedCardDataID, card: card)
+    func editPersonalBusinessCardLocalizationMC(userID: UserID, editedLocalizationID: UUID) -> EditPersonalBusinessCardLocalizationMC {
+        EditPersonalBusinessCardLocalizationMC(userID: userID, editedLocalizationID: editedLocalizationID, card: card)
     }
 
     func editPersonalBusinessCardLocalizationMC(userID: UserID, newLocalizationLanguageCode: String) -> EditPersonalBusinessCardLocalizationMC {
