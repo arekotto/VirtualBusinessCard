@@ -78,12 +78,14 @@ class ReceivedBusinessCardMC {
     }
     
     init(card: ReceivedBusinessCard) {
-        self.card = card
-        // TODO: change to detect lang version
-        guard let displayedLocalization = card.localizations.first(where: { $0.isDefault == true }) else {
+        let currentLocale = Locale.current
+        let matchingLocalization = card.localizations.first(where: { $0.languageCode == currentLocale.languageCode })
+        let localization = matchingLocalization ?? card.localizations.first(where: { $0.isDefault == true })
+        guard let displayedLocalization = localization else {
             fatalError("The card \(card.id) does not contain a default language version")
         }
         self.displayedLocalization = displayedLocalization
+        self.card = card
     }
 }
 

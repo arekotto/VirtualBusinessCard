@@ -13,25 +13,25 @@ final class EditReceivedBusinessCardMC {
 
     static private let unsavedObjectID = ""
 
-    private(set) var businessCard: ReceivedBusinessCard
+    private(set) var card: ReceivedBusinessCard
     let displayedLocalization: BusinessCardLocalization
 
-    var id: String { businessCard.id }
+    var id: String { card.id }
 
-    var originalID: BusinessCardID { businessCard.originalID }
+    var originalID: BusinessCardID { card.originalID }
 
-    var ownerID: UserID { businessCard.ownerID }
+    var ownerID: UserID { card.ownerID }
 
-    var receivingDate: Date { businessCard.receivingDate }
+    var receivingDate: Date { card.receivingDate }
 
     var notes: String {
-        get { businessCard.notes }
-        set { businessCard.notes = newValue }
+        get { card.notes }
+        set { card.notes = newValue }
     }
 
     var tagIDs: [BusinessCardTagID] {
-        get { businessCard.tagIDs }
-        set { businessCard.tagIDs = newValue }
+        get { card.tagIDs }
+        set { card.tagIDs = newValue }
     }
 
     var ownerDisplayName: String {
@@ -73,16 +73,18 @@ final class EditReceivedBusinessCardMC {
     }
 
     func receivedBusinessCardMC() -> ReceivedBusinessCardMC {
-        ReceivedBusinessCardMC(card: businessCard)
+        ReceivedBusinessCardMC(card: card)
     }
 
     init(card: ReceivedBusinessCard) {
-        self.businessCard = card
-        // TODO: change to detect lang version
-        guard let displayedLocalization = card.localizations.first(where: { $0.isDefault == true }) else {
+        let currentLocale = Locale.current
+        let matchingLocalization = card.localizations.first(where: { $0.languageCode == currentLocale.languageCode })
+        let localization = matchingLocalization ?? card.localizations.first(where: { $0.isDefault == true })
+        guard let displayedLocalization = localization else {
             fatalError("The card \(card.id) does not contain a default language version")
         }
         self.displayedLocalization = displayedLocalization
+        self.card = card
     }
 }
 
@@ -100,14 +102,14 @@ extension EditReceivedBusinessCardMC {
 
     func save(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
         let docRef: DocumentReference
-        if businessCard.id == Self.unsavedObjectID {
+        if card.id == Self.unsavedObjectID {
             docRef = collectionReference.document()
-            businessCard.id = docRef.documentID
+            card.id = docRef.documentID
         } else {
-            docRef = collectionReference.document(businessCard.id)
+            docRef = collectionReference.document(card.id)
         }
 
-        docRef.setData(businessCard.asDocument()) { error in
+        docRef.setData(card.asDocument()) { error in
             if let err = error {
                 print(err.localizedDescription)
                 completion?(.failure(err))
@@ -119,14 +121,14 @@ extension EditReceivedBusinessCardMC {
 
     func save(in collectionReference: CollectionReference, fields: [ReceivedBusinessCard.CodingKeys], completion: ((Result<Void, Error>) -> Void)? = nil) {
         let docRef: DocumentReference
-        if businessCard.id == Self.unsavedObjectID {
+        if card.id == Self.unsavedObjectID {
             docRef = collectionReference.document()
-            businessCard.id = docRef.documentID
+            card.id = docRef.documentID
         } else {
-            docRef = collectionReference.document(businessCard.id)
+            docRef = collectionReference.document(card.id)
         }
 
-        let businessCardDoc = businessCard.asDocument()
+        let businessCardDoc = card.asDocument()
 
         let updates = fields.reduce(into: [String: Any]()) { updates, key in
             updates[key.rawValue] = businessCardDoc[key.rawValue]
@@ -145,6 +147,6 @@ extension EditReceivedBusinessCardMC {
 
 extension EditReceivedBusinessCardMC: Equatable {
     static func == (lhs: EditReceivedBusinessCardMC, rhs: EditReceivedBusinessCardMC) -> Bool {
-        lhs.businessCard == rhs.businessCard
+        lhs.card == rhs.card
     }
 }
