@@ -60,14 +60,6 @@ final class EditTagVM: PartialUserViewModel {
 
 extension EditTagVM {
     
-    var doneEditingButtonTitle: String {
-        NSLocalizedString("Done", comment: "")
-    }
-    
-    var cancelEditingButtonTitle: String {
-        NSLocalizedString("Cancel", comment: "")
-    }
-    
     var selectedItem: IndexPath? {
         guard let idx = selectableTagColors.firstIndex(of: tag.tagColor) else { return nil }
         return IndexPath(item: idx)

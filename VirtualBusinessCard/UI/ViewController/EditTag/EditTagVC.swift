@@ -9,10 +9,7 @@
 import UIKit
 
 final class EditTagVC: AppViewController<EditTagView, EditTagVM> {
-    
-    private lazy var doneEditingButton = UIBarButtonItem(title: viewModel.doneEditingButtonTitle, style: .done, target: self, action: #selector(didTapDoneEditingButton))
-    private lazy var cancelEditingButton = UIBarButtonItem(title: viewModel.cancelEditingButtonTitle, style: .plain, target: self, action: #selector(didTapCancelEditingButton))
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationItem()
@@ -42,8 +39,8 @@ final class EditTagVC: AppViewController<EditTagView, EditTagVM> {
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = viewModel.title
-        navigationItem.rightBarButtonItem = doneEditingButton
-        navigationItem.leftBarButtonItem = cancelEditingButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(didTapDoneEditingButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.cancel(target: self, action: #selector(didTapCancelEditingButton))
     }
 }
 

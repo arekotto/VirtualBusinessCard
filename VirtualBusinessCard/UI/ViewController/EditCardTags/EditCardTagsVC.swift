@@ -10,9 +10,6 @@ import UIKit
 
 final class EditCardTagsVC: AppViewController<EditCardTagsView, EditCardTagsVM> {
 
-    private lazy var doneEditingButton = UIBarButtonItem(title: viewModel.doneEditingButtonTitle, style: .done, target: self, action: #selector(didTapDoneButton))
-    private lazy var cancelEditingButton = UIBarButtonItem(title: viewModel.cancelEditingButtonTitle, style: .plain, target: self, action: #selector(didTapCancelButton))
-
     override func viewDidLoad() {
         super.viewDidLoad()
         extendedLayoutIncludesOpaqueBars = true
@@ -25,8 +22,8 @@ final class EditCardTagsVC: AppViewController<EditCardTagsView, EditCardTagsVM> 
 
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.rightBarButtonItem = doneEditingButton
-        navigationItem.leftBarButtonItem = cancelEditingButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(didTapDoneButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.cancel(target: self, action: #selector(didTapCancelButton))
     }
 }
 

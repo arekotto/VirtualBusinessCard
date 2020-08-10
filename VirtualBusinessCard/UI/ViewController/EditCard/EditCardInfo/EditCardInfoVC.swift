@@ -20,8 +20,6 @@ final class EditCardInfoVC: AppTableViewController<EditCardInfoVM> {
 
     private lazy var tableViewDataSource = makeTableViewDataSource()
 
-    private lazy var nextButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: ""), style: .done, target: self, action: #selector(didTapDoneButton))
-
     init(viewModel: EditCardInfoVM) {
         super.init(viewModel: viewModel, style: .insetGrouped)
     }
@@ -65,7 +63,7 @@ final class EditCardInfoVC: AppTableViewController<EditCardInfoVM> {
         titleView.setTitle(NSLocalizedString("Information", comment: ""), subtitle: viewModel.subtitle)
         navigationItem.titleView = titleView
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.rightBarButtonItem = nextButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(didTapDoneButton))
     }
 
     private func makeTableViewDataSource() -> DataSource {

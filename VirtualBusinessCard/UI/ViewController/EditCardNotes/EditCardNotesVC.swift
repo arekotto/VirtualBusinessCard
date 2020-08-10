@@ -10,9 +10,6 @@ import UIKit
 
 final class EditCardNotesVC: AppViewController<EditCardNotesView, EditCardNotesVM> {
 
-    private lazy var doneEditingButton = UIBarButtonItem(title: viewModel.doneEditingButtonTitle, style: .done, target: self, action: #selector(didTapDoneButton))
-    private lazy var cancelEditingButton = UIBarButtonItem(title: viewModel.cancelEditingButtonTitle, style: .plain, target: self, action: #selector(didTapCancelButton))
-
     private var notesCell: EditCardNotesView.TextCollectionCell? {
         contentView.tableView.visibleCells.first as? EditCardNotesView.TextCollectionCell
     }
@@ -36,8 +33,8 @@ final class EditCardNotesVC: AppViewController<EditCardNotesView, EditCardNotesV
 
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.rightBarButtonItem = doneEditingButton
-        navigationItem.leftBarButtonItem = cancelEditingButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(didTapDoneButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.cancel(target: self, action: #selector(didTapCancelButton))
     }
 }
 

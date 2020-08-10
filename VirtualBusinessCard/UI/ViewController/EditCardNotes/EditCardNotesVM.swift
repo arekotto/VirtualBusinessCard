@@ -39,15 +39,7 @@ extension EditCardNotesVM {
     var title: String {
         NSLocalizedString("Add Notes", comment: "")
     }
-
-    var doneEditingButtonTitle: String {
-        NSLocalizedString("Done", comment: "")
-    }
-
-    var cancelEditingButtonTitle: String {
-        NSLocalizedString("Cancel", comment: "")
-    }
-
+    
     var isAllowedDragToDismiss: Bool {
         !hasMadeChanges
     }
