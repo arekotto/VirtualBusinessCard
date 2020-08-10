@@ -83,7 +83,7 @@ extension PersonalCardVersionsView {
             addSubview(mainStackView)
             selectedBackgroundView = {
                 let this = UIView()
-                this.layer.cornerRadius = 12
+                this.layer.cornerRadius = 14
                 return this
             }()
         }

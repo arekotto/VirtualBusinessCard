@@ -29,9 +29,12 @@ final class LanguagesVM: AppViewModel {
     private var availableLanguageCodes = [String]()
     private var displayedLanguageCodes = [String]()
 
+    private let blacklistedCodes: [String]
+
     private let currentLocale = Locale.current
 
-    init(mode: Mode, id: UUID? = nil) {
+    init(mode: Mode, blacklistedCodes: [String]) {
+        self.blacklistedCodes = blacklistedCodes
         self.mode = mode
         switch mode {
         case .newLocalization:
@@ -49,7 +52,10 @@ final class LanguagesVM: AppViewModel {
         DispatchQueue.global().async { [self] in
             let commonLocales = Locale.availableIdentifiers.map { Locale(identifier: $0) }
             let availableLanguageCodes = Locale.isoLanguageCodes
-                .filter { langCode in commonLocales.first(where: { $0.languageCode == langCode}) != nil }
+                .filter { langCode in
+                    commonLocales.contains(where: { $0.languageCode == langCode})
+                        && !blacklistedCodes.contains(langCode)
+                }
                 .map { self.dataModel(langCode: $0) }
                 .sorted { $0.title <= $1.title }
                 .map(\.langCode)

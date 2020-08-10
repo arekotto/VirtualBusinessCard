@@ -91,16 +91,17 @@ extension PersonalCardVersionsVM {
     }
 
     func newLocalizationLanguageVM() -> LanguagesVM {
-        LanguagesVM(mode: .newLocalization)
+        LanguagesVM(mode: .newLocalization, blacklistedCodes: blacklistedLanguageCodes())
     }
 
     func languagesVM(for indexPath: IndexPath) -> LanguagesVM? {
         guard let localization = card?.localization(withID: dataModels[indexPath.row].id) else { return nil }
-        return LanguagesVM(mode: .editLocalization(id: localization.id, selectedLanguageCode: localization.languageCode))
+        return LanguagesVM(mode: .editLocalization(id: localization.id, selectedLanguageCode: localization.languageCode), blacklistedCodes: blacklistedLanguageCodes())
     }
 
     func setLanguage(code: String, cardVersionID: UUID) {
         guard let card = self.card else { return }
+        guard !card.languageVersions.contains(where: { $0.languageCode == code }) else { return }
         let editableCard = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedCardDataID: cardVersionID)
         editableCard.editedCardData.languageCode = code
         editableCard.save(in: cardCollectionReference)
@@ -121,6 +122,10 @@ extension PersonalCardVersionsVM {
         } else {
             deleteCard()
         }
+    }
+
+    private func blacklistedLanguageCodes() -> [String] {
+        card?.languageVersions.compactMap { ($0.languageCode ?? "").isEmpty ? nil : $0.languageCode } ?? []
     }
 
     private func deleteCard() {
