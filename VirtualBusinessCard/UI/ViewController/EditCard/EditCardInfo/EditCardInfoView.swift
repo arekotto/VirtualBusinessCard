@@ -73,6 +73,7 @@ extension EditCardInfoView {
         init() {
             super.init(frame: .zero)
             layer.cornerRadius = 10
+            autocorrectionType = .no
         }
 
         required init?(coder: NSCoder) {

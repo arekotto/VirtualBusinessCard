@@ -27,7 +27,7 @@ struct BusinessCardData: DocumentRepresentable {
     var cornerRadiusHeightMultiplier: Float
 
     var isDefault: Bool
-    var languageVersionCode: String?
+    var languageCode: String?
 }
 
 extension BusinessCardData {

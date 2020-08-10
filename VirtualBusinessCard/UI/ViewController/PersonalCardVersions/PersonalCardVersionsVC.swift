@@ -15,6 +15,7 @@ final class PersonalCardVersionsVC: AppViewController<PersonalCardVersionsView, 
     private lazy var tableViewDataSource = makeTableViewDataSource()
 
     private var coordinator: Coordinator?
+    private var isFirstAppearance = SingleTimeToggleBool(ofInitialValue: true)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,9 +28,7 @@ final class PersonalCardVersionsVC: AppViewController<PersonalCardVersionsView, 
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let selectedIndexPath = contentView.tableView.indexPathForSelectedRow {
-            contentView.tableView.deselectRow(at: selectedIndexPath, animated: true)
-        }
+        contentView.tableView.deselectSelectedRows(animated: true)
     }
 
     private func setupContentView() {
@@ -64,13 +63,20 @@ final class PersonalCardVersionsVC: AppViewController<PersonalCardVersionsView, 
         }
     }
 
-    private func presentDeleteAlert(with title: String, for indexPath: IndexPath) {
-        let alert = AppAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
+    private func presentConfirmDeleteAlert(for indexPath: IndexPath) {
+        let config = viewModel.confirmDeleteConfig(for: indexPath)
+        let alert = AppAlertController(title: config.title, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: config.deleteActionTitle, style: .destructive) { _ in
             self.viewModel.deleteLocalization(at: indexPath)
         })
-        alert.addCancelAction()
+        alert.addCancelAction { _ in self.contentView.tableView.deselectRow(at: indexPath, animated: true) }
         present(alert, animated: true)
+    }
+
+    private func presentLanguagesVC(viewModel: LanguagesVM) {
+        let vc = LanguagesTVC(viewModel: viewModel)
+        vc.delegate = self
+        present(AppNavigationController(rootViewController: vc), animated: true)
     }
 }
 
@@ -79,8 +85,7 @@ final class PersonalCardVersionsVC: AppViewController<PersonalCardVersionsView, 
 @objc
 private extension PersonalCardVersionsVC {
     func didTapNewVersionButton() {
-        coordinator = viewModel.newVersionCardCoordinator(root: AppNavigationController())
-        startCoordinator()
+        presentLanguagesVC(viewModel: viewModel.newLocalizationLanguageVM())
     }
 }
 
@@ -93,18 +98,19 @@ extension PersonalCardVersionsVC: UITableViewDelegate {
         let alert = AppAlertController(title: config.title, message: nil, preferredStyle: .actionSheet)
         if !config.isDefault {
             alert.addAction(UIAlertAction(title: NSLocalizedString("Make Default", comment: ""), style: .default) { _ in
-                // TODO: make default
+                self.viewModel.setDefaultLocalization(at: indexPath)
             })
         }
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Change Localization Language", comment: ""), style: .default) { _ in
-            // TODO: change lang
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Change Localization Language", comment: ""), style: .default) { [self] _ in
+            guard let vm = viewModel.languagesVM(for: indexPath) else { return }
+            presentLanguagesVC(viewModel: vm)
         })
         alert.addAction(UIAlertAction(title: NSLocalizedString("Edit", comment: ""), style: .default) { [self] _ in
             coordinator = viewModel.editCardCoordinator(for: indexPath, root: AppNavigationController())
             startCoordinator()
         })
         alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
-            self.presentDeleteAlert(with: config.deleteTitle, for: indexPath)
+            self.presentConfirmDeleteAlert(for: indexPath)
         })
         alert.addCancelAction { _ in tableView.deselectRow(at: indexPath, animated: true) }
         present(alert, animated: true)
@@ -114,7 +120,44 @@ extension PersonalCardVersionsVC: UITableViewDelegate {
 // MARK: - PersonalCardVersionsVMDelegate
 
 extension PersonalCardVersionsVC: PersonalCardVersionsVMDelegate {
+    func presentErrorAlert(message: String) {
+        if let presentedVC = presentedViewController {
+            presentedVC.dismiss(animated: true) {
+                super.presentErrorAlert(message: message)
+            }
+        } else {
+            super.presentErrorAlert(message: message)
+        }
+    }
+
+    func popSelf() {
+        if let presentedVC = presentedViewController {
+            presentedVC.dismiss(animated: true) {
+                self.navigationController?.popViewController(animated: true)
+            }
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+
     func refreshData() {
-        tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: false)
+        tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: !isFirstAppearance.value)
+        isFirstAppearance.toggle()
+    }
+}
+
+// MARK: - LanguagesTVCDelegate
+
+extension PersonalCardVersionsVC: LanguagesTVCDelegate {
+    func languagesTVC(_ viewController: LanguagesTVC, didFinishWith languageCode: String?) {
+        contentView.tableView.deselectSelectedRows(animated: true)
+        guard let code = languageCode, code != "" else { return }
+        switch viewController.mode {
+        case .newLocalization:
+            coordinator = viewModel.newVersionCardCoordinator(root: AppNavigationController(), forLanguageCode: code)
+            startCoordinator()
+        case .editLocalization(let versionID, _):
+            viewModel.setLanguage(code: code, cardVersionID: versionID)
+        }
     }
 }

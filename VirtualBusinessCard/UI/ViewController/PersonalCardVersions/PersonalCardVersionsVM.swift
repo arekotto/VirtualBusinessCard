@@ -11,16 +11,22 @@ import Firebase
 
 protocol PersonalCardVersionsVMDelegate: class {
     func refreshData()
+    func presentErrorAlert(message: String)
+    func popSelf()
+    func presentLoadingAlert(viewModel: LoadingPopoverVM)
 }
 
 final class PersonalCardVersionsVM: PartialUserViewModel {
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, PersonalCardVersionsView.TableCell.DataModel>
+    typealias DataModel = PersonalCardVersionsView.TableCell.DataModel
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DataModel>
 
     weak var delegate: PersonalCardVersionsVMDelegate?
     private let cardID: BusinessCardID
+    private let currentLocale = Locale.current
 
     private var card: PersonalBusinessCardMC?
+    private var dataModels = [DataModel]()
 
     init(userID: UserID, cardID: BusinessCardID) {
         self.cardID = cardID
@@ -37,26 +43,40 @@ extension PersonalCardVersionsVM {
         return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
     }
 
-    func actionConfig(for indexPath: IndexPath) -> (title: String, deleteTitle: String, isDefault: Bool)? {
-        guard let languageVersion = card?.languageVersions[indexPath.row] else { return nil }
-        // TODO: change
-        return ("testing", "delete", languageVersion.isDefault)
+    func actionConfig(for indexPath: IndexPath) -> ActionConfiguration? {
+        guard let languageVersion = card?.localization(withID: dataModels[indexPath.row].id) else { return nil }
+        let dataModel = dataModels[indexPath.row]
+        let titleFormat = NSLocalizedString("%@ Localization", comment: "%@: language name")
+        return ActionConfiguration(
+            title: String.localizedStringWithFormat(titleFormat, dataModel.title),
+            deleteActionTitle: NSLocalizedString("Delete Localization", comment: ""),
+            isDefault: languageVersion.isDefault
+        )
+    }
+
+    func confirmDeleteConfig(for: IndexPath) -> (title: String, deleteActionTitle: String) {
+        if dataModels.count >= 2 {
+            return (NSLocalizedString("Delete Localization?", comment: ""), NSLocalizedString("Delete ", comment: ""))
+        } else {
+            let title = NSLocalizedString("Deleting the only localization of the card will delete the card itself. Are you sure you want to delete this card?", comment: "")
+            return (title, NSLocalizedString("Delete Business Card", comment: ""))
+        }
     }
 
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(card?.languageVersions.map { cellDataModel(for: $0) } ?? [])
+        snapshot.appendItems(dataModels)
         return snapshot
     }
 
-    func newVersionCardCoordinator(root: AppNavigationController) -> Coordinator? {
+    func newVersionCardCoordinator(root: AppNavigationController, forLanguageCode langCode: String) -> Coordinator? {
         guard let card = self.card else { return nil }
         return EditCardCoordinator(
             collectionReference: cardCollectionReference,
             navigationController: root,
             userID: userID,
-            card: card
+            mode: .newLocalization(card: card, localizationLanguageCode: langCode)
         )
     }
 
@@ -66,20 +86,74 @@ extension PersonalCardVersionsVM {
             collectionReference: cardCollectionReference,
             navigationController: root,
             userID: userID,
-            card: card,
-            editedCardDataID: card.languageVersions[indexPath.row].id
+            mode: .editLocalization(card: card, localizationID: dataModels[indexPath.row].id)
         )
     }
 
-    func deleteLocalization(at indexPath: IndexPath) {
-        print("delete")
-        // TODO: implemnt
+    func newLocalizationLanguageVM() -> LanguagesVM {
+        LanguagesVM(mode: .newLocalization)
     }
 
-    private func cellDataModel(for cardData: BusinessCardData) -> PersonalCardVersionsView.TableCell.DataModel {
-        PersonalCardVersionsView.TableCell.DataModel(
+    func languagesVM(for indexPath: IndexPath) -> LanguagesVM? {
+        guard let localization = card?.localization(withID: dataModels[indexPath.row].id) else { return nil }
+        return LanguagesVM(mode: .editLocalization(id: localization.id, selectedLanguageCode: localization.languageCode))
+    }
+
+    func setLanguage(code: String, cardVersionID: UUID) {
+        guard let card = self.card else { return }
+        let editableCard = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedCardDataID: cardVersionID)
+        editableCard.editedCardData.languageCode = code
+        editableCard.save(in: cardCollectionReference)
+    }
+
+    func setDefaultLocalization(at indexPath: IndexPath) {
+        guard let card = self.card else { return }
+        let editableCard = card.editPersonalBusinessCardMC(userID: userID)
+        editableCard.setDefaultLocalization(toID: dataModels[indexPath.row].id)
+        editableCard.save(in: cardCollectionReference)
+    }
+
+    func deleteLocalization(at indexPath: IndexPath) {
+        if dataModels.count >= 2 {
+            guard let editableCard = card?.editPersonalBusinessCardMC(userID: userID) else { return }
+            editableCard.deleteLocalization(withID: dataModels[indexPath.row].id)
+            editableCard.save(in: cardCollectionReference)
+        } else {
+            deleteCard()
+        }
+    }
+
+    private func deleteCard() {
+        guard let editableCard = card?.editPersonalBusinessCardMC(userID: userID) else { return }
+        delegate?.presentLoadingAlert(viewModel: LoadingPopoverVM(title: NSLocalizedString("Deleting Card", comment: "")))
+
+        var encounteredError: Error?
+
+        editableCard.delete(in: cardCollectionReference) { result in
+            switch result {
+            case .success: return
+            case .failure(let error):
+                encounteredError = error
+                print(#file, "Failure deleting card", error.localizedDescription)
+            }
+        }
+
+        // give firebase some time to return an error if something is very wrong
+        // otherwise data will be stored in cache if offline
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            if encounteredError != nil {
+                let errorMessage = NSLocalizedString("We could not delete the card. Please check your internet connection and try again.", comment: "")
+                self?.delegate?.presentErrorAlert(message: errorMessage)
+            } else {
+                self?.delegate?.popSelf()
+            }
+        }
+    }
+
+    private func cellDataModel(for cardData: BusinessCardData) -> DataModel {
+        DataModel(
             id: cardData.id,
-            title: cardData.languageVersionCode ?? NSLocalizedString("Language not specified", comment: ""),
+            title: cellTitle(forCardLanguageCode: cardData.languageCode),
             isDefault: cardData.isDefault,
             sceneDataModel: CardFrontBackView.URLDataModel(
                 frontImageURL: cardData.frontImage.url,
@@ -90,6 +164,14 @@ extension PersonalCardVersionsVM {
                 cornerRadiusHeightMultiplier: CGFloat(cardData.cornerRadiusHeightMultiplier)
             )
         )
+    }
+
+    private func cellTitle(forCardLanguageCode langCode: String?) -> String {
+        if let code = langCode {
+            return currentLocale.localizedString(forLanguageCode: code) ?? NSLocalizedString("Language unspecified", comment: "")
+        } else {
+            return NSLocalizedString("Language unspecified", comment: "")
+        }
     }
 }
 
@@ -112,7 +194,7 @@ extension PersonalCardVersionsVM {
             print(#file, "Error fetching personal card changed:", error?.localizedDescription ?? "No error info available.")
             return
         }
-        DispatchQueue.global().async {
+        DispatchQueue.global().async { [self] in
             guard let card = PersonalBusinessCardMC(documentSnapshot: doc) else {
                 print(#file, "Error mapping personal card:", error?.localizedDescription ?? "No error info available.")
                 DispatchQueue.main.async {
@@ -121,13 +203,30 @@ extension PersonalCardVersionsVM {
                 }
                 return
             }
+            let dataModels = card.languageVersions
+                .map { cellDataModel(for: $0) }
+                .sorted {
+                    if $0.isDefault || $1.isDefault {
+                        return $0.isDefault
+                    }
+                    return $0.title < $1.title
+                }
             DispatchQueue.main.async {
                 self.card = card
+                self.dataModels = dataModels
                 self.delegate?.refreshData()
             }
         }
     }
 
+}
+
+extension PersonalCardVersionsVM {
+    struct ActionConfiguration {
+        let title: String
+        let deleteActionTitle: String
+        let isDefault: Bool
+    }
 }
 
 // MARK: - Section

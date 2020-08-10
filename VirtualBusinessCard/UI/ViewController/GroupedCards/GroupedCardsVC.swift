@@ -26,9 +26,7 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         (navigationController as? AppNavigationController)?.isShadowEnabled = false
-        contentView.tableView.indexPathsForSelectedRows?.forEach {
-            contentView.tableView.deselectRow(at: $0, animated: true)
-        }
+        contentView.tableView.deselectSelectedRows(animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

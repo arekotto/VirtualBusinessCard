@@ -31,11 +31,6 @@ class UserMC: ModelController {
         get { userPublic.email }
         set { userPublic.email = newValue }
     }
-
-    var profileImageURL: URL? {
-        // TODO: change for real url
-        return URL(string: "https://www.askideas.com/media/26/Bill-Gates-Funny-Face-Picture.jpeg")
-    }
     
     var cardExchangeAccessTokens: [String] {
         get { userPrivate?.cardExchangeAccessTokens ?? [] }

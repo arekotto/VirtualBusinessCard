@@ -77,17 +77,15 @@ extension PersonalCardVersionsView {
             return this
         }()
 
-        override func setSelected(_ selected: Bool, animated: Bool) {
-            super.setSelected(selected, animated: animated)
-            contentBackgroundView.backgroundColor = selected ? Asset.Colors.selectedCellBackgroundStrong.color : Asset.Colors.roundedTableViewCellBackground.color
-
-        }
-
         override func configureSubviews() {
             super.configureSubviews()
             addSubview(contentBackgroundView)
             addSubview(mainStackView)
-            selectedBackgroundView = UIView()
+            selectedBackgroundView = {
+                let this = UIView()
+                this.layer.cornerRadius = 12
+                return this
+            }()
         }
 
         override func configureConstraints() {
@@ -100,9 +98,9 @@ extension PersonalCardVersionsView {
 
         override func configureColors() {
             super.configureColors()
+            selectedBackgroundView?.backgroundColor = Asset.Colors.selectedCellBackgroundStrong.color
             backgroundColor = Asset.Colors.appBackground.color
             defaultLabel.textColor = .secondaryLabel
-            contentBackgroundView.backgroundColor = isSelected ? Asset.Colors.selectedCellBackgroundStrong.color : Asset.Colors.roundedTableViewCellBackground.color
         }
     }
 }

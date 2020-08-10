@@ -46,6 +46,10 @@ class PersonalBusinessCardMC {
     init(businessCard: PersonalBusinessCard) {
         card = businessCard
     }
+
+    func localization(withID id: UUID) -> BusinessCardData? {
+        card.languageVersions.first { $0.id == id }
+    }
 }
 
 extension PersonalBusinessCardMC {
@@ -54,12 +58,16 @@ extension PersonalBusinessCardMC {
         self.init(businessCard: businessCard)
     }
 
-    func editPersonalBusinessCardMC(userID: UserID, editedCardDataID: UUID? = nil) -> EditPersonalBusinessCardMC {
-        if let editedCardDataID = editedCardDataID {
-            return EditPersonalBusinessCardMC(userID: userID, editedCardDataID: editedCardDataID, card: card)
-        } else {
-            return EditPersonalBusinessCardMC(userID: userID, card: card)
-        }
+    func editPersonalBusinessCardMC(userID: UserID) -> EditPersonalBusinessCardMC {
+        EditPersonalBusinessCardMC(userID: userID, existingCard: card)
+    }
+
+    func editPersonalBusinessCardLocalizationMC(userID: UserID, editedCardDataID: UUID) -> EditPersonalBusinessCardLocalizationMC {
+        EditPersonalBusinessCardLocalizationMC(userID: userID, editedCardDataID: editedCardDataID, card: card)
+    }
+
+    func editPersonalBusinessCardLocalizationMC(userID: UserID, newLocalizationLanguageCode: String) -> EditPersonalBusinessCardLocalizationMC {
+        EditPersonalBusinessCardLocalizationMC(userID: userID, card: card, newLocalizationLanguageCode: newLocalizationLanguageCode)
     }
 }
 

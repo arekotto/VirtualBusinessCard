@@ -82,7 +82,7 @@ extension PersonalCardsVM {
     }
 
     func newCardCoordinator(root: AppNavigationController) -> Coordinator {
-        EditCardCoordinator(collectionReference: cardCollectionReference, navigationController: root, userID: userID)
+        EditCardCoordinator(collectionReference: cardCollectionReference, navigationController: root, userID: userID, mode: .newCard)
     }
 }
 

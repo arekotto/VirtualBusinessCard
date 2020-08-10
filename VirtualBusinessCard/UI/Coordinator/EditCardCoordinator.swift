@@ -16,27 +16,36 @@ final class EditCardCoordinator: Coordinator {
 
     let navigationController: UINavigationController
 
-    private var card: EditPersonalBusinessCardMC
+    private var card: EditPersonalBusinessCardLocalizationMC
     private var originalImages: Images!
     private var newImages: Images?
     private var storage = Storage.storage().reference()
     private let collectionReference: CollectionReference
     private let title: String
 
-    init(collectionReference: CollectionReference, navigationController: UINavigationController, userID: UserID, card: PersonalBusinessCardMC? = nil, editedCardDataID: UUID? = nil) {
+    init(collectionReference: CollectionReference, navigationController: UINavigationController, userID: UserID, mode: Mode) {
         self.collectionReference = collectionReference
         self.navigationController = navigationController
-        if let card = card, let editedCardDataID = editedCardDataID {
-            self.card = card.editPersonalBusinessCardMC(userID: userID, editedCardDataID: editedCardDataID)
-            title = NSLocalizedString("Edit Card", comment: "")
-        } else if let card = card {
-            self.card = card.editPersonalBusinessCardMC(userID: userID)
-            originalImages = Images()
-            title = NSLocalizedString("New Card Localization", comment: "")
-        } else {
-            self.card = EditPersonalBusinessCardMC(userID: userID)
+
+        switch mode {
+        case .newCard:
+            self.card = EditPersonalBusinessCardLocalizationMC(userID: userID)
             originalImages = Images()
             title = NSLocalizedString("New Card", comment: "")
+        case .newLocalization(let card, let localizationLanguageCode):
+            self.card = card.editPersonalBusinessCardLocalizationMC(userID: userID, newLocalizationLanguageCode: localizationLanguageCode)
+            originalImages = Images()
+            let titleFormat = NSLocalizedString("New %@ Localization", comment: "")
+            title = String.localizedStringWithFormat(titleFormat, Locale.current.localizedString(forLanguageCode: localizationLanguageCode) ?? "")
+        case .editLocalization(let card, let localizationID):
+            self.card = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedCardDataID: localizationID)
+            if let langCode = card.localization(withID: localizationID)?.languageCode {
+                let titleFormat = NSLocalizedString("Edit %@ Localization", comment: "")
+                let localizationName = Locale.current.localizedString(forLanguageCode: langCode) ?? ""
+                title = String.localizedStringWithFormat(titleFormat, localizationName)
+            } else {
+                title = NSLocalizedString("Edit Card", comment: "")
+            }
         }
     }
 
@@ -146,7 +155,7 @@ private extension EditCardCoordinator {
 }
 
 // MARK: - EditCardInfoVCDelegate
-import Kingfisher
+
 extension EditCardCoordinator: EditCardInfoVCDelegate {
 
     func editCardInfoVC(_ viewController: EditCardInfoVC, didFinishWith transformedData: EditCardInfoVM.TransformableData) {
@@ -295,5 +304,15 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
                 uploadTask.cancel()
             }
         }
+    }
+}
+
+// MARK: - Mode
+
+extension EditCardCoordinator {
+    enum Mode {
+        case newCard
+        case newLocalization(card: PersonalBusinessCardMC, localizationLanguageCode: String)
+        case editLocalization(card: PersonalBusinessCardMC, localizationID: UUID)
     }
 }
