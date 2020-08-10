@@ -77,8 +77,8 @@ extension PersonalCardsVM {
         )
     }
 
-    func personaCardVersionsVM(for indexPath: IndexPath) -> PersonalCardVersionsVM {
-        PersonalCardVersionsVM(userID: userID, cardID: cards[indexPath.row].id)
+    func personaCardVersionsVM(for indexPath: IndexPath) -> PersonalCardLocalizationsVM {
+        PersonalCardLocalizationsVM(userID: userID, cardID: cards[indexPath.row].id)
     }
 
     func newCardCoordinator(root: AppNavigationController) -> Coordinator {

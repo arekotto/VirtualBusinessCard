@@ -1,5 +1,5 @@
 //
-//  PersonalCardVersionsVM.swift
+//  PersonalCardLocalizationsVM.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 09/08/2020.
@@ -8,20 +8,25 @@
 
 import UIKit
 import Firebase
+import CoreMotion
 
-protocol PersonalCardVersionsVMDelegate: class {
+protocol PersonalCardLocalizationsVMDelegate: class {
     func refreshData()
     func presentErrorAlert(message: String)
     func popSelf()
     func presentLoadingAlert(viewModel: LoadingPopoverVM)
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
 
-final class PersonalCardVersionsVM: PartialUserViewModel {
+final class PersonalCardLocalizationsVM: PartialUserViewModel, MotionDataSource {
 
-    typealias DataModel = PersonalCardVersionsView.TableCell.DataModel
+    typealias DataModel = PersonalCardLocalizationsView.TableCell.DataModel
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DataModel>
 
-    weak var delegate: PersonalCardVersionsVMDelegate?
+    weak var delegate: PersonalCardLocalizationsVMDelegate?
+
+    private(set) lazy var motionManager = CMMotionManager()
+
     private let cardID: BusinessCardID
     private let currentLocale = Locale.current
 
@@ -32,11 +37,15 @@ final class PersonalCardVersionsVM: PartialUserViewModel {
         self.cardID = cardID
         super.init(userID: userID)
     }
+
+    func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        delegate?.didUpdateMotionData(motion, over: timeFrame)
+    }
 }
 
 // MARK: - ViewController API
 
-extension PersonalCardVersionsVM {
+extension PersonalCardLocalizationsVM {
 
     var newBusinessCardImage: UIImage {
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
@@ -182,7 +191,7 @@ extension PersonalCardVersionsVM {
 
 // MARK: - Firebase
 
-extension PersonalCardVersionsVM {
+extension PersonalCardLocalizationsVM {
     private var cardCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
     }
@@ -226,7 +235,7 @@ extension PersonalCardVersionsVM {
 
 }
 
-extension PersonalCardVersionsVM {
+extension PersonalCardLocalizationsVM {
     struct ActionConfiguration {
         let title: String
         let deleteActionTitle: String
@@ -236,7 +245,7 @@ extension PersonalCardVersionsVM {
 
 // MARK: - Section
 
-extension PersonalCardVersionsVM {
+extension PersonalCardLocalizationsVM {
     enum Section {
         case main
     }

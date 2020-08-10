@@ -1,5 +1,5 @@
 //
-//  PersonalCardVersionsVC.swift
+//  PersonalCardLocalizationsVC.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 09/08/2020.
@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import CoreMotion
 
-final class PersonalCardVersionsVC: AppViewController<PersonalCardVersionsView, PersonalCardVersionsVM> {
+final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizationsView, PersonalCardLocalizationsVM> {
 
-    private typealias DataSource = UITableViewDiffableDataSource<PersonalCardVersionsVM.Section, PersonalCardVersionsView.TableCell.DataModel>
+    private typealias DataSource = UITableViewDiffableDataSource<PersonalCardLocalizationsVM.Section, PersonalCardLocalizationsView.TableCell.DataModel>
 
     private lazy var tableViewDataSource = makeTableViewDataSource()
 
@@ -29,6 +30,12 @@ final class PersonalCardVersionsVC: AppViewController<PersonalCardVersionsView, 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         contentView.tableView.deselectSelectedRows(animated: true)
+        viewModel.startUpdatingMotionData(in: 0.2)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewModel.pauseUpdatingMotionData()
     }
 
     private func setupContentView() {
@@ -44,7 +51,7 @@ final class PersonalCardVersionsVC: AppViewController<PersonalCardVersionsView, 
 
     private func makeTableViewDataSource() -> DataSource {
         DataSource(tableView: contentView.tableView) { tableView, indexPath, dataModel in
-            let cell: PersonalCardVersionsView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
+            let cell: PersonalCardLocalizationsView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
             cell.setDataModel(dataModel)
             return cell
         }
@@ -83,7 +90,7 @@ final class PersonalCardVersionsVC: AppViewController<PersonalCardVersionsView, 
 // MARK: - Actions
 
 @objc
-private extension PersonalCardVersionsVC {
+private extension PersonalCardLocalizationsVC {
     func didTapNewVersionButton() {
         presentLanguagesVC(viewModel: viewModel.newLocalizationLanguageVM())
     }
@@ -91,7 +98,7 @@ private extension PersonalCardVersionsVC {
 
 // MARK: - UITableViewDelegate
 
-extension PersonalCardVersionsVC: UITableViewDelegate {
+extension PersonalCardLocalizationsVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let config = viewModel.actionConfig(for: indexPath) else { return }
 
@@ -117,9 +124,15 @@ extension PersonalCardVersionsVC: UITableViewDelegate {
     }
 }
 
-// MARK: - PersonalCardVersionsVMDelegate
+// MARK: - PersonalCardLocalizationsVMDelegate
 
-extension PersonalCardVersionsVC: PersonalCardVersionsVMDelegate {
+extension PersonalCardLocalizationsVC: PersonalCardLocalizationsVMDelegate {
+    func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+        (contentView.tableView.visibleCells as! [PersonalCardLocalizationsView.TableCell]).forEach { cell in
+            cell.cardSceneView.updateMotionData(motion, over: timeFrame)
+        }
+    }
+
     func presentErrorAlert(message: String) {
         if let presentedVC = presentedViewController {
             presentedVC.dismiss(animated: true) {
@@ -148,7 +161,7 @@ extension PersonalCardVersionsVC: PersonalCardVersionsVMDelegate {
 
 // MARK: - LanguagesTVCDelegate
 
-extension PersonalCardVersionsVC: LanguagesTVCDelegate {
+extension PersonalCardLocalizationsVC: LanguagesTVCDelegate {
     func languagesTVC(_ viewController: LanguagesTVC, didFinishWith languageCode: String?) {
         contentView.tableView.deselectSelectedRows(animated: true)
         guard let code = languageCode, code != "" else { return }

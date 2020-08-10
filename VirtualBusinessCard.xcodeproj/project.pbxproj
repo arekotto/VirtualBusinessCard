@@ -121,9 +121,9 @@
 		4577CC8724890B900012EDC8 /* SingletonFirestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC8624890B900012EDC8 /* SingletonFirestoreable.swift */; };
 		457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B4E7A24531B6800761A90 /* SceneVC.swift */; };
 		457B4E7D24531BC700761A90 /* SceneKitAssets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */; };
-		457F071024E01C6000F95148 /* PersonalCardVersionsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F070F24E01C6000F95148 /* PersonalCardVersionsVC.swift */; };
-		457F071224E01CA100F95148 /* PersonalCardVersionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F071124E01CA100F95148 /* PersonalCardVersionsView.swift */; };
-		457F071424E01CB500F95148 /* PersonalCardVersionsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F071324E01CB500F95148 /* PersonalCardVersionsVM.swift */; };
+		457F071024E01C6000F95148 /* PersonalCardLocalizationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F070F24E01C6000F95148 /* PersonalCardLocalizationsVC.swift */; };
+		457F071224E01CA100F95148 /* PersonalCardLocalizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F071124E01CA100F95148 /* PersonalCardLocalizationsView.swift */; };
+		457F071424E01CB500F95148 /* PersonalCardLocalizationsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F071324E01CB500F95148 /* PersonalCardLocalizationsVM.swift */; };
 		4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E994243B084000184AA4 /* ReceiveVC.swift */; };
 		4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E999243B6A7500184AA4 /* DisplayVC.swift */; };
 		458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */; };
@@ -335,9 +335,9 @@
 		4577CC8624890B900012EDC8 /* SingletonFirestoreable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingletonFirestoreable.swift; sourceTree = "<group>"; };
 		457B4E7A24531B6800761A90 /* SceneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneVC.swift; sourceTree = "<group>"; };
 		457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = SceneKitAssets.scnassets; sourceTree = "<group>"; };
-		457F070F24E01C6000F95148 /* PersonalCardVersionsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardVersionsVC.swift; sourceTree = "<group>"; };
-		457F071124E01CA100F95148 /* PersonalCardVersionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardVersionsView.swift; sourceTree = "<group>"; };
-		457F071324E01CB500F95148 /* PersonalCardVersionsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardVersionsVM.swift; sourceTree = "<group>"; };
+		457F070F24E01C6000F95148 /* PersonalCardLocalizationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardLocalizationsVC.swift; sourceTree = "<group>"; };
+		457F071124E01CA100F95148 /* PersonalCardLocalizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardLocalizationsView.swift; sourceTree = "<group>"; };
+		457F071324E01CB500F95148 /* PersonalCardLocalizationsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardLocalizationsVM.swift; sourceTree = "<group>"; };
 		4580E98F2437FD1400184AA4 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
 		4580E994243B084000184AA4 /* ReceiveVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveVC.swift; sourceTree = "<group>"; };
 		4580E999243B6A7500184AA4 /* DisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVC.swift; sourceTree = "<group>"; };
@@ -909,9 +909,9 @@
 		457F070E24E01C3000F95148 /* PersonalCardVersions */ = {
 			isa = PBXGroup;
 			children = (
-				457F070F24E01C6000F95148 /* PersonalCardVersionsVC.swift */,
-				457F071124E01CA100F95148 /* PersonalCardVersionsView.swift */,
-				457F071324E01CB500F95148 /* PersonalCardVersionsVM.swift */,
+				457F070F24E01C6000F95148 /* PersonalCardLocalizationsVC.swift */,
+				457F071124E01CA100F95148 /* PersonalCardLocalizationsView.swift */,
+				457F071324E01CB500F95148 /* PersonalCardLocalizationsVM.swift */,
 			);
 			path = PersonalCardVersions;
 			sourceTree = "<group>";
@@ -1370,7 +1370,7 @@
 				4539A0A224E134610063C267 /* UIBarButtonItem.swift in Sources */,
 				45C1600F24852DCB00806718 /* AppViewController.swift in Sources */,
 				45B25F212493B32C006DD0F7 /* CardDetailsVM.swift in Sources */,
-				457F071224E01CA100F95148 /* PersonalCardVersionsView.swift in Sources */,
+				457F071224E01CA100F95148 /* PersonalCardLocalizationsView.swift in Sources */,
 				4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */,
 				452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */,
 				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
@@ -1475,13 +1475,13 @@
 				45B5E31D241FED0700028B0A /* LoginWithAppleButton.swift in Sources */,
 				45B5E317241FA09900028B0A /* LoginViewModel.swift in Sources */,
 				454CF7DE24A9F27E00074E0D /* AuthErrorCode.swift in Sources */,
-				457F071424E01CB500F95148 /* PersonalCardVersionsVM.swift in Sources */,
+				457F071424E01CB500F95148 /* PersonalCardLocalizationsVM.swift in Sources */,
 				45C1601124852E2900806718 /* AppView.swift in Sources */,
 				459DC58A23FEA4CB002F03DD /* UserPublic.swift in Sources */,
 				45C1601524852EF100806718 /* AppViewModel.swift in Sources */,
 				45F41FA324600D0A002BC37F /* BusinessCardSceneView.swift in Sources */,
 				4577CC8724890B900012EDC8 /* SingletonFirestoreable.swift in Sources */,
-				457F071024E01C6000F95148 /* PersonalCardVersionsVC.swift in Sources */,
+				457F071024E01C6000F95148 /* PersonalCardLocalizationsVC.swift in Sources */,
 				45AF8B0224DE961300070707 /* AppTableViewController.swift in Sources */,
 				4537CEE723F6D259003602EA /* ContentView.swift in Sources */,
 				45139C4B249794AF00DE1E9F /* PersonalBusinessCard.swift in Sources */,

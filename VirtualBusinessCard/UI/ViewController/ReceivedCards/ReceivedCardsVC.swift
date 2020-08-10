@@ -144,8 +144,7 @@ extension ReceivedCardsVC: UICollectionViewDelegate {
 
 extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        let cells = contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]
-        cells.forEach { cell in
+        (contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]).forEach { cell in
             cell.cardFrontBackView.updateMotionData(motion, over: timeFrame)
         }
     }

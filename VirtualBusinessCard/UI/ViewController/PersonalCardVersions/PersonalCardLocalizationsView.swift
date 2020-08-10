@@ -1,5 +1,5 @@
 //
-//  PersonalCardVersionsView.swift
+//  PersonalCardLocalizationsView.swift
 //  VirtualBusinessCard
 //
 //  Created by Arek Otto on 09/08/2020.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class PersonalCardVersionsView: AppBackgroundView {
+final class PersonalCardLocalizationsView: AppBackgroundView {
 
     let tableView: UITableView = {
         let this = UITableView(frame: .zero, style: .insetGrouped)
@@ -33,7 +33,7 @@ final class PersonalCardVersionsView: AppBackgroundView {
 
 // MARK: - TableCell
 
-extension PersonalCardVersionsView {
+extension PersonalCardLocalizationsView {
 
     final class TableCell: AppTableViewCell, Reusable {
 
@@ -105,7 +105,7 @@ extension PersonalCardVersionsView {
     }
 }
 
-extension PersonalCardVersionsView.TableCell {
+extension PersonalCardLocalizationsView.TableCell {
 
     func setDataModel(_ dataModel: DataModel) {
         languageTitleLabel.text = dataModel.title

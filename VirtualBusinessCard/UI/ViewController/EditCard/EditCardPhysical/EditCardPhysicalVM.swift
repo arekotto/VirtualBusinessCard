@@ -16,9 +16,9 @@ protocol EditCardPhysicalVMDelegate: class {
 
 final class EditCardPhysicalVM: AppViewModel, MotionDataSource {
 
-    private(set) lazy var motionManager = CMMotionManager()
-
     weak var delegate: EditCardPhysicalVMDelegate?
+    
+    private(set) lazy var motionManager = CMMotionManager()
 
     private(set) var subtitle: String
 

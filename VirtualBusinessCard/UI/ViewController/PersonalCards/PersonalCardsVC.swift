@@ -74,7 +74,7 @@ extension PersonalCardsVC: UICollectionViewDataSource, UICollectionViewDelegate 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        show(PersonalCardVersionsVC(viewModel: viewModel.personaCardVersionsVM(for: indexPath)), sender: nil)
+        show(PersonalCardLocalizationsVC(viewModel: viewModel.personaCardVersionsVM(for: indexPath)), sender: nil)
     }
 }
 
