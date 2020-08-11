@@ -94,10 +94,6 @@
 		4552F22324D448480062FC2B /* EditCardImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22224D448480062FC2B /* EditCardImagesView.swift */; };
 		4552F22524D4485E0062FC2B /* EditCardImagesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22424D4485E0062FC2B /* EditCardImagesVM.swift */; };
 		4552F22924D45F580062FC2B /* CardImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4552F22824D45F580062FC2B /* CardImagePicker.swift */; };
-		4558801E24D9FD1400729FA9 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4558801D24D9FD1400729FA9 /* FirebaseFirestoreSwift */; };
-		4558802024D9FD1400729FA9 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4558801F24D9FD1400729FA9 /* FirebaseAuth */; };
-		4558802224D9FD1400729FA9 /* FirebaseStorageSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4558802124D9FD1400729FA9 /* FirebaseStorageSwift */; };
-		4558802424D9FD1400729FA9 /* Firebase in Frameworks */ = {isa = PBXBuildFile; productRef = 4558802324D9FD1400729FA9 /* Firebase */; };
 		4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826724A4BEEF001C763B /* BusinessCardTag.swift */; };
 		4558826B24A4C576001C763B /* BusinessCardTagMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826A24A4C576001C763B /* BusinessCardTagMC.swift */; };
 		4558826D24A4D4AF001C763B /* CardGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4558826C24A4D4AF001C763B /* CardGroup.swift */; };
@@ -202,6 +198,9 @@
 		45F41FA324600D0A002BC37F /* BusinessCardSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */; };
 		45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F41FA424600E79002BC37F /* BusinessCardTVC.swift */; };
 		45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */; };
+		901137D438BACAE742FED96B /* libPods-VirtualBusinessCardTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 225F8F5404FE01F560E6FC74 /* libPods-VirtualBusinessCardTests.a */; };
+		AB274D7CEDDE0E7FEF6FD181 /* libPods-VirtualBusinessCard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5077CB5120F204AB7021B9BA /* libPods-VirtualBusinessCard.a */; };
+		CC14E2732B689C0AC1591601 /* libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD75BDD4C6BCA73D7BA68D2B /* libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -222,6 +221,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		225F8F5404FE01F560E6FC74 /* libPods-VirtualBusinessCardTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualBusinessCardTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A0DC13192D6346DE8396554 /* Pods-VirtualBusinessCard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard.release.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard.release.xcconfig"; sourceTree = "<group>"; };
+		2D65912EF8C08ABA45E7F604 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		450EB4BF24D16297000D31ED /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		4510341B249267D5009C4B26 /* ImageAndTextureFetchTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageAndTextureFetchTask.swift; sourceTree = "<group>"; };
 		4510341D2492697E009C4B26 /* CGSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGSize.swift; sourceTree = "<group>"; };
@@ -416,6 +418,12 @@
 		45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardSceneView.swift; sourceTree = "<group>"; };
 		45F41FA424600E79002BC37F /* BusinessCardTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTVC.swift; sourceTree = "<group>"; };
 		45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTransitionAnimator.swift; sourceTree = "<group>"; };
+		5077CB5120F204AB7021B9BA /* libPods-VirtualBusinessCard.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualBusinessCard.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BD0FC3D399E2E0AA70D611B /* Pods-VirtualBusinessCardTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCardTests.debug.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCardTests/Pods-VirtualBusinessCardTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B07E6ED36D0724AC935FB3C4 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig"; sourceTree = "<group>"; };
+		BFB99EB3F9580C9F28956E8C /* Pods-VirtualBusinessCard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCard.debug.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard.debug.xcconfig"; sourceTree = "<group>"; };
+		D13F9AE30BC1A1BDD6F6D05E /* Pods-VirtualBusinessCardTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCardTests.release.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCardTests/Pods-VirtualBusinessCardTests.release.xcconfig"; sourceTree = "<group>"; };
+		DD75BDD4C6BCA73D7BA68D2B /* libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -427,10 +435,7 @@
 				4543F1C824D46C52006F30A5 /* TOCropViewController in Frameworks */,
 				45174D7A24BB4189009BFE58 /* Reachability in Frameworks */,
 				452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */,
-				4558802424D9FD1400729FA9 /* Firebase in Frameworks */,
-				4558802024D9FD1400729FA9 /* FirebaseAuth in Frameworks */,
-				4558801E24D9FD1400729FA9 /* FirebaseFirestoreSwift in Frameworks */,
-				4558802224D9FD1400729FA9 /* FirebaseStorageSwift in Frameworks */,
+				AB274D7CEDDE0E7FEF6FD181 /* libPods-VirtualBusinessCard.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,6 +443,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				901137D438BACAE742FED96B /* libPods-VirtualBusinessCardTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,6 +451,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC14E2732B689C0AC1591601 /* libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -629,6 +636,7 @@
 				4537CF0323F6D25A003602EA /* VirtualBusinessCardUITests */,
 				4537CEE023F6D259003602EA /* Products */,
 				A043EB3D702FD4AD55973A83 /* Frameworks */,
+				A337C1C961A8331AE0B5560C /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1167,8 +1175,24 @@
 			isa = PBXGroup;
 			children = (
 				4580E98F2437FD1400184AA4 /* CoreNFC.framework */,
+				5077CB5120F204AB7021B9BA /* libPods-VirtualBusinessCard.a */,
+				DD75BDD4C6BCA73D7BA68D2B /* libPods-VirtualBusinessCard-VirtualBusinessCardUITests.a */,
+				225F8F5404FE01F560E6FC74 /* libPods-VirtualBusinessCardTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A337C1C961A8331AE0B5560C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BFB99EB3F9580C9F28956E8C /* Pods-VirtualBusinessCard.debug.xcconfig */,
+				2A0DC13192D6346DE8396554 /* Pods-VirtualBusinessCard.release.xcconfig */,
+				2D65912EF8C08ABA45E7F604 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig */,
+				B07E6ED36D0724AC935FB3C4 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig */,
+				9BD0FC3D399E2E0AA70D611B /* Pods-VirtualBusinessCardTests.debug.xcconfig */,
+				D13F9AE30BC1A1BDD6F6D05E /* Pods-VirtualBusinessCardTests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1178,10 +1202,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4537CF0923F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCard" */;
 			buildPhases = (
+				FABF9221331430B4855B9D4B /* [CP] Check Pods Manifest.lock */,
 				4537CEDB23F6D259003602EA /* Sources */,
 				4537CEDC23F6D259003602EA /* Frameworks */,
 				4537CEDD23F6D259003602EA /* Resources */,
 				45B01C1924D16A85009BDABC /* Run SwiftLint */,
+				660F24BB2F4D7B525A8B63B1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1193,10 +1219,6 @@
 				452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */,
 				45174D7924BB4189009BFE58 /* Reachability */,
 				4543F1C724D46C52006F30A5 /* TOCropViewController */,
-				4558801D24D9FD1400729FA9 /* FirebaseFirestoreSwift */,
-				4558801F24D9FD1400729FA9 /* FirebaseAuth */,
-				4558802124D9FD1400729FA9 /* FirebaseStorageSwift */,
-				4558802324D9FD1400729FA9 /* Firebase */,
 			);
 			productName = VirtualBusinessCard;
 			productReference = 4537CEDF23F6D259003602EA /* Virtual Business Card.app */;
@@ -1206,6 +1228,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4537CF0C23F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCardTests" */;
 			buildPhases = (
+				1B940A3DA72BD62C62D00634 /* [CP] Check Pods Manifest.lock */,
 				4537CEF123F6D25A003602EA /* Sources */,
 				4537CEF223F6D25A003602EA /* Frameworks */,
 				4537CEF323F6D25A003602EA /* Resources */,
@@ -1224,9 +1247,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4537CF0F23F6D25A003602EA /* Build configuration list for PBXNativeTarget "VirtualBusinessCardUITests" */;
 			buildPhases = (
+				E67E55F3EA3855E921F0CBD9 /* [CP] Check Pods Manifest.lock */,
 				4537CEFC23F6D25A003602EA /* Sources */,
 				4537CEFD23F6D25A003602EA /* Frameworks */,
 				4537CEFE23F6D25A003602EA /* Resources */,
+				72EE83084F4C800F7F4C2373 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1275,7 +1300,6 @@
 				452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */,
 				45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */,
 				4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
-				4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 4537CEE023F6D259003602EA /* Products */;
 			projectDirPath = "";
@@ -1319,6 +1343,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1B940A3DA72BD62C62D00634 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VirtualBusinessCardTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		45B01C1924D16A85009BDABC /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1336,6 +1382,84 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		660F24BB2F4D7B525A8B63B1 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		72EE83084F4C800F7F4C2373 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E67E55F3EA3855E921F0CBD9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FABF9221331430B4855B9D4B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VirtualBusinessCard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1687,6 +1811,7 @@
 		};
 		4537CF0A23F6D25A003602EA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BFB99EB3F9580C9F28956E8C /* Pods-VirtualBusinessCard.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -1697,15 +1822,7 @@
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_BITCODE = YES;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/FirebaseAnalytics",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/GoogleSignIn",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/FirebaseStorage",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/FirebaseFirestore",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/FirebaseAuth",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = VirtualBusinessCard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1722,6 +1839,7 @@
 		};
 		4537CF0B23F6D25A003602EA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2A0DC13192D6346DE8396554 /* Pods-VirtualBusinessCard.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "";
@@ -1732,15 +1850,7 @@
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_BITCODE = YES;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/FirebaseAnalytics",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/GoogleSignIn",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/FirebaseStorage",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/FirebaseFirestore",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Depenedency/FirebaseAuth",
-					"$(PROJECT_DIR)/VirtualBusinessCard/Frameworks",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = VirtualBusinessCard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1757,6 +1867,7 @@
 		};
 		4537CF0D23F6D25A003602EA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9BD0FC3D399E2E0AA70D611B /* Pods-VirtualBusinessCardTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1779,6 +1890,7 @@
 		};
 		4537CF0E23F6D25A003602EA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D13F9AE30BC1A1BDD6F6D05E /* Pods-VirtualBusinessCardTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1801,6 +1913,7 @@
 		};
 		4537CF1023F6D25A003602EA /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2D65912EF8C08ABA45E7F604 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1821,6 +1934,7 @@
 		};
 		4537CF1123F6D25A003602EA /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B07E6ED36D0724AC935FB3C4 /* Pods-VirtualBusinessCard-VirtualBusinessCardUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1905,14 +2019,6 @@
 				minimumVersion = 2.5.4;
 			};
 		};
-		4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -1938,26 +2044,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */;
 			productName = TOCropViewController;
-		};
-		4558801D24D9FD1400729FA9 /* FirebaseFirestoreSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestoreSwift;
-		};
-		4558801F24D9FD1400729FA9 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		4558802124D9FD1400729FA9 /* FirebaseStorageSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseStorageSwift;
-		};
-		4558802324D9FD1400729FA9 /* Firebase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4558801C24D9FD1400729FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = Firebase;
 		};
 		458EF404248B9B6D00EC76D6 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
