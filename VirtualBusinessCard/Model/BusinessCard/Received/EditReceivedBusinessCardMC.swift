@@ -90,8 +90,16 @@ final class EditReceivedBusinessCardMC {
 
 extension EditReceivedBusinessCardMC {
 
-    convenience init(originalID: BusinessCardID, ownerID: UserID, languageVersions: [BusinessCardLocalization]) {
-        let newCard = ReceivedBusinessCard(id: Self.unsavedObjectID, originalID: originalID, ownerID: ownerID, receivingDate: Date(), languageVersions: languageVersions)
+    convenience init(originalID: BusinessCardID, exchangeID: DirectCardExchangeID, ownerID: UserID, languageVersions: [BusinessCardLocalization]) {
+        let newCard = ReceivedBusinessCard(
+            id: Self.unsavedObjectID,
+            exchangeID: exchangeID,
+            originalID: originalID,
+            ownerID: ownerID,
+            receivingDate: Date(),
+            mostRecentUpdateDate: Date(),
+            languageVersions: languageVersions
+        )
         self.init(card: newCard)
     }
 

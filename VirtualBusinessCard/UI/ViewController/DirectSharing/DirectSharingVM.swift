@@ -33,8 +33,11 @@ final class DirectSharingVM: CompleteUserViewModel, MotionDataSource {
     private let card: PersonalBusinessCardMC
 
     private var ownSharingExchangeData: DirectSharingExchangeData?
-    private var joinedExchangeSnapshotListener: ListenerRegistration?
+    private var ownSharingExchangeDataDocumentRef: DocumentReference?
     private var ownExchangeSnapshotListener: ListenerRegistration?
+
+    private var joinedSharingExchangeData: DirectCardExchangeMC?
+    private var joinedExchangeSnapshotListener: ListenerRegistration?
 
     init(userID: UserID, sharedCard: PersonalBusinessCardMC) {
         card = sharedCard
@@ -93,12 +96,26 @@ extension DirectSharingVM {
     var hasPerformedInitialFetch: Bool {
         user?.containsPrivateData ?? false
     }
+
+    func cancelSharing() {
+        ownSharingExchangeDataDocumentRef?.delete()
+        ownExchangeSnapshotListener?.remove()
+        joinedExchangeSnapshotListener?.remove()
+    }
     
-    func generateQRCode() {
+    func beginSharing() {
         let accessToken = Self.randomAccessToken(length: 20)
         
         let docRef = directCardExchangeReference.document()
-        let exchange = DirectCardExchange(id: docRef.documentID, accessToken: accessToken, sharingUserID: userID, sharingUserCardID: card.id, sharingUserCardLocalizations: card.languageVersions)
+        let exchange = DirectCardExchange(
+            id: docRef.documentID,
+            accessToken: accessToken,
+            sharingUserID: userID,
+            sharingUserCardID: card.id,
+            sharingUserCardLocalizations: card.languageVersions,
+            sharingUserMostRecentUpdate: Date()
+        )
+
         docRef.setData(exchange.asDocument()) { [weak self] error in
             
             guard let self = self else { return }
@@ -110,6 +127,7 @@ extension DirectSharingVM {
             }
 
             self.ownExchangeSnapshotListener?.remove()
+            self.ownSharingExchangeDataDocumentRef = docRef
             self.ownExchangeSnapshotListener = docRef.addSnapshotListener { [weak self] docSnapshot, error in
                 self?.initiatedExchangeDidChange(docSnapshot, error)
             }
@@ -132,7 +150,7 @@ extension DirectSharingVM {
         }
     }
     
-    func didScanCode(string: String) {
+    func joinExchange(using string: String) {
         guard let jsonData = string.data(using: .utf8) else {
             delegate?.didFailReadingQRCode()
             return
@@ -192,7 +210,15 @@ extension DirectSharingVM {
 
         guard receivingUserID != self.userID else { return }
 
-        let receivedCard = EditReceivedBusinessCardMC(originalID: receivingUserCardID, ownerID: receivingUserID, languageVersions: receivingUserCardLocalizations)
+        let receivedCard = EditReceivedBusinessCardMC(
+            originalID: receivingUserCardID,
+            exchangeID: initiatedExchange.id,
+            ownerID: receivingUserID,
+            languageVersions: receivingUserCardLocalizations
+        )
+
+        user?.addExchange(id: initiatedExchange.id, toCardID: card.id)
+        user?.save()
 
         ownExchangeSnapshotListener?.remove()
         playHapticFeedback(of: receivedCard.displayedLocalization.hapticFeedbackSharpness)
@@ -217,9 +243,13 @@ extension DirectSharingVM {
         joinedExchange.receivingUserID = userID
         joinedExchange.receivingUserCardID = card.id
         joinedExchange.receivingUserCardLocalizations = card.languageVersions
-        joinedExchange.saveScanningUserData(in: directCardExchangeReference) { [weak self] result in
+        joinedExchange.receivingUserMostRecentUpdate = Date()
+
+        joinedSharingExchangeData = joinedExchange
+        joinedSharingExchangeData?.saveScanningUserData(in: directCardExchangeReference) { [weak self] result in
 
             guard let self = self else { return }
+            guard let joinedSharingExchangeData = self.joinedSharingExchangeData else { return }
 
             switch result {
             case .failure(let error):
@@ -228,10 +258,17 @@ extension DirectSharingVM {
             case .success:
 
                 let receivedCard = EditReceivedBusinessCardMC(
-                    originalID: joinedExchange.sharingUserID,
-                    ownerID: joinedExchange.sharingUserID,
-                    languageVersions: joinedExchange.sharingUserCardLocalizations
+                    originalID: joinedSharingExchangeData.sharingUserID,
+                    exchangeID: joinedSharingExchangeData.id,
+                    ownerID: joinedSharingExchangeData.sharingUserID,
+                    languageVersions: joinedSharingExchangeData.sharingUserCardLocalizations
                 )
+
+                self.ownSharingExchangeDataDocumentRef?.delete()
+
+                self.user?.addExchange(id: joinedSharingExchangeData.id, toCardID: self.card.id)
+                self.user?.save()
+
                 self.playHapticFeedback(of: receivedCard.displayedLocalization.hapticFeedbackSharpness)
                 self.delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: self.userID, sharedCard: receivedCard))
             }

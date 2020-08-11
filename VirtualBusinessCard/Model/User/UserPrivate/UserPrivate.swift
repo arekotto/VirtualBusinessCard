@@ -11,6 +11,9 @@ import Foundation
 struct UserPrivate: Codable {
 
     var cardExchangeAccessTokens: [String]
+
+    var sharedPersonalCards: [BusinessCardID: [DirectCardExchangeID]]
+    
 }
 
 extension UserPrivate: SingletonFirestoreable {

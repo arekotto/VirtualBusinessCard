@@ -34,6 +34,11 @@ final class DirectCardExchangeMC {
         get { exchange.receivingUserCardLocalizations }
         set { exchange.receivingUserCardLocalizations = newValue }
     }
+
+    var receivingUserMostRecentUpdate: Date? {
+        get { exchange.receivingUserMostRecentUpdate }
+        set { exchange.receivingUserMostRecentUpdate = newValue }
+    }
     
     init(exchange: DirectCardExchange) {
         self.exchange = exchange

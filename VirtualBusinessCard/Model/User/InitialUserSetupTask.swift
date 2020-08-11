@@ -81,7 +81,7 @@ struct InitialUserSetupTask {
                     
                     print(#file, "setting up new private user")
                     
-                    userPrivateDocumentReference.setData(UserPrivate(cardExchangeAccessTokens: []).asDocument()) { error in
+                    userPrivateDocumentReference.setData(UserPrivate(cardExchangeAccessTokens: [], sharedPersonalCards: [:]).asDocument()) { error in
                         if let err = error {
                             completion(.failure(err))
                         } else {

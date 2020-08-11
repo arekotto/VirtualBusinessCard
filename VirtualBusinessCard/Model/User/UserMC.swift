@@ -57,6 +57,14 @@ class UserMC: ModelController {
     func addCardExchangeAccessToken(_ token: String) {
         userPrivate?.cardExchangeAccessTokens.append(token)
     }
+
+    func addExchange(id exchangeID: DirectCardExchangeID, toCardID cardID: BusinessCardID) {
+        if let existingExchanges = userPrivate?.sharedPersonalCards[cardID] {
+            userPrivate?.sharedPersonalCards[cardID] = existingExchanges + [exchangeID]
+        } else {
+            userPrivate?.sharedPersonalCards[cardID] = [exchangeID]
+        }
+    }
 }
 
 // MARK: - Extensions for Firebase

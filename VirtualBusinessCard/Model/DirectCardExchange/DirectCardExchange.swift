@@ -18,10 +18,12 @@ struct DirectCardExchange: Codable {
     var sharingUserID: UserID
     var sharingUserCardID: BusinessCardID
     var sharingUserCardLocalizations: [BusinessCardLocalization]
+    var sharingUserMostRecentUpdate: Date
 
     var receivingUserCardID: BusinessCardID?
     var receivingUserID: UserID?
     var receivingUserCardLocalizations: [BusinessCardLocalization]?
+    var receivingUserMostRecentUpdate: Date?
 }
 
 // MARK: - Equatable
@@ -42,6 +44,15 @@ extension DirectCardExchange: Firestoreable {
 
 extension DirectCardExchange {
     enum CodingKeys: String, CodingKey {
-        case id, accessToken, sharingUserID, sharingUserCardID, sharingUserCardLocalizations, receivingUserCardID, receivingUserID, receivingUserCardLocalizations
+        case id
+        case accessToken
+        case sharingUserID
+        case sharingUserCardID
+        case sharingUserCardLocalizations
+        case sharingUserMostRecentUpdate
+        case receivingUserCardID
+        case receivingUserID
+        case receivingUserCardLocalizations
+        case receivingUserMostRecentUpdate
     }
 }

@@ -34,7 +34,7 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
         if appearanceCounter != 0 && viewModel.hasPerformedInitialFetch {
             contentView.qrCodeActivityIndicator.startAnimating()
             contentView.qrCodeImageView.image = nil
-            viewModel.generateQRCode()
+            viewModel.beginSharing()
         }
         appearanceCounter += 1
     }
@@ -120,7 +120,7 @@ extension DirectSharingVC: DirectSharingVMDelegate {
     
     func didFetchData() {
         guard viewModel.qrCode == nil else { return }
-        viewModel.generateQRCode()
+        viewModel.beginSharing()
     }
     
     func didFailReadingQRCode() {
@@ -149,6 +149,7 @@ extension DirectSharingVC: DirectSharingVMDelegate {
 @objc
 private extension DirectSharingVC {
     func didTapCancelButton() {
+        viewModel.cancelSharing()
         dismiss(animated: true)
     }
     
@@ -168,6 +169,6 @@ extension DirectSharingVC: AVCaptureMetadataOutputObjectsDelegate {
         guard let scannedString = (metadataObjects.first as? AVMetadataMachineReadableCodeObject)?.stringValue else {
             return
         }
-        viewModel.didScanCode(string: scannedString)
+        viewModel.joinExchange(using: scannedString)
     }
 }

@@ -86,7 +86,7 @@ struct SampleBCUploadTask {
             default: cardTagIDs = []
             }
             
-            let personalBC = ReceivedBusinessCard(id: docRef.documentID, originalID: "some old ID", ownerID: "Test User", receivingDate: day(from: Date(), offset: idx % 5), languageVersions: [bcData], tagIDs: cardTagIDs)
+            let personalBC = ReceivedBusinessCard(id: docRef.documentID, exchangeID: "", originalID: "some old ID", ownerID: "Test User", receivingDate: day(from: Date(), offset: idx % 5), mostRecentUpdateDate: Date(), languageVersions: [bcData], tagIDs: cardTagIDs)
             docRef.setData(personalBC.asDocument())
         }
     }
