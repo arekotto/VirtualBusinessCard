@@ -156,15 +156,12 @@ extension PersonalCardLocalizationsVM {
         var encounteredError: Error?
 
         let dispatchGroup = DispatchGroup()
-
         dispatchGroup.enter()
         dispatchGroup.enter()
 
-        var exchangesOwnerSnapshotListener: ListenerRegistration?
-        exchangesOwnerSnapshotListener = directCardExchangeReference
+        directCardExchangeReference
             .whereField(DirectCardExchange.CodingKeys.ownerID.rawValue, isEqualTo: userID)
-            .addSnapshotListener { querySnapshot, error in
-                exchangesOwnerSnapshotListener?.remove()
+            .getDocuments(source: .server) { querySnapshot, error in
 
                 guard let snapshots = querySnapshot else {
                     print(#file, error?.localizedDescription ?? "")
@@ -177,11 +174,9 @@ extension PersonalCardLocalizationsVM {
                 dispatchGroup.leave()
             }
 
-        var exchangesGuestSnapshotListener: ListenerRegistration?
-        exchangesGuestSnapshotListener = directCardExchangeReference
+        directCardExchangeReference
             .whereField(DirectCardExchange.CodingKeys.guestID.rawValue, isEqualTo: userID)
-            .addSnapshotListener { querySnapshot, error in
-                exchangesGuestSnapshotListener?.remove()
+            .getDocuments(source: .server) { querySnapshot, error in
 
                 guard let snapshots = querySnapshot else {
                     print(#file, error?.localizedDescription ?? "")
@@ -197,7 +192,6 @@ extension PersonalCardLocalizationsVM {
         dispatchGroup.notify(queue: .main) {
             if encounteredError != nil {
                 let message = NSLocalizedString("We could not push your changes. Please check your network connection and try again.", comment: "")
-
                 self.delegate?.presentErrorAlert(message: message)
             } else {
                 let exchangeWithCurrentCard =  (ownerExchangeIDs + guestExchangeIDs).filter { exchangeIDs.contains($0) }
@@ -305,9 +299,8 @@ extension PersonalCardLocalizationsVM {
     }
 
     private func updateAllExchanges(ids: [DirectCardExchangeID]) {
-        let exchangeReferences: [DocumentReference] = ids.map {
-            Self.sharedDataBase.document("\(directCardExchangeReference.path)/\($0)")
-        }
+        let exchangeReferences = ids.map { directCardExchangeReference.document($0) }
+
         Self.sharedDataBase.runTransaction { [weak self] transaction, errorPointer in
             guard let self = self, let card = self.card else { return nil }
             let exchanges: [DirectCardExchangeMC]

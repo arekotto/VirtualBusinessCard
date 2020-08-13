@@ -110,20 +110,14 @@ extension EditTagVM {
         delegate?.presentLoadingAlert(title: NSLocalizedString("Deleting tag", comment: ""))
         let tagIDs = ReceivedBusinessCard.CodingKeys.tagIDs.rawValue
         let query = receivedCardsCollectionReference.whereField(tagIDs, arrayContains: tag.id)
-        query.getDocuments(source: .server) { snap, error in
-            if let err = error {
-                print(err.localizedDescription)
+        query.getDocuments(source: .server) { snapshot, error in
+            guard let snap = snapshot  else {
+                print(#file, "error fetching cards", error?.localizedDescription ?? "")
                 let msg = NSLocalizedString("Please check your internet connection and try again.", comment: "")
                 self.delegate?.presentErrorAlert(message: msg)
-            } else {
-                snap?.documents.forEach {
-                    let card = EditReceivedBusinessCardMC(documentSnapshot: $0)
-                    card?.tagIDs.removeAll { $0 == self.tag.id }
-                    card?.save(in: self.receivedCardsCollectionReference, fields: [.tagIDs])
-                }
-                self.tag.delete(in: self.tagsCollectionReference)
-                self.delegate?.dismissSelf()
+                return
             }
+            self.deleteTag(taggedCardIDs: snap.documents.map(\.documentID))
         }
     }
     
@@ -150,28 +144,44 @@ extension EditTagVM {
     func didSelectSaveOffline() {
         saveTag()
     }
+
+    private func deleteTag(taggedCardIDs: [BusinessCardID]) {
+        let receivedCardsReferences = taggedCardIDs.map { receivedCardsCollectionReference.document($0) }
+        let tagReference = tagsCollectionReference.document(tag.id)
+        Self.sharedDataBase.runTransaction { [weak self] transaction, errorPointer in
+            guard let self = self else { return nil }
+            let cards: [EditReceivedBusinessCardMC]
+            do {
+                cards = try receivedCardsReferences.map {
+                    let exchangeDocumentSnap = try transaction.getDocument($0)
+                    return try EditReceivedBusinessCardMC(unwrappedWithExchangeDocument: exchangeDocumentSnap)
+                }
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+
+            cards.forEach { $0.tagIDs.removeAll(where: {$0 == self.tag.id}) }
+
+            cards.enumerated().forEach { idx, exchange in
+                transaction.setData(exchange.asDocument(), forDocument: receivedCardsReferences[idx])
+            }
+            transaction.deleteDocument(tagReference)
+            return nil
+        } completion: { [weak self] _, error in
+            if let err = error {
+                print(#file, err.localizedDescription)
+                let message = NSLocalizedString("We could not push your changes. Please check your network connection and try again.", comment: "")
+                self?.delegate?.presentErrorAlert(message: message)
+            } else {
+                self?.delegate?.dismissSelf()
+            }
+        }
+    }
     
     private func saveTag() {
-        var encounteredError: Error?
-        tag.save(in: tagsCollectionReference) { result in
-            switch result {
-            case .success: return
-            case .failure(let error):
-                print(error.localizedDescription)
-                encounteredError = error
-            }
-        }
-        
-        // give firebase some time to return an error if something is very wrong
-        // otherwise data will be stored in cache if offline
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            if encounteredError != nil {
-                let errorTitle = AppError.localizedUnknownErrorDescription
-                self.delegate?.presentErrorAlert(message: errorTitle)
-            } else {
-                self.delegate?.dismissSelf()
-            }
-        }
+        tag.save(in: tagsCollectionReference)
+        delegate?.dismissSelf()
     }
 }
 

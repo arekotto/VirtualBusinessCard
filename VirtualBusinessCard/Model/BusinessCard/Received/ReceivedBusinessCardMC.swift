@@ -94,6 +94,10 @@ extension ReceivedBusinessCardMC {
         guard let businessCard = ReceivedBusinessCard(documentSnapshot: documentSnapshot) else { return nil }
         self.init(card: businessCard)
     }
+
+    convenience init(unwrappedWithExchangeDocument cardDocument: DocumentSnapshot) throws {
+        self.init(card: try ReceivedBusinessCard(unwrappedWithDocumentSnapshot: cardDocument))
+    }
 }
 
 extension ReceivedBusinessCardMC: Equatable {
