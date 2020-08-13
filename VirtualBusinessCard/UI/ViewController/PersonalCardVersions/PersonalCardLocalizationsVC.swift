@@ -45,7 +45,10 @@ final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizat
 
     private func setupNavigationItem() {
         navigationItem.title = NSLocalizedString("Card Localization", comment: "")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewVersionButton))
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewVersionButton)),
+            UIBarButtonItem(image: viewModel.pushChangesToExchangesImages, style: .plain, target: self, action: #selector(didTapPushChangesButton))
+            ]
 
     }
 
@@ -93,6 +96,20 @@ final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizat
 private extension PersonalCardLocalizationsVC {
     func didTapNewVersionButton() {
         presentLanguagesVC(viewModel: viewModel.newLocalizationLanguageVM())
+    }
+
+    func didTapPushChangesButton() {
+        let title = NSLocalizedString("Push Updates to Business Partners", comment: "")
+        let message = NSLocalizedString(
+            "Performing a push will result in your business partners with whom you have exchanged cards in the past, receiving updated card information. Do you want continue?",
+            comment: ""
+        )
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Push Changes", comment: ""), style: .default) { _ in
+            self.viewModel.pushChangesToExchanges()
+        })
+        alert.addCancelAction()
+        present(alert, animated: true)
     }
 }
 
@@ -151,6 +168,10 @@ extension PersonalCardLocalizationsVC: PersonalCardLocalizationsVMDelegate {
         } else {
             navigationController?.popViewController(animated: true)
         }
+    }
+
+    func dismissAlert() {
+        presentedViewController?.dismiss(animated: true)
     }
 
     func refreshData() {

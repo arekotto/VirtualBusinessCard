@@ -10,7 +10,7 @@ import Firebase
 
 class PartialUserViewModel: AppViewModel {
 
-    private static let sharedDataBase = Firestore.firestore()
+    static let sharedDataBase = Firestore.firestore()
 
     final let userID: UserID
 

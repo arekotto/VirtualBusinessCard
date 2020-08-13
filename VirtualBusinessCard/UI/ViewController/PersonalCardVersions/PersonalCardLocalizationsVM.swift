@@ -14,11 +14,12 @@ protocol PersonalCardLocalizationsVMDelegate: class {
     func refreshData()
     func presentErrorAlert(message: String)
     func popSelf()
-    func presentLoadingAlert(viewModel: LoadingPopoverVM)
+    func dismissAlert()
+    func presentLoadingAlert(title: String)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
 
-final class PersonalCardLocalizationsVM: PartialUserViewModel, MotionDataSource {
+final class PersonalCardLocalizationsVM: CompleteUserViewModel, MotionDataSource {
 
     typealias DataModel = PersonalCardLocalizationsView.TableCell.DataModel
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DataModel>
@@ -41,6 +42,12 @@ final class PersonalCardLocalizationsVM: PartialUserViewModel, MotionDataSource 
     func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         delegate?.didUpdateMotionData(motion, over: timeFrame)
     }
+
+    override func informDelegateAboutDataRefresh() {
+        cardCollectionReference.document(cardID).addSnapshotListener { [weak self] documentSnapshot, error in
+            self?.cardDidChange(documentSnapshot, error)
+        }
+    }
 }
 
 // MARK: - ViewController API
@@ -50,6 +57,11 @@ extension PersonalCardLocalizationsVM {
     var newBusinessCardImage: UIImage {
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
         return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
+    }
+
+    var pushChangesToExchangesImages: UIImage {
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
+        return UIImage(systemName: "arrow.branch", withConfiguration: imgConfig)!
     }
 
     func actionConfig(for indexPath: IndexPath) -> ActionConfiguration? {
@@ -110,7 +122,7 @@ extension PersonalCardLocalizationsVM {
 
     func setLanguage(code: String, cardVersionID: UUID) {
         guard let card = self.card else { return }
-        guard !card.languageVersions.contains(where: { $0.languageCode == code }) else { return }
+        guard !card.localizations.contains(where: { $0.languageCode == code }) else { return }
         let editableCard = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedLocalizationID: cardVersionID)
         editableCard.editedLocalization.languageCode = code
         editableCard.save(in: cardCollectionReference)
@@ -133,13 +145,74 @@ extension PersonalCardLocalizationsVM {
         }
     }
 
+    func pushChangesToExchanges() {
+        guard let exchangeIDs = user?.committedExchanges(for: cardID) else { return }
+
+        delegate?.presentLoadingAlert(title: NSLocalizedString("Pushing Changes", comment: ""))
+
+        var ownerExchangeIDs = [DirectCardExchangeID]()
+        var guestExchangeIDs = [DirectCardExchangeID]()
+
+        var encounteredError: Error?
+
+        let dispatchGroup = DispatchGroup()
+
+        dispatchGroup.enter()
+        dispatchGroup.enter()
+
+        var exchangesOwnerSnapshotListener: ListenerRegistration?
+        exchangesOwnerSnapshotListener = directCardExchangeReference
+            .whereField(DirectCardExchange.CodingKeys.ownerID.rawValue, isEqualTo: userID)
+            .addSnapshotListener { querySnapshot, error in
+                exchangesOwnerSnapshotListener?.remove()
+
+                guard let snapshots = querySnapshot else {
+                    print(#file, error?.localizedDescription ?? "")
+                    encounteredError = error
+                    dispatchGroup.leave()
+                    return
+                }
+
+                ownerExchangeIDs = snapshots.documents.map(\.documentID)
+                dispatchGroup.leave()
+            }
+
+        var exchangesGuestSnapshotListener: ListenerRegistration?
+        exchangesGuestSnapshotListener = directCardExchangeReference
+            .whereField(DirectCardExchange.CodingKeys.guestID.rawValue, isEqualTo: userID)
+            .addSnapshotListener { querySnapshot, error in
+                exchangesGuestSnapshotListener?.remove()
+
+                guard let snapshots = querySnapshot else {
+                    print(#file, error?.localizedDescription ?? "")
+                    encounteredError = error
+                    dispatchGroup.leave()
+                    return
+                }
+
+                guestExchangeIDs = snapshots.documents.map(\.documentID)
+                dispatchGroup.leave()
+            }
+
+        dispatchGroup.notify(queue: .main) {
+            if encounteredError != nil {
+                let message = NSLocalizedString("We could not push your changes. Please check your network connection and try again.", comment: "")
+
+                self.delegate?.presentErrorAlert(message: message)
+            } else {
+                let exchangeWithCurrentCard =  (ownerExchangeIDs + guestExchangeIDs).filter { exchangeIDs.contains($0) }
+                self.updateAllExchanges(ids: exchangeWithCurrentCard)
+            }
+        }
+    }
+
     private func blacklistedLanguageCodes() -> [String] {
-        card?.languageVersions.compactMap { ($0.languageCode ?? "").isEmpty ? nil : $0.languageCode } ?? []
+        card?.localizations.compactMap { ($0.languageCode ?? "").isEmpty ? nil : $0.languageCode } ?? []
     }
 
     private func deleteCard() {
         guard let editableCard = card?.editPersonalBusinessCardMC(userID: userID) else { return }
-        delegate?.presentLoadingAlert(viewModel: LoadingPopoverVM(title: NSLocalizedString("Deleting Card", comment: "")))
+        delegate?.presentLoadingAlert(title: NSLocalizedString("Deleting Card", comment: ""))
 
         var encounteredError: Error?
 
@@ -196,10 +269,8 @@ extension PersonalCardLocalizationsVM {
         userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
     }
 
-    func fetchData() {
-        cardCollectionReference.document(cardID).addSnapshotListener { [weak self] documentSnapshot, error in
-            self?.cardDidChange(documentSnapshot, error)
-        }
+    private var directCardExchangeReference: CollectionReference {
+        db.collection(DirectCardExchange.collectionName)
     }
 
     private func cardDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
@@ -217,7 +288,7 @@ extension PersonalCardLocalizationsVM {
                 }
                 return
             }
-            let dataModels = card.languageVersions
+            let dataModels = card.localizations
                 .map { cellDataModel(for: $0) }
                 .sorted {
                     if $0.isDefault || $1.isDefault {
@@ -233,6 +304,47 @@ extension PersonalCardLocalizationsVM {
         }
     }
 
+    private func updateAllExchanges(ids: [DirectCardExchangeID]) {
+        let exchangeReferences: [DocumentReference] = ids.map {
+            Self.sharedDataBase.document("\(directCardExchangeReference.path)/\($0)")
+        }
+        Self.sharedDataBase.runTransaction { [weak self] transaction, errorPointer in
+            guard let self = self, let card = self.card else { return nil }
+
+            for exchangeReferences in exchangeReferences {
+                let exchangeDocumentSnap: DocumentSnapshot
+                do {
+                    exchangeDocumentSnap = try transaction.getDocument(exchangeReferences)
+
+                    let exchange = try DirectCardExchangeMC(unwrappedWithExchangeDocument: exchangeDocumentSnap)
+
+                    if exchange.ownerID == self.userID {
+                        exchange.ownerCardLocalizations = card.localizations
+                        exchange.ownerMostRecentUpdate = Date()
+                        exchange.save(in: self.directCardExchangeReference)
+                    } else {
+                        exchange.guestCardLocalizations = card.localizations
+                        exchange.guestMostRecentUpdate = Date()
+                        exchange.save(in: self.directCardExchangeReference)
+                    }
+
+                    transaction.setData(exchange.asDocument(), forDocument: exchangeReferences)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+            }
+            return nil
+        } completion: { [weak self] _, error in
+            if let err = error {
+                print(#file, err.localizedDescription)
+                let message = NSLocalizedString("We could not push your changes. Please check your network connection and try again.", comment: "")
+                self?.delegate?.presentErrorAlert(message: message)
+            } else {
+                self?.delegate?.dismissAlert()
+            }
+        }
+    }
 }
 
 extension PersonalCardLocalizationsVM {

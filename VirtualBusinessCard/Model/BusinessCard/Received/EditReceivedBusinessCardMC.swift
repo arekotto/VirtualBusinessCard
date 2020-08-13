@@ -24,6 +24,13 @@ final class EditReceivedBusinessCardMC {
 
     var receivingDate: Date { card.receivingDate }
 
+    var exchangeID: DirectCardExchangeID { card.exchangeID }
+
+    var mostRecentUpdateDate: Date {
+        get { card.mostRecentUpdateDate }
+        set { card.mostRecentUpdateDate = newValue }
+    }
+
     var notes: String {
         get { card.notes }
         set { card.notes = newValue }

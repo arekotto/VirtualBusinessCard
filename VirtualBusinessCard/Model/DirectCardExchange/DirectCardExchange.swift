@@ -15,15 +15,15 @@ struct DirectCardExchange: Codable {
     var id: DirectCardExchangeID
     var accessToken: String
     
-    var sharingUserID: UserID
-    var sharingUserCardID: BusinessCardID
-    var sharingUserCardLocalizations: [BusinessCardLocalization]
-    var sharingUserMostRecentUpdate: Date
+    var ownerID: UserID
+    var ownerCardID: BusinessCardID
+    var ownerCardLocalizations: [BusinessCardLocalization]
+    var ownerMostRecentUpdate: Date
 
-    var receivingUserCardID: BusinessCardID?
-    var receivingUserID: UserID?
-    var receivingUserCardLocalizations: [BusinessCardLocalization]?
-    var receivingUserMostRecentUpdate: Date?
+    var guestCardID: BusinessCardID?
+    var guestID: UserID?
+    var guestCardLocalizations: [BusinessCardLocalization]?
+    var guestMostRecentUpdate: Date
 }
 
 // MARK: - Equatable
@@ -46,13 +46,15 @@ extension DirectCardExchange {
     enum CodingKeys: String, CodingKey {
         case id
         case accessToken
-        case sharingUserID
-        case sharingUserCardID
-        case sharingUserCardLocalizations
-        case sharingUserMostRecentUpdate
-        case receivingUserCardID
-        case receivingUserID
-        case receivingUserCardLocalizations
-        case receivingUserMostRecentUpdate
+
+        case ownerID
+        case ownerCardID
+        case ownerCardLocalizations
+        case ownerMostRecentUpdate
+
+        case guestCardID
+        case guestID
+        case guestCardLocalizations
+        case guestMostRecentUpdate
     }
 }

@@ -24,16 +24,16 @@ class EditPersonalBusinessCardLocalizationMC {
 
     var editedLocalization: BusinessCardLocalization {
         get {
-            guard let editedLocalization = card.languageVersions.first(where: { $0.id == editedLocalizationID }) else {
+            guard let editedLocalization = card.localizations.first(where: { $0.id == editedLocalizationID }) else {
                 fatalError("The card \(cardID) does not contain a language version with id \(editedLocalizationID)")
             }
             return editedLocalization
         }
         set {
-            guard let editedLocalizationIndex = card.languageVersions.firstIndex(where: { $0.id == editedLocalizationID }) else {
+            guard let editedLocalizationIndex = card.localizations.firstIndex(where: { $0.id == editedLocalizationID }) else {
                 fatalError("The card \(cardID) does not contain a language version with id \(editedLocalizationID)")
             }
-            card.languageVersions[editedLocalizationIndex] = newValue
+            card.localizations[editedLocalizationIndex] = newValue
         }
     }
 
@@ -77,8 +77,8 @@ class EditPersonalBusinessCardLocalizationMC {
     }
 
     var localizations: [BusinessCardLocalization] {
-        get { card.languageVersions }
-        set { card.languageVersions = newValue }
+        get { card.localizations }
+        set { card.localizations = newValue }
     }
 
     init(userID: UserID, editedLocalizationID: UUID, card: PersonalBusinessCard) {
@@ -114,13 +114,13 @@ extension EditPersonalBusinessCardLocalizationMC {
     convenience init(userID: UserID, card: PersonalBusinessCard, newLocalizationLanguageCode langCode: String) {
         var editedCard = card
         let newLanguageVersion = Self.makeLanguageVersion(isDefault: false, languageCode: langCode)
-        editedCard.languageVersions.append(newLanguageVersion)
+        editedCard.localizations.append(newLanguageVersion)
         self.init(userID: userID, editedLocalizationID: newLanguageVersion.id, card: editedCard)
     }
 
     convenience init(userID: UserID) {
         let defaultLanguageVersion = Self.makeLanguageVersion(isDefault: true, languageCode: nil)
-        let newCard = PersonalBusinessCard(id: Self.unsavedObjectID, creationDate: Date(), languageVersions: [defaultLanguageVersion])
+        let newCard = PersonalBusinessCard(id: Self.unsavedObjectID, creationDate: Date(), localizations: [defaultLanguageVersion])
         self.init(userID: userID, editedLocalizationID: defaultLanguageVersion.id, card: newCard)
     }
 }

@@ -19,13 +19,13 @@ class PersonalBusinessCardMC {
     var creationDate: Date { card.creationDate }
 
     var defaultLocalization: BusinessCardLocalization {
-        guard let defaultData = card.languageVersions.first(where: { $0.isDefault }) else {
+        guard let defaultData = card.localizations.first(where: { $0.isDefault }) else {
             fatalError("No Default version found for card: \(id)")
         }
         return defaultData
     }
 
-    var languageVersions: [BusinessCardLocalization] { card.languageVersions }
+    var localizations: [BusinessCardLocalization] { card.localizations }
 
     var cornerRadiusHeightMultiplier: Float { defaultLocalization.cornerRadiusHeightMultiplier }
         
@@ -48,7 +48,7 @@ class PersonalBusinessCardMC {
     }
 
     func localization(withID id: UUID) -> BusinessCardLocalization? {
-        card.languageVersions.first { $0.id == id }
+        card.localizations.first { $0.id == id }
     }
 }
 

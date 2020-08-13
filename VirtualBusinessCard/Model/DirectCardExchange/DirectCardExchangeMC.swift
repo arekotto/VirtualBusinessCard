@@ -17,27 +17,40 @@ final class DirectCardExchangeMC {
     
     var accessToken: String { exchange.accessToken }
     
-    var sharingUserID: UserID { exchange.sharingUserID }
-    var sharingUserCardLocalizations: [BusinessCardLocalization] { exchange.sharingUserCardLocalizations }
-    
-    var receivingUserID: UserID? {
-        get { exchange.receivingUserID }
-        set { exchange.receivingUserID = newValue }
+    var ownerID: UserID { exchange.ownerID }
+
+    var ownerCardLocalizations: [BusinessCardLocalization] {
+        get { exchange.ownerCardLocalizations }
+        set { exchange.ownerCardLocalizations = newValue }
     }
 
-    var receivingUserCardID: BusinessCardID? {
-        get { exchange.receivingUserCardID }
-        set { exchange.receivingUserCardID = newValue }
+    var ownerMostRecentUpdate: Date {
+        get { exchange.ownerMostRecentUpdate }
+        set { exchange.ownerMostRecentUpdate = newValue }
     }
     
-    var receivingUserCardLocalizations: [BusinessCardLocalization]? {
-        get { exchange.receivingUserCardLocalizations }
-        set { exchange.receivingUserCardLocalizations = newValue }
+    var guestID: UserID? {
+        get { exchange.guestID }
+        set { exchange.guestID = newValue }
     }
 
-    var receivingUserMostRecentUpdate: Date? {
-        get { exchange.receivingUserMostRecentUpdate }
-        set { exchange.receivingUserMostRecentUpdate = newValue }
+    var guestCardID: BusinessCardID? {
+        get { exchange.guestCardID }
+        set { exchange.guestCardID = newValue }
+    }
+    
+    var guestCardLocalizations: [BusinessCardLocalization]? {
+        get { exchange.guestCardLocalizations }
+        set { exchange.guestCardLocalizations = newValue }
+    }
+
+    var guestMostRecentUpdate: Date {
+        get { exchange.guestMostRecentUpdate }
+        set { exchange.guestMostRecentUpdate = newValue }
+    }
+
+    func asDocument() -> [String: Any] {
+        exchange.asDocument()
     }
     
     init(exchange: DirectCardExchange) {
@@ -48,13 +61,9 @@ final class DirectCardExchangeMC {
 // MARK: - Saving
 
 extension DirectCardExchangeMC {
-    
-    func saveScanningUserData(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
-        var updateDict: [AnyHashable: Any] = [:]
-        updateDict[DirectCardExchange.CodingKeys.receivingUserID.rawValue] = exchange.receivingUserID ?? nil
-        updateDict[DirectCardExchange.CodingKeys.receivingUserCardLocalizations.rawValue] = exchange.receivingUserCardLocalizations?.map { $0.asDocument() } ?? nil
-        updateDict[DirectCardExchange.CodingKeys.receivingUserCardID.rawValue] = exchange.receivingUserCardID ?? nil
-        collectionReference.document(exchange.id).updateData(updateDict) { error in
+
+    func save(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
+        collectionReference.document(exchange.id).updateData(exchange.asDocument()) { error in
             if let err = error {
                 completion?(.failure(err))
             } else {
@@ -65,13 +74,19 @@ extension DirectCardExchangeMC {
 }
 
 extension DirectCardExchangeMC {
-    convenience init?(userPublicDocument: DocumentSnapshot) {
-        guard let exchange = DirectCardExchange(documentSnapshot: userPublicDocument) else { return nil }
+
+    convenience init?(exchangeDocument: DocumentSnapshot) {
+        guard let exchange = DirectCardExchange(documentSnapshot: exchangeDocument) else { return nil }
         self.init(exchange: exchange)
+    }
+
+    convenience init(unwrappedWithExchangeDocument exchangeDocument: DocumentSnapshot) throws {
+        self.init(exchange: try DirectCardExchange(unwrappedWithDocumentSnapshot: exchangeDocument))
     }
 }
 
 extension DirectCardExchangeMC: Equatable {
+    
     static func == (lhs: DirectCardExchangeMC, rhs: DirectCardExchangeMC) -> Bool {
         lhs.exchange == rhs.exchange
     }

@@ -37,6 +37,10 @@ class UserMC: ModelController {
         set { userPrivate?.cardExchangeAccessTokens = newValue }
     }
 
+    func committedExchanges(for cardID: BusinessCardID) -> [DirectCardExchangeID] {
+        userPrivate?.sharedPersonalCards[cardID] ?? []
+    }
+
     var containsPrivateData: Bool {
         userPrivate != nil
     }

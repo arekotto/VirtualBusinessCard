@@ -125,6 +125,10 @@ extension CardDetailsVM {
         guard !actionValue.isEmpty else { return }
         performAction(action, actionValue: actionValue)
     }
+
+    func checkForLocalizationsUpdates() {
+
+    }
 }
 
 // MARK: - Static Action Performers
@@ -192,6 +196,10 @@ extension CardDetailsVM {
     private var receivedCardCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
+
+    private var directCardExchangeReference: CollectionReference {
+        db.collection(DirectCardExchange.collectionName)
+    }
     
     func fetchData() {
         receivedCardCollectionReference.document(cardID).addSnapshotListener { [weak self] documentSnapshot, error in
@@ -218,10 +226,41 @@ extension CardDetailsVM {
                 }
                 return
             }
+
+            self.directCardExchangeReference.document(card.exchangeID).addSnapshotListener { [weak self]  documentSnapshot, error in
+                self?.exchangeDidChange(documentSnapshot, error)
+            }
+
             DispatchQueue.main.async {
                 self.card = card
                 self.makeSections()
             }
+        }
+    }
+
+    private func exchangeDidChange(_ documentSnapshot: DocumentSnapshot?, _ error: Error?) {
+
+        guard let card = self.card else { return }
+
+        guard let document = documentSnapshot else {
+            // TODO: HANDLE ERROR
+            print(#file, "Error fetching exchange changed:", error?.localizedDescription ?? "No error info available.")
+            return
+        }
+
+        guard let initiatedExchange = DirectCardExchangeMC(exchangeDocument: document) else {
+            print(#file, "Error mapping exchange:", document.documentID)
+            return
+        }
+
+        if initiatedExchange.ownerID == userID && initiatedExchange.ownerMostRecentUpdate > card.mostRecentUpdateDate {
+            print("update required!")
+
+        } else if initiatedExchange.guestMostRecentUpdate > card.mostRecentUpdateDate {
+            print("update required!")
+
+        } else {
+            print("update not required!")
         }
     }
 

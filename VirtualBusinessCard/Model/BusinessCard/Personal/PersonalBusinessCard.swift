@@ -11,7 +11,7 @@ import Foundation
 struct PersonalBusinessCard: Codable {
     var id: BusinessCardID
     var creationDate: Date
-    var languageVersions: [BusinessCardLocalization]
+    var localizations: [BusinessCardLocalization]
 }
 
 extension PersonalBusinessCard: Equatable {

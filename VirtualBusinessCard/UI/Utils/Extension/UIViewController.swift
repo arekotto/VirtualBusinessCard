@@ -20,8 +20,8 @@ extension UIViewController {
         present(alert, animated: true)
     }
 
-    func presentLoadingAlert(viewModel: LoadingPopoverVM) {
-        let vc = LoadingPopoverVC(viewModel: viewModel)
+    func presentLoadingAlert(title: String) {
+        let vc = LoadingPopoverVC(title: title)
         vc.modalPresentationStyle = .overFullScreen
         vc.modalTransitionStyle = .crossDissolve
         present(vc, animated: true)

@@ -59,7 +59,7 @@ struct SampleBCUploadTask {
                 hapticFeedbackSharpness: hapticSharpness.randomElement()!, cornerRadiusHeightMultiplier: cornerRadius.randomElement()!,
                 isDefault: true
             )
-            let personalBC = PersonalBusinessCard(id: docRef.documentID, creationDate: day(from: Date(), offset: idx % 5), languageVersions: [bcData])
+            let personalBC = PersonalBusinessCard(id: docRef.documentID, creationDate: day(from: Date(), offset: idx % 5), localizations: [bcData])
             docRef.setData(personalBC.asDocument())
         }
         

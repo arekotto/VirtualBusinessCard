@@ -160,7 +160,7 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
     func editCardInfoVC(_ viewController: EditCardInfoVC, didFinishWith transformedData: EditCardInfoVM.TransformableData) {
         guard let newImages = self.newImages else { return }
 
-        viewController.presentLoadingAlert(viewModel: LoadingPopoverVM(title: NSLocalizedString("Saving Card", comment: "")))
+        viewController.presentLoadingAlert(title: NSLocalizedString("Saving Card", comment: ""))
 
         DispatchQueue.global().async {
             self.updateCard(transformedData: transformedData)

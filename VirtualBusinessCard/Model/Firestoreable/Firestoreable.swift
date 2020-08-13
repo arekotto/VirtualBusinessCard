@@ -36,10 +36,20 @@ extension Firestoreable {
         guard let userData = documentSnapshot.data() else { return nil }
         self.init(dictionary: userData)
     }
+
+    init(unwrappedWithDocumentSnapshot documentSnapshot: DocumentSnapshot) throws {
+        try self.init(unwrappedWithDictionary: documentSnapshot.data() ?? [:])
+    }
     
     init?(dictionary: [String: Any]) {
         guard let json = try? JSONSerialization.data(withJSONObject: dictionary) else { return nil}
         guard let decodedBusinessCard = try? JSONDecoder().decode(Self.self, from: json) else { return nil }
+        self = decodedBusinessCard
+    }
+
+    init(unwrappedWithDictionary dictionary: [String: Any]) throws {
+        let json = try JSONSerialization.data(withJSONObject: dictionary)
+        let decodedBusinessCard = try JSONDecoder().decode(Self.self, from: json)
         self = decodedBusinessCard
     }
 }
