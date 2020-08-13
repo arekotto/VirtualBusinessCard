@@ -310,29 +310,31 @@ extension PersonalCardLocalizationsVM {
         }
         Self.sharedDataBase.runTransaction { [weak self] transaction, errorPointer in
             guard let self = self, let card = self.card else { return nil }
-
-            for exchangeReferences in exchangeReferences {
-                let exchangeDocumentSnap: DocumentSnapshot
-                do {
-                    exchangeDocumentSnap = try transaction.getDocument(exchangeReferences)
-
-                    let exchange = try DirectCardExchangeMC(unwrappedWithExchangeDocument: exchangeDocumentSnap)
-
-                    if exchange.ownerID == self.userID {
-                        exchange.ownerCardLocalizations = card.localizations
-                        exchange.ownerMostRecentUpdate = Date()
-                        exchange.save(in: self.directCardExchangeReference)
-                    } else {
-                        exchange.guestCardLocalizations = card.localizations
-                        exchange.guestMostRecentUpdate = Date()
-                        exchange.save(in: self.directCardExchangeReference)
-                    }
-
-                    transaction.setData(exchange.asDocument(), forDocument: exchangeReferences)
-                } catch let fetchError as NSError {
-                    errorPointer?.pointee = fetchError
-                    return nil
+            let exchanges: [DirectCardExchangeMC]
+            do {
+                exchanges = try exchangeReferences.map {
+                    let exchangeDocumentSnap = try transaction.getDocument($0)
+                    return try DirectCardExchangeMC(unwrappedWithExchangeDocument: exchangeDocumentSnap)
                 }
+            } catch let fetchError as NSError {
+                errorPointer?.pointee = fetchError
+                return nil
+            }
+
+            exchanges.forEach { exchange in
+                if exchange.ownerID == self.userID {
+                    exchange.ownerCardLocalizations = card.localizations
+                    exchange.ownerMostRecentUpdate = Date()
+                    exchange.save(in: self.directCardExchangeReference)
+                } else {
+                    exchange.guestCardLocalizations = card.localizations
+                    exchange.guestMostRecentUpdate = Date()
+                    exchange.save(in: self.directCardExchangeReference)
+                }
+            }
+
+            exchanges.enumerated().forEach { idx, exchange in
+                transaction.setData(exchange.asDocument(), forDocument: exchangeReferences[idx])
             }
             return nil
         } completion: { [weak self] _, error in

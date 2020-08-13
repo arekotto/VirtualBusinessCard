@@ -26,6 +26,11 @@ final class EditReceivedBusinessCardMC {
 
     var exchangeID: DirectCardExchangeID { card.exchangeID }
 
+    var localizations: [BusinessCardLocalization] {
+        get { card.localizations }
+        set { card.localizations = newValue }
+    }
+
     var mostRecentUpdateDate: Date {
         get { card.mostRecentUpdateDate }
         set { card.mostRecentUpdateDate = newValue }
@@ -150,6 +155,17 @@ extension EditReceivedBusinessCardMC {
         }
 
         docRef.updateData(updates) { error in
+            if let err = error {
+                print(err.localizedDescription)
+                completion?(.failure(err))
+            } else {
+                completion?(.success(()))
+            }
+        }
+    }
+
+    func delete(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
+        collectionReference.document(card.id).delete { error in
             if let err = error {
                 print(err.localizedDescription)
                 completion?(.failure(err))

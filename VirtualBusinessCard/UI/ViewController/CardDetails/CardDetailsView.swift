@@ -21,6 +21,7 @@ final class CardDetailsView: AppBackgroundView {
         this.registerReusableCell(TitleValueImageCollectionViewCell.self)
         this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.header.rawValue, RoundedCollectionCell.self)
         this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.footer.rawValue, RoundedCollectionCell.self)
+        this.alwaysBounceVertical = true
         return this
     }()
     

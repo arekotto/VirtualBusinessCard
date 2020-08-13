@@ -12,7 +12,9 @@ import CoreMotion
 
 protocol CardDetailsVMDelegate: class {
     func reloadData()
+    func didRefreshLocalizationUpdates()
     func presentSendEmailViewController(recipient: String)
+    func dismissSelfWithSystemAnimation()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentEditCardTagsVC(viewModel: EditCardTagsVM)
     func presentEditCardNotesVC(viewModel: EditCardNotesVM)
@@ -29,6 +31,7 @@ final class CardDetailsVM: PartialUserViewModel {
     
     private let cardID: BusinessCardID
     private var card: EditReceivedBusinessCardMC?
+    private var updatedLocalizations: [BusinessCardLocalization]?
 
     private var tags = [BusinessCardTagMC]()
         
@@ -95,6 +98,20 @@ extension CardDetailsVM {
         card?.displayedLocalization.frontImage.url
     }
 
+    var downloadUpdatesButtonImage: UIImage {
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+        return UIImage(systemName: "arrow.down.circle.fill", withConfiguration: imgConfig)!
+    }
+
+    var deleteButtonImage: UIImage {
+        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+        return UIImage(systemName: "trash.circle.fill", withConfiguration: imgConfig)!
+    }
+
+    var hasLocalizationUpdates: Bool {
+        !(updatedLocalizations ?? []).isEmpty
+    }
+
     var hapticSharpness: Float {
         card?.displayedLocalization.hapticFeedbackSharpness ?? prefetchedData.hapticSharpness
     }
@@ -126,8 +143,18 @@ extension CardDetailsVM {
         performAction(action, actionValue: actionValue)
     }
 
-    func checkForLocalizationsUpdates() {
+    func saveLocalizationUpdates() {
+        guard let card = self.card else { return }
+        guard let updatedLocalizations = self.updatedLocalizations, !updatedLocalizations.isEmpty else { return }
+        card.localizations = updatedLocalizations
+        card.mostRecentUpdateDate = Date()
+        card.save(in: receivedCardCollectionReference)
+    }
 
+    func deleteCard() {
+        guard let card = self.card else { return }
+        card.delete(in: receivedCardCollectionReference)
+        delegate?.dismissSelfWithSystemAnimation()
     }
 }
 
@@ -248,20 +275,19 @@ extension CardDetailsVM {
             return
         }
 
-        guard let initiatedExchange = DirectCardExchangeMC(exchangeDocument: document) else {
+        guard let exchange = DirectCardExchangeMC(exchangeDocument: document) else {
             print(#file, "Error mapping exchange:", document.documentID)
             return
         }
 
-        if initiatedExchange.ownerID == userID && initiatedExchange.ownerMostRecentUpdate > card.mostRecentUpdateDate {
-            print("update required!")
-
-        } else if initiatedExchange.guestMostRecentUpdate > card.mostRecentUpdateDate {
-            print("update required!")
-
+        if exchange.ownerID == userID && exchange.guestMostRecentUpdate > card.mostRecentUpdateDate {
+            self.updatedLocalizations = exchange.guestCardLocalizations
+        } else if exchange.ownerMostRecentUpdate > card.mostRecentUpdateDate {
+            self.updatedLocalizations = exchange.ownerCardLocalizations
         } else {
-            print("update not required!")
+            self.updatedLocalizations = nil
         }
+        delegate?.didRefreshLocalizationUpdates()
     }
 
     private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {

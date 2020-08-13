@@ -15,6 +15,8 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, CardDetailsVM.Item>
 
+    private lazy var downloadUpdatesButton = UIBarButtonItem(image: viewModel.downloadUpdatesButtonImage, style: .plain, target: self, action: #selector(didTapDownloadUpdatesButton))
+
     private lazy var collectionViewDataSource = makeDataSource()
 
     private var engine: HapticFeedbackEngine!
@@ -67,6 +69,14 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.titleView = contentView.titleView
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseButton))
+
+        navigationController?.setToolbarHidden(false, animated: false)
+        toolbarItems = [
+            UIBarButtonItem(image: viewModel.deleteButtonImage, style: .plain, target: self, action: #selector(didTapDeleteButton)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            downloadUpdatesButton
+        ]
+        downloadUpdatesButton.isEnabled = false
     }
     
     private func cardImagesCell() -> CardDetailsView.CardImagesCell? {
@@ -112,6 +122,31 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
 @objc
 private extension CardDetailsVC {
+
+    func didTapDeleteButton() {
+        let title = NSLocalizedString("Delete Card", comment: "")
+        let message = NSLocalizedString("Are you sure you want to delete this card from your collection? This cannot be undone.", comment: "")
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Delete Card", comment: ""), style: .destructive) { _ in
+            self.viewModel.deleteCard()
+        })
+        alert.addCancelAction()
+        present(alert, animated: true)
+    }
+
+    func didTapDownloadUpdatesButton() {
+        let title = NSLocalizedString("Update Card", comment: "")
+        let message = NSLocalizedString(
+            "Update this card to its newest version. The current version will be overwritten. Your notes and tags associated with the card will not be affected.",
+            comment: ""
+        )
+        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Update Card", comment: ""), style: .default) { _ in
+            self.viewModel.saveLocalizationUpdates()
+        })
+        alert.addCancelAction()
+        present(alert, animated: true)
+    }
 
     func didTapCloseButton() {
         guard let cell = cardImagesCell() else {
@@ -170,6 +205,16 @@ extension CardDetailsVC: UICollectionViewDelegate {
 // MARK: - CardDetailsVMDelegate
 
 extension CardDetailsVC: CardDetailsVMDelegate {
+
+    func dismissSelfWithSystemAnimation() {
+        navigationController?.transitioningDelegate = nil
+        dismiss(animated: true)
+    }
+
+    func didRefreshLocalizationUpdates() {
+        downloadUpdatesButton.isEnabled = viewModel.hasLocalizationUpdates
+    }
+
     func presentErrorAlert(message: String) {
         super.presentErrorAlert(message: message)
     }
