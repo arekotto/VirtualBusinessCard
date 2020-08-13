@@ -8,7 +8,7 @@
 
 import Firebase
 
-class UserMC: ModelController {
+class UserMC {
     
     typealias Model = UserPublic
     
@@ -54,8 +54,12 @@ class UserMC: ModelController {
         return self.userPublic == user
     }
     
-    func asDocument() -> [String: Any] {
-        return userPublic.asDocument()
+    func publicAsDocument() -> [String: Any] {
+        userPublic.asDocument()
+    }
+
+    func privateAsDocument() -> [String: Any]? {
+        userPrivate?.asDocument()
     }
     
     func addCardExchangeAccessToken(_ token: String) {
@@ -95,6 +99,13 @@ extension UserMC {
     
     private var privateDataReference: DocumentReference {
         userReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
+    }
+
+    func save(using transaction: Transaction) {
+        transaction.updateData(userPublic.asDocument(), forDocument: userReference)
+        if let privateDocument = userPrivate?.asDocument() {
+            transaction.updateData(privateDocument, forDocument: privateDataReference)
+        }
     }
     
     func save(completion: ((Result<Void, Error>) -> Void)? = nil) {

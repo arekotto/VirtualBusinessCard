@@ -112,7 +112,6 @@
 		4577CC77248903D70012EDC8 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC76248903D70012EDC8 /* AppError.swift */; };
 		4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */; };
 		4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC7C248906FE0012EDC8 /* UserPrivate.swift */; };
-		4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC81248907ED0012EDC8 /* ModelController.swift */; };
 		4577CC84248908530012EDC8 /* UserMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC83248908530012EDC8 /* UserMC.swift */; };
 		4577CC8724890B900012EDC8 /* SingletonFirestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC8624890B900012EDC8 /* SingletonFirestoreable.swift */; };
 		457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B4E7A24531B6800761A90 /* SceneVC.swift */; };
@@ -332,7 +331,6 @@
 		4577CC76248903D70012EDC8 /* AppError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpUserInfoStorage.swift; sourceTree = "<group>"; };
 		4577CC7C248906FE0012EDC8 /* UserPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrivate.swift; sourceTree = "<group>"; };
-		4577CC81248907ED0012EDC8 /* ModelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
 		4577CC83248908530012EDC8 /* UserMC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserMC.swift; sourceTree = "<group>"; };
 		4577CC8624890B900012EDC8 /* SingletonFirestoreable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingletonFirestoreable.swift; sourceTree = "<group>"; };
 		457B4E7A24531B6800761A90 /* SceneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneVC.swift; sourceTree = "<group>"; };
@@ -978,7 +976,6 @@
 				4577CC702488EE810012EDC8 /* BusinessCard */,
 				4558826924A4C555001C763B /* BusinessCardTag */,
 				459DC58D23FEA6AF002F03DD /* User */,
-				4577CC81248907ED0012EDC8 /* ModelController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1497,7 +1494,6 @@
 				457F071224E01CA100F95148 /* PersonalCardLocalizationsView.swift in Sources */,
 				4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */,
 				452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */,
-				4577CC82248907ED0012EDC8 /* ModelController.swift in Sources */,
 				459102F324B708A60064B12C /* PersonalCardsCompactVC.swift in Sources */,
 				45D445A724C05D3B00630C72 /* AcceptCardVC.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,

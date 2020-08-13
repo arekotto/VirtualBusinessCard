@@ -36,8 +36,6 @@ final class DirectSharingVM: CompleteUserViewModel, MotionDataSource {
     private var ownSharingExchangeDataDocumentRef: DocumentReference?
     private var ownExchangeSnapshotListener: ListenerRegistration?
 
-    private var joinedExchangeSnapshotListener: ListenerRegistration?
-
     init(userID: UserID, sharedCard: PersonalBusinessCardMC) {
         card = sharedCard
         super.init(userID: userID)
@@ -99,7 +97,6 @@ extension DirectSharingVM {
     func cancelSharing() {
         ownSharingExchangeDataDocumentRef?.delete()
         ownExchangeSnapshotListener?.remove()
-        joinedExchangeSnapshotListener?.remove()
     }
     
     func beginSharing() {
@@ -151,6 +148,8 @@ extension DirectSharingVM {
     }
     
     func joinExchange(using string: String) {
+        guard let user = self.user, user.containsPrivateData else { return }
+
         guard let jsonData = string.data(using: .utf8) else {
             delegate?.didFailReadingQRCode()
             return
@@ -168,17 +167,21 @@ extension DirectSharingVM {
 
         delegate?.presentLoadingAlert(title: NSLocalizedString("Sharing card", comment: ""))
 
-        user?.addCardExchangeAccessToken(exchange.accessToken)
-        user?.save { [weak self] result in
-            switch result {
-            case .failure: self?.delegate?.didFailReadingQRCode()
-            case .success:
+        user.addCardExchangeAccessToken(exchange.accessToken)
+
+        directCardExchangeReference.firestore.runTransaction { transaction, errorPointer in
+            user.save(using: transaction)
+            return nil
+        } completion: { [weak self] _, error in
+            if let err = error {
+                print(#file, err.localizedDescription)
+                self?.delegate?.didFailReadingQRCode()
+            } else {
                 guard let joinedExchangeDoc = self?.directCardExchangeReference.document(exchange.exchangeID) else {
                     self?.delegate?.didFailReadingQRCode()
                     return
                 }
-                self?.joinedExchangeSnapshotListener?.remove()
-                self?.joinedExchangeSnapshotListener = joinedExchangeDoc.addSnapshotListener { [weak self] documentSnapshot, error in
+                joinedExchangeDoc.getDocument(source: .server) { documentSnapshot, error in
                     self?.joinedExchangeDidChange(documentSnapshot, error)
                 }
             }
@@ -238,7 +241,6 @@ extension DirectSharingVM {
             return
         }
         
-        joinedExchangeSnapshotListener?.remove()
         let joinedExchange = DirectCardExchangeMC(exchange: exchangeModel)
         joinedExchange.guestID = userID
         joinedExchange.guestCardID = card.id

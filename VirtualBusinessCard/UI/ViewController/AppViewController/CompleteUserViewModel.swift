@@ -12,7 +12,7 @@ class CompleteUserViewModel: PartialUserViewModel {
 
     private(set) var user: UserMC?
 
-    private var userPrivateDocumentReference: DocumentReference {
+    var userPrivateDocumentReference: DocumentReference {
         userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
     }
 
