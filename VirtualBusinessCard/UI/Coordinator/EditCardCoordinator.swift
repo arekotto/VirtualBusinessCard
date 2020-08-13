@@ -177,28 +177,20 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
                 case .success(let images):
                     self.updateCard(images: images)
 
-                    var encounteredError: Error?
-
-                    self.card.save(in: self.collectionReference) { result in
-                        switch result {
-                        case .success: return
-                        case .failure(let error):
-                            encounteredError = error
-                            print(#file, "Failure uploading card", error.localizedDescription)
-                        }
-                    }
-
-                    // give firebase some time to return an error if something is very wrong
-                    // otherwise data will be stored in cache if offline
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        if encounteredError != nil {
+                    self.collectionReference.firestore.runTransaction { [weak self] transaction, errorPointer in
+                        guard let self = self else { return nil }
+                        transaction.setData(self.card.asDocument(), forDocument: self.collectionReference.document(self.card.cardID))
+                        return nil
+                    } completion: { [weak self] _, error in
+                        if error != nil {
                             let errorMessage = NSLocalizedString("We could not upload your card details. Please check your internet connection and try again.", comment: "")
+                            print(#file, error?.localizedDescription ?? "")
                             viewController.dismiss(animated: true) {
                                 viewController.presentErrorAlert(message: errorMessage)
                             }
                         } else {
                             viewController.dismiss(animated: true) {
-                                self.navigationController.dismiss(animated: true)
+                                self?.navigationController.dismiss(animated: true)
                             }
                         }
                     }

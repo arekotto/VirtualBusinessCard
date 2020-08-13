@@ -10,7 +10,7 @@ import Firebase
 
 class PartialUserViewModel: AppViewModel {
 
-    static let sharedDataBase = Firestore.firestore()
+    static let sharedDatabase = Firestore.firestore()
 
     final let userID: UserID
 
@@ -19,10 +19,10 @@ class PartialUserViewModel: AppViewModel {
     }
 
     final var db: Firestore {
-        Self.sharedDataBase
+        Self.sharedDatabase
     }
 
     final var userPublicDocumentReference: DocumentReference {
-        Self.sharedDataBase.collection(UserPublic.collectionName).document(userID)
+        Self.sharedDatabase.collection(UserPublic.collectionName).document(userID)
     }
 }

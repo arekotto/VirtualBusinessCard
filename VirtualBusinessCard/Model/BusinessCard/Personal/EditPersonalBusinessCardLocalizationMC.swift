@@ -86,6 +86,10 @@ class EditPersonalBusinessCardLocalizationMC {
         self.editedLocalizationID = editedLocalizationID
         self.card = card
     }
+
+    func asDocument() -> [String: Any] {
+        card.asDocument()
+    }
 }
 
 extension EditPersonalBusinessCardLocalizationMC {

@@ -148,7 +148,7 @@ extension EditTagVM {
     private func deleteTag(taggedCardIDs: [BusinessCardID]) {
         let receivedCardsReferences = taggedCardIDs.map { receivedCardsCollectionReference.document($0) }
         let tagReference = tagsCollectionReference.document(tag.id)
-        Self.sharedDataBase.runTransaction { [weak self] transaction, errorPointer in
+            Self.sharedDatabase.runTransaction { [weak self] transaction, errorPointer in
             guard let self = self else { return nil }
             let cards: [EditReceivedBusinessCardMC]
             do {
@@ -164,7 +164,7 @@ extension EditTagVM {
             cards.forEach { $0.tagIDs.removeAll(where: {$0 == self.tag.id}) }
 
             cards.enumerated().forEach { idx, exchange in
-                transaction.setData(exchange.asDocument(), forDocument: receivedCardsReferences[idx])
+                transaction.updateData(exchange.asDocument(), forDocument: receivedCardsReferences[idx])
             }
             transaction.deleteDocument(tagReference)
             return nil

@@ -301,7 +301,7 @@ extension PersonalCardLocalizationsVM {
     private func updateAllExchanges(ids: [DirectCardExchangeID]) {
         let exchangeReferences = ids.map { directCardExchangeReference.document($0) }
 
-        Self.sharedDataBase.runTransaction { [weak self] transaction, errorPointer in
+        Self.sharedDatabase.runTransaction { [weak self] transaction, errorPointer in
             guard let self = self, let card = self.card else { return nil }
             let exchanges: [DirectCardExchangeMC]
             do {
@@ -327,7 +327,7 @@ extension PersonalCardLocalizationsVM {
             }
 
             exchanges.enumerated().forEach { idx, exchange in
-                transaction.setData(exchange.asDocument(), forDocument: exchangeReferences[idx])
+                transaction.updateData(exchange.asDocument(), forDocument: exchangeReferences[idx])
             }
             return nil
         } completion: { [weak self] _, error in
