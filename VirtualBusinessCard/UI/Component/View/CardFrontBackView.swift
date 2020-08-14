@@ -177,10 +177,10 @@ extension CardFrontBackView {
     }
     
     func updateMotionData(_ motion: CMDeviceMotion, over timeInterval: TimeInterval) {
-        let deviceRotationInX = max(min(motion.attitude.pitch, deg2rad(90)), deg2rad(0))
-        let x = deviceRotationInX / deg2rad(90) * 20 - 10
-        let deviceRotationInZ = min(max(motion.attitude.roll, deg2rad(-45)), deg2rad(45))
-        let y = deviceRotationInZ * 10 / deg2rad(45)
+        let deviceRotationInX = max(min(1 - motion.attitude.rotationMatrix.m33, 1), 0)
+        let x = deviceRotationInX * 20 - 10
+        let deviceRotationInZ = min(max(motion.attitude.rotationMatrix.m13, -0.5), 0.5)
+        let y = deviceRotationInZ * 10 / 0.5
         
         switch style {
         case .compact:  animateShadow(to: CGSize(width: y / 2, height: -x / 2), over: timeInterval)
