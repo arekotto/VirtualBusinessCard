@@ -177,16 +177,72 @@ extension DirectSharingVM {
                 print(#file, err.localizedDescription)
                 self?.delegate?.didFailReadingQRCode()
             } else {
-                guard let joinedExchangeDoc = self?.directCardExchangeReference.document(exchange.exchangeID) else {
-                    self?.delegate?.didFailReadingQRCode()
-                    return
-                }
-                joinedExchangeDoc.getDocument(source: .server) { documentSnapshot, error in
-                    self?.joinedExchangeDidChange(documentSnapshot, error)
-                }
+                self?.runJoinExchangeTransaction(exchangeID: exchange.exchangeID)
             }
         }
     }
+
+    private func runJoinExchangeTransaction(exchangeID: DirectCardExchangeID) {
+        db.runTransaction { [weak self] transaction, errorPointer in
+            guard let self = self else { return nil }
+
+            let exchangeReference = self.directCardExchangeReference.document(exchangeID)
+            let joinedExchange: DirectCardExchangeMC
+            let user: UserMC
+            do {
+                let publicUserDoc = try transaction.getDocument(self.userPublicDocumentReference)
+                let publicUser = try UserPublic(unwrappedWithDocumentSnapshot: publicUserDoc)
+
+                let privateUserDoc = try transaction.getDocument(self.userPrivateDocumentReference)
+                let privateUser = try UserPrivate(unwrappedWithDocumentSnapshot: privateUserDoc)
+
+                user = UserMC(userPublic: publicUser, userPrivate: privateUser)
+                joinedExchange = try DirectCardExchangeMC(unwrappedWithExchangeDocument: try transaction.getDocument(exchangeReference))
+            } catch let error as NSError {
+                errorPointer?.pointee = error
+                return nil
+            }
+
+            user.addExchange(id: joinedExchange.id, toCardID: self.card.id)
+
+            user.save(using: transaction)
+
+            joinedExchange.guestID = self.userID
+            joinedExchange.guestCardID = self.card.id
+            joinedExchange.guestCardLocalizations = self.card.localizations
+            joinedExchange.guestMostRecentUpdate = Date()
+
+            transaction.updateData(joinedExchange.asDocument(), forDocument: exchangeReference)
+
+            return joinedExchange
+
+        } completion: { [weak self] exchange, error in
+
+            guard let joinedExchange = exchange as? DirectCardExchangeMC else {
+                print(#file, error?.localizedDescription ?? "")
+                self?.delegate?.didFailReadingQRCode()
+                return
+            }
+
+            self?.prepareCardAfterSuccessfulTransaction(for: joinedExchange)
+        }
+    }
+
+    private func prepareCardAfterSuccessfulTransaction(for exchange: DirectCardExchangeMC) {
+
+        let receivedCard = EditReceivedBusinessCardMC(
+            originalID: exchange.ownerID,
+            exchangeID: exchange.id,
+            ownerID: exchange.ownerID,
+            languageVersions: exchange.ownerCardLocalizations
+        )
+
+        ownSharingExchangeDataDocumentRef?.delete()
+
+        playHapticFeedback(of: receivedCard.displayedLocalization.hapticFeedbackSharpness)
+        delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
+    }
+
 }
 
 // MARK: - Firebase
@@ -226,53 +282,6 @@ extension DirectSharingVM {
         ownExchangeSnapshotListener?.remove()
         playHapticFeedback(of: receivedCard.displayedLocalization.hapticFeedbackSharpness)
         delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
-    }
-    
-    private func joinedExchangeDidChange(_ documentSnapshot: DocumentSnapshot?, _ error: Error?) {
-        guard let docSnap = documentSnapshot else {
-            delegate?.didFailReadingQRCode()
-            print(#file, error?.localizedDescription ?? "")
-            return
-        }
-        
-        guard let exchangeModel = DirectCardExchange(documentSnapshot: docSnap) else {
-            delegate?.didFailReadingQRCode()
-            print(#file, "Error mapping exchange:", docSnap.documentID)
-            return
-        }
-        
-        let joinedExchange = DirectCardExchangeMC(exchange: exchangeModel)
-        joinedExchange.guestID = userID
-        joinedExchange.guestCardID = card.id
-        joinedExchange.guestCardLocalizations = card.localizations
-        joinedExchange.guestMostRecentUpdate = Date()
-
-        joinedExchange.save(in: directCardExchangeReference) { [weak self] result in
-
-            guard let self = self else { return }
-
-            switch result {
-            case .failure(let error):
-                print(#file, "Error uploading data to joined exchange:", error.localizedDescription)
-                self.delegate?.didFailReadingQRCode()
-            case .success:
-
-                let receivedCard = EditReceivedBusinessCardMC(
-                    originalID: joinedExchange.ownerID,
-                    exchangeID: joinedExchange.id,
-                    ownerID: joinedExchange.ownerID,
-                    languageVersions: joinedExchange.ownerCardLocalizations
-                )
-
-                self.ownSharingExchangeDataDocumentRef?.delete()
-
-                self.user?.addExchange(id: joinedExchange.id, toCardID: self.card.id)
-                self.user?.save()
-
-                self.playHapticFeedback(of: receivedCard.displayedLocalization.hapticFeedbackSharpness)
-                self.delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: self.userID, sharedCard: receivedCard))
-            }
-        }
     }
 }
 

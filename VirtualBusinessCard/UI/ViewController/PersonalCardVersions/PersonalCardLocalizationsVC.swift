@@ -15,6 +15,8 @@ final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizat
 
     private lazy var tableViewDataSource = makeTableViewDataSource()
 
+    private lazy var pushUpdatesButton = UIBarButtonItem(image: viewModel.pushChangesToExchangesImages, style: .plain, target: self, action: #selector(didTapPushChangesButton))
+
     private var coordinator: Coordinator?
     private var isFirstAppearance = SingleTimeToggleBool(ofInitialValue: true)
 
@@ -47,9 +49,9 @@ final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizat
         navigationItem.title = NSLocalizedString("Card Localization", comment: "")
         navigationItem.rightBarButtonItems = [
             UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewVersionButton)),
-            UIBarButtonItem(image: viewModel.pushChangesToExchangesImages, style: .plain, target: self, action: #selector(didTapPushChangesButton))
-            ]
-
+            pushUpdatesButton
+        ]
+        pushUpdatesButton.isEnabled = viewModel.pushChangesButtonEnabled
     }
 
     private func makeTableViewDataSource() -> DataSource {
@@ -177,6 +179,7 @@ extension PersonalCardLocalizationsVC: PersonalCardLocalizationsVMDelegate {
     func refreshData() {
         tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: !isFirstAppearance.value)
         isFirstAppearance.toggle()
+        pushUpdatesButton.isEnabled = viewModel.pushChangesButtonEnabled
     }
 }
 

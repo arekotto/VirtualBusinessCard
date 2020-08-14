@@ -25,6 +25,10 @@ class PersonalBusinessCardMC {
         return defaultData
     }
 
+    var mostRecentPush: Date { card.mostRecentPush }
+
+    var mostRecentUpdate: Date { card.mostRecentUpdate }
+
     var localizations: [BusinessCardLocalization] { card.localizations }
 
     var cornerRadiusHeightMultiplier: Float { defaultLocalization.cornerRadiusHeightMultiplier }

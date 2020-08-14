@@ -64,6 +64,11 @@ extension PersonalCardLocalizationsVM {
         return UIImage(systemName: "arrow.branch", withConfiguration: imgConfig)!
     }
 
+    var pushChangesButtonEnabled: Bool {
+        guard let card = self.card else { return false }
+        return card.mostRecentUpdate > card.mostRecentPush
+    }
+
     func actionConfig(for indexPath: IndexPath) -> ActionConfiguration? {
         guard let languageVersion = card?.localization(withID: dataModels[indexPath.row].id) else { return nil }
         let dataModel = dataModels[indexPath.row]
@@ -318,11 +323,9 @@ extension PersonalCardLocalizationsVM {
                 if exchange.ownerID == self.userID {
                     exchange.ownerCardLocalizations = card.localizations
                     exchange.ownerMostRecentUpdate = Date()
-                    exchange.save(in: self.directCardExchangeReference)
                 } else {
                     exchange.guestCardLocalizations = card.localizations
                     exchange.guestMostRecentUpdate = Date()
-                    exchange.save(in: self.directCardExchangeReference)
                 }
             }
 

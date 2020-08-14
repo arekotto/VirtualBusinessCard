@@ -179,7 +179,7 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
 
                     self.collectionReference.firestore.runTransaction { [weak self] transaction, errorPointer in
                         guard let self = self else { return nil }
-                        transaction.setData(self.card.asDocument(), forDocument: self.collectionReference.document(self.card.cardID))
+                        self.card.save(using: transaction, in: self.collectionReference)
                         return nil
                     } completion: { [weak self] _, error in
                         if error != nil {

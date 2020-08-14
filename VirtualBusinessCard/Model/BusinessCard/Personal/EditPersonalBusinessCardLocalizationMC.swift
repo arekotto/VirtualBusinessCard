@@ -37,6 +37,10 @@ class EditPersonalBusinessCardLocalizationMC {
         }
     }
 
+    var mostRecentUpdate: Date {
+        get { card.mostRecentUpdate }
+        set { card.mostRecentUpdate = newValue }
+    }
     var cornerRadiusHeightMultiplier: Float {
         get { editedLocalization.cornerRadiusHeightMultiplier }
         set { editedLocalization.cornerRadiusHeightMultiplier = newValue }
@@ -124,7 +128,14 @@ extension EditPersonalBusinessCardLocalizationMC {
 
     convenience init(userID: UserID) {
         let defaultLanguageVersion = Self.makeLanguageVersion(isDefault: true, languageCode: nil)
-        let newCard = PersonalBusinessCard(id: Self.unsavedObjectID, creationDate: Date(), localizations: [defaultLanguageVersion])
+        let creationDate = Date()
+        let newCard = PersonalBusinessCard(
+            id: Self.unsavedObjectID,
+            creationDate: creationDate,
+            mostRecentPush: creationDate,
+            mostRecentUpdate: creationDate,
+            localizations: [defaultLanguageVersion]
+        )
         self.init(userID: userID, editedLocalizationID: defaultLanguageVersion.id, card: newCard)
     }
 }
@@ -158,6 +169,18 @@ extension EditPersonalBusinessCardLocalizationMC {
         return "\(imageStoragePath)/\(textureImageID)"
     }
 
+    func save(using transaction: Transaction, in collectionReference: CollectionReference) {
+        let docRef: DocumentReference
+        if card.id == Self.unsavedObjectID {
+            docRef = collectionReference.document()
+            card.id = docRef.documentID
+        } else {
+            docRef = collectionReference.document(card.id)
+            card.mostRecentUpdate = Date()
+        }
+        transaction.setData(card.asDocument(), forDocument: docRef)
+    }
+
     func save(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
 
         let docRef: DocumentReference
@@ -166,6 +189,7 @@ extension EditPersonalBusinessCardLocalizationMC {
             card.id = docRef.documentID
         } else {
             docRef = collectionReference.document(card.id)
+            card.mostRecentUpdate = Date()
         }
 
         docRef.setData(card.asDocument()) { error in
