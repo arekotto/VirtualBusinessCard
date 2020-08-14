@@ -157,12 +157,12 @@ extension ReceivedCardsVM {
     
     private static func defaultSortActions() -> [SortAction] {
         return [
-            SortAction(mode: SortMode(property: .firstName, direction: .ascending), title: NSLocalizedString("First name - ascending", comment: "")),
-            SortAction(mode: SortMode(property: .firstName, direction: .descending), title: NSLocalizedString("First name - descending", comment: "")),
-            SortAction(mode: SortMode(property: .lastName, direction: .ascending), title: NSLocalizedString("Last name - ascending", comment: "")),
-            SortAction(mode: SortMode(property: .lastName, direction: .descending), title: NSLocalizedString("Last name - descending", comment: "")),
+            SortAction(mode: SortMode(property: .receivingDate, direction: .descending), title: NSLocalizedString("Receiving date - descending", comment: "")),
             SortAction(mode: SortMode(property: .receivingDate, direction: .ascending), title: NSLocalizedString("Receiving date - ascending", comment: "")),
-            SortAction(mode: SortMode(property: .receivingDate, direction: .descending), title: NSLocalizedString("Receiving date - descending", comment: ""))
+            SortAction(mode: SortMode(property: .firstName, direction: .descending), title: NSLocalizedString("First name - descending", comment: "")),
+            SortAction(mode: SortMode(property: .firstName, direction: .ascending), title: NSLocalizedString("First name - ascending", comment: "")),
+            SortAction(mode: SortMode(property: .lastName, direction: .descending), title: NSLocalizedString("Last name - descending", comment: "")),
+            SortAction(mode: SortMode(property: .lastName, direction: .ascending), title: NSLocalizedString("Last name - ascending", comment: ""))
         ]
     }
     
@@ -187,19 +187,43 @@ extension ReceivedCardsVM {
     }
     
     private static func cardSorterFirstNameAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.displayedLocalization.name.first ?? "") <= (rhs.displayedLocalization.name.first ?? "")
+        let lhsFirstName = lhs.displayedLocalization.name.first ?? ""
+        let rhsFirstName = rhs.displayedLocalization.name.first ?? ""
+        if lhsFirstName == rhsFirstName {
+            return Self.cardSorterDateDescending(lhs, rhs)
+        } else {
+            return lhsFirstName < rhsFirstName
+        }
     }
     
     private static func cardSorterFirstNameDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.displayedLocalization.name.first ?? "") >= (rhs.displayedLocalization.name.first ?? "")
+        let lhsFirstName = lhs.displayedLocalization.name.first ?? ""
+        let rhsFirstName = rhs.displayedLocalization.name.first ?? ""
+        if lhsFirstName == rhsFirstName {
+            return Self.cardSorterDateDescending(lhs, rhs)
+        } else {
+            return lhsFirstName > rhsFirstName
+        }
     }
     
     private static func cardSorterLastNameAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.displayedLocalization.name.last ?? "") <= (rhs.displayedLocalization.name.last ?? "")
+        let lhsLastName = lhs.displayedLocalization.name.last ?? ""
+        let rhsLastName = rhs.displayedLocalization.name.last ?? ""
+        if lhsLastName == rhsLastName {
+            return Self.cardSorterDateDescending(lhs, rhs)
+        } else {
+            return lhsLastName < rhsLastName
+        }
     }
     
     private static func cardSorterLastNameDescending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {
-        (lhs.displayedLocalization.name.last ?? "") >= (rhs.displayedLocalization.name.last ?? "")
+        let lhsLastName = lhs.displayedLocalization.name.last ?? ""
+        let rhsLastName = rhs.displayedLocalization.name.last ?? ""
+        if lhsLastName == rhsLastName {
+            return Self.cardSorterDateDescending(lhs, rhs)
+        } else {
+            return lhsLastName > rhsLastName
+        }
     }
     
     private static func cardSorterDateAscending(_ lhs: ReceivedBusinessCardMC, _ rhs: ReceivedBusinessCardMC) -> Bool {

@@ -172,7 +172,6 @@
 		45C25D64249F4CD300945F29 /* GroupedCardsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */; };
 		45C25D68249F5EC900945F29 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */; };
 		45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D69249F85E500945F29 /* IndexPath.swift */; };
-		45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CD39CD2448905B00C5587C /* AnimationHelper.swift */; };
 		45CF2F5724CC59F5003F9F91 /* EditCardTagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CF2F5624CC59F5003F9F91 /* EditCardTagsVC.swift */; };
 		45CF2F5924CC5A4C003F9F91 /* EditCardTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CF2F5824CC5A4C003F9F91 /* EditCardTagsView.swift */; };
 		45CF2F5B24CC5A5E003F9F91 /* EditCardTagsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CF2F5A24CC5A5E003F9F91 /* EditCardTagsVM.swift */; };
@@ -391,7 +390,6 @@
 		45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedCardsVM.swift; sourceTree = "<group>"; };
 		45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
 		45C25D69249F85E500945F29 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
-		45CD39CD2448905B00C5587C /* AnimationHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationHelper.swift; sourceTree = "<group>"; };
 		45CF2F5624CC59F5003F9F91 /* EditCardTagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardTagsVC.swift; sourceTree = "<group>"; };
 		45CF2F5824CC5A4C003F9F91 /* EditCardTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardTagsView.swift; sourceTree = "<group>"; };
 		45CF2F5A24CC5A5E003F9F91 /* EditCardTagsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardTagsVM.swift; sourceTree = "<group>"; };
@@ -946,7 +944,6 @@
 				4577CC75248903B10012EDC8 /* Extension */,
 				4558F1F82423E75D00D44526 /* DeviceDisplay.swift */,
 				4533849D24C9F0120020AEF6 /* MotionDataSource.swift */,
-				45CD39CD2448905B00C5587C /* AnimationHelper.swift */,
 				4577CC76248903D70012EDC8 /* AppError.swift */,
 				4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */,
 				4510341B249267D5009C4B26 /* ImageAndTextureFetchTask.swift */,
@@ -1609,7 +1606,6 @@
 				45E21C2C24CC95F400013E9E /* EditCardNotesVM.swift in Sources */,
 				451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */,
 				45B5E315241FA07F00028B0A /* LoginView.swift in Sources */,
-				45CD39CE2448905C00C5587C /* AnimationHelper.swift in Sources */,
 				454625E624A0C136000D1D25 /* AppTableViewCell.swift in Sources */,
 				45B0F4C724AA0A66007277BB /* RoundedCollectionCell.swift in Sources */,
 				454CF7D524A8D3A400074E0D /* UserProfileView.swift in Sources */,

@@ -184,10 +184,11 @@ extension ReceivedCardsVC: UIViewControllerTransitioningDelegate {
         let availableAnimationBoundsSize = CGSize(width: safeAreaFrame.width, height: safeAreaFrame.height + searchBarHeight)
         animator = DetailsTransitionAnimator(
             type: .present,
-            animatedCell: selectedCell,
             animatedCellSnapshot: cellSnap,
             availableAnimationBounds: CGRect(origin: availableAnimationBoundsOrigin, size: availableAnimationBoundsSize)
-        )
+        ) { [weak self] in
+            self?.selectedCell
+        }
         return animator
     }
     

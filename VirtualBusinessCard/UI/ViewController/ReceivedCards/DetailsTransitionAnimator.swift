@@ -14,19 +14,19 @@ extension ReceivedCardsVC {
         static let duration: TimeInterval = 0.5
         
         var type: PresentationType
-        private let animatedCell: UICollectionViewCell
         private let animatedCellSnapshot: UIView
         private let availableAnimationBounds: CGRect
+        private var animatedCellProvider: (() -> UICollectionViewCell?)?
 
-        init?(type: PresentationType, animatedCell: UICollectionViewCell, animatedCellSnapshot: UIView, availableAnimationBounds: CGRect) {
+        init?(type: PresentationType, animatedCellSnapshot: UIView, availableAnimationBounds: CGRect, animatedCellProvider: @escaping () -> UICollectionViewCell?) {
             self.type = type
             self.animatedCellSnapshot = animatedCellSnapshot
-            self.animatedCell = animatedCell
+            self.animatedCellProvider = animatedCellProvider
             self.availableAnimationBounds = availableAnimationBounds
         }
         
         func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-            return Self.duration
+            Self.duration
         }
 
         func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -53,7 +53,7 @@ extension ReceivedCardsVC {
                 animatedCellOnPresentedViewOrigin = views.presentingVC.view.convert(estimatedCellFrame, to: views.availableAnimationBoundsView)
             }
             
-            let animatedCellFrame = animatedCell.contentView.convert(animatedCell.contentView.bounds, to: views.availableAnimationBoundsView)
+            let animatedCellFrame = views.animatedCell.contentView.convert(views.animatedCell.contentView.bounds, to: views.availableAnimationBoundsView)
             
             animatedCellSnapshot.frame = isPresenting ? animatedCellFrame : animatedCellOnPresentedViewOrigin
 
@@ -63,7 +63,7 @@ extension ReceivedCardsVC {
                 views.presentedView.frame = offScreenPresentedViewFrame
             }
             
-            animatedCell.isHidden = true
+            views.animatedCell.isHidden = true
             views.cardDetailsVC.setCardImagesSectionHidden(true)
 
             UIView.animate(withDuration: Self.duration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
@@ -80,7 +80,7 @@ extension ReceivedCardsVC {
                 views.presentingVC.view.removeFromSuperview()
                 views.availableAnimationBoundsView.removeFromSuperview()
                 if !isPresenting {
-                    self.animatedCell.isHidden = false
+                    views.animatedCell.isHidden = false
                 } else {
                     views.cardDetailsVC.setCardImagesSectionHidden(false)
                 }
@@ -108,6 +108,10 @@ extension ReceivedCardsVC {
                 return nil
             }
 
+            guard let animatedCell = animatedCellProvider?() else {
+                return nil
+            }
+
             let availableAnimationBoundsView = UIView()
             availableAnimationBoundsView.frame = self.availableAnimationBounds
             availableAnimationBoundsView.clipsToBounds = true
@@ -122,7 +126,8 @@ extension ReceivedCardsVC {
                 cardDetailsVC: cardDetailsVC,
                 presentedView: presentedView,
                 availableAnimationBoundsView: availableAnimationBoundsView,
-                shadowView: shadowView
+                shadowView: shadowView,
+                animatedCell: animatedCell
             )
         }
     }
@@ -137,6 +142,7 @@ extension ReceivedCardsVC.DetailsTransitionAnimator {
         let presentedView: UIView
         let availableAnimationBoundsView: UIView
         let shadowView: UIView
+        let animatedCell: UICollectionViewCell
     }
 
     enum PresentationType {
