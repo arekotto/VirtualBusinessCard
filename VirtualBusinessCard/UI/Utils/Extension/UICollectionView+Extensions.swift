@@ -23,7 +23,7 @@ extension UICollectionView {
         register(T.self, forSupplementaryViewOfKind: elementKind, withReuseIdentifier: T.reuseId)
     }
     
-    func dequeueReusableSupplementaryView<T: UICollectionViewCell>(elementKind: String, indexPath: IndexPath) -> T where T: Reusable {
+    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(elementKind: String, indexPath: IndexPath) -> T where T: Reusable {
         dequeueReusableSupplementaryView(ofKind: elementKind, withReuseIdentifier: T.reuseId, for: indexPath) as! T
     }
 }

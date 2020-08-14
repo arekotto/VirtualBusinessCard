@@ -17,6 +17,10 @@ class ReceivedBusinessCardMC {
     var id: String { card.id }
     
     var originalID: BusinessCardID { card.originalID }
+
+    var exchangeID: DirectCardExchangeID? { card.exchangeID }
+
+    var mostRecentUpdateDate: Date { card.mostRecentUpdateDate }
     
     var ownerID: UserID { card.ownerID }
     

@@ -11,7 +11,8 @@ import CoreMotion
 
 final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsVM> {
 
-    private typealias DataSource = UICollectionViewDiffableDataSource<ReceivedCardsVM.Section, ReceivedCardsView.CollectionCell.DataModel>
+    private typealias View = ReceivedCardsView
+    private typealias DataSource = UICollectionViewDiffableDataSource<ReceivedCardsVM.Section, View.CollectionCell.DataModel>
 
     private lazy var collectionViewDataSource = makeTableViewDataSource()
 
@@ -51,7 +52,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
     
     private func setupCollectionView() {
-        let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(style: viewModel.cellStyle)
+        let layoutFactory = View.CollectionViewLayoutFactory(style: viewModel.cellStyle)
         contentView.collectionView.setCollectionViewLayout(layoutFactory.layout(), animated: false)
         contentView.collectionView.delegate = self
         contentView.collectionView.dataSource = collectionViewDataSource
@@ -86,12 +87,18 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
 
     private func makeTableViewDataSource() -> DataSource {
-        DataSource(collectionView: contentView.collectionView) { [weak self] collectionView, indexPath, dataModel in
-            let cell: ReceivedCardsView.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+        let dataSource = DataSource(collectionView: contentView.collectionView) { [weak self] collectionView, indexPath, dataModel in
+            let cell: View.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
             cell.setDataModel(dataModel)
             cell.isHidden = self?.viewModel.presentedIndexPath == indexPath
             return cell
         }
+        dataSource.supplementaryViewProvider = { [weak self] cv, kind, indexPath in
+            let view: View.UpdateAvailableIndicator = cv.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
+            view.isHidden = !(self?.viewModel.hasUpdatesForCard(at: indexPath) ?? false)
+            return view
+        }
+        return dataSource
     }
 }
 
@@ -123,7 +130,7 @@ extension ReceivedCardsVC {
 extension ReceivedCardsVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as! ReceivedCardsView.CollectionCell).cardFrontBackView.style = viewModel.cellStyle
+        (cell as! View.CollectionCell).cardFrontBackView.style = viewModel.cellStyle
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -144,7 +151,7 @@ extension ReceivedCardsVC: UICollectionViewDelegate {
 
 extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        (contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]).forEach { cell in
+        (contentView.collectionView.visibleCells as! [View.CollectionCell]).forEach { cell in
             cell.cardFrontBackView.updateMotionData(motion, over: timeFrame)
         }
     }
@@ -155,9 +162,9 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
     
     func refreshLayout(style: CardFrontBackView.Style) {
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
-        let layoutFactory = ReceivedCardsView.CollectionViewLayoutFactory(style: style)
+        let layoutFactory = View.CollectionViewLayoutFactory(style: style)
         contentView.collectionView.setCollectionViewLayout(layoutFactory.layout(), animated: true)
-        let visibleCells = contentView.collectionView.visibleCells as! [ReceivedCardsView.CollectionCell]
+        let visibleCells = contentView.collectionView.visibleCells as! [View.CollectionCell]
         visibleCells.forEach { $0.cardFrontBackView.style = style }
     }
 }

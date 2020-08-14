@@ -50,7 +50,8 @@ extension ReceivedCardsView {
 
 extension ReceivedCardsView.CollectionCell {
     struct DataModel: Hashable {
-        let modelNumber: Int
+        let cardID: BusinessCardID
         let sceneDataModel: CardFrontBackView.URLDataModel
+        let hasUpdates: Bool
     }
 }

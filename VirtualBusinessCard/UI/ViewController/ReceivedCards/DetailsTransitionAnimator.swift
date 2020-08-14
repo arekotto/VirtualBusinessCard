@@ -58,7 +58,7 @@ extension ReceivedCardsVC {
             animatedCellSnapshot.frame = isPresenting ? animatedCellFrame : animatedCellOnPresentedViewOrigin
 
             let onScreenPresentedViewFrame = views.presentedView.frame
-            let offScreenPresentedViewFrame = CGRect(origin: CGPoint(x: UIScreen.main.bounds.width, y: onScreenPresentedViewFrame.origin.y), size: onScreenPresentedViewFrame.size)
+            let offScreenPresentedViewFrame = CGRect(origin: CGPoint(x: onScreenPresentedViewFrame.origin.x, y: DeviceDisplay.size.height), size: onScreenPresentedViewFrame.size)
             if isPresenting {
                 views.presentedView.frame = offScreenPresentedViewFrame
             }

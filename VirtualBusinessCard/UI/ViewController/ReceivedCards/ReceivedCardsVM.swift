@@ -18,7 +18,8 @@ protocol ReceivedBusinessCardsVMDelegate: class {
 
 final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, ReceivedCardsView.CollectionCell.DataModel>
+    typealias DataModel = ReceivedCardsView.CollectionCell.DataModel
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DataModel>
 
     weak var delegate: ReceivedBusinessCardsVMDelegate?
 
@@ -35,6 +36,9 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
     private var displayedCardIndexes = [Int]()
+
+    private var updateCheckNo = 0
+    private var updatesForCards = [BusinessCardID: Bool]()
     
     private let sortActions = defaultSortActions()
 
@@ -75,7 +79,7 @@ extension ReceivedCardsVM {
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(displayedCardIndexes.map { cellViewModel(for: cards[$0].displayedLocalization, withNumber: $0) })
+        snapshot.appendItems(displayedCardIndexes.map { cellViewModel(for: cards[$0], withNumber: $0) })
         return snapshot
     }
 
@@ -86,6 +90,11 @@ extension ReceivedCardsVM {
             hapticSharpness: card.displayedLocalization.hapticFeedbackSharpness
         )
         return CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: prefetchedDM)
+    }
+
+    func hasUpdatesForCard(at indexPath: IndexPath) -> Bool {
+        let cardID = cards[displayedCardIndexes[indexPath.row]].id
+        return updatesForCards[cardID] ?? false
     }
     
     func toggleCellSizeMode() {
@@ -135,8 +144,12 @@ extension ReceivedCardsVM {
         }
     }
 
-    private func cellViewModel(for localization: BusinessCardLocalization, withNumber number: Int) -> ReceivedCardsView.CollectionCell.DataModel {
-        ReceivedCardsView.CollectionCell.DataModel(modelNumber: number, sceneDataModel: sceneViewModel(for: localization))
+    private func cellViewModel(for card: ReceivedBusinessCardMC, withNumber number: Int) -> DataModel {
+        DataModel(
+            cardID: card.id,
+            sceneDataModel: sceneViewModel(for: card.displayedLocalization),
+            hasUpdates: updatesForCards[card.id] ?? false
+        )
     }
 
     private func sceneViewModel(for localization: BusinessCardLocalization) -> CardFrontBackView.URLDataModel {
@@ -286,6 +299,10 @@ extension ReceivedCardsVM {
     private var receivedCardsCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
     }
+
+    private var directCardExchangeReference: CollectionReference {
+        db.collection(DirectCardExchange.collectionName)
+    }
     
     func fetchData() {
         receivedCardsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
@@ -302,10 +319,82 @@ extension ReceivedCardsVM {
         DispatchQueue.global().async {
             
             let newCardsSorted = self.mapAndSortCards(querySnapshot: querySnap)
-            
+
             DispatchQueue.main.async {
                 self.cards = newCardsSorted
                 self.displayedCardIndexes = Array(0 ..< newCardsSorted.count)
+                self.delegate?.refreshData(animated: false)
+
+                self.updateCheckNo += 1
+                self.checkForAvailableUpdates(for: newCardsSorted, updateCheckNo: self.updateCheckNo)
+            }
+        }
+    }
+
+    private func checkForAvailableUpdates(for cards: [ReceivedBusinessCardMC], updateCheckNo: Int) {
+
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        dispatchGroup.enter()
+
+        var exchangeDocs: [QueryDocumentSnapshot] = []
+
+        directCardExchangeReference
+            .whereField(DirectCardExchange.CodingKeys.ownerID.rawValue, isEqualTo: userID)
+            .getDocuments(source: .server) { querySnapshot, error in
+
+                guard let snapshot = querySnapshot else {
+                    print(#file, error?.localizedDescription ?? "")
+                    dispatchGroup.leave()
+                    return
+                }
+
+                exchangeDocs.append(contentsOf: snapshot.documents)
+                dispatchGroup.leave()
+            }
+
+        directCardExchangeReference
+            .whereField(DirectCardExchange.CodingKeys.guestID.rawValue, isEqualTo: userID)
+            .getDocuments(source: .server) { querySnapshot, error in
+
+                guard let snapshot = querySnapshot else {
+                    print(#file, error?.localizedDescription ?? "")
+                    dispatchGroup.leave()
+                    return
+                }
+
+                exchangeDocs.append(contentsOf: snapshot.documents)
+                dispatchGroup.leave()
+            }
+
+        dispatchGroup.notify(queue: .global()) { [weak self] in
+            self?.makeUpdatesDictionary(exchangeDocs: exchangeDocs, cards: cards, updateCheckNo: updateCheckNo)
+        }
+    }
+
+    private func makeUpdatesDictionary(exchangeDocs: [QueryDocumentSnapshot], cards: [ReceivedBusinessCardMC], updateCheckNo: Int) {
+
+        var cards = cards
+        var updatesForCards = [BusinessCardID: Bool]()
+
+        exchangeDocs.forEach { exchangeDoc in
+            guard let cardIndex = cards.firstIndex(where: { $0.exchangeID == exchangeDoc.documentID }) else { return }
+            let card = cards.remove(at: cardIndex)
+
+            guard let exchange = DirectCardExchangeMC(exchangeDocument: exchangeDoc) else {
+                return
+            }
+
+            let lastExchangeUpdate = exchange.ownerID == userID ? exchange.guestMostRecentUpdate : exchange.ownerMostRecentUpdate
+            if lastExchangeUpdate > card.mostRecentUpdateDate {
+                updatesForCards[card.id] = true
+            }
+        }
+
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            if updateCheckNo == self.updateCheckNo {
+                self.updatesForCards = updatesForCards
                 self.delegate?.refreshData(animated: false)
             }
         }
