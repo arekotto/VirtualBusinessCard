@@ -10,7 +10,6 @@ import Foundation
 
 struct ReceivedBusinessCard {
     var id: BusinessCardID
-    var exchangeID: DirectCardExchangeID
     var originalID: BusinessCardID
     var ownerID: UserID
     var receivingDate: Date
@@ -18,9 +17,10 @@ struct ReceivedBusinessCard {
     var localizations: [BusinessCardLocalization]
     var tagIDs: [BusinessCardTagID]
     var notes: String
+    var exchangeID: DirectCardExchangeID?
     
     init(id: BusinessCardID,
-         exchangeID: DirectCardExchangeID,
+         exchangeID: DirectCardExchangeID?,
          originalID: BusinessCardID,
          ownerID: UserID,
          receivingDate: Date,

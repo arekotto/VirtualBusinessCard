@@ -254,8 +254,10 @@ extension CardDetailsVM {
                 return
             }
 
-            self.directCardExchangeReference.document(card.exchangeID).addSnapshotListener { [weak self]  documentSnapshot, error in
-                self?.exchangeDidChange(documentSnapshot, error)
+            if let exchangeID = card.exchangeID {
+                self.directCardExchangeReference.document(exchangeID).addSnapshotListener { [weak self] documentSnapshot, error in
+                    self?.exchangeDidChange(documentSnapshot, error)
+                }
             }
 
             DispatchQueue.main.async {

@@ -23,7 +23,7 @@ struct SampleBCUploadTask {
         
         let imageURLs = [
             URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Back.png?alt=media&token=6a28dce4-14d4-4d6c-abb4-9577615f447d")!,
-            URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/SG9PehBemcUNLU8tajT3hmW5EJZ2%2Fcard1%2Fcard1front.png?alt=media&token=e38c0555-abf1-490d-8209-afc7456ff150")!,
+            URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard1Front.png?alt=media&token=d2961910-b886-4775-9322-23ec5ab68d9f")!,
             URL(string: "https://firebasestorage.googleapis.com/v0/b/virtual-business-card-ff129.appspot.com/o/sampleImages%2FsampleCard2Front.jpg?alt=media&token=fbcd38a0-3e25-4391-ad43-e82e38ce91ba")!
         ]
         
@@ -93,7 +93,7 @@ struct SampleBCUploadTask {
             default: cardTagIDs = []
             }
             
-            let personalBC = ReceivedBusinessCard(id: docRef.documentID, exchangeID: "", originalID: "some old ID", ownerID: "Test User", receivingDate: day(from: Date(), offset: idx % 5), mostRecentUpdateDate: Date(), languageVersions: [bcData], tagIDs: cardTagIDs)
+            let personalBC = ReceivedBusinessCard(id: docRef.documentID, exchangeID: nil, originalID: "some old ID", ownerID: "Test User", receivingDate: day(from: Date(), offset: idx % 5), mostRecentUpdateDate: Date(), languageVersions: [bcData], tagIDs: cardTagIDs)
             docRef.setData(personalBC.asDocument())
         }
     }

@@ -24,7 +24,7 @@ final class EditReceivedBusinessCardMC {
 
     var receivingDate: Date { card.receivingDate }
 
-    var exchangeID: DirectCardExchangeID { card.exchangeID }
+    var exchangeID: DirectCardExchangeID? { card.exchangeID }
 
     var localizations: [BusinessCardLocalization] {
         get { card.localizations }

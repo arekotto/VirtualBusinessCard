@@ -279,13 +279,14 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
                     completion(.failure(error!))
                     return
                 }
-                if let originalImagePath = originalImagePath {
-                    self.storage.child(originalImagePath).delete { error in
-                        if let err = error {
-                            print("Replaced image could not be deleted:", err.localizedDescription)
-                        }
-                    }
-                }
+                // TODO: image deletion can only happen if people who received the card can make copies of images. 
+//                if let originalImagePath = originalImagePath {
+//                    self.storage.child(originalImagePath).delete { error in
+//                        if let err = error {
+//                            print("Replaced image could not be deleted:", err.localizedDescription)
+//                        }
+//                    }
+//                }
                 completion(.success(BusinessCardLocalization.Image(id: newImageID, url: downloadURL)))
             }
         }
