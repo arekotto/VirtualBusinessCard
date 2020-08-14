@@ -211,7 +211,7 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
         [Int](0...2).forEach { _ in dispatchGroup.enter() }
 
         DispatchQueue.global().async {
-            if let newImage = newImages.front, let newImageData = newImage.pngData(), newImageData != self.originalImages.front?.pngData() {
+            if let newImage = newImages.front, let newImageData = newImage.jpegData(compressionQuality: 0.9), newImageData != self.originalImages.front?.pngData() {
                 self.replaceImage(newImageData: newImageData, originalImagePath: self.card.frontImageStoragePath) { result in
                     switch result {
                     case .success(let image): uploadedImages.front = image
@@ -225,7 +225,7 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
         }
 
         DispatchQueue.global().async {
-            if let newImage = newImages.texture, let newImageData = newImage.pngData(), newImageData != self.originalImages.texture?.pngData() {
+            if let newImage = newImages.texture, let newImageData = newImage.jpegData(compressionQuality: 0.9), newImageData != self.originalImages.texture?.pngData() {
                 self.replaceImage(newImageData: newImageData, originalImagePath: self.card.textureImageStoragePath) { result in
                     switch result {
                     case .success(let image): uploadedImages.texture = image
@@ -239,7 +239,7 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
         }
 
         DispatchQueue.global().async {
-            if let newImage = newImages.back, let newImageData = newImage.pngData(), newImageData != self.originalImages.back?.pngData() {
+            if let newImage = newImages.back, let newImageData = newImage.jpegData(compressionQuality: 0.9), newImageData != self.originalImages.back?.pngData() {
                 self.replaceImage(newImageData: newImageData, originalImagePath: self.card.backImageStoragePath) { result in
                     switch result {
                     case .success(let image): uploadedImages.back = image
@@ -279,7 +279,7 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
                     completion(.failure(error!))
                     return
                 }
-                // TODO: image deletion can only happen if people who received the card can make copies of images. 
+                // TODO: image deletion can only happen if people who received the card can make copies of images.
 //                if let originalImagePath = originalImagePath {
 //                    self.storage.child(originalImagePath).delete { error in
 //                        if let err = error {
