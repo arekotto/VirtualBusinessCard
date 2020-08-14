@@ -12,6 +12,7 @@ import UIKit
 
 protocol ReceivedBusinessCardsVMDelegate: class {
     func refreshData(animated: Bool)
+    func refreshUpdateIndicators()
     func refreshLayout(style: CardFrontBackView.Style)
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
 }
@@ -395,7 +396,7 @@ extension ReceivedCardsVM {
             guard let self = self else { return }
             if updateCheckNo == self.updateCheckNo {
                 self.updatesForCards = updatesForCards
-                self.delegate?.refreshData(animated: false)
+                self.delegate?.refreshUpdateIndicators()
             }
         }
     }

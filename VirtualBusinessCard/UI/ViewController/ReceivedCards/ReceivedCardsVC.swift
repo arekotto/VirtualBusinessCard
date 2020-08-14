@@ -155,6 +155,14 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
             cell.cardFrontBackView.updateMotionData(motion, over: timeFrame)
         }
     }
+
+    func refreshUpdateIndicators() {
+        let supplementaryViewKind = View.SupplementaryView.updateAvailableIndicator.rawValue
+        let supplementaryItemsIndexPaths = contentView.collectionView.indexPathsForVisibleSupplementaryElements(ofKind: supplementaryViewKind)
+        supplementaryItemsIndexPaths.forEach {
+            contentView.collectionView.supplementaryView(forElementKind: supplementaryViewKind, at: $0)?.isHidden = !viewModel.hasUpdatesForCard(at: $0)
+        }
+    }
     
     func refreshData(animated: Bool) {
         collectionViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: animated)
