@@ -17,6 +17,12 @@ final class GroupedCardsView: AppBackgroundView {
     
     let scrollableSegmentedControl = ScrollableSegmentedControl()
 
+    let emptyStateView = EmptyStateView(
+        title: NSLocalizedString("No Cards to Show", comment: ""),
+        subtitle: NSLocalizedString("After you exchange your business card with other users, their cards will appear here.", comment: ""),
+        isHidden: true
+    )
+
     private(set) lazy var tableView: UITableView = {
         let this = UITableView(frame: .zero, style: .insetGrouped)
         this.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 8, right: 0)
@@ -32,12 +38,15 @@ final class GroupedCardsView: AppBackgroundView {
     
     override func configureSubviews() {
         super.configureSubviews()
-        addSubview(tableView)
+        [tableView, emptyStateView].forEach { addSubview($0) }
     }
     
     override func configureConstraints() {
         super.configureConstraints()
         tableView.constrainToEdgesOfSuperview()
+
+        emptyStateView.constrainWidthEqualTo(self, multiplier: 0.8)
+        emptyStateView.constrainCenterToSuperview()
     }
     
     override func layoutSubviews() {

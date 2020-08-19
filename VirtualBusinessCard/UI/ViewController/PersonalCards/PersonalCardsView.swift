@@ -26,6 +26,12 @@ final class PersonalCardsView: AppBackgroundView {
         cv.backgroundColor = .clear
         return cv
     }()
+
+    let emptyStateView = EmptyStateView(
+        title: NSLocalizedString("No Business Cards to Show", comment: ""),
+        subtitle: NSLocalizedString("Add your personal cards by tapping the + button in the top right corner.", comment: ""),
+        isHidden: true
+    )
     
     override func configureView() {
         super.configureView()
@@ -33,14 +39,17 @@ final class PersonalCardsView: AppBackgroundView {
     
     override func configureSubviews() {
         super.configureSubviews()
-        addSubview(collectionView)
+        [collectionView, emptyStateView].forEach { addSubview($0) }
     }
     
     override func configureConstraints() {
         super.configureConstraints()
-        collectionView.constrainCenterYToSuperview(offset: -50)
+        collectionView.constrainCenterYToSuperview()
         collectionView.constrainHorizontallyToSuperview()
         collectionView.constrainHeight(constant: 400)
+
+        emptyStateView.constrainWidthEqualTo(self, multiplier: 0.8)
+        emptyStateView.constrainCenterToSuperview()
     }
     
     override func layoutSubviews() {

@@ -41,6 +41,10 @@ extension TagsVM {
         return UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imgConfig)!
     }
 
+    var showsEmptyState: Bool {
+        tags.isEmpty
+    }
+
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])

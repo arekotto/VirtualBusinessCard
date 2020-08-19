@@ -106,6 +106,7 @@ extension TagsVC: TagsVMDelegate {
     }
     
     func refreshData() {
+        contentView.emptyStateView.isHidden = !viewModel.showsEmptyState
         tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: false)
     }
 }

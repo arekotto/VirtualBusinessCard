@@ -26,6 +26,7 @@ final class PersonalCardsVC: AppViewController<PersonalCardsView, PersonalCardsV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        extendedLayoutIncludesOpaqueBars = true
         viewModel.delegate = self
         contentView.collectionView.delegate = self
         contentView.collectionView.dataSource = self
@@ -124,6 +125,7 @@ extension PersonalCardsVC: PersonalCardsVMlDelegate {
     }
     
     func reloadData() {
+        contentView.emptyStateView.isHidden = !viewModel.showsEmptyState
         let cv = contentView.collectionView
         cv.reloadData()
         cv.performBatchUpdates({cv.collectionViewLayout.invalidateLayout()})

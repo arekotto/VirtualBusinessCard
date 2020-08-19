@@ -159,6 +159,10 @@ extension GroupedCardsVM {
     var title: String {
         NSLocalizedString("Collection", comment: "")
     }
+
+    var showsEmptyState: Bool {
+        cards.isEmpty
+    }
     
     var seeAllCardsButtonTitle: String {
         NSLocalizedString("See All", comment: "")

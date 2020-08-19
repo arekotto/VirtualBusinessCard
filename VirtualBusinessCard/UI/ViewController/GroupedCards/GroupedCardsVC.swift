@@ -14,6 +14,8 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
 
     private lazy var collectionViewDataSource = makeTableViewDataSource()
 
+    private lazy var seeAllButton = UIBarButtonItem(title: viewModel.seeAllCardsButtonTitle, style: .plain, target: self, action: #selector(didTapSeeAllButton))
+
     override func viewDidLoad() {
         super.viewDidLoad()
         extendedLayoutIncludesOpaqueBars = true
@@ -43,7 +45,7 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
     
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: viewModel.seeAllCardsButtonTitle, style: .plain, target: self, action: #selector(didTapSeeAllButton))
+        navigationItem.rightBarButtonItem = seeAllButton
         navigationItem.searchController = {
             let controller = UISearchController()
             controller.delegate = self
@@ -86,6 +88,8 @@ extension GroupedCardsVC: GroupedCardsVMDelegate {
     }
     
     func refreshData(animated: Bool) {
+        seeAllButton.isEnabled = !viewModel.showsEmptyState
+        contentView.emptyStateView.isHidden = !viewModel.showsEmptyState
         collectionViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: animated)
     }
 }

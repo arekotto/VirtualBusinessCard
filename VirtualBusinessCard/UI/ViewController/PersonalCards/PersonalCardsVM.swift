@@ -23,8 +23,8 @@ final class PersonalCardsVM: PartialUserViewModel, MotionDataSource {
         
     private(set) lazy var motionManager = CMMotionManager()
     
-    private var user: UserMC?
     private var cards: [PersonalBusinessCardMC] = []
+    private var cardsSnapshotListener: ListenerRegistration?
 
     func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         delegate?.didUpdateMotionData(motion, over: timeFrame)
@@ -38,6 +38,10 @@ final class PersonalCardsVM: PartialUserViewModel, MotionDataSource {
 extension PersonalCardsVM {
     var title: String {
         NSLocalizedString("My Cards", comment: "")
+    }
+
+    var showsEmptyState: Bool {
+        numberOfItems() == 0
     }
     
     var tabBarIconImage: UIImage {
@@ -87,11 +91,7 @@ extension PersonalCardsVM {
 }
 
 extension PersonalCardsVM {
-    
-    private var userPrivateDocumentReference: DocumentReference {
-        userPublicDocumentReference.collection(UserPrivate.collectionName).document(UserPrivate.documentName)
-    }
-    
+
     private var cardCollectionReference: CollectionReference {
         userPublicDocumentReference.collection(PersonalBusinessCard.collectionName)
     }
@@ -115,29 +115,13 @@ extension PersonalCardsVM {
             delegate?.presentUserSetup(userID: currentUser.uid, email: currentUser.email!)
             return
         }
-        guard let user = UserMC(userPublicDocument: doc) else {
-            print(#file, "Error mapping user public:", doc.documentID)
-            return
-        }
-        self.user = user
-        userPrivateDocumentReference.addSnapshotListener { [weak self] snapshot, error in
-            self?.userPrivateDidChange(snapshot, error)
-        }
-        cardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
+
+        cardsSnapshotListener?.remove()
+        cardsSnapshotListener = cardCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
             self?.personalBusinessCardCollectionDidChange(querySnapshot: querySnapshot, error: error)
         }
     }
-    
-    private func userPrivateDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching user private changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        user?.setUserPrivate(document: doc)
-        delegate?.reloadData()
-    }
-    
+
     private func personalBusinessCardCollectionDidChange(querySnapshot: QuerySnapshot?, error: Error?) {
         guard let querySnap = querySnapshot else {
             print(#file, error?.localizedDescription ?? "")

@@ -43,6 +43,7 @@
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
 		451E20F324BC82940097BEDE /* DirectCardExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E20F224BC82940097BEDE /* DirectCardExchange.swift */; };
+		451F70D424ED53B300CEC519 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451F70D324ED53B300CEC519 /* EmptyStateView.swift */; };
 		452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */; };
 		452B33C5248E4F91006E6A7D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C4248E4F91006E6A7D /* SettingsView.swift */; };
 		452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C6248E4FCA006E6A7D /* SettingsVM.swift */; };
@@ -257,6 +258,7 @@
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
 		451E20F224BC82940097BEDE /* DirectCardExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchange.swift; sourceTree = "<group>"; };
+		451F70D324ED53B300CEC519 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsViewCell.swift; sourceTree = "<group>"; };
 		452B33C4248E4F91006E6A7D /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		452B33C6248E4FCA006E6A7D /* SettingsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVM.swift; sourceTree = "<group>"; };
@@ -1005,6 +1007,7 @@
 				45D76DF024CF19AC008BDDE5 /* TransparentButtonView.swift */,
 				4532CDCD24D5C81800ACB597 /* HorizontalOrDivider.swift */,
 				45AF8B0924DF246600070707 /* NavigationTitleView.swift */,
+				451F70D324ED53B300CEC519 /* EmptyStateView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1526,6 +1529,7 @@
 				4576993E24CC66A0008D3778 /* TagTableCell.swift in Sources */,
 				45C25D60249CF05100945F29 /* GroupedCardsVC.swift in Sources */,
 				454CF7E024A9F52D00074E0D /* UIAlertController.swift in Sources */,
+				451F70D424ED53B300CEC519 /* EmptyStateView.swift in Sources */,
 				459102F524B70D780064B12C /* PersonalCardsCompactView.swift in Sources */,
 				45B5E31B241FC35B00028B0A /* OrDivider.swift in Sources */,
 				4533849E24C9F0120020AEF6 /* MotionDataSource.swift in Sources */,
@@ -1809,7 +1813,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"VirtualBusinessCard/Preview Content\"";
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_BITCODE = YES;
@@ -1837,7 +1841,7 @@
 				CODE_SIGN_ENTITLEMENTS = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_ASSET_PATHS = "\"VirtualBusinessCard/Preview Content\"";
 				DEVELOPMENT_TEAM = 5EP5TVKNPZ;
 				ENABLE_BITCODE = YES;
