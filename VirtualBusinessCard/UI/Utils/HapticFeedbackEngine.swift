@@ -40,7 +40,8 @@ struct HapticFeedbackEngine {
     func play() {
         do {
             try player?.start(atTime: 0)
-        } catch {
+        } catch let error {
+            print(error.localizedDescription)
             if shouldPlayVibrateOnError {
                 AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             }

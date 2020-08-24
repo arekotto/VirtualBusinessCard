@@ -19,7 +19,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
     private lazy var collectionViewDataSource = makeDataSource()
 
-    private var engine: HapticFeedbackEngine!
+    private var engine: HapticFeedbackEngine?
 
     func cardImagesCellFrame(translatedTo targetView: UIView) -> CGRect? {
         let indexPathsForVisibleItems = contentView.collectionView.indexPathsForVisibleItems
@@ -61,7 +61,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         cardImagesCell()?.extendWithAnimation()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            self.engine.play()
+            self.engine?.play()
         }
     }
     
@@ -149,15 +149,18 @@ private extension CardDetailsVC {
     }
 
     func didTapCloseButton() {
+        engine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
+
         guard let cell = cardImagesCell() else {
+            engine?.play()
             dismiss(animated: true)
             return
         }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.engine?.play()
+        }
         cell.condenseWithAnimation {
             self.dismiss(animated: true)
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            self.engine.play()
         }
     }
 }

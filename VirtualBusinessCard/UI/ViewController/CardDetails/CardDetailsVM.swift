@@ -175,7 +175,7 @@ extension CardDetailsVM {
     }
 
     private static func openBrowser(with actionValue: String) {
-        let urlString = actionValue.starts(with: "http") ? "http://\(actionValue)" : actionValue
+        let urlString = actionValue.starts(with: "http") ? actionValue : "http://\(actionValue)"
         guard let url = URL(string: urlString) else { return }
         UIApplication.shared.open(url)
     }
