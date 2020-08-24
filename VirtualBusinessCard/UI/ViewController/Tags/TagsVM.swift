@@ -30,12 +30,7 @@ extension TagsVM {
     var title: String {
         NSLocalizedString("Tags", comment: "")
     }
-    
-    var newTagImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
-        return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
-    }
-    
+
     var sortControlImage: UIImage {
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
         return UIImage(systemName: "arrow.up.arrow.down", withConfiguration: imgConfig)!

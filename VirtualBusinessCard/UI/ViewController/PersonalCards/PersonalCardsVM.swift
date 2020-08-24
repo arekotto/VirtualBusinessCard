@@ -48,11 +48,6 @@ extension PersonalCardsVM {
         Asset.Images.Icon.personalCards.image
     }
     
-    var newBusinessCardImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
-        return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
-    }
-    
     var settingsImage: UIImage {
         Asset.Images.Icon.settings.image
     }

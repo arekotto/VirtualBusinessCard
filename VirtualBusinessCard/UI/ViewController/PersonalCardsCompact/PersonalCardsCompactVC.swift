@@ -30,7 +30,7 @@ final class PersonalCardsCompactVC: AppViewController<PersonalCardsCompactView, 
     }
 
     private func setupNavigationItem() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewBusinessCardButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem.add(target: self, action: #selector(didTapNewBusinessCardButton))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: viewModel.settingsImage, style: .plain, target: self, action: #selector(didTapSettingsButton))
     }
 }

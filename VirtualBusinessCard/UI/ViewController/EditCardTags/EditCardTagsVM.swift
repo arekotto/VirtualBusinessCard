@@ -12,7 +12,6 @@ import UIKit
 
 protocol EditCardTagsVMDelegate: class {
     func refreshData()
-    func refreshRowAnimated(at indexPath: IndexPath)
     func presentDismissAlert()
     func dismiss()
 }
@@ -22,6 +21,9 @@ protocol EditCardTagsVMSelectionDelegate: class {
 }
 
 final class EditCardTagsVM: PartialUserViewModel {
+
+    typealias DataModel = TagTableCell.DataModel
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DataModel>
 
     weak var delegate: EditCardTagsVMDelegate?
     weak var selectionDelegate: EditCardTagsVMSelectionDelegate?
@@ -48,25 +50,25 @@ final class EditCardTagsVM: PartialUserViewModel {
 
 extension EditCardTagsVM {
     var title: String {
-        NSLocalizedString("Add Tags", comment: "")
+        NSLocalizedString("Card Tags", comment: "")
     }
 
     var isAllowedDragToDismiss: Bool {
         !hasMadeChanges
     }
 
-    func numberOfItems() -> Int {
-        tags.count
-    }
-
-    func itemForRow(at indexPath: IndexPath) -> TagTableCell.DataModel {
-        let tag = tagForRow(at: indexPath)
-        return TagTableCell.DataModel(
-            itemNumber: indexPath.row,
-            tagName: tag.title,
-            tagColor: tag.displayColor,
-            accessoryImage: accessoryImage(for: tag.id)
-        )
+    func dataSnapshot() -> Snapshot {
+        var snapshot = Snapshot()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(tags.enumerated().map { index, tag in
+            DataModel(
+                itemNumber: index,
+                tagName: tag.title,
+                tagColor: tag.displayColor,
+                accessoryImage: accessoryImage(for: tag.id)
+            )
+        })
+        return snapshot
     }
 
     func didSelectItem(at indexPath: IndexPath) {
@@ -76,7 +78,7 @@ extension EditCardTagsVM {
         } else {
             selectedTagIDs.append(tagID)
         }
-        delegate?.refreshRowAnimated(at: indexPath)
+        delegate?.refreshData()
     }
 
     func didApproveSelection() {
@@ -85,6 +87,10 @@ extension EditCardTagsVM {
             selectionDelegate?.didChangeSelectedTags(to: selectedTags.sorted(by: BusinessCardTagMC.sortByPriority))
         }
         delegate?.dismiss()
+    }
+
+    func editTagVM() -> EditTagVM {
+        EditTagVM(userID: userID, estimatedLowestPriorityIndex: tags.count)
     }
 
     func didAttemptDismiss() {
@@ -144,5 +150,13 @@ extension EditCardTagsVM {
                 self.delegate?.refreshData()
             }
         }
+    }
+}
+
+// MARK: - Section
+
+extension EditCardTagsVM {
+    enum Section {
+        case main
     }
 }

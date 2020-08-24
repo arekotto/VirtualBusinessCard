@@ -88,6 +88,7 @@ extension LanguagesVM {
     func search(for query: String) {
         guard !query.isEmpty else {
             displayedLanguageCodes = availableLanguageCodes
+            delegate?.viewModelDidRefreshData()
             return
         }
         DispatchQueue.global().async { [self] in

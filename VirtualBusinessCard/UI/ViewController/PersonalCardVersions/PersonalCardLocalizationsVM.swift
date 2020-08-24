@@ -54,11 +54,6 @@ final class PersonalCardLocalizationsVM: CompleteUserViewModel, MotionDataSource
 
 extension PersonalCardLocalizationsVM {
 
-    var newBusinessCardImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
-        return UIImage(systemName: "plus.circle.fill", withConfiguration: imgConfig)!
-    }
-
     var pushChangesToExchangesImages: UIImage {
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .bold)
         return UIImage(systemName: "arrow.branch", withConfiguration: imgConfig)!

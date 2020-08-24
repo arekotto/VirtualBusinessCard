@@ -16,4 +16,10 @@ extension UIBarButtonItem {
     static func cancel(target: Any?, action: Selector?) -> UIBarButtonItem {
         UIBarButtonItem(title: NSLocalizedString("Cancel", comment: ""), style: .plain, target: target, action: action)
     }
+
+    static func add(target: Any?, action: Selector?) -> UIBarButtonItem {
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+        let image = UIImage(systemName: "plus.circle.fill", withConfiguration: imageConfig)!
+        return UIBarButtonItem(image: image, style: .plain, target: target, action: action)
+    }
 }

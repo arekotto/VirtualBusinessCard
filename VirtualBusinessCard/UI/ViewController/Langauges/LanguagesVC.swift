@@ -32,6 +32,7 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        extendedLayoutIncludesOpaqueBars = true
         setupTableView()
         setupNavigationItem()
         viewModel.delegate = self
@@ -61,6 +62,7 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
         navigationItem.searchController = {
             let controller = UISearchController()
             controller.searchResultsUpdater = self
+            controller.delegate = self
             controller.obscuresBackgroundDuringPresentation = false
             controller.hidesNavigationBarDuringPresentation = false
             return controller

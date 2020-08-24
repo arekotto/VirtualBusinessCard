@@ -11,7 +11,7 @@ import UIKit
 final class TagsVC: AppViewController<TagsView, TagsVM> {
 
     private lazy var nonEditingButtons = [
-        UIBarButtonItem(image: viewModel.newTagImage, style: .plain, target: self, action: #selector(didTapNewTagButton)),
+        UIBarButtonItem.add(target: self, action: #selector(didTapNewTagButton)),
         UIBarButtonItem(image: viewModel.sortControlImage, style: .plain, target: self, action: #selector(didTapSortButton))
     ]
     

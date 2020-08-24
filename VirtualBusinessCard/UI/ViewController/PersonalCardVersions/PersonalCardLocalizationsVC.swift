@@ -48,7 +48,7 @@ final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizat
     private func setupNavigationItem() {
         navigationItem.title = NSLocalizedString("Card Localization", comment: "")
         navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(image: viewModel.newBusinessCardImage, style: .plain, target: self, action: #selector(didTapNewVersionButton)),
+            UIBarButtonItem.add(target: self, action: #selector(didTapNewVersionButton)),
             pushUpdatesButton
         ]
         pushUpdatesButton.isEnabled = viewModel.pushChangesButtonEnabled
