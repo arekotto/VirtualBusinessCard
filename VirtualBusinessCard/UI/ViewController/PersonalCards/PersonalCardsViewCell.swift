@@ -12,11 +12,35 @@ import CollectionViewPagingLayout
 import CoreMotion
 
 extension PersonalCardsView {
+
     class CollectionCell: AppCollectionViewCell, Reusable {
         
         static private let shareButtonTopConstraintValue: CGFloat = 60
 
         static private let screenWidth = UIScreen.main.bounds.size.width
+
+        let localizationTitleLabel: UILabel = {
+            let this = UILabel()
+            this.font = .appDefault(size: 15, weight: .semibold)
+            this.textAlignment = .center
+            return this
+        }()
+
+        let localizationSubtitleLabel: UILabel = {
+            let this = UILabel()
+            this.font = .appDefault(size: 13, weight: .medium)
+            this.textAlignment = .center
+            return this
+        }()
+
+        let shareButton = ShareButton()
+
+        private lazy var localizationStackView: UIStackView = {
+            let this = UIStackView(arrangedSubviews: [localizationTitleLabel, localizationSubtitleLabel])
+            this.axis = .vertical
+            this.spacing = 4
+            return this
+        }()
 
         private var mostRecentFetchTaskTag = 0
 
@@ -37,9 +61,7 @@ extension PersonalCardsView {
         private var allSceneViews: [BusinessCardSceneView] {
             [backSceneView, frontSceneView]
         }
-        
-        let shareButton = ShareButton()
-        
+
         private let scalableView = UIView()
         
         private(set) var shareButtonTopConstraint: NSLayoutConstraint!
@@ -50,7 +72,7 @@ extension PersonalCardsView {
         
         override func configureSubviews() {
             super.configureSubviews()
-            [backSceneView, frontSceneView, shareButton].forEach { scalableView.addSubview($0) }
+            [backSceneView, frontSceneView, shareButton, localizationStackView].forEach { scalableView.addSubview($0) }
             contentView.addSubview(scalableView)
         }
         
@@ -77,6 +99,9 @@ extension PersonalCardsView {
             shareButton.constrainWidthGreaterThanOrEqualTo(constant: 150)
             shareButton.constrainHeight(constant: 50)
             shareButton.constrainCenterXToSuperview()
+
+            localizationStackView.constrainBottom(to: frontSceneView.topAnchor, constant: -32)
+            localizationStackView.constrainHorizontallyToSuperview(sideInset: 16)
         }
         
         override func configureColors() {
@@ -84,21 +109,7 @@ extension PersonalCardsView {
             shareButton.tintColor = Asset.Colors.appWhite.color
             shareButton.layer.shadowColor = Asset.Colors.appAccent.color.cgColor
             shareButton.backgroundColor = Asset.Colors.appAccent.color
-        }
-
-        func setDataModel(_ dm: DataModel) {
-            mostRecentFetchTaskTag += 1
-            let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL], tag: mostRecentFetchTaskTag)
-            task { [weak self] result, tag in
-                guard let self = self, self.mostRecentFetchTaskTag == tag else { return }
-                switch result {
-                case .failure(let err): print(err.localizedDescription)
-                case .success(let images):
-                    let texture = images[1]
-                    self.frontSceneView.setImage(image: images[0], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
-                    self.backSceneView.setImage(image: images[2], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
-                }
-            }
+            localizationSubtitleLabel.textColor = .secondaryLabel
         }
         
         func updateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
@@ -211,6 +222,7 @@ extension PersonalCardsView.CollectionCell: TransformableView {
 // MARK: - BusinessCardCellDM
 
 extension PersonalCardsView.CollectionCell {
+
     struct DataModel {
         let frontImageURL: URL
         let backImageURL: URL
@@ -218,6 +230,25 @@ extension PersonalCardsView.CollectionCell {
         let normal: CGFloat
         let specular: CGFloat
         let cornerRadiusHeightMultiplier: CGFloat
+        let localizationTitle: String
+        let localizationSubtitle: String
+    }
+
+    func setDataModel(_ dm: DataModel) {
+        localizationTitleLabel.text = dm.localizationTitle
+        localizationSubtitleLabel.text = dm.localizationSubtitle
+        mostRecentFetchTaskTag += 1
+        let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL], tag: mostRecentFetchTaskTag)
+        task { [weak self] result, tag in
+            guard let self = self, self.mostRecentFetchTaskTag == tag else { return }
+            switch result {
+            case .failure(let err): print(err.localizedDescription)
+            case .success(let images):
+                let texture = images[1]
+                self.frontSceneView.setImage(image: images[0], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
+                self.backSceneView.setImage(image: images[2], texture: texture, normal: dm.normal, specular: dm.specular, cornerRadiusHeightMultiplier: dm.cornerRadiusHeightMultiplier)
+            }
+        }
     }
 }
 

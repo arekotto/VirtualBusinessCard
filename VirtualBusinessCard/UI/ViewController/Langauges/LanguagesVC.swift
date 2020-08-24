@@ -50,7 +50,6 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
         tableView.separatorInset = UIEdgeInsets(vertical: 0, horizontal: 16)
         tableView.registerReusableCell(LanguagesView.TableCell.self)
         tableView.backgroundColor = Asset.Colors.appBackground.color
-        tableView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         tableView.keyboardDismissMode = .onDrag
     }
 
@@ -59,6 +58,7 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
         navigationItem.title = NSLocalizedString("Choose Language", comment: "")
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: viewModel.doneButtonTitle, style: .done, target: self, action: #selector(didTapDoneEditingButton))
         navigationItem.leftBarButtonItem = UIBarButtonItem.cancel(target: self, action: #selector(didTapCancelEditingButton))
+        navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = {
             let controller = UISearchController()
             controller.searchResultsUpdater = self
@@ -123,5 +123,14 @@ extension LanguagesTVC: LanguagesVMDelegate {
 
     func viewModelDidRefreshData() {
         tableViewDataSource.apply(viewModel.dataSnapshot())
+    }
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+
+extension LanguagesTVC: UIAdaptivePresentationControllerDelegate {
+
+    func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        delegate?.languagesTVC(self, didFinishWith: nil)
     }
 }

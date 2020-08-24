@@ -26,12 +26,22 @@ final class PersonalCardsVM: PartialUserViewModel, MotionDataSource {
     private var cards: [PersonalBusinessCardMC] = []
     private var cardsSnapshotListener: ListenerRegistration?
 
+    private let currentLocale = Locale.current
+
     func didReceiveMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
         delegate?.didUpdateMotionData(motion, over: timeFrame)
     }
 
     private func cardForCell(at indexPath: IndexPath) -> PersonalBusinessCardMC {
         cards[indexPath.item]
+    }
+
+    private func languageName(forCode langCode: String?) -> String {
+        if let code = langCode {
+            return currentLocale.localizedString(forLanguageCode: code) ?? NSLocalizedString("Universal", comment: "")
+        } else {
+            return NSLocalizedString("Universal", comment: "")
+        }
     }
 }
 
@@ -66,13 +76,23 @@ extension PersonalCardsVM {
     
     func item(for indexPath: IndexPath) -> PersonalCardsView.CollectionCell.DataModel {
         let card = cardForCell(at: indexPath)
+        let localizationsCount = card.localizations.count
+        let title: String
+        if localizationsCount == 1 {
+            title = NSLocalizedString("Available in 1 Language", comment: "")
+        } else {
+            let titleFormat = NSLocalizedString("Available in %d Languages", comment: "")
+            title = String.localizedStringWithFormat(titleFormat, localizationsCount)
+        }
         return PersonalCardsView.CollectionCell.DataModel(
             frontImageURL: card.frontImage.url,
             backImageURL: card.backImage.url,
             textureImageURL: card.texture.image.url,
             normal: CGFloat(card.texture.normal),
             specular: CGFloat(card.texture.specular),
-            cornerRadiusHeightMultiplier: CGFloat(card.cornerRadiusHeightMultiplier)
+            cornerRadiusHeightMultiplier: CGFloat(card.cornerRadiusHeightMultiplier),
+            localizationTitle: title,
+            localizationSubtitle: card.localizations.map { languageName(forCode: $0.languageCode) }.joined(separator: ", ")
         )
     }
 

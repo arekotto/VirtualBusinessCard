@@ -86,9 +86,11 @@ final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizat
     }
 
     private func presentLanguagesVC(viewModel: LanguagesVM) {
-        let vc = LanguagesTVC(viewModel: viewModel)
-        vc.delegate = self
-        present(AppNavigationController(rootViewController: vc), animated: true)
+        let languagesTVC = LanguagesTVC(viewModel: viewModel)
+        languagesTVC.delegate = self
+        let navController = AppNavigationController(rootViewController: languagesTVC)
+        navController.presentationController?.delegate = languagesTVC
+        present(navController, animated: true)
     }
 }
 

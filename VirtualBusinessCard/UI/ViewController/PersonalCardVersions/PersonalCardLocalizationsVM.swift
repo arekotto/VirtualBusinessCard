@@ -234,7 +234,7 @@ extension PersonalCardLocalizationsVM {
     private func cellDataModel(for localization: BusinessCardLocalization) -> DataModel {
         DataModel(
             id: localization.id,
-            title: cellTitle(forCardLanguageCode: localization.languageCode),
+            title: languageName(forCode: localization.languageCode),
             isDefault: localization.isDefault,
             sceneDataModel: CardFrontBackView.URLDataModel(
                 frontImageURL: localization.frontImage.url,
@@ -247,11 +247,11 @@ extension PersonalCardLocalizationsVM {
         )
     }
 
-    private func cellTitle(forCardLanguageCode langCode: String?) -> String {
+    private func languageName(forCode langCode: String?) -> String {
         if let code = langCode {
-            return currentLocale.localizedString(forLanguageCode: code) ?? NSLocalizedString("Language unspecified", comment: "")
+            return currentLocale.localizedString(forLanguageCode: code) ?? NSLocalizedString("Universal", comment: "")
         } else {
-            return NSLocalizedString("Language unspecified", comment: "")
+            return NSLocalizedString("Universal", comment: "")
         }
     }
 }
