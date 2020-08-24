@@ -186,8 +186,13 @@ extension GroupedCardsVM {
     func didSelectItem(at indexPath: IndexPath) {
         let title = displayedGroup(at: indexPath.item).title
         let group = groups[indexPath.item]
-        let vm = ReceivedCardsVM(userID: userID, title: title, dataFetchMode: .specifiedIDs(group.cardIDs))
-        delegate?.presentReceivedCards(with: vm)
+        let viewModel: ReceivedCardsVM
+        if group.groupingProperty == .tag, let tagID = group.groupingValue, let tag = tags[tagID] {
+            viewModel = ReceivedCardsVM(userID: userID, dataFetchMode: .tagWithSpecifiedIDs(group.cardIDs, tag: tag), title: title)
+        } else {
+            viewModel = ReceivedCardsVM(userID: userID, dataFetchMode: .specifiedIDs(group.cardIDs), title: title)
+        }
+        delegate?.presentReceivedCards(with: viewModel)
     }
     
     func didSelectGroupingMode(at index: Int) {
@@ -196,7 +201,7 @@ extension GroupedCardsVM {
     
     func didTapSeeAll() {
         let title = NSLocalizedString("All Cards", comment: "")
-        let vm = ReceivedCardsVM(userID: userID, title: title, dataFetchMode: .allReceivedCards)
+        let vm = ReceivedCardsVM(userID: userID, dataFetchMode: .allReceivedCards, title: title)
         delegate?.presentReceivedCards(with: vm)
     }
     

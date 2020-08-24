@@ -49,7 +49,7 @@ extension AcceptCardVM {
     var hasAcceptedCard: Bool { acceptedCard.value }
 
     var addNoteImage: UIImage {
-        UIImage(systemName: "pencil", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))!
+        UIImage(systemName: "square.and.pencil", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))!
     }
 
     var addTagImage: UIImage {

@@ -59,7 +59,9 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
     
     private func setupNavigationItem() {
-        navigationItem.title = viewModel.title
+        contentView.titleView.tagImageColor = viewModel.titleImageColor
+        contentView.titleView.titleLabel.text = viewModel.title
+        navigationItem.titleView = contentView.titleView
         navigationItem.largeTitleDisplayMode = .never
 
         contentView.cellSizeModeButton.setImage(viewModel.cellSizeControlImage, for: .normal)
@@ -69,7 +71,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
             UIBarButtonItem(customView: contentView.cellSizeModeButton),
             UIBarButtonItem(image: viewModel.sortControlImage, style: .plain, target: self, action: #selector(didTapSortButton))
         ]
-        
+
         navigationItem.searchController = {
             let controller = UISearchController()
             controller.searchResultsUpdater = self
@@ -134,9 +136,10 @@ extension ReceivedCardsVC: UICollectionViewDelegate {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if contentView.collectionView.contentOffset.y < -88 && !(navigationItem.searchController?.isActive ?? false) {
-            contentView.collectionView.scrollToItem(at: IndexPath(item: 0), at: .top, animated: false)
-        }
+        // turning this off doesn't break anything if everything still works in a week delete this
+//        if contentView.collectionView.contentOffset.y < -88 && !(navigationItem.searchController?.isActive ?? false) {
+//            contentView.collectionView.scrollToItem(at: IndexPath(item: 0), at: .top, animated: false)
+//        }
         presentCardDetails(for: indexPath)
     }
 
@@ -193,10 +196,15 @@ extension ReceivedCardsVC: UIViewControllerTransitioningDelegate {
         guard let selectedCell = self.selectedCell else { return nil }
         guard let cellSnap = selectedCell.contentView.snapshotView(afterScreenUpdates: false) else { return nil }
 
-        let searchBarHeight = navigationItem.searchController?.searchBar.bounds.height ?? 0
+        let searchController = navigationItem.searchController
+        let searchBarHeight = searchController?.searchBar.bounds.height ?? 0
         let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame
-        let availableAnimationBoundsOrigin = CGPoint(x: safeAreaFrame.origin.x, y: safeAreaFrame.origin.y - searchBarHeight)
-        let availableAnimationBoundsSize = CGSize(width: safeAreaFrame.width, height: safeAreaFrame.height + searchBarHeight)
+
+        let availableAnimationOriginY = (searchController?.isActive ?? false) ? safeAreaFrame.origin.y : safeAreaFrame.origin.y - searchBarHeight
+        let availableAnimationBoundsHeight = (searchController?.isActive ?? false) ? safeAreaFrame.height : safeAreaFrame.height + searchBarHeight
+
+        let availableAnimationBoundsOrigin = CGPoint(x: safeAreaFrame.origin.x, y: availableAnimationOriginY)
+        let availableAnimationBoundsSize = CGSize(width: safeAreaFrame.width, height: availableAnimationBoundsHeight)
         animator = DetailsTransitionAnimator(
             type: .present,
             animatedCellSnapshot: cellSnap,

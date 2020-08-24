@@ -43,7 +43,7 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
     
     private let sortActions = defaultSortActions()
 
-    init(userID: UserID, title: String, dataFetchMode: DataFetchMode) {
+    init(userID: UserID, dataFetchMode: DataFetchMode, title: String) {
         self.title = title
         self.dataFetchMode = dataFetchMode
         super.init(userID: userID)
@@ -57,6 +57,14 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
 // MARK: - ViewController API
 
 extension ReceivedCardsVM {
+
+    var titleImageColor: UIColor? {
+        switch dataFetchMode {
+        case .tagWithSpecifiedIDs(_, let tag):
+            return tag.displayColor
+        default: return nil
+        }
+    }
     
     var cellSizeControlImage: UIImage {
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
@@ -405,7 +413,8 @@ extension ReceivedCardsVM {
         let newCards: [ReceivedBusinessCardMC]
         switch self.dataFetchMode {
         case .allReceivedCards: newCards = Self.mapAllCards(from: querySnapshot)
-        case .specifiedIDs(let ids): newCards = Self.mapCards(from: querySnapshot, containedIn: ids)
+        case .specifiedIDs(let ids), .tagWithSpecifiedIDs(let ids, _):
+            newCards = Self.mapCards(from: querySnapshot, containedIn: ids)
         }
         return Self.sortCards(newCards, using: self.selectedSortMode)
     }
@@ -417,6 +426,7 @@ extension ReceivedCardsVM {
     enum DataFetchMode {
         case allReceivedCards
         case specifiedIDs(_ ids: [BusinessCardID])
+        case tagWithSpecifiedIDs(_ ids: [BusinessCardID], tag: BusinessCardTagMC)
     }
 }
 

@@ -12,6 +12,8 @@ final class ReceivedCardsView: AppBackgroundView {
     
     let cellSizeModeButton = UIButton(type: .system)
 
+    let titleView = ReceivedCardsViewTitleView()
+
     let collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.registerReusableCell(CollectionCell.self)
@@ -133,6 +135,55 @@ extension ReceivedCardsView {
         override func layoutSubviews() {
             super.layoutSubviews()
             imageView.tintColor = Asset.Colors.appAccent.color
+        }
+    }
+}
+
+// MARK: - ReceivedCardsViewTitleView
+
+extension ReceivedCardsView {
+
+    final class ReceivedCardsViewTitleView: AppView {
+
+        var tagImageColor: UIColor? {
+            didSet {
+                tagImageView.isHidden = tagImageColor == nil
+                tagImageView.tintColor = tagImageColor
+            }
+        }
+
+        let titleLabel: UILabel = {
+            let this = UILabel()
+            this.font = .appDefault(size: 17, weight: .semibold)
+            return this
+        }()
+
+        let tagImageView: UIImageView = {
+            let imageCong = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
+            let image = UIImage(systemName: "tag.fill", withConfiguration: imageCong)!.withRenderingMode(.alwaysTemplate)
+            let this = UIImageView(image: image)
+            return this
+        }()
+
+        private lazy var stackView: UIStackView = {
+            let this = UIStackView(arrangedSubviews: [tagImageView, titleLabel])
+            this.spacing = 4
+            return this
+        }()
+
+        override func configureSubviews() {
+            super.configureSubviews()
+            addSubview(stackView)
+        }
+
+        override func configureConstraints() {
+            super.configureConstraints()
+            stackView.constrainToEdgesOfSuperview()
+        }
+
+        override func configureColors() {
+            super.configureColors()
+            tagImageView.tintColor = tagImageColor
         }
     }
 }

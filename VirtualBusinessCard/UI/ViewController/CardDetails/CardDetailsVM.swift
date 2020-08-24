@@ -185,17 +185,17 @@ extension CardDetailsVM {
 
 extension CardDetailsVM {
     
-    private static let imageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
+    private static let defaultImageConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
 
     static func iconImage(for action: Action) -> UIImage? {
         switch action {
-        case .copy: return UIImage(systemName: "doc.on.doc.fill", withConfiguration: Self.imageConfig)
-        case .call: return UIImage(systemName: "phone.fill", withConfiguration: Self.imageConfig)
-        case .sendEmail: return UIImage(systemName: "envelope.fill", withConfiguration: Self.imageConfig)
-        case .visitWebsite: return UIImage(systemName: "safari.fill", withConfiguration: Self.imageConfig)
-        case .navigate: return UIImage(systemName: "map.fill", withConfiguration: Self.imageConfig)
-        case .editNotes: return UIImage(systemName: "pencil", withConfiguration: Self.imageConfig)
-        case .editTags: return UIImage(systemName: "tag.fill", withConfiguration: Self.imageConfig)
+        case .copy: return UIImage(systemName: "doc.on.doc.fill", withConfiguration: Self.defaultImageConfig)
+        case .call: return UIImage(systemName: "phone.fill", withConfiguration: Self.defaultImageConfig)
+        case .sendEmail: return UIImage(systemName: "envelope.fill", withConfiguration: Self.defaultImageConfig)
+        case .visitWebsite: return UIImage(systemName: "safari.fill", withConfiguration: Self.defaultImageConfig)
+        case .navigate: return UIImage(systemName: "map.fill", withConfiguration: Self.defaultImageConfig)
+        case .editNotes: return UIImage(systemName: "square.and.pencil", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold))
+        case .editTags: return UIImage(systemName: "tag.fill", withConfiguration: Self.defaultImageConfig)
         }
     }
 
