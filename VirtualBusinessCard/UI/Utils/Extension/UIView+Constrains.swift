@@ -218,6 +218,15 @@ public extension UIView {
         constraint.priority = priority
         return constraint
     }
+
+    @discardableResult
+    func constrainTrailingLessOrEqual(to anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0, priority: UILayoutPriority = .required) -> NSLayoutConstraint {
+        translatesAutoresizingMaskIntoConstraints = false
+        let constraint = trailingAnchor.constraint(lessThanOrEqualTo: anchor, constant: constant)
+        constraint.isActive = true
+        constraint.priority = priority
+        return constraint
+    }
     
     @discardableResult
     func constrainCenter(toView view: UIView) -> [NSLayoutConstraint] {

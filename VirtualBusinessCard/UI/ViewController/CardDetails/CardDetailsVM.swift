@@ -16,7 +16,7 @@ protocol CardDetailsVMDelegate: class {
     func presentSendEmailViewController(recipient: String)
     func dismissSelfWithSystemAnimation()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
-    func presentEditCardTagsVC(viewModel: EditCardTagsVM)
+    func presentEditCardTagsVC()
     func presentEditCardNotesVC(viewModel: EditCardNotesVM)
     func presentErrorAlert(message: String)
 }
@@ -28,7 +28,9 @@ final class CardDetailsVM: PartialUserViewModel {
     weak var delegate: CardDetailsVMDelegate? {
         didSet { didSetDelegate() }
     }
-    
+
+    private lazy var makeSectionsQueue = DispatchQueue(label: "makeSectionsQueue\(cardID)")
+
     private let cardID: BusinessCardID
     private var card: EditReceivedBusinessCardMC?
     private var updatedLocalizations: [BusinessCardLocalization]?
@@ -67,6 +69,7 @@ final class CardDetailsVM: PartialUserViewModel {
         case .dataCell(let dm): return dm.value ?? ""
         case .dataCellImage(let dm): return dm.value ?? ""
         case .cardImagesCell: return ""
+        case .tagCell, .noTagsCell: return ""
         }
     }
 
@@ -77,16 +80,14 @@ final class CardDetailsVM: PartialUserViewModel {
         case .call: Self.openPhone(with: actionValue)
         case .sendEmail: delegate?.presentSendEmailViewController(recipient: actionValue)
         case .visitWebsite: Self.openBrowser(with: actionValue)
-        case .navigate: Self.openMaps(with: actionValue, card: card)
+        case .navigate: Self.openMaps(card: card)
         case .copy: UIPasteboard.general.string = actionValue
         case .editNotes:
             let vm = EditCardNotesVM(notes: card.notes)
             vm.editingDelegate = self
             delegate?.presentEditCardNotesVC(viewModel: vm)
         case .editTags:
-            let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
-            vm.selectionDelegate = self
-            delegate?.presentEditCardTagsVC(viewModel: vm)
+            delegate?.presentEditCardTagsVC()
         }
     }
 }
@@ -139,7 +140,6 @@ extension CardDetailsVM {
 
         let actionValue = getActionValue(from: selectedItem)
         
-        guard !actionValue.isEmpty else { return }
         performAction(action, actionValue: actionValue)
     }
 
@@ -156,17 +156,25 @@ extension CardDetailsVM {
         card.delete(in: receivedCardCollectionReference)
         delegate?.dismissSelfWithSystemAnimation()
     }
+
+    func editCardTagsVM() -> EditCardTagsVM? {
+        guard let card = card else { return nil }
+        let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
+        vm.selectionDelegate = self
+        return vm
+    }
 }
 
 // MARK: - Static Action Performers
 
 extension CardDetailsVM {
     private static func openPhone(with actionValue: String) {
+        guard !actionValue.isEmpty else { return }
         guard let number = URL(string: "tel://" + actionValue) else { return }
         UIApplication.shared.open(number)
     }
 
-    private static func openMaps(with actionValue: String, card: EditReceivedBusinessCardMC) {
+    private static func openMaps(card: EditReceivedBusinessCardMC) {
         let address = card.addressCondensed
         guard !address.isEmpty else { return }
         guard let addressEncoded = address.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
@@ -175,6 +183,7 @@ extension CardDetailsVM {
     }
 
     private static func openBrowser(with actionValue: String) {
+        guard !actionValue.isEmpty else { return }
         let urlString = actionValue.starts(with: "http") ? actionValue : "http://\(actionValue)"
         guard let url = URL(string: urlString) else { return }
         UIApplication.shared.open(url)
@@ -201,7 +210,7 @@ extension CardDetailsVM {
 
     private func makeSections() {
         guard let card = self.card else { return }
-        DispatchQueue.global().async {
+        makeSectionsQueue.async {
             let selectedTags = self.tags.filter { card.tagIDs.contains($0.id) }
             let newSections = CardDetailsSectionFactory(card: card.receivedBusinessCardMC(), tags: selectedTags, imageProvider: Self.iconImage).makeRows()
             DispatchQueue.main.async {
@@ -379,6 +388,8 @@ extension CardDetailsVM {
         case dataCell(TitleValueCollectionCell.DataModel)
         case dataCellImage(TitleValueImageCollectionViewCell.DataModel)
         case cardImagesCell(CardFrontBackView.URLDataModel)
+        case tagCell(CardDetailsView.TagCell.DataModel)
+        case noTagsCell
     }
     
     enum Action {

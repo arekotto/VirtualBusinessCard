@@ -23,7 +23,9 @@ final class GroupedCardsVM: PartialUserViewModel {
     var selectedGroupingProperty = CardGroup.GroupingProperty.tag {
         didSet { didSetGroupingProperty() }
     }
-    
+
+    private lazy var groupingQueue = DispatchQueue(label: "groupingQueue")
+
     private let groupingProperties: [CardGroup.GroupingProperty] = [.tag, .company, .dateDay, .dateMonth, .dateYear]
 
     private let encodeValueDateFormatter = ISO8601DateFormatter()
@@ -75,7 +77,7 @@ final class GroupedCardsVM: PartialUserViewModel {
     }
     
     private func didSetGroupingProperty() {
-        DispatchQueue.global().async {
+        groupingQueue.async {
             self.updateGrouping()
             DispatchQueue.main.async {
                 self.delegate?.refreshData(animated: false)
@@ -210,7 +212,7 @@ extension GroupedCardsVM {
             displayedGroupIndexes = Array(0 ..< groups.count)
             delegate?.refreshData(animated: true)
         } else {
-            DispatchQueue.global().async {
+            groupingQueue.async {
                 let displayedGroupIndexes = self.groups
                     .enumerated()
                     .filter { _, group in self.shouldDisplayGroup(group, forQuery: query) }
@@ -269,7 +271,7 @@ extension GroupedCardsVM {
             print(#file, error?.localizedDescription ?? "")
             return
         }
-        DispatchQueue.global().async {
+        groupingQueue.async {
             self.cards = querySnap.documents.compactMap {
                 guard let bc = ReceivedBusinessCard(queryDocumentSnapshot: $0) else {
                     print(#file, "Error mapping business card:", $0.documentID)
@@ -290,7 +292,7 @@ extension GroupedCardsVM {
             return
         }
 
-        DispatchQueue.global().async {
+        groupingQueue.async {
             var newTags = [BusinessCardTagID: BusinessCardTagMC]()
             querySnap.documents.forEach {
                 guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {

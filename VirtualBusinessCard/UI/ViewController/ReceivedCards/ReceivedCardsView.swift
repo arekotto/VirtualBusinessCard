@@ -160,8 +160,8 @@ extension ReceivedCardsView {
 
         let tagImageView: UIImageView = {
             let imageCong = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
-            let image = UIImage(systemName: "tag.fill", withConfiguration: imageCong)!.withRenderingMode(.alwaysTemplate)
-            let this = UIImageView(image: image)
+            let image = UIImage(systemName: "tag.fill", withConfiguration: imageCong)
+            let this = UIImageView(image: image?.withRenderingMode(.alwaysTemplate))
             return this
         }()
 

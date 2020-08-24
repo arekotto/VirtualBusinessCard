@@ -90,7 +90,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     }
 
     private func makeDataSource() -> DataSource {
-        let source = DataSource(collectionView: contentView.collectionView) { collectionView, indexPath, item in
+        let source = DataSource(collectionView: contentView.collectionView) { [weak self] collectionView, indexPath, item in
             switch item.dataModel {
             case .dataCell(let dataModel):
                 let cell: TitleValueCollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
@@ -103,6 +103,14 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
             case .dataCellImage(let dataModel):
                 let cell: TitleValueImageCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
                 cell.setDataModel(dataModel)
+                return cell
+            case .tagCell(let dataModel):
+                let cell: CardDetailsView.TagCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.setDataModel(dataModel)
+                return cell
+            case .noTagsCell:
+                let cell: CardDetailsView.NoTagsCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.addTagsButton.addTarget(self, action: #selector(self?.didTapTagsButton), for: .touchUpInside)
                 return cell
             }
         }
@@ -122,6 +130,10 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
 @objc
 private extension CardDetailsVC {
+
+    func didTapTagsButton() {
+        presentEditCardTagsVC()
+    }
 
     func didTapDeleteButton() {
         let title = NSLocalizedString("Delete Card", comment: "")
@@ -222,7 +234,8 @@ extension CardDetailsVC: CardDetailsVMDelegate {
         super.presentErrorAlert(message: message)
     }
 
-    func presentEditCardTagsVC(viewModel: EditCardTagsVM) {
+    func presentEditCardTagsVC() {
+        guard let viewModel = viewModel.editCardTagsVM() else { return }
         let vc = EditCardTagsVC(viewModel: viewModel)
         let navVC = AppNavigationController(rootViewController: vc)
         navVC.presentationController?.delegate = vc

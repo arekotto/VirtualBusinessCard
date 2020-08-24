@@ -19,6 +19,8 @@ final class CardDetailsView: AppBackgroundView {
         this.registerReusableCell(CardImagesCell.self)
         this.registerReusableCell(TitleValueCollectionCell.self)
         this.registerReusableCell(TitleValueImageCollectionViewCell.self)
+        this.registerReusableCell(TagCell.self)
+        this.registerReusableCell(NoTagsCell.self)
         this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.header.rawValue, RoundedCollectionCell.self)
         this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.footer.rawValue, RoundedCollectionCell.self)
         this.alwaysBounceVertical = true
@@ -55,7 +57,11 @@ extension CardDetailsView {
 private extension CardDetailsView {
     static func createCollectionViewLayout() -> UICollectionViewLayout {
         UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-            sectionIndex == 0 ? createCollectionViewLayoutCardImagesSection() : createCollectionViewLayoutDetailsSection()
+            switch sectionIndex {
+            case 0: return createCollectionViewLayoutCardImagesSection()
+            case 1: return createCollectionViewLayoutTagsSection()
+            default: return createCollectionViewLayoutDetailsSection()
+            }
         }
     }
     
@@ -70,13 +76,32 @@ private extension CardDetailsView {
         section.contentInsets = NSDirectionalEdgeInsets(top: Self.contentInsetTop, leading: 0, bottom: 16, trailing: 0)
         return section
     }
+
+    static func createCollectionViewLayoutTagsSection() -> NSCollectionLayoutSection {
+        let estimatedHeight = NSCollectionLayoutDimension.estimated(30)
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: estimatedHeight
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: estimatedHeight)
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        let bottomOffset: CGFloat = 24
+        section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 16, bottom: bottomOffset, trailing: 16)
+        return section
+    }
     
     static func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+        let estimatedHeight = NSCollectionLayoutDimension.estimated(50)
+
+        let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
-            heightDimension: .estimated(50))
+            heightDimension: estimatedHeight
         )
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200.0))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: estimatedHeight)
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         
         let headerFooterSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(10))
@@ -175,6 +200,7 @@ extension CardDetailsView {
 // MARK: - CardImagesCell
 
 extension CardDetailsView {
+
     final class CardImagesCell: AppCollectionViewCell, Reusable {
                 
         let cardFrontBackView = CardFrontBackView()
@@ -229,6 +255,106 @@ extension CardDetailsView {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
             }, completion: { _ in completion() })
+        }
+    }
+}
+
+// MARK: - TagCell
+
+extension CardDetailsView {
+
+    final class TagCell: AppCollectionViewCell, Reusable {
+
+        private var tagImageViewColor: UIColor? {
+            didSet { tagImageView.tintColor = tagImageViewColor }
+        }
+
+        private let tagImageView: UIImageView = {
+            let imageCong = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+            let image = UIImage(systemName: "tag.fill", withConfiguration: imageCong)
+            let this = UIImageView(image: image?.withRenderingMode(.alwaysTemplate))
+            this.contentMode = .scaleAspectFit
+            return this
+        }()
+
+        let titleLabel: UILabel = {
+            let this = UILabel()
+            this.font = .appDefault(size: 16, weight: .semibold)
+            return this
+        }()
+
+        private lazy var stackView: UIStackView = {
+            let this = UIStackView(arrangedSubviews: [tagImageView, titleLabel])
+            this.spacing = 4
+            return this
+        }()
+
+        override func configureSubviews() {
+            super.configureSubviews()
+            addSubview(stackView)
+        }
+
+        override func configureConstraints() {
+            super.configureConstraints()
+            stackView.constrainVerticallyToSuperview(topInset: 2, bottomInset: 2)
+            titleLabel.constrainCenterX(to: contentView.centerXAnchor)
+            stackView.constrainLeadingGreaterOrEqual(to: contentView.leadingAnchor, constant: 16)
+            stackView.constrainTrailingLessOrEqual(to: contentView.trailingAnchor, constant: -16)
+            stackView.constrainHeightGreaterThanOrEqualTo(constant: 30)
+        }
+
+        override func configureColors() {
+            super.configureColors()
+            tagImageView.tintColor = tagImageViewColor
+        }
+    }
+}
+
+extension CardDetailsView.TagCell {
+
+    struct DataModel: Hashable {
+        var tagID: BusinessCardTagID
+        var title: String
+        var tagColor: UIColor?
+    }
+
+    func setDataModel(_ dataModel: DataModel) {
+        titleLabel.text = dataModel.title
+        tagImageViewColor = dataModel.tagColor
+    }
+}
+
+// MARK: - TagCell
+
+extension CardDetailsView {
+
+    final class NoTagsCell: AppCollectionViewCell, Reusable {
+
+        let addTagsButton: UIButton = {
+            let this = UIButton()
+            this.setTitle(NSLocalizedString("Add Tags", comment: ""), for: .normal)
+            let imageConfig = UIImage.SymbolConfiguration(pointSize: 18, weight: .medium)
+            let image = UIImage(systemName: "tag.fill", withConfiguration: imageConfig)
+            this.setImage(image?.withRenderingMode(.alwaysTemplate), for: .normal)
+            this.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+            return this
+        }()
+
+        override func configureSubviews() {
+            super.configureSubviews()
+            addSubview(addTagsButton)
+        }
+
+        override func configureConstraints() {
+            super.configureConstraints()
+            addTagsButton.constrainToEdgesOfSuperview()
+            addTagsButton.constrainHeightGreaterThanOrEqualTo(constant: 20)
+        }
+
+        override func configureColors() {
+            super.configureColors()
+            addTagsButton.setTitleColor(Asset.Colors.appAccent.color, for: .normal)
+            addTagsButton.tintColor = Asset.Colors.appAccent.color
         }
     }
 }
