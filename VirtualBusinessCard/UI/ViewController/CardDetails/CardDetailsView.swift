@@ -15,12 +15,14 @@ final class CardDetailsView: AppBackgroundView {
     let titleView = TitleView()
     
     let collectionView: UICollectionView = {
-        let this = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
+        let this = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         this.registerReusableCell(CardImagesCell.self)
         this.registerReusableCell(TitleValueCollectionCell.self)
         this.registerReusableCell(TitleValueImageCollectionViewCell.self)
         this.registerReusableCell(TagCell.self)
         this.registerReusableCell(NoTagsCell.self)
+        this.registerReusableCell(UpdateAvailableCell.self)
+        this.registerReusableCell(DeleteCell.self)
         this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.header.rawValue, RoundedCollectionCell.self)
         this.registerReusableSupplementaryView(elementKind: SupplementaryElementKind.footer.rawValue, RoundedCollectionCell.self)
         this.alwaysBounceVertical = true
@@ -46,6 +48,7 @@ final class CardDetailsView: AppBackgroundView {
 // MARK: - GroupedCardsView
 
 extension CardDetailsView {
+
     enum SupplementaryElementKind: String {
         case header
         case footer
@@ -54,16 +57,7 @@ extension CardDetailsView {
 
 // MARK: - Static functions
 
-private extension CardDetailsView {
-    static func createCollectionViewLayout() -> UICollectionViewLayout {
-        UICollectionViewCompositionalLayout { sectionIndex, _ -> NSCollectionLayoutSection? in
-            switch sectionIndex {
-            case 0: return createCollectionViewLayoutCardImagesSection()
-            case 1: return createCollectionViewLayoutTagsSection()
-            default: return createCollectionViewLayoutDetailsSection()
-            }
-        }
-    }
+extension CardDetailsView {
     
     static func createCollectionViewLayoutCardImagesSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
@@ -77,7 +71,7 @@ private extension CardDetailsView {
         return section
     }
 
-    static func createCollectionViewLayoutTagsSection() -> NSCollectionLayoutSection {
+    static func createCollectionViewLayoutDynamicSection() -> NSCollectionLayoutSection {
         let estimatedHeight = NSCollectionLayoutDimension.estimated(30)
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
@@ -92,7 +86,7 @@ private extension CardDetailsView {
         section.contentInsets = NSDirectionalEdgeInsets(top: 20, leading: 16, bottom: bottomOffset, trailing: 16)
         return section
     }
-    
+
     static func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
         let estimatedHeight = NSCollectionLayoutDimension.estimated(50)
 
@@ -228,7 +222,7 @@ extension CardDetailsView {
             )
         }
         
-        func extendWithAnimation() {
+        func extendWithAnimation(completion: @escaping () -> Void) {
             cardFrontBackView.lockScenesToCurrentHeights()
 
             cardFrontBackViewCompactHeightConstraint.isActive = false
@@ -243,7 +237,7 @@ extension CardDetailsView {
             
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
                 self.layoutIfNeeded()
-            })
+            }, completion: { _ in completion() })
         }
         
         func condenseWithAnimation(completion: @escaping () -> Void) {
@@ -355,6 +349,110 @@ extension CardDetailsView {
             super.configureColors()
             addTagsButton.setTitleColor(Asset.Colors.appAccent.color, for: .normal)
             addTagsButton.tintColor = Asset.Colors.appAccent.color
+        }
+    }
+}
+
+// MARK: - UpdateAvailableCell
+
+extension CardDetailsView {
+
+    final class UpdateAvailableCell: AppCollectionViewCell, Reusable {
+
+        private let titleLabel: UILabel = {
+            let this = UILabel()
+            this.text = NSLocalizedString("Update Available", comment: "")
+            this.font = .appDefault(size: 17, weight: .semibold)
+            this.textAlignment = .center
+            return this
+        }()
+
+        private let descriptionLabel: UILabel = {
+            let this = UILabel()
+            this.font = .appDefault(size: 13)
+            this.text = NSLocalizedString(
+                "The user who shared this card with you has issued an update to it. The update might contain changes to the card's appearance as well as changes to the contact information. You can choose to skip this update now and download it at a later time.",
+                comment: ""
+            )
+            this.numberOfLines = 0
+            this.lineBreakMode = .byWordWrapping
+            this.textAlignment = .center
+            return this
+        }()
+
+        let updateButton: UIButton = {
+            let this = UIButton()
+            this.setTitle(NSLocalizedString("Download Update", comment: ""), for: .normal)
+            return this
+        }()
+
+        private lazy var mainStackView: UIStackView = {
+            let this = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel, updateButton])
+            this.spacing = 16
+            this.axis = .vertical
+            return this
+        }()
+
+        override func configureSubviews() {
+            super.configureSubviews()
+            addSubview(mainStackView)
+        }
+
+        override func configureConstraints() {
+            super.configureConstraints()
+            mainStackView.constrainToEdgesOfSuperview()
+            mainStackView.constrainHeightGreaterThanOrEqualTo(constant: 60)
+        }
+
+        override func configureColors() {
+            super.configureColors()
+            updateButton.setTitleColor(Asset.Colors.appAccent.color, for: .normal)
+            descriptionLabel.textColor = .secondaryLabel
+        }
+    }
+}
+
+// MARK: - DeleteCell
+
+extension CardDetailsView {
+
+    final class DeleteCell: AppCollectionViewCell, Reusable {
+
+        let deleteButton: UIButton = {
+            let imageConfig = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
+            let image = UIImage(systemName: "trash.fill", withConfiguration: imageConfig)?.withRenderingMode(.alwaysTemplate)
+            let this = UIButton()
+            this.setImage(image, for: .normal)
+            return this
+        }()
+
+        private let imageContainer: UIView = {
+            let this = UIView()
+            this.layer.cornerRadius = 12
+            return this
+        }()
+
+        override func configureSubviews() {
+            super.configureSubviews()
+            imageContainer.addSubview(deleteButton)
+            contentView.addSubview(imageContainer)
+        }
+
+        override func configureConstraints() {
+            super.configureConstraints()
+
+            deleteButton.constrainToEdgesOfSuperview(inset: 6)
+
+            imageContainer.constrainCenterXToSuperview()
+            imageContainer.constrainVerticallyToSuperview()
+            imageContainer.constrainWidth(constant: 60)
+            imageContainer.constrainHeight(to: imageContainer.widthAnchor)
+        }
+
+        override func configureColors() {
+            super.configureColors()
+            deleteButton.tintColor = Asset.Colors.appAccent.color
+            imageContainer.backgroundColor = Asset.Colors.roundedTableViewCellBackground.color
         }
     }
 }

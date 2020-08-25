@@ -12,7 +12,6 @@ import CoreMotion
 
 protocol CardDetailsVMDelegate: class {
     func reloadData()
-    func didRefreshLocalizationUpdates()
     func presentSendEmailViewController(recipient: String)
     func dismissSelfWithSystemAnimation()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
@@ -23,7 +22,7 @@ protocol CardDetailsVMDelegate: class {
 
 final class CardDetailsVM: PartialUserViewModel {
 
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<SectionType, Item>
 
     weak var delegate: CardDetailsVMDelegate? {
         didSet { didSetDelegate() }
@@ -39,7 +38,7 @@ final class CardDetailsVM: PartialUserViewModel {
         
     private let prefetchedData: PrefetchedData
     
-    private lazy var sections = [Section(item: Item(itemNumber: 0, dataModel: .cardImagesCell(prefetchedData.dataModel), actions: []))]
+    private lazy var sections = [Section(type: .card, item: Item(itemNumber: 0, dataModel: .cardImagesCell(prefetchedData.dataModel), actions: []))]
     
     private lazy var motionManager: CMMotionManager = {
         let manager = CMMotionManager()
@@ -70,6 +69,8 @@ final class CardDetailsVM: PartialUserViewModel {
         case .dataCellImage(let dm): return dm.value ?? ""
         case .cardImagesCell: return ""
         case .tagCell, .noTagsCell: return ""
+        case .updateCell: return ""
+        case .deleteCell: return ""
         }
     }
 
@@ -104,11 +105,6 @@ extension CardDetailsVM {
         return UIImage(systemName: "arrow.down.circle.fill", withConfiguration: imgConfig)!
     }
 
-    var deleteButtonImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
-        return UIImage(systemName: "trash.circle.fill", withConfiguration: imgConfig)!
-    }
-
     var hasLocalizationUpdates: Bool {
         !(updatedLocalizations ?? []).isEmpty
     }
@@ -123,9 +119,9 @@ extension CardDetailsVM {
 
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
-        snapshot.appendSections(Array(0..<sections.count))
-        sections.enumerated().forEach { index, section in
-            snapshot.appendItems(section.items, toSection: index)
+        snapshot.appendSections(sections.map(\.type))
+        sections.forEach { section in
+            snapshot.appendItems(section.items, toSection: section.type)
         }
         return snapshot
     }
@@ -212,7 +208,7 @@ extension CardDetailsVM {
         guard let card = self.card else { return }
         makeSectionsQueue.async {
             let selectedTags = self.tags.filter { card.tagIDs.contains($0.id) }
-            let newSections = CardDetailsSectionFactory(card: card.receivedBusinessCardMC(), tags: selectedTags, imageProvider: Self.iconImage).makeRows()
+            let newSections = CardDetailsSectionFactory(card: card.receivedBusinessCardMC(), tags: selectedTags, isUpdateAvailable: self.hasLocalizationUpdates, imageProvider: Self.iconImage).makeRows()
             DispatchQueue.main.async {
                 self.sections = newSections
                 self.delegate?.reloadData()
@@ -298,7 +294,7 @@ extension CardDetailsVM {
         } else {
             self.updatedLocalizations = nil
         }
-        delegate?.didRefreshLocalizationUpdates()
+        self.makeSections()
     }
 
     private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
@@ -365,17 +361,25 @@ extension CardDetailsVM: EditCardNotesVMEditingDelegate {
 // MARK: - Section, Item
 
 extension CardDetailsVM {
+    
     struct Section: Hashable {
-        
+
+        var type: SectionType
         var items: [Item]
 
-        init(items: [CardDetailsVM.Item]) {
+        init(type: SectionType, items: [CardDetailsVM.Item]) {
+            self.type = type
             self.items = items
         }
         
-        init(item: CardDetailsVM.Item) {
+        init(type: SectionType, item: CardDetailsVM.Item) {
+            self.type = type
             self.items = [item]
         }
+    }
+
+    enum SectionType {
+        case card, update, tags, notes, meta, personalData, contact, address, delete
     }
     
     struct Item: Hashable {
@@ -390,6 +394,8 @@ extension CardDetailsVM {
         case cardImagesCell(CardFrontBackView.URLDataModel)
         case tagCell(CardDetailsView.TagCell.DataModel)
         case noTagsCell
+        case updateCell
+        case deleteCell
     }
     
     enum Action {

@@ -24,7 +24,7 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
 
     weak var delegate: ReceivedBusinessCardsVMDelegate?
 
-    var presentedIndexPath: IndexPath?
+    var presentedCard: BusinessCardID?
 
     private(set) lazy var motionManager = CMMotionManager()
 
@@ -75,6 +75,21 @@ extension ReceivedCardsVM {
             return UIImage(systemName: "arrow.down.right.and.arrow.up.left", withConfiguration: imgConfig)!
         }
     }
+
+    var presentedIndexPath: IndexPath? {
+        get {
+            guard let cardIndex = cards.firstIndex(where: { $0.id == presentedCard }) else { return nil }
+            guard let itemIndex = displayedCardIndexes.firstIndex(of: cardIndex) else { return nil }
+            return IndexPath(item: itemIndex)
+        }
+        set {
+            guard let indexPath = newValue else {
+                presentedCard = nil
+                return
+            }
+            presentedCard = card(for: indexPath).id
+        }
+    }
     
     var sortControlImage: UIImage {
         let imgConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
@@ -102,7 +117,7 @@ extension ReceivedCardsVM {
     }
 
     func hasUpdatesForCard(at indexPath: IndexPath) -> Bool {
-        let cardID = cards[displayedCardIndexes[indexPath.row]].id
+        let cardID = card(for: indexPath).id
         return updatesForCards[cardID] ?? false
     }
     
@@ -151,6 +166,10 @@ extension ReceivedCardsVM {
                 self.delegate?.refreshData(animated: true)
             }
         }
+    }
+
+    private func card(for indexPath: IndexPath) -> ReceivedBusinessCardMC {
+        cards[displayedCardIndexes[indexPath.item]]
     }
 
     private func cellViewModel(for card: ReceivedBusinessCardMC, withNumber number: Int) -> DataModel {
@@ -332,7 +351,7 @@ extension ReceivedCardsVM {
             DispatchQueue.main.async {
                 self.cards = newCardsSorted
                 self.displayedCardIndexes = Array(0 ..< newCardsSorted.count)
-                self.delegate?.refreshData(animated: false)
+                self.delegate?.refreshData(animated: self.updateCheckNo > 0)
 
                 self.updateCheckNo += 1
                 self.checkForAvailableUpdates(for: newCardsSorted, updateCheckNo: self.updateCheckNo)

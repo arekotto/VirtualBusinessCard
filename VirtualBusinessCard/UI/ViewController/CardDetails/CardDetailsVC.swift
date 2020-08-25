@@ -13,13 +13,14 @@ import Kingfisher
 
 final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, CardDetailsVM.Item>
+    private typealias DataSource = UICollectionViewDiffableDataSource<CardDetailsVM.SectionType, CardDetailsVM.Item>
 
     private lazy var downloadUpdatesButton = UIBarButtonItem(image: viewModel.downloadUpdatesButtonImage, style: .plain, target: self, action: #selector(didTapDownloadUpdatesButton))
 
     private lazy var collectionViewDataSource = makeDataSource()
 
     private var engine: HapticFeedbackEngine?
+    private var hasCompletedAppearanceAnimation = SingleTimeToggleBool(ofInitialValue: false)
 
     func cardImagesCellFrame(translatedTo targetView: UIView) -> CGRect? {
         let indexPathsForVisibleItems = contentView.collectionView.indexPathsForVisibleItems
@@ -54,12 +55,15 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         viewModel.delegate = self
         viewModel.fetchData()
         engine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
+        contentView.collectionView.setCollectionViewLayout(makeCollectionViewLayout(), animated: hasCompletedAppearanceAnimation.value)
+
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        cardImagesCell()?.extendWithAnimation()
-
+        cardImagesCell()?.extendWithAnimation {
+            self.hasCompletedAppearanceAnimation.toggle()
+        }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             self.engine?.play()
         }
@@ -70,12 +74,6 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         navigationItem.titleView = contentView.titleView
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseButton))
 
-        navigationController?.setToolbarHidden(false, animated: false)
-        toolbarItems = [
-            UIBarButtonItem(image: viewModel.deleteButtonImage, style: .plain, target: self, action: #selector(didTapDeleteButton)),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            downloadUpdatesButton
-        ]
         downloadUpdatesButton.isEnabled = false
     }
     
@@ -112,6 +110,14 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
                 let cell: CardDetailsView.NoTagsCell = collectionView.dequeueReusableCell(indexPath: indexPath)
                 cell.addTagsButton.addTarget(self, action: #selector(self?.didTapTagsButton), for: .touchUpInside)
                 return cell
+            case .updateCell:
+                let cell: CardDetailsView.UpdateAvailableCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.updateButton.addTarget(self, action: #selector(self?.didTapDownloadUpdatesButton), for: .touchUpInside)
+                return cell
+            case .deleteCell:
+                let cell: CardDetailsView.DeleteCell = collectionView.dequeueReusableCell(indexPath: indexPath)
+                cell.deleteButton.addTarget(self, action: #selector(self?.didTapDeleteButton), for: .touchUpInside)
+                return cell
             }
         }
         source.supplementaryViewProvider = { collectionView, kind, indexPath in
@@ -123,6 +129,17 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
             return cell
         }
         return source
+    }
+
+    private func makeCollectionViewLayout() -> UICollectionViewLayout {
+        UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ -> NSCollectionLayoutSection? in
+            guard let sections = self?.collectionViewDataSource.snapshot().sectionIdentifiers else { return nil }
+            switch sections[sectionIndex] {
+            case .card: return CardDetailsView.createCollectionViewLayoutCardImagesSection()
+            case .update, .tags, .delete: return CardDetailsView.createCollectionViewLayoutDynamicSection()
+            default: return CardDetailsView.createCollectionViewLayoutDetailsSection()
+            }
+        }
     }
 }
 
@@ -226,10 +243,6 @@ extension CardDetailsVC: CardDetailsVMDelegate {
         dismiss(animated: true)
     }
 
-    func didRefreshLocalizationUpdates() {
-        downloadUpdatesButton.isEnabled = viewModel.hasLocalizationUpdates
-    }
-
     func presentErrorAlert(message: String) {
         super.presentErrorAlert(message: message)
     }
@@ -264,7 +277,7 @@ extension CardDetailsVC: CardDetailsVMDelegate {
     func reloadData() {
         contentView.titleView.setImageURL(viewModel.titleImageURL)
         contentView.titleView.cardCornerRadiusHeightMultiplier = viewModel.cardCornerRadiusHeightMultiplier
-        collectionViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: false)
+        collectionViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: hasCompletedAppearanceAnimation.value)
     }
 }
 

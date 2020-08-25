@@ -16,36 +16,47 @@ struct CardDetailsSectionFactory {
 
     let card: ReceivedBusinessCardMC
     let tags: [BusinessCardTagMC]
+    let isUpdateAvailable: Bool
 
     var imageProvider: (_ action: Action) -> UIImage?
     
     func makeRows() -> [Section] {
         let sections: [Section?] = [
             makeCardImagesSection(),
+            makeUpdateSection(),
             makeTagsSection(),
             makeNotesSection(),
             makeMetaSection(),
             makePersonalDataSection(),
             makeContactSection(),
-            makeAddressSection()
+            makeAddressSection(),
+            makeDeleteSection()
         ]
         return sections.compactMap { $0 }
     }
 
     private func makeMetaSection() -> Section? {
         let dataModel = TitleValueCollectionCell.DataModel(title: NSLocalizedString("Date Received", comment: ""), value: card.receivingDataFormatted)
-        return Section(item: Item(itemNumber: 0, dataModel: .dataCell(dataModel), actions: [.copy]))
+        return Section(type: .meta, item: Item(itemNumber: 0, dataModel: .dataCell(dataModel), actions: [.copy]))
+    }
+
+    private func makeUpdateSection() -> Section? {
+        isUpdateAvailable ? Section(type: .update, item: Item(itemNumber: 0, dataModel: .updateCell, actions: [])) : nil
+    }
+
+    private func makeDeleteSection() -> Section? {
+        Section(type: .delete, item: Item(itemNumber: 0, dataModel: .deleteCell, actions: []))
     }
 
     private func makeTagsSection() -> Section? {
         guard !tags.isEmpty else {
-            return Section(item: Item(itemNumber: 0, dataModel: .noTagsCell, actions: []))
+            return Section(type: .tags, item: Item(itemNumber: 0, dataModel: .noTagsCell, actions: []))
         }
         let dataModels = tags.map {
             CardDetailsView.TagCell.DataModel(tagID: $0.id, title: $0.title, tagColor: $0.displayColor)
         }
 
-        return Section(items: dataModels.enumerated().map { idx, dm in
+        return Section(type: .tags, items: dataModels.enumerated().map { idx, dm in
             Item(itemNumber: idx, dataModel: .tagCell(dm), actions: [.editTags])
         })
     }
@@ -60,7 +71,7 @@ struct CardDetailsSectionFactory {
             specular: CGFloat(localization.texture.specular),
             cornerRadiusHeightMultiplier: CGFloat(localization.cornerRadiusHeightMultiplier)
         )
-        return Section(item: Item(itemNumber: 0, dataModel: .cardImagesCell(imagesDataModel), actions: []))
+        return Section(type: .card, item: Item(itemNumber: 0, dataModel: .cardImagesCell(imagesDataModel), actions: []))
     }
 
     private func makeNotesSection() -> Section? {
@@ -76,7 +87,7 @@ struct CardDetailsSectionFactory {
             (notesItem, hasNotes ? [.copy, .editNotes] : [.editNotes])
         ]
 
-        return Section(items: editableData.enumerated().map { index, dm in
+        return Section(type: .notes, items: editableData.enumerated().map { index, dm in
             Item(itemNumber: index, dataModel: .dataCellImage(dm.dataModel), actions: dm.actions)
         })
     }
@@ -92,7 +103,7 @@ struct CardDetailsSectionFactory {
         if includedPersonalDataRows.isEmpty {
             return nil
         }
-        return Section(items: includedPersonalDataRows.enumerated().map { index, dm in
+        return Section(type: .personalData, items: includedPersonalDataRows.enumerated().map { index, dm in
             Item(itemNumber: index, dataModel: .dataCell(dm), actions: [.copy])
         })
     }
@@ -143,7 +154,7 @@ struct CardDetailsSectionFactory {
             return nil
         }
         
-        return Section(items: includedContactDataRows.enumerated().map { index, dm in
+        return Section(type: .contact, items: includedContactDataRows.enumerated().map { index, dm in
             Item(itemNumber: index, dataModel: .dataCellImage(dm.dataModel), actions: dm.actions)
         })
     }
@@ -158,6 +169,6 @@ struct CardDetailsSectionFactory {
             value: address,
             primaryImage: imageProvider(.navigate)
         )
-        return Section(item: Item(itemNumber: 0, dataModel: .dataCellImage(dm), actions: [.copy, .navigate]))
+        return Section(type: .address, item: Item(itemNumber: 0, dataModel: .dataCellImage(dm), actions: [.copy, .navigate]))
     }
 }

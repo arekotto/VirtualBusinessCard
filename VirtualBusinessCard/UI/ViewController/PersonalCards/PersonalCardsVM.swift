@@ -46,6 +46,7 @@ final class PersonalCardsVM: PartialUserViewModel, MotionDataSource {
 }
 
 extension PersonalCardsVM {
+    
     var title: String {
         NSLocalizedString("My Cards", comment: "")
     }
