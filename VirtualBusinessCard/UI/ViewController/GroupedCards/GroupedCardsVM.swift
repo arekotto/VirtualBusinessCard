@@ -181,12 +181,12 @@ extension GroupedCardsVM {
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(displayedGroupIndexes.map { displayedGroup(at: $0) })
+        snapshot.appendItems(displayedGroupIndexes.map { groupDataModel(at: $0) })
         return snapshot
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        let title = displayedGroup(at: indexPath.item).title
+        let title = groupDataModel(at: displayedGroupIndexes[indexPath.item]).title
         let group = groups[indexPath.item]
         let viewModel: ReceivedCardsVM
         if group.groupingProperty == .tag, let tagID = group.groupingValue, let tag = tags[tagID] {
@@ -226,7 +226,7 @@ extension GroupedCardsVM {
         }
     }
 
-    private func displayedGroup(at index: Int) -> GroupedCardsView.TableCell.DataModel {
+    private func groupDataModel(at index: Int) -> GroupedCardsView.TableCell.DataModel {
         let group = groups[index]
         let cardsInGroup = cards.filter { group.cardIDs.contains($0.id) }
 
