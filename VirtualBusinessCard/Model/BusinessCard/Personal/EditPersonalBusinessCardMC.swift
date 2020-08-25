@@ -22,6 +22,11 @@ class EditPersonalBusinessCardMC {
         set { card.localizations = newValue }
     }
 
+    var mostRecentPush: Date {
+        get { card.mostRecentPush }
+        set { card.mostRecentPush = newValue }
+    }
+
     init(userID: UserID, existingCard: PersonalBusinessCard) {
         self.userID = userID
         self.card = existingCard
@@ -55,6 +60,10 @@ extension EditPersonalBusinessCardMC {
     func personalBusinessCardMC() -> PersonalBusinessCardMC {
         PersonalBusinessCardMC(businessCard: card)
     }
+
+    convenience init(userID: UserID, unwrappedWithCardDocument documentSnapshot: DocumentSnapshot) throws {
+        self.init(userID: userID, existingCard: try PersonalBusinessCard(unwrappedWithDocumentSnapshot: documentSnapshot))
+    }
 }
 
 extension EditPersonalBusinessCardMC: Equatable {
@@ -74,6 +83,11 @@ extension EditPersonalBusinessCardMC {
                 completion?(.success(()))
             }
         }
+    }
+
+    func save(using transaction: Transaction, in collectionReference: CollectionReference) {
+        let docRef = collectionReference.document(card.id)
+        transaction.setData(card.asDocument(), forDocument: docRef)
     }
 
     func save(in collectionReference: CollectionReference, completion: ((Result<Void, Error>) -> Void)? = nil) {
