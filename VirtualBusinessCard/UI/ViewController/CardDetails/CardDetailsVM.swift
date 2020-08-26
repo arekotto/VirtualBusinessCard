@@ -28,6 +28,8 @@ final class CardDetailsVM: PartialUserViewModel {
         didSet { didSetDelegate() }
     }
 
+    private(set) var mostRecentMotionData: CMDeviceMotion?
+
     private lazy var makeSectionsQueue = DispatchQueue(label: "makeSectionsQueue\(cardID)")
 
     private let cardID: BusinessCardID
@@ -56,6 +58,7 @@ final class CardDetailsVM: PartialUserViewModel {
         if delegate != nil {
             motionManager.startDeviceMotionUpdates(to: OperationQueue.main) { [weak self] motion, _ in
                 guard let self = self, let motion = motion else { return }
+                self.mostRecentMotionData = motion
                 self.delegate?.didUpdateMotionData(motion, over: self.motionManager.deviceMotionUpdateInterval)
             }
         } else {
@@ -208,7 +211,12 @@ extension CardDetailsVM {
         guard let card = self.card else { return }
         makeSectionsQueue.async {
             let selectedTags = self.tags.filter { card.tagIDs.contains($0.id) }
-            let newSections = CardDetailsSectionFactory(card: card.receivedBusinessCardMC(), tags: selectedTags, isUpdateAvailable: self.hasLocalizationUpdates, imageProvider: Self.iconImage).makeRows()
+            let newSections = CardDetailsSectionFactory(
+                card: card.receivedBusinessCardMC(),
+                tags: selectedTags,
+                isUpdateAvailable: self.hasLocalizationUpdates,
+                imageProvider: Self.iconImage
+            ).makeRows()
             DispatchQueue.main.async {
                 self.sections = newSections
                 self.delegate?.reloadData()

@@ -14,7 +14,7 @@ extension ReceivedCardsVC {
         static let duration: TimeInterval = 0.5
         
         var type: PresentationType
-        private let animatedCellSnapshot: UIView
+        var animatedCellSnapshot: UIView
         private let availableAnimationBounds: CGRect
         private var animatedCellProvider: (() -> UICollectionViewCell?)?
 

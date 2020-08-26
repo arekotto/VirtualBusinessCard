@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreMotion
 
 final class CardDetailsView: AppBackgroundView {
         
@@ -196,9 +197,27 @@ extension CardDetailsView {
 extension CardDetailsView {
 
     final class CardImagesCell: AppCollectionViewCell, Reusable {
-                
-        let cardFrontBackView = CardFrontBackView()
-        
+
+        var dataModel: CardFrontBackView.URLDataModel? {
+            get { currentDataModel }
+            set {
+                guard currentDataModel != newValue else { print("Skip update"); return }
+                print("updating")
+                currentDataModel = newValue
+            }
+        }
+
+        private(set) var isExtended = false
+
+        private var currentDataModel: CardFrontBackView.URLDataModel? {
+            didSet {
+                guard let dataModel = currentDataModel else { return }
+                cardFrontBackView.setDataModel(dataModel)
+            }
+        }
+
+        private let cardFrontBackView = CardFrontBackView()
+
         private var cardFrontBackViewCompactHeightConstraint: NSLayoutConstraint!
         private var cardFrontBackViewCompactWidthConstraint: NSLayoutConstraint!
         
@@ -207,22 +226,26 @@ extension CardDetailsView {
         
         override func configureSubviews() {
             super.configureSubviews()
-            addSubview(cardFrontBackView)
-            cardFrontBackView.isHidden = true
+            contentView.addSubview(cardFrontBackView)
         }
         
         override func configureConstraints() {
             super.configureConstraints()
             cardFrontBackView.constrainCenterToSuperview()
-            cardFrontBackViewCompactWidthConstraint = cardFrontBackView.constrainWidthEqualTo(self,
+            cardFrontBackViewCompactWidthConstraint = cardFrontBackView.constrainWidthEqualTo(
+                self,
                 multiplier: ReceivedCardsView.CollectionCell.defaultWidthMultiplier
             )
-            cardFrontBackViewCompactHeightConstraint = cardFrontBackView.constrainHeightEqualTo(self,
+            cardFrontBackViewCompactHeightConstraint = cardFrontBackView.constrainHeightEqualTo(
+                self,
                 multiplier: ReceivedCardsView.CollectionCell.defaultHeightMultiplier
             )
         }
         
-        func extendWithAnimation(completion: @escaping () -> Void) {
+        func extend(animated: Bool, completion: (() -> Void)? = nil) {
+            guard !isExtended else { return }
+            isExtended = true
+
             cardFrontBackView.lockScenesToCurrentHeights()
 
             cardFrontBackViewCompactHeightConstraint.isActive = false
@@ -234,21 +257,35 @@ extension CardDetailsView {
             cardFrontBackViewExtendedWidthConstraint = cardFrontBackView.constrainWidth(constant: newWidth)
             let multi = ReceivedCardsView.CollectionCell.defaultHeightMultiplier
             cardFrontBackViewExtendedHeightConstraint = cardFrontBackView.constrainHeightEqualTo(self, constant: newOffset, multiplier: multi)
-            
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
-                self.layoutIfNeeded()
-            }, completion: { _ in completion() })
+
+            if animated {
+                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut]) {
+                    self.layoutIfNeeded()
+                } completion: { _ in
+                    completion?()
+                }
+            } else {
+                layoutIfNeeded()
+            }
         }
         
         func condenseWithAnimation(completion: @escaping () -> Void) {
-            
+            guard isExtended else { return }
+            isExtended = false
+
             cardFrontBackViewExtendedWidthConstraint?.isActive = false
             cardFrontBackViewExtendedHeightConstraint?.isActive = false
             cardFrontBackViewCompactHeightConstraint.isActive = true
             cardFrontBackViewCompactWidthConstraint.isActive = true
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut], animations: {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut]) {
                 self.layoutIfNeeded()
-            }, completion: { _ in completion() })
+            } completion: { _ in
+                completion()
+            }
+        }
+
+        func updateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+            cardFrontBackView.updateMotionData(motion, over: timeFrame)
         }
     }
 }
@@ -294,7 +331,7 @@ extension CardDetailsView {
             titleLabel.constrainCenterX(to: contentView.centerXAnchor)
             stackView.constrainLeadingGreaterOrEqual(to: contentView.leadingAnchor, constant: 16)
             stackView.constrainTrailingLessOrEqual(to: contentView.trailingAnchor, constant: -16)
-            stackView.constrainHeightGreaterThanOrEqualTo(constant: 30)
+            stackView.constrainHeightGreaterThanOrEqualTo(constant: 30, priority: .defaultHigh)
         }
 
         override func configureColors() {
@@ -395,7 +432,7 @@ extension CardDetailsView {
 
         override func configureSubviews() {
             super.configureSubviews()
-            addSubview(mainStackView)
+            contentView.addSubview(mainStackView)
         }
 
         override func configureConstraints() {
@@ -446,7 +483,7 @@ extension CardDetailsView {
             imageContainer.constrainCenterXToSuperview()
             imageContainer.constrainVerticallyToSuperview()
             imageContainer.constrainWidth(constant: 60)
-            imageContainer.constrainHeight(to: imageContainer.widthAnchor)
+            imageContainer.constrainHeight(to: imageContainer.widthAnchor, priority: .defaultHigh)
         }
 
         override func configureColors() {

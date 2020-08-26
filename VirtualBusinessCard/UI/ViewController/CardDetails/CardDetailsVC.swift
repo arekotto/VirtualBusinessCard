@@ -13,6 +13,8 @@ import Kingfisher
 
 final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
+    private(set) var mostRecentCardImagesCellSnapshot: UIView?
+
     private typealias DataSource = UICollectionViewDiffableDataSource<CardDetailsVM.SectionType, CardDetailsVM.Item>
 
     private lazy var downloadUpdatesButton = UIBarButtonItem(image: viewModel.downloadUpdatesButtonImage, style: .plain, target: self, action: #selector(didTapDownloadUpdatesButton))
@@ -20,7 +22,9 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     private lazy var collectionViewDataSource = makeDataSource()
 
     private var engine: HapticFeedbackEngine?
+
     private var hasCompletedAppearanceAnimation = SingleTimeToggleBool(ofInitialValue: false)
+    private var hasAppeared = SingleTimeToggleBool(ofInitialValue: false)
 
     func cardImagesCellFrame(translatedTo targetView: UIView) -> CGRect? {
         let indexPathsForVisibleItems = contentView.collectionView.indexPathsForVisibleItems
@@ -38,7 +42,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     }
     
     func setCardImagesSectionHidden(_ isHidden: Bool) {
-        cardImagesCell()?.cardFrontBackView.isHidden = isHidden
+        cardImagesCell()?.contentView.isHidden = isHidden
     }
 
     private var cardCellIndexPath: IndexPath {
@@ -56,12 +60,12 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
         viewModel.fetchData()
         engine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
         contentView.collectionView.setCollectionViewLayout(makeCollectionViewLayout(), animated: hasCompletedAppearanceAnimation.value)
-
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        cardImagesCell()?.extendWithAnimation {
+        hasAppeared.toggle()
+        cardImagesCell()?.extend(animated: true) {
             self.hasCompletedAppearanceAnimation.toggle()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
@@ -96,7 +100,11 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
                 return cell
             case .cardImagesCell(let dataModel):
                 let cell: CardDetailsView.CardImagesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-                cell.cardFrontBackView.setDataModel(dataModel)
+                cell.dataModel = dataModel
+                cell.contentView.isHidden = !(self?.hasAppeared.value ?? false)
+                if !cell.isExtended && self?.hasCompletedAppearanceAnimation.value == true {
+                    cell.layoutIfNeeded()
+                }
                 return cell
             case .dataCellImage(let dataModel):
                 let cell: TitleValueImageCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
@@ -141,6 +149,19 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
             }
         }
     }
+
+    private func prepareMockCardCell() -> UIView {
+        let cell = CardDetailsView.CardImagesCell()
+        if let motionData = viewModel.mostRecentMotionData {
+            cell.updateMotionData(motionData, over: 0)
+        }
+        let dataModel = collectionViewDataSource.snapshot().itemIdentifiers(inSection: .card).first!.dataModel
+        switch dataModel {
+        case .cardImagesCell(let urlDataModel): cell.dataModel = urlDataModel
+        default: break
+        }
+        return cell
+    }
 }
 
 // MARK: - Actions
@@ -179,8 +200,8 @@ private extension CardDetailsVC {
 
     func didTapCloseButton() {
         engine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
-
         guard let cell = cardImagesCell() else {
+            self.mostRecentCardImagesCellSnapshot = prepareMockCardCell()
             engine?.play()
             dismiss(animated: true)
             return
@@ -189,6 +210,7 @@ private extension CardDetailsVC {
             self.engine?.play()
         }
         cell.condenseWithAnimation {
+            self.mostRecentCardImagesCellSnapshot = cell.snapshotView(afterScreenUpdates: false)
             self.dismiss(animated: true)
         }
     }
@@ -216,6 +238,13 @@ private extension CardDetailsVC {
 // MARK: - UICollectionViewDelegate
 
 extension CardDetailsVC: UICollectionViewDelegate {
+
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? CardDetailsView.CardImagesCell else { return }
+        if hasCompletedAppearanceAnimation.value {
+            cell.extend(animated: false)
+        }
+    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
@@ -263,7 +292,7 @@ extension CardDetailsVC: CardDetailsVMDelegate {
     }
     
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        cardImagesCell()?.cardFrontBackView.updateMotionData(motion, over: timeFrame)
+        cardImagesCell()?.updateMotionData(motion, over: timeFrame)
     }
     
     func presentSendEmailViewController(recipient: String) {

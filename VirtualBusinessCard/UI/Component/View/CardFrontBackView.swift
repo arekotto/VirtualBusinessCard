@@ -12,8 +12,10 @@ import CoreMotion
 final class CardFrontBackView: AppView {
 
     static let defaultSceneShadowOpacity: Float = 0.35
+    static let defaultSceneFlexibleHeightMultiplier: CGFloat = 0.9
 
     private var mostRecentFetchTaskTag = 0
+    private var runningTasks = [ImageAndTextureFetchTask]()
 
     private var frontSceneViewHeightConstraint: NSLayoutConstraint!
     let frontSceneView: BusinessCardSceneView = {
@@ -45,7 +47,7 @@ final class CardFrontBackView: AppView {
     }
 
     required init() {
-        self.sceneHeightAdjustMode = .flexible(multiplayer: 0.9)
+        self.sceneHeightAdjustMode = .flexible(multiplayer: Self.defaultSceneFlexibleHeightMultiplier)
         super.init()
     }
 
@@ -157,10 +159,23 @@ extension CardFrontBackView {
     }
     
     func setDataModel(_ dm: URLDataModel) {
+
         mostRecentFetchTaskTag += 1
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            guard !self.runningTasks.isEmpty else { return }
+            self.allSceneViews.forEach { $0.prepareForImageReload() }
+        }
+
         let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL], tag: mostRecentFetchTaskTag)
+        runningTasks.append(task)
+
         task { [weak self] result, tag in
-            guard let self = self, self.mostRecentFetchTaskTag == tag else { return }
+
+            guard let self = self else { return }
+            self.runningTasks.removeAll(where: {$0.tag == tag})
+            guard self.mostRecentFetchTaskTag == tag else { return }
+
             switch result {
             case .failure(let err): print(err.localizedDescription)
             case .success(let images):

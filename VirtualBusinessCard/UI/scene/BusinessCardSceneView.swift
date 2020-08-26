@@ -129,4 +129,10 @@ extension BusinessCardSceneView {
         let moveTo = SCNAction.rotateTo(x: CGFloat(newX), y: 0, z: CGFloat(newZ), duration: timeframe)
         dynamicDirectionalLightNode.runAction(moveTo)
     }
+
+    func prepareForImageReload() {
+        let placeholder = Asset.Colors.cardPlaceholder.color.as1ptImage()
+        setImage(image: placeholder, texture: nil, normal: 0, specular: 0, cornerRadiusHeightMultiplier: 0)
+        activityIndicator.startAnimating()
+    }
 }

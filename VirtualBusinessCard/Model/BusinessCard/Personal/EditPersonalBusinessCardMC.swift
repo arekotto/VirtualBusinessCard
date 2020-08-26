@@ -27,6 +27,11 @@ class EditPersonalBusinessCardMC {
         set { card.mostRecentPush = newValue }
     }
 
+    var mostRecentUpdate: Date {
+        get { card.mostRecentUpdate }
+        set { card.mostRecentUpdate = newValue }
+    }
+
     init(userID: UserID, existingCard: PersonalBusinessCard) {
         self.userID = userID
         self.card = existingCard

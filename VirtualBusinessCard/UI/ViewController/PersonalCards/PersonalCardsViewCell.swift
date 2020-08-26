@@ -238,6 +238,7 @@ extension PersonalCardsView.CollectionCell {
         localizationTitleLabel.text = dm.localizationTitle
         localizationSubtitleLabel.text = dm.localizationSubtitle
         mostRecentFetchTaskTag += 1
+        allSceneViews.forEach { $0.prepareForImageReload() }
         let task = ImageAndTextureFetchTask(imageURLs: [dm.frontImageURL, dm.textureImageURL, dm.backImageURL], tag: mostRecentFetchTaskTag)
         task { [weak self] result, tag in
             guard let self = self, self.mostRecentFetchTaskTag == tag else { return }

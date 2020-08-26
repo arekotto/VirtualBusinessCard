@@ -13,7 +13,8 @@ final class PersonalCardLocalizationsView: AppBackgroundView {
     let tableView: UITableView = {
         let this = UITableView(frame: .zero, style: .insetGrouped)
         this.backgroundColor = .clear
-        this.registerReusableCell(TableCell.self)
+        this.registerReusableCell(LocalizationCell.self)
+        this.registerReusableCell(PushUpdateCell.self)
         this.separatorStyle = .none
         this.estimatedRowHeight = 200
         this.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
@@ -31,11 +32,11 @@ final class PersonalCardLocalizationsView: AppBackgroundView {
     }
 }
 
-// MARK: - TableCell
+// MARK: - LocalizationCell
 
 extension PersonalCardLocalizationsView {
 
-    final class TableCell: AppTableViewCell, Reusable {
+    final class LocalizationCell: AppTableViewCell, Reusable {
 
         let cardSceneView: CardFrontBackView = {
             let this = CardFrontBackView(sceneHeightAdjustMode: .flexible(multiplayer: 1))
@@ -105,7 +106,7 @@ extension PersonalCardLocalizationsView {
     }
 }
 
-extension PersonalCardLocalizationsView.TableCell {
+extension PersonalCardLocalizationsView.LocalizationCell {
 
     func setDataModel(_ dataModel: DataModel) {
         languageTitleLabel.text = dataModel.title
@@ -118,5 +119,70 @@ extension PersonalCardLocalizationsView.TableCell {
         let title: String
         let isDefault: Bool
         let sceneDataModel: CardFrontBackView.URLDataModel
+    }
+}
+
+// MARK: - PushUpdateCell
+
+extension PersonalCardLocalizationsView {
+
+    final class PushUpdateCell: AppTableViewCell, Reusable {
+
+        private let titleLabel: UILabel = {
+            let this = UILabel()
+            this.text = NSLocalizedString("Update Available to Share", comment: "")
+            this.font = .appDefault(size: 17, weight: .semibold)
+            this.textAlignment = .center
+            return this
+        }()
+
+        private let descriptionLabel: UILabel = {
+            let this = UILabel()
+            this.font = .appDefault(size: 13)
+            this.text = NSLocalizedString(
+                "You have updated this card recently and can make these changes available for download to users who have received this card from you in past.",
+                comment: ""
+            )
+            this.numberOfLines = 0
+            this.lineBreakMode = .byWordWrapping
+            this.textAlignment = .center
+            return this
+        }()
+
+        let updateButton: UIButton = {
+            let this = UIButton()
+            this.setTitle(NSLocalizedString("Share Update", comment: ""), for: .normal)
+            return this
+        }()
+
+        private lazy var mainStackView: UIStackView = {
+            let this = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel, updateButton])
+            this.spacing = 16
+            this.axis = .vertical
+            return this
+        }()
+
+        override func configureCell() {
+            super.configureCell()
+            selectionStyle = .none
+        }
+
+        override func configureSubviews() {
+            super.configureSubviews()
+            contentView.addSubview(mainStackView)
+        }
+
+        override func configureConstraints() {
+            super.configureConstraints()
+            mainStackView.constrainToEdgesOfSuperview()
+            mainStackView.constrainHeightGreaterThanOrEqualTo(constant: 60)
+        }
+
+        override func configureColors() {
+            super.configureColors()
+            updateButton.setTitleColor(Asset.Colors.appAccent.color, for: .normal)
+            descriptionLabel.textColor = .secondaryLabel
+            backgroundColor = Asset.Colors.appBackground.color
+        }
     }
 }

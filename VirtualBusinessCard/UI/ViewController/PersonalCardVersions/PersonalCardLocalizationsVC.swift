@@ -11,11 +11,9 @@ import CoreMotion
 
 final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizationsView, PersonalCardLocalizationsVM> {
 
-    private typealias DataSource = UITableViewDiffableDataSource<PersonalCardLocalizationsVM.Section, PersonalCardLocalizationsView.TableCell.DataModel>
+    private typealias DataSource = UITableViewDiffableDataSource<PersonalCardLocalizationsVM.Section, PersonalCardLocalizationsVM.Row>
 
     private lazy var tableViewDataSource = makeTableViewDataSource()
-
-    private lazy var pushUpdatesButton = UIBarButtonItem(image: viewModel.pushChangesToExchangesImages, style: .plain, target: self, action: #selector(didTapPushChangesButton))
 
     private var coordinator: Coordinator?
     private var isFirstAppearance = SingleTimeToggleBool(ofInitialValue: true)
@@ -47,18 +45,21 @@ final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizat
 
     private func setupNavigationItem() {
         navigationItem.title = NSLocalizedString("Card Localization", comment: "")
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem.add(target: self, action: #selector(didTapNewVersionButton)),
-            pushUpdatesButton
-        ]
-        pushUpdatesButton.isEnabled = viewModel.pushChangesButtonEnabled
+        navigationItem.rightBarButtonItem = UIBarButtonItem.add(target: self, action: #selector(didTapNewVersionButton))
     }
 
     private func makeTableViewDataSource() -> DataSource {
-        DataSource(tableView: contentView.tableView) { tableView, indexPath, dataModel in
-            let cell: PersonalCardLocalizationsView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
-            cell.setDataModel(dataModel)
-            return cell
+        DataSource(tableView: contentView.tableView) { [weak self] tableView, indexPath, row in
+            switch row {
+            case .localization(let dataModel):
+                let cell: PersonalCardLocalizationsView.LocalizationCell = tableView.dequeueReusableCell(indexPath: indexPath)
+                cell.setDataModel(dataModel)
+                return cell
+            case .pushUpdate:
+                let cell: PersonalCardLocalizationsView.PushUpdateCell = tableView.dequeueReusableCell(indexPath: indexPath)
+                cell.updateButton.addTarget(self, action: #selector(self?.didTapPushChangesButton), for: .touchUpInside)
+                return cell
+            }
         }
     }
 
@@ -103,13 +104,13 @@ private extension PersonalCardLocalizationsVC {
     }
 
     func didTapPushChangesButton() {
-        let title = NSLocalizedString("Push Updates to Business Partners", comment: "")
+        let title = NSLocalizedString("Share Updates with Business Partners", comment: "")
         let message = NSLocalizedString(
-            "Performing a push will result in your business partners with whom you have exchanged cards in the past, receiving updated card information. Do you want continue?",
+            "If you share this update, users who received this card from you in the past, will have the option to download it or keep your older version of this card. Do you want continue?",
             comment: ""
         )
         let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Push Changes", comment: ""), style: .default) { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Share Update", comment: ""), style: .default) { _ in
             self.viewModel.pushChangesToExchanges()
         })
         alert.addCancelAction()
@@ -120,28 +121,34 @@ private extension PersonalCardLocalizationsVC {
 // MARK: - UITableViewDelegate
 
 extension PersonalCardLocalizationsVC: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let config = viewModel.actionConfig(for: indexPath) else { return }
+        let section = tableViewDataSource.snapshot().sectionIdentifiers[indexPath.section]
+        switch section {
+        case .main:
+            guard let config = viewModel.actionConfigForLocalization(at: indexPath.row) else { return }
 
-        let alert = AppAlertController(title: config.title, message: nil, preferredStyle: .actionSheet)
-        if !config.isDefault {
-            alert.addAction(UIAlertAction(title: NSLocalizedString("Make Default", comment: ""), style: .default) { _ in
-                self.viewModel.setDefaultLocalization(at: indexPath)
+            let alert = AppAlertController(title: config.title, message: nil, preferredStyle: .actionSheet)
+            if !config.isDefault {
+                alert.addAction(UIAlertAction(title: NSLocalizedString("Make Default", comment: ""), style: .default) { _ in
+                    self.viewModel.setDefaultLocalization(at: indexPath)
+                })
+            }
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Change Localization Language", comment: ""), style: .default) { [self] _ in
+                guard let vm = viewModel.languagesVM(for: indexPath) else { return }
+                presentLanguagesVC(viewModel: vm)
             })
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Edit", comment: ""), style: .default) { [self] _ in
+                coordinator = viewModel.editCardCoordinator(for: indexPath, root: AppNavigationController())
+                startCoordinator()
+            })
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
+                self.presentConfirmDeleteAlert(for: indexPath)
+            })
+            alert.addCancelAction { _ in tableView.deselectRow(at: indexPath, animated: true) }
+            present(alert, animated: true)
+        default: return
         }
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Change Localization Language", comment: ""), style: .default) { [self] _ in
-            guard let vm = viewModel.languagesVM(for: indexPath) else { return }
-            presentLanguagesVC(viewModel: vm)
-        })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Edit", comment: ""), style: .default) { [self] _ in
-            coordinator = viewModel.editCardCoordinator(for: indexPath, root: AppNavigationController())
-            startCoordinator()
-        })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: ""), style: .destructive) { _ in
-            self.presentConfirmDeleteAlert(for: indexPath)
-        })
-        alert.addCancelAction { _ in tableView.deselectRow(at: indexPath, animated: true) }
-        present(alert, animated: true)
     }
 }
 
@@ -149,7 +156,7 @@ extension PersonalCardLocalizationsVC: UITableViewDelegate {
 
 extension PersonalCardLocalizationsVC: PersonalCardLocalizationsVMDelegate {
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-        (contentView.tableView.visibleCells as! [PersonalCardLocalizationsView.TableCell]).forEach { cell in
+        (contentView.tableView.visibleCells as? [PersonalCardLocalizationsView.LocalizationCell])?.forEach { cell in
             cell.cardSceneView.updateMotionData(motion, over: timeFrame)
         }
     }
@@ -181,7 +188,6 @@ extension PersonalCardLocalizationsVC: PersonalCardLocalizationsVMDelegate {
     func refreshData() {
         tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: !isFirstAppearance.value)
         isFirstAppearance.toggle()
-        pushUpdatesButton.isEnabled = viewModel.pushChangesButtonEnabled
     }
 }
 

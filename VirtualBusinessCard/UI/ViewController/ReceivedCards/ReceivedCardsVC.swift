@@ -216,6 +216,9 @@ extension ReceivedCardsVC: UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard let detailsVC = dismissed.children.first as? CardDetailsVC else { return nil }
+        guard let cellSnap = detailsVC.mostRecentCardImagesCellSnapshot else { return nil }
+        animator?.animatedCellSnapshot = cellSnap
         animator?.type = .dismiss
         return animator
     }

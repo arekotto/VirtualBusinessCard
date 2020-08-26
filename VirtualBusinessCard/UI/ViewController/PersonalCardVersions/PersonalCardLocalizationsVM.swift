@@ -21,8 +21,8 @@ protocol PersonalCardLocalizationsVMDelegate: class {
 
 final class PersonalCardLocalizationsVM: CompleteUserViewModel, MotionDataSource {
 
-    typealias DataModel = PersonalCardLocalizationsView.TableCell.DataModel
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, DataModel>
+    typealias DataModel = PersonalCardLocalizationsView.LocalizationCell.DataModel
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Row>
 
     weak var delegate: PersonalCardLocalizationsVMDelegate?
 
@@ -64,9 +64,9 @@ extension PersonalCardLocalizationsVM {
         return card.mostRecentUpdate > card.mostRecentPush
     }
 
-    func actionConfig(for indexPath: IndexPath) -> ActionConfiguration? {
-        guard let languageVersion = card?.localization(withID: dataModels[indexPath.row].id) else { return nil }
-        let dataModel = dataModels[indexPath.row]
+    func actionConfigForLocalization(at index: Int) -> ActionConfiguration? {
+        guard let languageVersion = card?.localization(withID: dataModels[index].id) else { return nil }
+        let dataModel = dataModels[index]
         let titleFormat = NSLocalizedString("%@ Localization", comment: "%@: language name")
         return ActionConfiguration(
             title: String.localizedStringWithFormat(titleFormat, dataModel.title),
@@ -86,8 +86,12 @@ extension PersonalCardLocalizationsVM {
 
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
+        if pushChangesButtonEnabled {
+            snapshot.appendSections([.pushUpdate])
+            snapshot.appendItems([.pushUpdate], toSection: .pushUpdate)
+        }
         snapshot.appendSections([.main])
-        snapshot.appendItems(dataModels)
+        snapshot.appendItems(dataModels.map { .localization($0) }, toSection: .main)
         return snapshot
     }
 
@@ -132,6 +136,7 @@ extension PersonalCardLocalizationsVM {
         guard let card = self.card else { return }
         let editableCard = card.editPersonalBusinessCardMC(userID: userID)
         editableCard.setDefaultLocalization(toID: dataModels[indexPath.row].id)
+        editableCard.mostRecentUpdate = Date()
         editableCard.save(in: cardCollectionReference)
     }
 
@@ -148,7 +153,7 @@ extension PersonalCardLocalizationsVM {
     func pushChangesToExchanges() {
         guard let exchangeIDs = user?.committedExchanges(for: cardID) else { return }
 
-        delegate?.presentLoadingAlert(title: NSLocalizedString("Pushing Changes", comment: ""))
+        delegate?.presentLoadingAlert(title: NSLocalizedString("Sharing Changes", comment: ""))
 
         var ownerExchangeIDs = [DirectCardExchangeID]()
         var guestExchangeIDs = [DirectCardExchangeID]()
@@ -191,7 +196,7 @@ extension PersonalCardLocalizationsVM {
 
         dispatchGroup.notify(queue: .main) {
             if encounteredError != nil {
-                let message = NSLocalizedString("We could not push your changes. Please check your network connection and try again.", comment: "")
+                let message = NSLocalizedString("We could not share your changes. Please check your network connection and try again.", comment: "")
                 self.delegate?.presentErrorAlert(message: message)
             } else {
                 let exchangeWithCurrentCard =  (ownerExchangeIDs + guestExchangeIDs).filter { exchangeIDs.contains($0) }
@@ -356,6 +361,11 @@ extension PersonalCardLocalizationsVM {
 
 extension PersonalCardLocalizationsVM {
     enum Section {
-        case main
+        case main, pushUpdate
+    }
+
+    enum Row: Hashable {
+        case localization(DataModel)
+        case pushUpdate
     }
 }

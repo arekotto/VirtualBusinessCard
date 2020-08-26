@@ -30,6 +30,7 @@ internal enum Asset {
     internal static let appTabBar = ColorAsset(name: "AppTabBar")
     internal static let appWhite = ColorAsset(name: "AppWhite")
     internal static let barSeparator = ColorAsset(name: "BarSeparator")
+    internal static let cardPlaceholder = ColorAsset(name: "CardPlaceholder")
     internal static let defaultText = ColorAsset(name: "DefaultText")
     internal static let googleBlue = ColorAsset(name: "GoogleBlue")
     internal static let microsoftBlue = ColorAsset(name: "MicrosoftBlue")
@@ -115,7 +116,8 @@ internal struct ImageAsset {
     #if os(iOS) || os(tvOS)
     let image = Image(named: name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
-    let image = bundle.image(forResource: NSImage.Name(name))
+    let name = NSImage.Name(self.name)
+    let image = (bundle == .main) ? NSImage(named: name) : bundle.image(forResource: name)
     #elseif os(watchOS)
     let image = Image(named: name)
     #endif
