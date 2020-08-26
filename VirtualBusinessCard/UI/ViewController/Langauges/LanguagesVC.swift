@@ -43,7 +43,7 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.selectRow(at: indexPath)
-        tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: false)
+        tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: true)
         tableView.deselectRow(at: indexPath, animated: true)
         doneButton.isEnabled = viewModel.isDoneButtonEnabled
     }
@@ -74,11 +74,13 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
     }
 
     private func makeTableViewDataSource() -> DataSource {
-        DataSource(tableView: tableView) { tableView, indexPath, dataModel in
+        let dataSource = DataSource(tableView: tableView) { tableView, indexPath, dataModel in
             let cell: LanguagesView.TableCell = tableView.dequeueReusableCell(indexPath: indexPath)
             cell.setDataModel(dataModel)
             return cell
         }
+        dataSource.defaultRowAnimation = .fade
+        return dataSource
     }
 }
 

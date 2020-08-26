@@ -44,11 +44,13 @@ final class EditCardTagsVC: AppViewController<EditCardTagsView, EditCardTagsVM> 
     }
 
     private func makeTableViewDataSource() -> DataSource {
-        DataSource(tableView: contentView.tableView) { tableView, indexPath, dataModel in
+        let dataSource = DataSource(tableView: contentView.tableView) { tableView, indexPath, dataModel in
             let cell: TagTableCell = tableView.dequeueReusableCell(indexPath: indexPath)
             cell.dataModel = dataModel
             return cell
         }
+        dataSource.defaultRowAnimation = .fade
+        return dataSource
     }
 }
 
