@@ -20,6 +20,8 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
 
     var mode: LanguagesVM.Mode { viewModel.mode }
 
+    private lazy var doneButton = UIBarButtonItem(title: viewModel.doneButtonTitle, style: .done, target: self, action: #selector(didTapDoneEditingButton))
+
     private lazy var tableViewDataSource = makeTableViewDataSource()
 
     init(viewModel: LanguagesVM) {
@@ -43,6 +45,7 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
         viewModel.selectRow(at: indexPath)
         tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: false)
         tableView.deselectRow(at: indexPath, animated: true)
+        doneButton.isEnabled = viewModel.isDoneButtonEnabled
     }
 
     private func setupTableView() {
@@ -56,7 +59,8 @@ final class LanguagesTVC: AppTableViewController<LanguagesVM> {
     private func setupNavigationItem() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = NSLocalizedString("Choose Language", comment: "")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: viewModel.doneButtonTitle, style: .done, target: self, action: #selector(didTapDoneEditingButton))
+        navigationItem.rightBarButtonItem = doneButton
+        doneButton.isEnabled = viewModel.isDoneButtonEnabled
         navigationItem.leftBarButtonItem = UIBarButtonItem.cancel(target: self, action: #selector(didTapCancelEditingButton))
         navigationItem.hidesSearchBarWhenScrolling = false
         navigationItem.searchController = {
@@ -119,10 +123,12 @@ extension LanguagesTVC: UISearchResultsUpdating, UISearchControllerDelegate {
 extension LanguagesTVC: LanguagesVMDelegate {
     func viewModelDidLoadData() {
         tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: false)
+        doneButton.isEnabled = viewModel.isDoneButtonEnabled
     }
 
     func viewModelDidRefreshData() {
         tableViewDataSource.apply(viewModel.dataSnapshot())
+        doneButton.isEnabled = viewModel.isDoneButtonEnabled
     }
 }
 

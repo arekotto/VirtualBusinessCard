@@ -121,9 +121,18 @@ extension EditPersonalBusinessCardLocalizationMC {
 
     convenience init(userID: UserID, card: PersonalBusinessCard, newLocalizationLanguageCode langCode: String) {
         var editedCard = card
-        let newLanguageVersion = Self.makeLanguageVersion(isDefault: false, languageCode: langCode)
-        editedCard.localizations.append(newLanguageVersion)
-        self.init(userID: userID, editedLocalizationID: newLanguageVersion.id, card: editedCard)
+        if var newLanguageVersion = card.localizations.first(where: \.isDefault) {
+            newLanguageVersion.id = UUID()
+            newLanguageVersion.languageCode = langCode
+            newLanguageVersion.isDefault = false
+            editedCard.localizations.append(newLanguageVersion)
+            self.init(userID: userID, editedLocalizationID: newLanguageVersion.id, card: editedCard)
+        } else {
+            // should never happen
+            let newLanguageVersion = Self.makeLanguageVersion(isDefault: false, languageCode: langCode)
+            editedCard.localizations.append(newLanguageVersion)
+            self.init(userID: userID, editedLocalizationID: newLanguageVersion.id, card: editedCard)
+        }
     }
 
     convenience init(userID: UserID) {

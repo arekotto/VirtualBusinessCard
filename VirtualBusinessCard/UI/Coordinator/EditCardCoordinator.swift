@@ -16,8 +16,12 @@ final class EditCardCoordinator: Coordinator {
     let navigationController: UINavigationController
 
     private var card: EditPersonalBusinessCardLocalizationMC
-    private var originalImages: Images!
+
+    private var currentImages: Images!
     private var newImages: Images?
+
+    private var forceImageUpdateOnSave = false
+
     private var storage = Storage.storage().reference()
     private let collectionReference: CollectionReference
     private let title: String
@@ -29,12 +33,12 @@ final class EditCardCoordinator: Coordinator {
         switch mode {
         case .newCard:
             self.card = EditPersonalBusinessCardLocalizationMC(userID: userID)
-            originalImages = Images()
+            currentImages = Images()
             title = NSLocalizedString("New Card", comment: "")
         case .newLocalization(let card, let localizationLanguageCode):
             self.card = card.editPersonalBusinessCardLocalizationMC(userID: userID, newLocalizationLanguageCode: localizationLanguageCode)
-            originalImages = Images()
             let titleFormat = NSLocalizedString("New %@ Localization", comment: "")
+            forceImageUpdateOnSave = true
             title = String.localizedStringWithFormat(titleFormat, Locale.current.localizedString(forLanguageCode: localizationLanguageCode) ?? "")
         case .editLocalization(let card, let localizationID):
             self.card = card.editPersonalBusinessCardLocalizationMC(userID: userID, editedLocalizationID: localizationID)
@@ -49,7 +53,7 @@ final class EditCardCoordinator: Coordinator {
     }
 
     func start(completion: @escaping (Result<Void, Error>) -> Void) {
-        if originalImages != nil {
+        if currentImages != nil {
             completion(.success(()))
             pushEditCardImagesVC()
         } else {
@@ -59,7 +63,7 @@ final class EditCardCoordinator: Coordinator {
                 guard let self = self else { return }
                 switch result {
                 case .success(let images):
-                    self.originalImages = Images(front: images[0], back: images[1], texture: images[2])
+                    self.currentImages = Images(front: images[0], back: images[1], texture: images[2])
                     self.pushEditCardImagesVC()
                     completion(.success(()))
                 case .failure(let error):
@@ -70,7 +74,7 @@ final class EditCardCoordinator: Coordinator {
     }
 
     private func pushEditCardImagesVC() {
-        let vc = EditCardImagesVC(viewModel: EditCardImagesVM(subtitle: title, frontImage: originalImages.front, backImage: originalImages.back))
+        let vc = EditCardImagesVC(viewModel: EditCardImagesVM(subtitle: title, frontImage: currentImages.front, backImage: currentImages.back))
         vc.delegate = self
         navigationController.pushViewController(vc, animated: false)
     }
@@ -109,7 +113,7 @@ extension EditCardCoordinator: EditCardImagesVCDelegate {
 
     func editCardImagesVC(_ viewController: EditCardImagesVC, didFinishWith frontImage: UIImage, and backImage: UIImage) {
         let cardProperties = EditCardPhysicalVM.CardPhysicalProperties(
-            texture: originalImages.texture ?? Asset.Images.BundledTexture.texture1.image,
+            texture: currentImages.texture ?? Asset.Images.BundledTexture.texture1.image,
             specular: card.texture.specular,
             normal: card.texture.normal,
             cornerRadiusHeightMultiplier: card.cornerRadiusHeightMultiplier,
@@ -211,43 +215,43 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
         [Int](0...2).forEach { _ in dispatchGroup.enter() }
 
         DispatchQueue.global().async {
-            if let newImage = newImages.front, let newImageData = newImage.jpegData(compressionQuality: 0.8), newImageData != self.originalImages.front?.pngData() {
-                self.replaceImage(newImageData: newImageData, originalImagePath: self.card.frontImageStoragePath) { result in
-                    switch result {
-                    case .success(let image): uploadedImages.front = image
-                    case .failure(let error): encounteredError = error
-                    }
-                    dispatchGroup.leave()
+            guard let newImageData = self.imageDataToSave(newImage: newImages.front, replacedImage: self.currentImages.front) else {
+                dispatchGroup.leave()
+                return
+            }
+            self.replaceImage(newImageData: newImageData, originalImagePath: self.card.frontImageStoragePath) { result in
+                switch result {
+                case .success(let image): uploadedImages.front = image
+                case .failure(let error): encounteredError = error
                 }
-            } else {
                 dispatchGroup.leave()
             }
         }
 
         DispatchQueue.global().async {
-            if let newImage = newImages.texture, let newImageData = newImage.jpegData(compressionQuality: 0.8), newImageData != self.originalImages.texture?.pngData() {
-                self.replaceImage(newImageData: newImageData, originalImagePath: self.card.textureImageStoragePath) { result in
-                    switch result {
-                    case .success(let image): uploadedImages.texture = image
-                    case .failure(let error): encounteredError = error
-                    }
-                    dispatchGroup.leave()
+            guard let newImageData = self.imageDataToSave(newImage: newImages.texture, replacedImage: self.currentImages.texture, useCompression: false) else {
+                dispatchGroup.leave()
+                return
+            }
+            self.replaceImage(newImageData: newImageData, originalImagePath: self.card.textureImageStoragePath) { result in
+                switch result {
+                case .success(let image): uploadedImages.texture = image
+                case .failure(let error): encounteredError = error
                 }
-            } else {
                 dispatchGroup.leave()
             }
         }
 
         DispatchQueue.global().async {
-            if let newImage = newImages.back, let newImageData = newImage.jpegData(compressionQuality: 0.8), newImageData != self.originalImages.back?.pngData() {
-                self.replaceImage(newImageData: newImageData, originalImagePath: self.card.backImageStoragePath) { result in
-                    switch result {
-                    case .success(let image): uploadedImages.back = image
-                    case .failure(let error): encounteredError = error
-                    }
-                    dispatchGroup.leave()
+            guard let newImageData = self.imageDataToSave(newImage: newImages.back, replacedImage: self.currentImages.back) else {
+                dispatchGroup.leave()
+                return
+            }
+            self.replaceImage(newImageData: newImageData, originalImagePath: self.card.backImageStoragePath) { result in
+                switch result {
+                case .success(let image): uploadedImages.back = image
+                case .failure(let error): encounteredError = error
                 }
-            } else {
                 dispatchGroup.leave()
             }
         }
@@ -259,6 +263,13 @@ extension EditCardCoordinator: EditCardInfoVCDelegate {
                 completion(.success(uploadedImages))
             }
         }
+    }
+
+    private func imageDataToSave(newImage: UIImage?, replacedImage: UIImage?, useCompression: Bool = true) -> Data? {
+        guard let newImage = newImage, let newImagePNG = newImage.pngData(), self.forceImageUpdateOnSave || newImagePNG != replacedImage?.pngData() else {
+            return nil
+        }
+        return useCompression ? newImage.jpegData(compressionQuality: 0.8) : newImagePNG
     }
 
     private func replaceImage(newImageData: Data, originalImagePath: String?, completion: @escaping (Result<BusinessCardLocalization.Image, Error>) -> Void) {

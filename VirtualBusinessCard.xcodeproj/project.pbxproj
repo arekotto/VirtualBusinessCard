@@ -41,6 +41,11 @@
 		451B79AC24D8511D00EDC2B6 /* EditCardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B79AB24D8511D00EDC2B6 /* EditCardCoordinator.swift */; };
 		451C664F2408096F0016DA68 /* GreetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C664E2408096F0016DA68 /* GreetingsView.swift */; };
 		451C6652240809A40016DA68 /* GreetingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C6651240809A40016DA68 /* GreetingsViewModel.swift */; };
+		451C971A24F6F283006E20D7 /* CardImagesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C971924F6F283006E20D7 /* CardImagesCell.swift */; };
+		451C971C24F6F2B3006E20D7 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C971B24F6F2B3006E20D7 /* TagCell.swift */; };
+		451C971E24F6F2D0006E20D7 /* DeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C971D24F6F2D0006E20D7 /* DeleteCell.swift */; };
+		451C972024F6F2FD006E20D7 /* UpdateAvailableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C971F24F6F2FD006E20D7 /* UpdateAvailableCell.swift */; };
+		451C972224F6F317006E20D7 /* NoTagsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C972124F6F317006E20D7 /* NoTagsCell.swift */; };
 		451E20F324BC82940097BEDE /* DirectCardExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E20F224BC82940097BEDE /* DirectCardExchange.swift */; };
 		451F70D424ED53B300CEC519 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451F70D324ED53B300CEC519 /* EmptyStateView.swift */; };
 		452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */; };
@@ -256,6 +261,11 @@
 		451B79AB24D8511D00EDC2B6 /* EditCardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardCoordinator.swift; sourceTree = "<group>"; };
 		451C664E2408096F0016DA68 /* GreetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsView.swift; sourceTree = "<group>"; };
 		451C6651240809A40016DA68 /* GreetingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GreetingsViewModel.swift; sourceTree = "<group>"; };
+		451C971924F6F283006E20D7 /* CardImagesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardImagesCell.swift; sourceTree = "<group>"; };
+		451C971B24F6F2B3006E20D7 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
+		451C971D24F6F2D0006E20D7 /* DeleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCell.swift; sourceTree = "<group>"; };
+		451C971F24F6F2FD006E20D7 /* UpdateAvailableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAvailableCell.swift; sourceTree = "<group>"; };
+		451C972124F6F317006E20D7 /* NoTagsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTagsCell.swift; sourceTree = "<group>"; };
 		451E20F224BC82940097BEDE /* DirectCardExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchange.swift; sourceTree = "<group>"; };
 		451F70D324ED53B300CEC519 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsViewCell.swift; sourceTree = "<group>"; };
@@ -603,6 +613,18 @@
 				451C6651240809A40016DA68 /* GreetingsViewModel.swift */,
 			);
 			path = Greetings;
+			sourceTree = "<group>";
+		};
+		451C971824F6F26A006E20D7 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				451C971924F6F283006E20D7 /* CardImagesCell.swift */,
+				451C971B24F6F2B3006E20D7 /* TagCell.swift */,
+				451C971D24F6F2D0006E20D7 /* DeleteCell.swift */,
+				451C971F24F6F2FD006E20D7 /* UpdateAvailableCell.swift */,
+				451C972124F6F317006E20D7 /* NoTagsCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		451E20F124BC82770097BEDE /* DirectCardExchange */ = {
@@ -1013,6 +1035,7 @@
 		45B25F1D2493B281006DD0F7 /* CardDetails */ = {
 			isa = PBXGroup;
 			children = (
+				451C971824F6F26A006E20D7 /* Cell */,
 				45B25F1E2493B2A3006DD0F7 /* CardDetailsVC.swift */,
 				45B25F202493B32C006DD0F7 /* CardDetailsVM.swift */,
 				45B25F222493B33B006DD0F7 /* CardDetailsView.swift */,
@@ -1467,6 +1490,7 @@
 				45139C5024979C3800DE1E9F /* ReceivedCardsVC.swift in Sources */,
 				451B799724D80A9E00EDC2B6 /* SingleSliderEditingView.swift in Sources */,
 				4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */,
+				451C972024F6F2FD006E20D7 /* UpdateAvailableCell.swift in Sources */,
 				452CEE8324AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift in Sources */,
 				4539A0A424E161050063C267 /* EditPersonalBusinessCardMC.swift in Sources */,
 				4537CEE323F6D259003602EA /* AppDelegate.swift in Sources */,
@@ -1493,6 +1517,7 @@
 				459102F324B708A60064B12C /* PersonalCardsCompactVC.swift in Sources */,
 				45D445A724C05D3B00630C72 /* AcceptCardVC.swift in Sources */,
 				4558F1FE2424FE2200D44526 /* CreateAccountViewModel.swift in Sources */,
+				451C971C24F6F2B3006E20D7 /* TagCell.swift in Sources */,
 				451E20F324BC82940097BEDE /* DirectCardExchange.swift in Sources */,
 				450EB4C024D16297000D31ED /* Assets.swift in Sources */,
 				45174CE324B8CB12009BFE58 /* TitleCollectionViewCell.swift in Sources */,
@@ -1520,6 +1545,7 @@
 				45F1EDA224BC489700AE1322 /* DirectSharingVM.swift in Sources */,
 				4511A130246D6CC100AE3306 /* CreateAccountNameViewModel.swift in Sources */,
 				454625E224A0C0EF000D1D25 /* AppCollectionViewCell.swift in Sources */,
+				451C971A24F6F283006E20D7 /* CardImagesCell.swift in Sources */,
 				452B33C9248E4FF8006E6A7D /* SettingsVC.swift in Sources */,
 				45174CE824B9E32F009BFE58 /* EditTagView.swift in Sources */,
 				4576993E24CC66A0008D3778 /* TagTableCell.swift in Sources */,
@@ -1599,6 +1625,7 @@
 				45F41FA324600D0A002BC37F /* BusinessCardSceneView.swift in Sources */,
 				4577CC8724890B900012EDC8 /* SingletonFirestoreable.swift in Sources */,
 				457F071024E01C6000F95148 /* PersonalCardLocalizationsVC.swift in Sources */,
+				451C972224F6F317006E20D7 /* NoTagsCell.swift in Sources */,
 				45AF8B0224DE961300070707 /* AppTableViewController.swift in Sources */,
 				4537CEE723F6D259003602EA /* ContentView.swift in Sources */,
 				45139C4B249794AF00DE1E9F /* PersonalBusinessCard.swift in Sources */,
@@ -1634,6 +1661,7 @@
 				45C160262485AEF800806718 /* PersonalCardsVC.swift in Sources */,
 				45C25D68249F5EC900945F29 /* ScrollableSegmentedControl.swift in Sources */,
 				45D6BF7824169A41008B2498 /* Color.swift in Sources */,
+				451C971E24F6F2D0006E20D7 /* DeleteCell.swift in Sources */,
 				4577CC792489040D0012EDC8 /* SignUpUserInfoStorage.swift in Sources */,
 				4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */,
 				451B79AC24D8511D00EDC2B6 /* EditCardCoordinator.swift in Sources */,

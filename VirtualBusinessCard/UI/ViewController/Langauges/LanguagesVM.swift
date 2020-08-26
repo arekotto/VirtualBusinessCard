@@ -74,6 +74,10 @@ final class LanguagesVM: AppViewModel {
 
 extension LanguagesVM {
 
+    var isDoneButtonEnabled: Bool {
+        newSelectedLanguageCode != nil
+    }
+
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
