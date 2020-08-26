@@ -22,7 +22,7 @@ final class SettingsVM: PartialUserViewModel {
     weak var delegate: SettingsVMDelegate?
         
     private let sections: [Section] = [
-        Section(rows: [.tags, .profile], title: ""),
+        Section(rows: [.profile], title: ""),
         Section(rows: [.logOut], title: "")
     ]
 

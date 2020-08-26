@@ -88,6 +88,21 @@ extension CardDetailsView {
         return section
     }
 
+    static func createCollectionViewLayoutUpdateSection() -> NSCollectionLayoutSection {
+        let estimatedHeight = NSCollectionLayoutDimension.estimated(200)
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: estimatedHeight
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: estimatedHeight)
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
+        return section
+    }
+
     static func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
         let estimatedHeight = NSCollectionLayoutDimension.estimated(50)
 
@@ -430,6 +445,12 @@ extension CardDetailsView {
             return this
         }()
 
+        override func configureCell() {
+            super.configureCell()
+            contentView.layer.borderWidth = 1
+            contentView.layer.cornerRadius = 16
+        }
+
         override func configureSubviews() {
             super.configureSubviews()
             contentView.addSubview(mainStackView)
@@ -437,7 +458,7 @@ extension CardDetailsView {
 
         override func configureConstraints() {
             super.configureConstraints()
-            mainStackView.constrainToEdgesOfSuperview()
+            mainStackView.constrainToEdgesOfSuperview(inset: 12)
             mainStackView.constrainHeightGreaterThanOrEqualTo(constant: 60)
         }
 
@@ -445,6 +466,7 @@ extension CardDetailsView {
             super.configureColors()
             updateButton.setTitleColor(Asset.Colors.appAccent.color, for: .normal)
             descriptionLabel.textColor = .secondaryLabel
+            contentView.layer.borderColor = Asset.Colors.appAccent.color.withAlphaComponent(0.6).cgColor
         }
     }
 }

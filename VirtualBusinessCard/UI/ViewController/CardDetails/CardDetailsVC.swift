@@ -144,7 +144,8 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
             guard let sections = self?.collectionViewDataSource.snapshot().sectionIdentifiers else { return nil }
             switch sections[sectionIndex] {
             case .card: return CardDetailsView.createCollectionViewLayoutCardImagesSection()
-            case .update, .tags, .delete: return CardDetailsView.createCollectionViewLayoutDynamicSection()
+            case .tags, .delete: return CardDetailsView.createCollectionViewLayoutDynamicSection()
+            case .update: return CardDetailsView.createCollectionViewLayoutUpdateSection()
             default: return CardDetailsView.createCollectionViewLayoutDetailsSection()
             }
         }

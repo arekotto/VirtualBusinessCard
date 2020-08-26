@@ -46,6 +46,7 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
         navigationItem.rightBarButtonItem = seeAllButton
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Edit Tags", comment: ""), style: .plain, target: self, action: #selector(didTapTagsButton))
         navigationItem.searchController = {
             let controller = UISearchController()
             controller.delegate = self
@@ -76,6 +77,12 @@ extension GroupedCardsVC: UITableViewDelegate {
 private extension GroupedCardsVC {
     func didTapSeeAllButton() {
         viewModel.didTapSeeAll()
+    }
+
+    func didTapTagsButton() {
+        let vc = TagsVC(viewModel: viewModel.tagsVM())
+        let navController = AppNavigationController(rootViewController: vc)
+        present(navController, animated: true)
     }
 }
 

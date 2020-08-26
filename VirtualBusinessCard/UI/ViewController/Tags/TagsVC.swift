@@ -14,7 +14,8 @@ final class TagsVC: AppViewController<TagsView, TagsVM> {
         UIBarButtonItem.add(target: self, action: #selector(didTapNewTagButton)),
         UIBarButtonItem(image: viewModel.sortControlImage, style: .plain, target: self, action: #selector(didTapSortButton))
     ]
-    
+
+    private lazy var doneButton = UIBarButtonItem.done(target: self, action: #selector(didTapDoneButton))
     private lazy var doneEditingButton = UIBarButtonItem.done(target: self, action: #selector(didTapDoneEditingButton))
     private lazy var cancelEditingButton = UIBarButtonItem.cancel(target: self, action: #selector(didTapCancelEditingButton))
 
@@ -33,6 +34,7 @@ final class TagsVC: AppViewController<TagsView, TagsVM> {
     private func setupNavigationItem() {
         navigationItem.title = viewModel.title
         navigationItem.setRightBarButtonItems(nonEditingButtons, animated: false)
+        navigationItem.setLeftBarButton(doneButton, animated: false)
     }
 
     private func makeTableViewDataSource() -> DataSource {
@@ -70,27 +72,28 @@ private extension TagsVC {
     func didTapNewTagButton() {
         viewModel.didSelectNewTag()
     }
+
+    func didTapDoneButton() {
+        dismiss(animated: true)
+    }
     
     func didTapSortButton() {
         contentView.tableView.setEditing(true, animated: true)
         navigationItem.setRightBarButtonItems([doneEditingButton], animated: true)
         navigationItem.setLeftBarButtonItems([cancelEditingButton], animated: true)
-        navigationItem.setHidesBackButton(true, animated: true)
     }
     
     func didTapDoneEditingButton() {
         contentView.tableView.setEditing(false, animated: true)
         navigationItem.setRightBarButtonItems(nonEditingButtons, animated: true)
-        navigationItem.setLeftBarButtonItems([], animated: true)
-        navigationItem.setHidesBackButton(false, animated: true)
+        navigationItem.setLeftBarButtonItems([doneButton], animated: true)
         viewModel.didApproveEditing()
     }
     
     func didTapCancelEditingButton() {
         contentView.tableView.setEditing(false, animated: true)
         navigationItem.setRightBarButtonItems(nonEditingButtons, animated: true)
-        navigationItem.setLeftBarButtonItems([], animated: true)
-        navigationItem.setHidesBackButton(false, animated: true)
+        navigationItem.setLeftBarButtonItems([doneButton], animated: true)
         viewModel.didCancelEditing()
     }
 }

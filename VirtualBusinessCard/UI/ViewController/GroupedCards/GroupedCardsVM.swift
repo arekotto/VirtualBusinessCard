@@ -226,6 +226,10 @@ extension GroupedCardsVM {
         }
     }
 
+    func tagsVM() -> TagsVM {
+        TagsVM(userID: userID)
+    }
+
     private func groupDataModel(at index: Int) -> GroupedCardsView.TableCell.DataModel {
         let group = groups[index]
         let cardsInGroup = cards.filter { group.cardIDs.contains($0.id) }

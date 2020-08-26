@@ -383,6 +383,14 @@ public extension UIView {
         constraint.isActive = true
         return constraint
     }
+
+    @discardableResult
+    func constrainSize(heightConstant: CGFloat, widthConstant: CGFloat, priority: UILayoutPriority = UILayoutPriority.required) -> [NSLayoutConstraint] {
+        return [
+            constrainHeight(constant: heightConstant, priority: priority),
+            constrainWidth(constant: widthConstant, priority: priority)
+        ]
+    }
 }
 
 extension UIView {

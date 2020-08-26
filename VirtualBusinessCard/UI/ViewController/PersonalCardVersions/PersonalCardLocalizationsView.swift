@@ -165,6 +165,8 @@ extension PersonalCardLocalizationsView {
         override func configureCell() {
             super.configureCell()
             selectionStyle = .none
+            contentView.layer.borderWidth = 1
+            contentView.layer.cornerRadius = 16
         }
 
         override func configureSubviews() {
@@ -174,7 +176,7 @@ extension PersonalCardLocalizationsView {
 
         override func configureConstraints() {
             super.configureConstraints()
-            mainStackView.constrainToEdgesOfSuperview()
+            mainStackView.constrainToEdgesOfSuperview(inset: 12)
             mainStackView.constrainHeightGreaterThanOrEqualTo(constant: 60)
         }
 
@@ -183,6 +185,7 @@ extension PersonalCardLocalizationsView {
             updateButton.setTitleColor(Asset.Colors.appAccent.color, for: .normal)
             descriptionLabel.textColor = .secondaryLabel
             backgroundColor = Asset.Colors.appBackground.color
+            contentView.layer.borderColor = Asset.Colors.appAccent.color.withAlphaComponent(0.6).cgColor
         }
     }
 }
