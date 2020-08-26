@@ -78,17 +78,6 @@ extension EditTagVC: NewTagVMDelegate {
         alert.addCancelAction()
         present(alert, animated: true)
     }
-    
-    func presentSaveOfflineAlert() {
-        let title = NSLocalizedString("Save Offline", comment: "")
-        let message = NSLocalizedString("Your device appears to be disconnected from internet. You can still save the tag offline, and we'll sync it when the connection is restored.", comment: "")
-        let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Save Offline", style: .default) { _ in
-            self.viewModel.didSelectSaveOffline()
-        })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Keep Editing", comment: ""), style: .cancel))
-        present(alert, animated: true)
-    }
 
     func presentErrorAlert(message: String) {
         if let presentedVC = presentedViewController {

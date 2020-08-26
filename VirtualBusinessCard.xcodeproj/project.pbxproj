@@ -31,7 +31,6 @@
 		45174CE824B9E32F009BFE58 /* EditTagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE724B9E32F009BFE58 /* EditTagView.swift */; };
 		45174CEA24B9E342009BFE58 /* EditTagVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174CE924B9E342009BFE58 /* EditTagVM.swift */; };
 		45174D7724BB08C3009BFE58 /* EditBusinessCardTagMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45174D7624BB08C3009BFE58 /* EditBusinessCardTagMC.swift */; };
-		45174D7A24BB4189009BFE58 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 45174D7924BB4189009BFE58 /* Reachability */; };
 		451B799724D80A9E00EDC2B6 /* SingleSliderEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799624D80A9E00EDC2B6 /* SingleSliderEditingView.swift */; };
 		451B799A24D835D600EDC2B6 /* HapticsEditingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799924D835D600EDC2B6 /* HapticsEditingView.swift */; };
 		451B799D24D83E2200EDC2B6 /* EditCardInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451B799C24D83E2200EDC2B6 /* EditCardInfoVC.swift */; };
@@ -431,7 +430,6 @@
 			files = (
 				458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */,
 				4543F1C824D46C52006F30A5 /* TOCropViewController in Frameworks */,
-				45174D7A24BB4189009BFE58 /* Reachability in Frameworks */,
 				452B33CC248E6462006E6A7D /* CollectionViewPagingLayout in Frameworks */,
 				AB274D7CEDDE0E7FEF6FD181 /* libPods-VirtualBusinessCard.a in Frameworks */,
 			);
@@ -1214,7 +1212,6 @@
 			packageProductDependencies = (
 				458EF404248B9B6D00EC76D6 /* Kingfisher */,
 				452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */,
-				45174D7924BB4189009BFE58 /* Reachability */,
 				4543F1C724D46C52006F30A5 /* TOCropViewController */,
 			);
 			productName = VirtualBusinessCard;
@@ -1295,7 +1292,6 @@
 			packageReferences = (
 				458EF403248B9B6D00EC76D6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */,
-				45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */,
 				4543F1C624D46C52006F30A5 /* XCRemoteSwiftPackageReference "TOCropViewController" */,
 			);
 			productRefGroup = 4537CEE023F6D259003602EA /* Products */;
@@ -1991,14 +1987,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
 		452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/amirdew/CollectionViewPagingLayout";
@@ -2026,11 +2014,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		45174D7924BB4189009BFE58 /* Reachability */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 45174D7824BB4189009BFE58 /* XCRemoteSwiftPackageReference "Reachability" */;
-			productName = Reachability;
-		};
 		452B33CB248E6462006E6A7D /* CollectionViewPagingLayout */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 452B33CA248E6462006E6A7D /* XCRemoteSwiftPackageReference "CollectionViewPagingLayout" */;

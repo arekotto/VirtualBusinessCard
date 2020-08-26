@@ -8,13 +8,11 @@
 
 import UIKit
 import Firebase
-import Reachability
 
 protocol NewTagVMDelegate: class {
     func applyNewTagColor(_ color: UIColor)
     func presentDismissAlert()
     func presentDeleteAlert()
-    func presentSaveOfflineAlert()
     func presentErrorAlert(message: String)
     func presentErrorAlert(title: String?, message: String)
     func presentLoadingAlert(title: String)
@@ -46,13 +44,6 @@ final class EditTagVM: PartialUserViewModel {
         tag = EditBusinessCardTagMC(estimatedLowestPriorityIndex: estimatedLowestPriorityIndex, color: selectableTagColors.first!)
         allowsDelete = false
         super.init(userID: userID)
-    }
-    
-    private func isOnline() -> Bool {
-        switch (try? Reachability())?.connection {
-        case .wifi, .cellular, .some(.none), nil: return true
-        case .unavailable: return false
-        }
     }
 }
 
@@ -134,14 +125,6 @@ extension EditTagVM {
             delegate?.presentErrorAlert(message: NSLocalizedString("Give the tag a name.", comment: ""))
             return
         }
-        guard isOnline() else {
-            delegate?.presentSaveOfflineAlert()
-            return
-        }
-        saveTag()
-    }
-    
-    func didSelectSaveOffline() {
         saveTag()
     }
 
