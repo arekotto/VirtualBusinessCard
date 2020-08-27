@@ -34,7 +34,7 @@ final class CardDetailsVM: PartialUserViewModel {
 
     private let cardID: BusinessCardID
     private var card: EditReceivedBusinessCardMC?
-    private var updatedLocalizations: [BusinessCardLocalization]?
+    private var updates: (localizations: [BusinessCardLocalization], version: Int)?
 
     private var tags = [BusinessCardTagMC]()
         
@@ -109,7 +109,7 @@ extension CardDetailsVM {
     }
 
     var hasLocalizationUpdates: Bool {
-        !(updatedLocalizations ?? []).isEmpty
+        !(updates?.localizations ?? []).isEmpty
     }
 
     var hapticSharpness: Float {
@@ -144,9 +144,9 @@ extension CardDetailsVM {
 
     func saveLocalizationUpdates() {
         guard let card = self.card else { return }
-        guard let updatedLocalizations = self.updatedLocalizations, !updatedLocalizations.isEmpty else { return }
-        card.localizations = updatedLocalizations
-        card.mostRecentUpdateDate = Date()
+        guard let updates = self.updates, !updates.localizations.isEmpty else { return }
+        card.localizations = updates.localizations
+        card.version = updates.version
         card.save(in: receivedCardCollectionReference)
     }
 
@@ -295,12 +295,12 @@ extension CardDetailsVM {
             return
         }
 
-        if exchange.ownerID == userID && exchange.guestMostRecentUpdate > card.mostRecentUpdateDate {
-            self.updatedLocalizations = exchange.guestCardLocalizations
-        } else if exchange.ownerMostRecentUpdate > card.mostRecentUpdateDate {
-            self.updatedLocalizations = exchange.ownerCardLocalizations
+        if exchange.ownerID == userID && exchange.guestCardVersion > card.version, let localizations = exchange.guestCardLocalizations, !localizations.isEmpty {
+            self.updates = (localizations, exchange.guestCardVersion)
+        } else if exchange.ownerCardVersion > card.version, !exchange.ownerCardLocalizations.isEmpty {
+            self.updates = (exchange.ownerCardLocalizations, exchange.ownerCardVersion)
         } else {
-            self.updatedLocalizations = nil
+            self.updates = nil
         }
         self.makeSections()
     }

@@ -210,7 +210,7 @@ extension ReceivedCardsVC: UIViewControllerTransitioningDelegate {
             animatedCellSnapshot: cellSnap,
             availableAnimationBounds: CGRect(origin: availableAnimationBoundsOrigin, size: availableAnimationBoundsSize)
         ) { [weak self] in
-            self?.selectedCell
+            self?.selectedCell ?? UICollectionViewCell()
         }
         return animator
     }

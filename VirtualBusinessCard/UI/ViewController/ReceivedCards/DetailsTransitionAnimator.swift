@@ -16,9 +16,9 @@ extension ReceivedCardsVC {
         var type: PresentationType
         var animatedCellSnapshot: UIView
         private let availableAnimationBounds: CGRect
-        private var animatedCellProvider: (() -> UICollectionViewCell?)?
+        private var animatedCellProvider: (() -> UICollectionViewCell)?
 
-        init?(type: PresentationType, animatedCellSnapshot: UIView, availableAnimationBounds: CGRect, animatedCellProvider: @escaping () -> UICollectionViewCell?) {
+        init?(type: PresentationType, animatedCellSnapshot: UIView, availableAnimationBounds: CGRect, animatedCellProvider: @escaping () -> UICollectionViewCell) {
             self.type = type
             self.animatedCellSnapshot = animatedCellSnapshot
             self.animatedCellProvider = animatedCellProvider

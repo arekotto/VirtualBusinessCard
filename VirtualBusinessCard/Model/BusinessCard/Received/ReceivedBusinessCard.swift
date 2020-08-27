@@ -13,7 +13,7 @@ struct ReceivedBusinessCard {
     var originalID: BusinessCardID
     var ownerID: UserID
     var receivingDate: Date
-    var mostRecentUpdateDate: Date
+    var version: Int
     var localizations: [BusinessCardLocalization]
     var tagIDs: [BusinessCardTagID]
     var notes: String
@@ -24,8 +24,8 @@ struct ReceivedBusinessCard {
          originalID: BusinessCardID,
          ownerID: UserID,
          receivingDate: Date,
-         mostRecentUpdateDate: Date,
-         languageVersions: [BusinessCardLocalization],
+         version: Int,
+         localizations: [BusinessCardLocalization],
          tagIDs: [BusinessCardTagID] = [],
          notes: String = ""
     ) {
@@ -34,8 +34,8 @@ struct ReceivedBusinessCard {
         self.originalID = originalID
         self.ownerID = ownerID
         self.receivingDate = receivingDate
-        self.mostRecentUpdateDate = mostRecentUpdateDate
-        self.localizations = languageVersions
+        self.version = version
+        self.localizations = localizations
         self.tagIDs = tagIDs
         self.notes = notes
     }
@@ -60,7 +60,7 @@ extension ReceivedBusinessCard: Codable {
         case originalID
         case ownerID
         case receivingDate
-        case mostRecentUpdateDate
+        case version
         case localizations
         case tagIDs
         case notes

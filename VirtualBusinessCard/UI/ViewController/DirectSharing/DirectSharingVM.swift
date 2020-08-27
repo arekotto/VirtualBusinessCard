@@ -109,8 +109,8 @@ extension DirectSharingVM {
             ownerID: userID,
             ownerCardID: card.id,
             ownerCardLocalizations: card.localizations,
-            ownerMostRecentUpdate: Date(),
-            guestMostRecentUpdate: Date()
+            ownerCardVersion: 0,
+            guestCardVersion: 0
         )
 
         docRef.setData(exchange.asDocument()) { [weak self] error in
@@ -210,7 +210,7 @@ extension DirectSharingVM {
             joinedExchange.guestID = self.userID
             joinedExchange.guestCardID = self.card.id
             joinedExchange.guestCardLocalizations = self.card.localizations
-            joinedExchange.guestMostRecentUpdate = Date()
+            joinedExchange.guestCardVersion = self.card.currentVersion
 
             transaction.updateData(joinedExchange.asDocument(), forDocument: exchangeReference)
 
@@ -234,7 +234,8 @@ extension DirectSharingVM {
             originalID: exchange.ownerID,
             exchangeID: exchange.id,
             ownerID: exchange.ownerID,
-            languageVersions: exchange.ownerCardLocalizations
+            version: exchange.ownerCardVersion,
+            localizations: exchange.ownerCardLocalizations
         )
 
         ownSharingExchangeDataDocumentRef?.delete()
@@ -242,7 +243,6 @@ extension DirectSharingVM {
         playHapticFeedback(of: receivedCard.displayedLocalization.hapticFeedbackSharpness)
         delegate?.didBecomeReadyToAcceptCard(with: AcceptCardVM(userID: userID, sharedCard: receivedCard))
     }
-
 }
 
 // MARK: - Firebase
@@ -273,7 +273,8 @@ extension DirectSharingVM {
             originalID: receivingUserCardID,
             exchangeID: initiatedExchange.id,
             ownerID: receivingUserID,
-            languageVersions: receivingUserCardLocalizations
+            version: initiatedExchange.guestCardVersion,
+            localizations: receivingUserCardLocalizations
         )
 
         user?.addExchange(id: initiatedExchange.id, toCardID: card.id)

@@ -24,9 +24,9 @@ final class DirectCardExchangeMC {
         set { exchange.ownerCardLocalizations = newValue }
     }
 
-    var ownerMostRecentUpdate: Date {
-        get { exchange.ownerMostRecentUpdate }
-        set { exchange.ownerMostRecentUpdate = newValue }
+    var ownerCardVersion: Int {
+        get { exchange.ownerCardVersion }
+        set { exchange.ownerCardVersion = newValue }
     }
     
     var guestID: UserID? {
@@ -44,9 +44,9 @@ final class DirectCardExchangeMC {
         set { exchange.guestCardLocalizations = newValue }
     }
 
-    var guestMostRecentUpdate: Date {
-        get { exchange.guestMostRecentUpdate }
-        set { exchange.guestMostRecentUpdate = newValue }
+    var guestCardVersion: Int {
+        get { exchange.guestCardVersion }
+        set { exchange.guestCardVersion = newValue }
     }
 
     func asDocument() -> [String: Any] {

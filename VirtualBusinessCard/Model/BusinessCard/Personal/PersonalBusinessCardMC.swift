@@ -25,9 +25,9 @@ class PersonalBusinessCardMC {
         return defaultData
     }
 
-    var mostRecentPush: Date { card.mostRecentPush }
+    var currentVersion: Int { card.version }
 
-    var mostRecentUpdate: Date { card.mostRecentUpdate }
+    var mostRecentVersionPushed: Int { card.mostRecentVersionPushed }
 
     var localizations: [BusinessCardLocalization] { card.localizations }
 

@@ -46,6 +46,7 @@
 		451C971E24F6F2D0006E20D7 /* DeleteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C971D24F6F2D0006E20D7 /* DeleteCell.swift */; };
 		451C972024F6F2FD006E20D7 /* UpdateAvailableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C971F24F6F2FD006E20D7 /* UpdateAvailableCell.swift */; };
 		451C972224F6F317006E20D7 /* NoTagsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C972124F6F317006E20D7 /* NoTagsCell.swift */; };
+		451C972424F79279006E20D7 /* UserTestingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451C972324F79279006E20D7 /* UserTestingManager.swift */; };
 		451E20F324BC82940097BEDE /* DirectCardExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451E20F224BC82940097BEDE /* DirectCardExchange.swift */; };
 		451F70D424ED53B300CEC519 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451F70D324ED53B300CEC519 /* EmptyStateView.swift */; };
 		452B33C2248E3FDB006E6A7D /* PersonalCardsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */; };
@@ -266,6 +267,7 @@
 		451C971D24F6F2D0006E20D7 /* DeleteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteCell.swift; sourceTree = "<group>"; };
 		451C971F24F6F2FD006E20D7 /* UpdateAvailableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateAvailableCell.swift; sourceTree = "<group>"; };
 		451C972124F6F317006E20D7 /* NoTagsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoTagsCell.swift; sourceTree = "<group>"; };
+		451C972324F79279006E20D7 /* UserTestingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTestingManager.swift; sourceTree = "<group>"; };
 		451E20F224BC82940097BEDE /* DirectCardExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchange.swift; sourceTree = "<group>"; };
 		451F70D324ED53B300CEC519 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		452B33C1248E3FDB006E6A7D /* PersonalCardsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsViewCell.swift; sourceTree = "<group>"; };
@@ -969,11 +971,12 @@
 				4577CC76248903D70012EDC8 /* AppError.swift */,
 				4577CC782489040D0012EDC8 /* SignUpUserInfoStorage.swift */,
 				4510341B249267D5009C4B26 /* ImageAndTextureFetchTask.swift */,
-				45B25F262493B7AF006DD0F7 /* SampleBCUploadTask.swift */,
 				454625E324A0C10C000D1D25 /* Reusable.swift */,
 				4533849F24CB0C650020AEF6 /* HapticFeedbackEngine.swift */,
 				453384A124CB0D080020AEF6 /* QRCodeGenerator.swift */,
 				4552F22824D45F580062FC2B /* CardImagePicker.swift */,
+				45B25F262493B7AF006DD0F7 /* SampleBCUploadTask.swift */,
+				451C972324F79279006E20D7 /* UserTestingManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1591,6 +1594,7 @@
 				45C1601E2485333F00806718 /* UserSetupViewModel.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
 				45AA873324499A5B004ACDDD /* CardView.swift in Sources */,
+				451C972424F79279006E20D7 /* UserTestingManager.swift in Sources */,
 				45174CE624B9DEC3009BFE58 /* EditTagVC.swift in Sources */,
 				4576994124CC8216008D3778 /* LoadingPopoverVM.swift in Sources */,
 				45C1601A248530CC00806718 /* UIView+Constrains.swift in Sources */,

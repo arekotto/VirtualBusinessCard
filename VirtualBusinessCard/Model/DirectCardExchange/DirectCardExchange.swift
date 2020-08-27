@@ -18,12 +18,12 @@ struct DirectCardExchange: Codable {
     var ownerID: UserID
     var ownerCardID: BusinessCardID
     var ownerCardLocalizations: [BusinessCardLocalization]
-    var ownerMostRecentUpdate: Date
+    var ownerCardVersion: Int
 
     var guestCardID: BusinessCardID?
     var guestID: UserID?
     var guestCardLocalizations: [BusinessCardLocalization]?
-    var guestMostRecentUpdate: Date
+    var guestCardVersion: Int
 }
 
 // MARK: - Equatable
@@ -50,11 +50,11 @@ extension DirectCardExchange {
         case ownerID
         case ownerCardID
         case ownerCardLocalizations
-        case ownerMostRecentUpdate
+        case ownerCardVersion
 
         case guestCardID
         case guestID
         case guestCardLocalizations
-        case guestMostRecentUpdate
+        case guestCardVersion
     }
 }

@@ -32,8 +32,38 @@ final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
     
     @objc
     func testingAdd() {
-        let task = SampleBCUploadTask()
-        task {_ in }
+//        let task = SampleBCUploadTask()
+//        task {_ in }
+
+        let alert = AppAlertController(title: "Test", message: "", preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: "Task 1", style: .default) { _ in
+            UserTestingManager.task1()
+        })
+
+        alert.addAction(UIAlertAction(title: "Task 3", style: .default) { _ in
+            UserTestingManager.task3()
+        })
+
+        alert.addAction(UIAlertAction(title: "Task 4", style: .default) { _ in
+            UserTestingManager.task4()
+        })
+
+        alert.addAction(UIAlertAction(title: "Task 5", style: .default) { _ in
+            UserTestingManager.task5()
+        })
+
+        alert.addAction(UIAlertAction(title: "Task 6", style: .default) { _ in
+            UserTestingManager.task6()
+        })
+
+        alert.addAction(UIAlertAction(title: "Task 7", style: .default) { _ in
+            UserTestingManager.task7()
+        })
+
+        alert.addCancelAction()
+
+        present(alert, animated: true)
     }
 
     private func makeTableViewDataSource() -> DataSource {

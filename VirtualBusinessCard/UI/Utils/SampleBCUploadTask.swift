@@ -63,8 +63,8 @@ struct SampleBCUploadTask {
             let personalBC = PersonalBusinessCard(
                 id: docRef.documentID,
                 creationDate: date,
-                mostRecentPush: date,
-                mostRecentUpdate: date,
+                version: 0,
+                mostRecentVersionPushed: 0,
                 localizations: [bcData]
             )
             docRef.setData(personalBC.asDocument())
@@ -72,7 +72,7 @@ struct SampleBCUploadTask {
         
         (Name.samples + Name.samples).enumerated().forEach { idx, person in
             let docRef = receivedBCCollectionRef.document()
-            let company = companies.safeMod(idx)
+            let company = companies.randomElement()!
             let bcData = BusinessCardLocalization(
                 id: UUID(),
                 frontImage: .init(id: "card1front", url: imageURLs[idx % imageURLs.count]),
@@ -93,7 +93,7 @@ struct SampleBCUploadTask {
             default: cardTagIDs = []
             }
             
-            let personalBC = ReceivedBusinessCard(id: docRef.documentID, exchangeID: nil, originalID: "some old ID", ownerID: "Test User", receivingDate: day(from: Date(), offset: idx % 5), mostRecentUpdateDate: Date(), languageVersions: [bcData], tagIDs: cardTagIDs)
+            let personalBC = ReceivedBusinessCard(id: docRef.documentID, exchangeID: nil, originalID: "some old ID", ownerID: "Test User", receivingDate: day(from: Date(), offset: idx % 5), version: 0, localizations: [bcData], tagIDs: cardTagIDs)
             docRef.setData(personalBC.asDocument())
         }
     }
@@ -126,12 +126,6 @@ struct SampleBCUploadTask {
         now.month = now.month! - (offset % 3)
         now.year = now.year! - (offset % 2)
         return Calendar.current.date(from: now)!
-    }
-}
-
-private extension Array {
-    func safeMod(_ idx: Int) -> Element {
-        self[idx % count]
     }
 }
 
@@ -238,15 +232,15 @@ extension SampleBCUploadTask {
             "Charley Finnegan",
             "Kadie Roth",
             "Saniya Hogan",
-            "Harper Collins",
+            "Harper Collins"
         ]
     }
 
     var companies: [String] {
         return [
-            "NGL Energy Partners",
-            "Calpine",
-            "Nucor",
+//            "NGL Energy Partners",
+//            "Calpine",
+//            "Nucor",
             "eBay",
             "General Mills",
             "Realogy Holdings",
@@ -266,12 +260,12 @@ extension SampleBCUploadTask {
             "Applied Materials",
             "Exxon Mobil",
             "Ameren",
-            "Advance Auto Parts",
+//            "Advance Auto Parts",
             "Procter & Gamble",
-            "Alcoa",
+//            "Alcoa",
             "HCA Healthcare",
-            "Veritiv",
-            "CSX",
+//            "Veritiv",
+//            "CSX",
             "Goldman Sachs Group",
             "Coty",
             "Home Depot",
@@ -280,11 +274,11 @@ extension SampleBCUploadTask {
             "Hewlett Packard Enterprise",
             "Autoliv",
             "Eversource Energy",
-            "Liberty Media",
+//            "Liberty Media",
             "Eli Lilly",
             "M&T Bank Corp.",
             "Walt Disney",
-            "Ecolab",
+//            "Ecolab",
             "Builders FirstSource",
             "Ryder System",
             "Lear",

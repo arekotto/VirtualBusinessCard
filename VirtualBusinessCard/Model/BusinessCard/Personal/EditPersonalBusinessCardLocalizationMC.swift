@@ -37,9 +37,9 @@ class EditPersonalBusinessCardLocalizationMC {
         }
     }
 
-    var mostRecentUpdate: Date {
-        get { card.mostRecentUpdate }
-        set { card.mostRecentUpdate = newValue }
+    var currentVersion: Int {
+        get { card.version }
+        set { card.version = newValue }
     }
     var cornerRadiusHeightMultiplier: Float {
         get { editedLocalization.cornerRadiusHeightMultiplier }
@@ -141,8 +141,8 @@ extension EditPersonalBusinessCardLocalizationMC {
         let newCard = PersonalBusinessCard(
             id: Self.unsavedObjectID,
             creationDate: creationDate,
-            mostRecentPush: creationDate,
-            mostRecentUpdate: creationDate,
+            version: 0,
+            mostRecentVersionPushed: 0,
             localizations: [defaultLanguageVersion]
         )
         self.init(userID: userID, editedLocalizationID: defaultLanguageVersion.id, card: newCard)
@@ -185,7 +185,7 @@ extension EditPersonalBusinessCardLocalizationMC {
             card.id = docRef.documentID
         } else {
             docRef = collectionReference.document(card.id)
-            card.mostRecentUpdate = Date()
+            card.version += 1
         }
         transaction.setData(card.asDocument(), forDocument: docRef)
     }
@@ -198,7 +198,7 @@ extension EditPersonalBusinessCardLocalizationMC {
             card.id = docRef.documentID
         } else {
             docRef = collectionReference.document(card.id)
-            card.mostRecentUpdate = Date()
+            card.version += 1
         }
 
         docRef.setData(card.asDocument()) { error in

@@ -31,9 +31,9 @@ final class EditReceivedBusinessCardMC {
         set { card.localizations = newValue }
     }
 
-    var mostRecentUpdateDate: Date {
-        get { card.mostRecentUpdateDate }
-        set { card.mostRecentUpdateDate = newValue }
+    var version: Int {
+        get { card.version }
+        set { card.version = newValue }
     }
 
     var notes: String {
@@ -106,15 +106,15 @@ final class EditReceivedBusinessCardMC {
 
 extension EditReceivedBusinessCardMC {
 
-    convenience init(originalID: BusinessCardID, exchangeID: DirectCardExchangeID, ownerID: UserID, languageVersions: [BusinessCardLocalization]) {
+    convenience init(originalID: BusinessCardID, exchangeID: DirectCardExchangeID, ownerID: UserID, version: Int, localizations: [BusinessCardLocalization]) {
         let newCard = ReceivedBusinessCard(
             id: Self.unsavedObjectID,
             exchangeID: exchangeID,
             originalID: originalID,
             ownerID: ownerID,
             receivingDate: Date(),
-            mostRecentUpdateDate: Date(),
-            languageVersions: languageVersions
+            version: version,
+            localizations: localizations
         )
         self.init(card: newCard)
     }

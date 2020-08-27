@@ -59,9 +59,9 @@ extension PersonalCardLocalizationsVM {
         return UIImage(systemName: "arrow.branch", withConfiguration: imgConfig)!
     }
 
-    var pushChangesButtonEnabled: Bool {
+    var pushChangesEnabled: Bool {
         guard let card = self.card else { return false }
-        return card.mostRecentUpdate > card.mostRecentPush
+        return card.currentVersion > card.mostRecentVersionPushed
     }
 
     func actionConfigForLocalization(at index: Int) -> ActionConfiguration? {
@@ -86,7 +86,7 @@ extension PersonalCardLocalizationsVM {
 
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
-        if pushChangesButtonEnabled {
+        if pushChangesEnabled {
             snapshot.appendSections([.pushUpdate])
             snapshot.appendItems([.pushUpdate], toSection: .pushUpdate)
         }
@@ -136,7 +136,7 @@ extension PersonalCardLocalizationsVM {
         guard let card = self.card else { return }
         let editableCard = card.editPersonalBusinessCardMC(userID: userID)
         editableCard.setDefaultLocalization(toID: dataModels[indexPath.row].id)
-        editableCard.mostRecentUpdate = Date()
+        editableCard.version += 1
         editableCard.save(in: cardCollectionReference)
     }
 
@@ -322,10 +322,10 @@ extension PersonalCardLocalizationsVM {
             exchanges.forEach { exchange in
                 if exchange.ownerID == self.userID {
                     exchange.ownerCardLocalizations = card.localizations
-                    exchange.ownerMostRecentUpdate = Date()
+                    exchange.ownerCardVersion = card.version
                 } else {
                     exchange.guestCardLocalizations = card.localizations
-                    exchange.guestMostRecentUpdate = Date()
+                    exchange.guestCardVersion = card.version
                 }
             }
 
@@ -333,7 +333,7 @@ extension PersonalCardLocalizationsVM {
                 transaction.updateData(exchange.asDocument(), forDocument: exchangeReferences[idx])
             }
 
-            card.mostRecentPush = Date()
+            card.mostRecentVersionPushed = card.version
             card.save(using: transaction, in: self.cardCollectionReference)
 
             return nil

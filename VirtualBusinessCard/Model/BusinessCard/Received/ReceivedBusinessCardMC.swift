@@ -20,7 +20,7 @@ class ReceivedBusinessCardMC {
 
     var exchangeID: DirectCardExchangeID? { card.exchangeID }
 
-    var mostRecentUpdateDate: Date { card.mostRecentUpdateDate }
+    var version: Int { card.version }
     
     var ownerID: UserID { card.ownerID }
     

@@ -22,14 +22,14 @@ class EditPersonalBusinessCardMC {
         set { card.localizations = newValue }
     }
 
-    var mostRecentPush: Date {
-        get { card.mostRecentPush }
-        set { card.mostRecentPush = newValue }
+    var mostRecentVersionPushed: Int {
+        get { card.mostRecentVersionPushed }
+        set { card.mostRecentVersionPushed = newValue }
     }
 
-    var mostRecentUpdate: Date {
-        get { card.mostRecentUpdate }
-        set { card.mostRecentUpdate = newValue }
+    var version: Int {
+        get { card.version }
+        set { card.version = newValue }
     }
 
     init(userID: UserID, existingCard: PersonalBusinessCard) {

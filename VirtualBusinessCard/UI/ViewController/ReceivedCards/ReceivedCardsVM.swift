@@ -34,6 +34,8 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
     let title: String
     let dataFetchMode: DataFetchMode
 
+    private var searchedQuery = ""
+
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
     private var displayedCardIndexes = [Int]()
@@ -134,6 +136,7 @@ extension ReceivedCardsVM {
     }
     
     func beginSearch(for query: String) {
+        self.searchedQuery = query
         DispatchQueue.global().async {
             let newDisplayedCardIndexes: [Int]
             if query.isEmpty {
@@ -351,7 +354,12 @@ extension ReceivedCardsVM {
             DispatchQueue.main.async {
                 self.cards = newCardsSorted
                 self.displayedCardIndexes = Array(0 ..< newCardsSorted.count)
-                self.delegate?.refreshData(animated: self.updateCheckNo > 0)
+
+                if !self.searchedQuery.isEmpty {
+                    self.beginSearch(for: self.searchedQuery)
+                } else {
+                    self.delegate?.refreshData(animated: self.updateCheckNo > 0)
+                }
 
                 self.updateCheckNo += 1
                 self.checkForAvailableUpdates(for: newCardsSorted, updateCheckNo: self.updateCheckNo)
@@ -413,8 +421,8 @@ extension ReceivedCardsVM {
                 return
             }
 
-            let lastExchangeUpdate = exchange.ownerID == userID ? exchange.guestMostRecentUpdate : exchange.ownerMostRecentUpdate
-            if lastExchangeUpdate > card.mostRecentUpdateDate {
+            let lastExchangeVersion = exchange.ownerID == userID ? exchange.guestCardVersion : exchange.ownerCardVersion
+            if lastExchangeVersion > card.version {
                 updatesForCards[card.id] = true
             }
         }

@@ -187,7 +187,7 @@ extension GroupedCardsVM {
     
     func didSelectItem(at indexPath: IndexPath) {
         let title = groupDataModel(at: displayedGroupIndexes[indexPath.item]).title
-        let group = groups[indexPath.item]
+        let group = groups[displayedGroupIndexes[indexPath.item]]
         let viewModel: ReceivedCardsVM
         if group.groupingProperty == .tag, let tagID = group.groupingValue, let tag = tags[tagID] {
             viewModel = ReceivedCardsVM(userID: userID, dataFetchMode: .tagWithSpecifiedIDs(group.cardIDs, tag: tag), title: title)
