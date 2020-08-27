@@ -36,6 +36,8 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
 
     private var searchedQuery = ""
 
+    private lazy var groupingQueue = DispatchQueue(label: "ReceivedCardsVMQueue")
+
     private var user: UserMC?
     private var cards = [ReceivedBusinessCardMC]()
     private var displayedCardIndexes = [Int]()
@@ -137,7 +139,7 @@ extension ReceivedCardsVM {
     
     func beginSearch(for query: String) {
         self.searchedQuery = query
-        DispatchQueue.global().async {
+        groupingQueue.async {
             let newDisplayedCardIndexes: [Int]
             if query.isEmpty {
                 newDisplayedCardIndexes = Array(0 ..< self.cards.count)
@@ -162,7 +164,7 @@ extension ReceivedCardsVM {
     func setSortMode(_ mode: SortMode) {
         guard sortActions.contains(where: { $0.mode == mode}) else { return }
         selectedSortMode = mode
-        DispatchQueue.global().async {
+        groupingQueue.async {
             let newSortedCards = Self.sortCards(self.cards, using: mode)
             DispatchQueue.main.async {
                 self.cards = newSortedCards
@@ -347,7 +349,7 @@ extension ReceivedCardsVM {
             return
         }
         
-        DispatchQueue.global().async {
+        groupingQueue.async {
             
             let newCardsSorted = self.mapAndSortCards(querySnapshot: querySnap)
 
@@ -403,7 +405,7 @@ extension ReceivedCardsVM {
                 dispatchGroup.leave()
             }
 
-        dispatchGroup.notify(queue: .global()) { [weak self] in
+        dispatchGroup.notify(queue: groupingQueue) { [weak self] in
             self?.makeUpdatesDictionary(exchangeDocs: exchangeDocs, cards: cards, updateCheckNo: updateCheckNo)
         }
     }

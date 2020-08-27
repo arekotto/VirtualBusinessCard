@@ -93,7 +93,16 @@ extension PersonalCardsVM {
             specular: CGFloat(card.texture.specular),
             cornerRadiusHeightMultiplier: CGFloat(card.cornerRadiusHeightMultiplier),
             localizationTitle: title,
-            localizationSubtitle: card.localizations.map { languageName(forCode: $0.languageCode) }.joined(separator: ", ")
+            localizationSubtitle: card.localizations
+                .map { ($0, languageName(forCode: $0.languageCode)) }
+                .sorted {
+                    if $0.0.isDefault || $1.0.isDefault {
+                        return $0.0.isDefault
+                    }
+                    return $1.1 < $1.1
+                }
+                .map { $1 }
+                .joined(separator: ", ")
         )
     }
 

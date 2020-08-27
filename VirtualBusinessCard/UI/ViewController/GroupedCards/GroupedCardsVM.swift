@@ -24,7 +24,9 @@ final class GroupedCardsVM: PartialUserViewModel {
         didSet { didSetGroupingProperty() }
     }
 
-    private lazy var groupingQueue = DispatchQueue(label: "groupingQueue")
+    private var searchedQuery = ""
+
+    private lazy var groupingQueue = DispatchQueue(label: "GroupedCardsVMQueue")
 
     private let groupingProperties: [CardGroup.GroupingProperty] = [.tag, .company, .dateDay, .dateMonth, .dateYear]
 
@@ -38,7 +40,7 @@ final class GroupedCardsVM: PartialUserViewModel {
         }
         return this
     }()
-    
+
     private var cards = [ReceivedBusinessCardMC]()
     private var tags = [BusinessCardTagID: BusinessCardTagMC]()
     
@@ -107,10 +109,10 @@ extension GroupedCardsVM {
     }
     
     private static func itemSubtitle(cards: [ReceivedBusinessCardMC]) -> String {
-        let subtitle = cards.first!.ownerDisplayName
-        return cards[1..<cards.count].reduce(subtitle) { text, card in
-            text + ", \(card.ownerDisplayName)"
-        }
+        cards
+            .map(\.ownerDisplayName)
+            .filter { !$0.isEmpty }
+            .joined(separator: ", ")
     }
     
     private func itemTitle(groupingValue: String?) -> String {
@@ -208,6 +210,7 @@ extension GroupedCardsVM {
     }
     
     func didSearch(for query: String) {
+        searchedQuery = query
         if query.isEmpty {
             displayedGroupIndexes = Array(0 ..< groups.count)
             delegate?.refreshData(animated: true)
@@ -285,7 +288,7 @@ extension GroupedCardsVM {
             }
             self.updateGrouping()
             DispatchQueue.main.async {
-                self.delegate?.refreshData(animated: false)
+                self.searchIfActiveAndRefresh()
             }
         }
     }
@@ -311,9 +314,17 @@ extension GroupedCardsVM {
             }
             if !self.cards.isEmpty {
                 DispatchQueue.main.async {
-                    self.delegate?.refreshData(animated: false)
+                    self.searchIfActiveAndRefresh()
                 }
             }
+        }
+    }
+
+    private func searchIfActiveAndRefresh() {
+        if !searchedQuery.isEmpty {
+            didSearch(for: searchedQuery)
+        } else {
+            self.delegate?.refreshData(animated: false)
         }
     }
 }
