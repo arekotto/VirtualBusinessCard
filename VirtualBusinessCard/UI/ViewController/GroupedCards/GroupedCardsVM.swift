@@ -164,6 +164,10 @@ extension GroupedCardsVM {
         NSLocalizedString("Collection", comment: "")
     }
 
+    var searchPlaceholder: String {
+        selectedGroupingProperty.localizedSearchPlaceholder
+    }
+
     var showsEmptyState: Bool {
         cards.isEmpty
     }
@@ -183,12 +187,12 @@ extension GroupedCardsVM {
     func dataSnapshot() -> Snapshot {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
-        snapshot.appendItems(displayedGroupIndexes.map { groupDataModel(at: $0) })
+        snapshot.appendItems(displayedGroupIndexes.compactMap { groupDataModel(at: $0) })
         return snapshot
     }
     
     func didSelectItem(at indexPath: IndexPath) {
-        let title = groupDataModel(at: displayedGroupIndexes[indexPath.item]).title
+        guard let title = groupDataModel(at: displayedGroupIndexes[indexPath.item])?.title else { return }
         let group = groups[displayedGroupIndexes[indexPath.item]]
         let viewModel: ReceivedCardsVM
         if group.groupingProperty == .tag, let tagID = group.groupingValue, let tag = tags[tagID] {
@@ -233,7 +237,7 @@ extension GroupedCardsVM {
         TagsVM(userID: userID)
     }
 
-    private func groupDataModel(at index: Int) -> GroupedCardsView.TableCell.DataModel {
+    private func groupDataModel(at index: Int) -> GroupedCardsView.TableCell.DataModel? {
         let group = groups[index]
         let cardsInGroup = cards.filter { group.cardIDs.contains($0.id) }
 

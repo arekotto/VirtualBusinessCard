@@ -49,16 +49,16 @@ final class SettingsVC: AppViewController<SettingsView, SettingsVM> {
             UserTestingManager.task4()
         })
 
-        alert.addAction(UIAlertAction(title: "Task 5", style: .default) { _ in
-            UserTestingManager.task5()
+        alert.addAction(UIAlertAction(title: "Task 5.1", style: .default) { _ in
+            UserTestingManager.task51()
+        })
+
+        alert.addAction(UIAlertAction(title: "Task 5.2", style: .default) { _ in
+            UserTestingManager.task52()
         })
 
         alert.addAction(UIAlertAction(title: "Task 6", style: .default) { _ in
             UserTestingManager.task6()
-        })
-
-        alert.addAction(UIAlertAction(title: "Task 7", style: .default) { _ in
-            UserTestingManager.task7()
         })
 
         alert.addCancelAction()

@@ -52,7 +52,7 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
             controller.delegate = self
             controller.searchResultsUpdater = self
             controller.obscuresBackgroundDuringPresentation = false
-            controller.searchBar.placeholder = NSLocalizedString("Filter groups", comment: "")
+            controller.searchBar.placeholder = viewModel.searchPlaceholder
             return controller
         }()
     }
@@ -96,6 +96,7 @@ extension GroupedCardsVC: GroupedCardsVMDelegate {
     }
     
     func refreshData(animated: Bool) {
+        navigationItem.searchController?.searchBar.placeholder = viewModel.searchPlaceholder
         seeAllButton.isEnabled = !viewModel.showsEmptyState
         contentView.emptyStateView.isHidden = !viewModel.showsEmptyState
         collectionViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: animated)

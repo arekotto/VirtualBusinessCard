@@ -47,6 +47,17 @@ extension GroupedCardsVM.CardGroup {
             }
         }
 
+        var localizedSearchPlaceholder: String {
+            switch self {
+            case .tag: return NSLocalizedString("Filter Tags", comment: "")
+            case .dateDay: return NSLocalizedString("Filter Days", comment: "")
+            //            case .location: return NSLocalizedString("Location", comment: "")
+            case .company: return NSLocalizedString("Filter Companies", comment: "")
+            case .dateMonth: return NSLocalizedString("Filter Months", comment: "")
+            case .dateYear: return NSLocalizedString("Filter Years", comment: "")
+            }
+        }
+
         var defaultSorting: Sorting {
             switch self {
             case .tag: return .ascending
