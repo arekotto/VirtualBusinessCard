@@ -10,7 +10,7 @@ import UIKit
 
 final class CardDetailsView: AppBackgroundView {
         
-    static let contentInsetTop: CGFloat = 24
+    static let contentInsetTop: CGFloat = -30
 
     let titleView = TitleView()
     

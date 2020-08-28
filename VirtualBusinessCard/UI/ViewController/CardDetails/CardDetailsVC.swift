@@ -17,33 +17,12 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
     private typealias DataSource = UICollectionViewDiffableDataSource<CardDetailsVM.SectionType, CardDetailsVM.Item>
 
-    private lazy var downloadUpdatesButton = UIBarButtonItem(image: viewModel.downloadUpdatesButtonImage, style: .plain, target: self, action: #selector(didTapDownloadUpdatesButton))
-
     private lazy var collectionViewDataSource = makeDataSource()
 
     private var engine: HapticFeedbackEngine?
 
     private var hasCompletedAppearanceAnimation = SingleTimeToggleBool(ofInitialValue: false)
     private var hasAppeared = SingleTimeToggleBool(ofInitialValue: false)
-
-    func cardImagesCellFrame(translatedTo targetView: UIView) -> CGRect? {
-        let indexPathsForVisibleItems = contentView.collectionView.indexPathsForVisibleItems
-        if !indexPathsForVisibleItems.contains(cardCellIndexPath) && !indexPathsForVisibleItems.isEmpty {
-            return hiddenCardCellFrame()
-        }
-        guard let cell = cardImagesCell() else { return nil }
-        return cell.contentView.convert(cell.contentView.bounds, to: targetView)
-    }
-    
-    func estimatedCardImagesCellFrame() -> CGRect {
-        let topInset = (navigationController?.navigationBar.frame.height ?? 0) + (contentView.statusBarHeight ?? 0)
-        let origin = CGPoint(x: 0, y: CardDetailsView.contentInsetTop + topInset)
-        return CGRect(origin: origin, size: CGSize(width: UIScreen.main.bounds.width, height: ReceivedCardsView.CollectionCell.defaultHeight))
-    }
-    
-    func setCardImagesSectionHidden(_ isHidden: Bool) {
-        cardImagesCell()?.contentView.isHidden = isHidden
-    }
 
     private var cardCellIndexPath: IndexPath {
         IndexPath(item: 0)
@@ -72,13 +51,35 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
             self.engine?.play()
         }
     }
+
+    func cardImagesCellFrame(translatedTo targetView: UIView) -> CGRect? {
+        let indexPathsForVisibleItems = contentView.collectionView.indexPathsForVisibleItems
+        if !indexPathsForVisibleItems.contains(cardCellIndexPath) && !indexPathsForVisibleItems.isEmpty {
+            return hiddenCardCellFrame()
+        }
+        guard let cell = cardImagesCell() else { return nil }
+        return cell.contentView.convert(cell.contentView.bounds, to: targetView)
+    }
+
+    func estimatedCardImagesCellFrame() -> CGRect {
+        let topInset = (navigationController?.navigationBar.frame.height ?? 0) + (contentView.statusBarHeight ?? 0)
+        let origin = CGPoint(x: 0, y: CardDetailsView.contentInsetTop + topInset)
+        return CGRect(origin: origin, size: CGSize(width: UIScreen.main.bounds.width, height: ReceivedCardsView.CollectionCell.defaultHeight))
+    }
+
+    func setCardImagesSectionHidden(_ isHidden: Bool) {
+        cardImagesCell()?.contentView.isHidden = isHidden
+    }
     
     private func setupNavigationItem() {
-        navigationItem.largeTitleDisplayMode = .never
+        let doneButton = UIButton()
+        doneButton.setImage(viewModel.closeButtonImage, for: .normal)
+        doneButton.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+        doneButton.backgroundColor = Asset.Colors.appGray.color.withAlphaComponent(0.15)
+        doneButton.constrainSize(heightConstant: 36, widthConstant: 36)
+        doneButton.layer.cornerRadius = 18
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: doneButton)
         navigationItem.titleView = contentView.titleView
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(didTapCloseButton))
-
-        downloadUpdatesButton.isEnabled = false
     }
     
     private func cardImagesCell() -> CardDetailsView.CardImagesCell? {

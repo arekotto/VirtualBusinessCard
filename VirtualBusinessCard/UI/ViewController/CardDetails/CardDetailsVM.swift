@@ -103,9 +103,9 @@ extension CardDetailsVM {
         card?.displayedLocalization.frontImage.url
     }
 
-    var downloadUpdatesButtonImage: UIImage {
-        let imgConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
-        return UIImage(systemName: "arrow.down.circle.fill", withConfiguration: imgConfig)!
+    var closeButtonImage: UIImage {
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
+        return UIImage(systemName: "xmark", withConfiguration: config)!
     }
 
     var hasLocalizationUpdates: Bool {
