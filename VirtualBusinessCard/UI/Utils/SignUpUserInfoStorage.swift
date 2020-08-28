@@ -22,7 +22,7 @@ final class SignUpUserInfoStorage {
     }
     
     func getInfo() -> (firstName: String?, lastName: String?) {
-        (userDefaults.string(forKey: StorageKey.signUpUserInfoLastName.rawValue), userDefaults.string(forKey: StorageKey.signUpUserInfoLastName.rawValue))
+        (userDefaults.string(forKey: StorageKey.signUpUserInfoFirstName.rawValue), userDefaults.string(forKey: StorageKey.signUpUserInfoLastName.rawValue))
     }
     
     func removeAll() {
