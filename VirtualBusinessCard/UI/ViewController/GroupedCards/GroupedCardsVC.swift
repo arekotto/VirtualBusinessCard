@@ -52,6 +52,7 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
             controller.delegate = self
             controller.searchResultsUpdater = self
             controller.obscuresBackgroundDuringPresentation = false
+            controller.searchBar.placeholder = NSLocalizedString("Filter groups", comment: "")
             return controller
         }()
     }

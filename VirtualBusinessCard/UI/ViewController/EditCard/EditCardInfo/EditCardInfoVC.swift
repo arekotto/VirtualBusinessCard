@@ -92,7 +92,10 @@ extension EditCardInfoVC: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         guard let cardInfoTextField = textField as? EditCardInfoView.EditCardInfoTextField else { return true }
-        guard let indexPath = cardInfoTextField.indexPath, let nextIndexPath = nextIndexPath(for: indexPath) else { return true }
+        guard let indexPath = cardInfoTextField.indexPath, let nextIndexPath = nextIndexPath(for: indexPath) else {
+            textField.resignFirstResponder()
+            return true
+        }
         guard let nextCell = tableView.cellForRow(at: nextIndexPath) as? EditCardInfoView.TextFieldTableCell else {
             textField.resignFirstResponder()
             return true
