@@ -14,17 +14,23 @@ struct CreateAccountNameView: AppSwiftUIView {
     @ObservedObject var viewModel: ViewModel
     
     var body: some View {
-        VStack {
-            NavigationLink(
-                destination: CreateAccountEmailPasswordView(viewModel: viewModel.createAccountEmailPasswordViewModel()),
-                tag: .createAccountEmailPassword,
-                selection: $viewModel.navSelection) {
-                EmptyView()
+        NavigationView {
+            VStack {
+                NavigationLink(
+                    destination: CreateAccountEmailPasswordView(viewModel: viewModel.createAccountEmailPasswordViewModel()),
+                    tag: .createAccountEmailPassword,
+                    selection: $viewModel.navSelection) {
+                    EmptyView()
+                }
+                bodyContent
             }
-            bodyContent
+            .navigationBarTitle("", displayMode: .inline)
+            .navigationBarItems(trailing: closeButton)
+            .background(NavigationConfigurator { nc in
+                nc.navigationBar.standardAppearance.configureWithTransparentBackground()
+            })
         }
-        .navigationBarTitle("", displayMode: .inline)
-        .navigationBarItems(trailing: closeButton)
+        .accentColor(Color.appAccent)
     }
     
     var bodyContent: some View {

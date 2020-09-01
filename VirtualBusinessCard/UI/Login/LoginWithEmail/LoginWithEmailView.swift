@@ -14,6 +14,7 @@ struct LoginWithEmailView: AppSwiftUIView {
     @ObservedObject var viewModel: ViewModel
 
     var body: some View {
+        NavigationView {
             VStack(spacing: 20) {
                 title
                 textFields
@@ -30,9 +31,14 @@ struct LoginWithEmailView: AppSwiftUIView {
             .padding(10)
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarItems(trailing: closeButton)
+            .background(NavigationConfigurator { nc in
+                nc.navigationBar.standardAppearance.configureWithTransparentBackground()
+            })
             .alert(isPresented: $viewModel.isLoginErrorAlertPresented) {
                 Alert(title: Text(viewModel.text.loginAlertTitle), message: Text(viewModel.loginAlertMessage), dismissButton: .default(Text(viewModel.text.loginAlertDismiss)))
             }
+        }
+        .accentColor(Color.appAccent)
     }
     
     var title: some View {

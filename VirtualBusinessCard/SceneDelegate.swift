@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 import Firebase
+import TouchVisualizer
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var authStateListenerHandle: AuthStateDidChangeListenerHandle?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-
+        Visualizer.start()
         authStateListenerHandle = Auth.auth().addStateDidChangeListener(authStateDidChange)
 
         // Use a UIHostingController as window root view controller.

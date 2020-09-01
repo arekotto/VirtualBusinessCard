@@ -71,10 +71,10 @@ struct GreetingsView: AppSwiftUIView {
         switch target {
         case .login:
             let vm = viewModel.loginViewModel()
-            return AnyView(LoginView(viewModel: vm))
+            return AnyView(LoginWithEmailView(viewModel: vm))
         case .createAccount:
             let vm = viewModel.createAccountViewModel()
-            return AnyView(CreateAccountView(viewModel: vm))
+            return AnyView(CreateAccountNameView(viewModel: vm))
         }
     }
 }

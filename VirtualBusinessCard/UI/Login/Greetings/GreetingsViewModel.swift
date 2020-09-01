@@ -25,9 +25,9 @@ final class GreetingsViewModel: AppSwiftUIViewModel {
     func didTapCreateAccount() {
         presentedSheet = .createAccount
     }
-    
-    func loginViewModel() -> LoginViewModel {
-        LoginViewModel(isPresented: Binding<Bool>(
+
+    func loginViewModel() -> LoginWithEmailViewModel {
+        LoginWithEmailViewModel(isPresented: Binding<Bool>(
             get: { self.presentedSheet != nil },
             set: {
                 if !$0 {
@@ -36,9 +36,9 @@ final class GreetingsViewModel: AppSwiftUIViewModel {
             }
         ))
     }
-    
-    func createAccountViewModel() -> CreateAccountViewModel {
-        CreateAccountViewModel(isPresented: Binding<Bool>(
+
+    func createAccountViewModel() -> CreateAccountNameViewModel {
+        CreateAccountNameViewModel(isPresented: Binding<Bool>(
             get: { self.presentedSheet != nil },
             set: {
                 if !$0 {
