@@ -21,7 +21,7 @@ extension CardDetailsView {
             }
         }
 
-        private(set) var isExtended = false
+        private(set) var expandMode = ExpandMode.none
 
         private var currentDataModel: CardFrontBackView.URLDataModel? {
             didSet {
@@ -32,11 +32,8 @@ extension CardDetailsView {
 
         private let cardFrontBackView = CardFrontBackView()
 
-        private var cardFrontBackViewCompactHeightConstraint: NSLayoutConstraint!
-        private var cardFrontBackViewCompactWidthConstraint: NSLayoutConstraint!
-
-        private var cardFrontBackViewExtendedHeightConstraint: NSLayoutConstraint?
-        private var cardFrontBackViewExtendedWidthConstraint: NSLayoutConstraint?
+        private var cardFrontBackViewHeightConstraint: NSLayoutConstraint!
+        private var cardFrontBackViewWidthConstraint: NSLayoutConstraint!
 
         override func configureSubviews() {
             super.configureSubviews()
@@ -46,60 +43,112 @@ extension CardDetailsView {
         override func configureConstraints() {
             super.configureConstraints()
             cardFrontBackView.constrainCenterToSuperview()
-            cardFrontBackViewCompactWidthConstraint = cardFrontBackView.constrainWidthEqualTo(
+            cardFrontBackViewWidthConstraint = cardFrontBackView.constrainWidthEqualTo(
                 self,
                 multiplier: ReceivedCardsView.CollectionCell.defaultWidthMultiplier
             )
-            cardFrontBackViewCompactHeightConstraint = cardFrontBackView.constrainHeightEqualTo(
+            cardFrontBackViewHeightConstraint = cardFrontBackView.constrainHeightEqualTo(
                 self,
                 multiplier: ReceivedCardsView.CollectionCell.defaultHeightMultiplier
             )
         }
 
-        func extend(animated: Bool, completion: (() -> Void)? = nil) {
-            guard !isExtended else { return }
-            isExtended = true
+        func updateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
+            cardFrontBackView.updateMotionData(motion, over: timeFrame)
+        }
+    }
+}
 
-            cardFrontBackView.lockScenesToCurrentHeights()
+extension CardDetailsView.CardImagesCell {
+    enum ExpandMode: Equatable {
+        case fully, partial, none
+    }
 
-            cardFrontBackViewCompactHeightConstraint.isActive = false
-            cardFrontBackViewCompactWidthConstraint.isActive = false
+    func setExpandMode(_ mode: ExpandMode, animated: Bool, completion: (() -> Void)? = nil) {
+        guard expandMode != mode else {
+            completion?()
+            return
+        }
+        switch mode {
+        case .fully:
+            expandFully(animated: animated, completion: completion)
+        case .partial:
+            expandPartially(animated: animated, useSpring: expandMode == .none, completion: completion)
+        case .none:
+            condense(animated: animated, completion: completion)
+        }
+        expandMode = mode
+    }
 
-            let newWidth = UIScreen.main.bounds.width - 32
-            let newOffset = newWidth - cardFrontBackView.frame.width
+    private func expandFully(animated: Bool, completion: (() -> Void)? = nil) {
 
-            cardFrontBackViewExtendedWidthConstraint = cardFrontBackView.constrainWidth(constant: newWidth)
-            let multi = ReceivedCardsView.CollectionCell.defaultHeightMultiplier
-            cardFrontBackViewExtendedHeightConstraint = cardFrontBackView.constrainHeightEqualTo(self, constant: newOffset, multiplier: multi)
+        cardFrontBackViewHeightConstraint.isActive = false
+        cardFrontBackViewWidthConstraint.isActive = false
 
-            if animated {
-                UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut]) {
-                    self.layoutIfNeeded()
-                } completion: { _ in
-                    completion?()
-                }
-            } else {
-                layoutIfNeeded()
+        cardFrontBackViewHeightConstraint = cardFrontBackView.constrainHeightEqualTo(self, multiplier: 0.85)
+        cardFrontBackViewWidthConstraint = cardFrontBackView.constrainWidth(constant: cardFrontBackView.frontSceneView.frame.width)
+
+        if animated {
+            UIView.animate(withDuration: 0.3) {
+                self.layoutIfNeeded()
+            } completion: { _ in
+                completion?()
             }
+        } else {
+            layoutIfNeeded()
+        }
+    }
+
+    private func expandPartially(animated: Bool, useSpring: Bool, completion: (() -> Void)? = nil) {
+
+        if !cardFrontBackView.areSceneHeightsLocked {
+            cardFrontBackView.lockScenesToCurrentHeights()
         }
 
-        func condenseWithAnimation(completion: @escaping () -> Void) {
-            guard isExtended else { return }
-            isExtended = false
+        cardFrontBackViewHeightConstraint.isActive = false
+        cardFrontBackViewWidthConstraint.isActive = false
 
-            cardFrontBackViewExtendedWidthConstraint?.isActive = false
-            cardFrontBackViewExtendedHeightConstraint?.isActive = false
-            cardFrontBackViewCompactHeightConstraint.isActive = true
-            cardFrontBackViewCompactWidthConstraint.isActive = true
+        let newWidth = UIScreen.main.bounds.width - 32
+        let newOffset = newWidth - self.frame.width * ReceivedCardsView.CollectionCell.defaultWidthMultiplier
+
+        let multi = ReceivedCardsView.CollectionCell.defaultHeightMultiplier
+
+        cardFrontBackViewHeightConstraint = cardFrontBackView.constrainHeightEqualTo(self, constant: newOffset, multiplier: multi)
+        cardFrontBackViewWidthConstraint = cardFrontBackView.constrainWidth(constant: newWidth)
+
+        if animated {
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: useSpring ? 0.6 : 1, initialSpringVelocity: 1, options: useSpring ? [.curveEaseOut] : []) {
+                self.layoutIfNeeded()
+            } completion: { _ in
+                completion?()
+            }
+        } else {
+            layoutIfNeeded()
+        }
+    }
+
+    private func condense(animated: Bool, completion: (() -> Void)?) {
+
+        cardFrontBackViewHeightConstraint.isActive = false
+        cardFrontBackViewWidthConstraint.isActive = false
+
+        cardFrontBackViewWidthConstraint = cardFrontBackView.constrainWidthEqualTo(
+            self,
+            multiplier: ReceivedCardsView.CollectionCell.defaultWidthMultiplier
+        )
+        cardFrontBackViewHeightConstraint = cardFrontBackView.constrainHeightEqualTo(
+            self,
+            multiplier: ReceivedCardsView.CollectionCell.defaultHeightMultiplier
+        )
+
+        if animated {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 1, options: [.curveEaseOut]) {
                 self.layoutIfNeeded()
             } completion: { _ in
-                completion()
+                completion?()
             }
-        }
-
-        func updateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval) {
-            cardFrontBackView.updateMotionData(motion, over: timeFrame)
+        } else {
+            layoutIfNeeded()
         }
     }
 }

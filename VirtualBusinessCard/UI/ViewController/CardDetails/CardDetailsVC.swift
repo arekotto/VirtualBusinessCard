@@ -17,6 +17,8 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
     private(set) var mostRecentCardImagesCellSnapshot: UIView?
 
+    private var isImagesCellFullyExpanded = false
+
     private typealias DataSource = UICollectionViewDiffableDataSource<CardDetailsVM.SectionType, CardDetailsVM.Item>
 
     private lazy var collectionViewDataSource = makeDataSource()
@@ -46,7 +48,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         hasAppeared.toggle()
-        cardImagesCell()?.extend(animated: true) {
+        cardImagesCell()?.setExpandMode(.partial, animated: true) {
             self.hasCompletedAppearanceAnimation.toggle()
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
@@ -105,7 +107,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
                 let cell: CardDetailsView.CardImagesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
                 cell.dataModel = dataModel
                 cell.contentView.isHidden = !(self?.hasAppeared.value ?? false) && (self?.hideCardDuringAppearanceAnimation ?? false)
-                if !cell.isExtended && self?.hasCompletedAppearanceAnimation.value == true {
+                if cell.expandMode == .none && self?.hasCompletedAppearanceAnimation.value == true {
                     cell.layoutIfNeeded()
                 }
                 return cell
@@ -144,9 +146,15 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
     private func makeCollectionViewLayout() -> UICollectionViewLayout {
         UICollectionViewCompositionalLayout { [weak self] sectionIndex, _ -> NSCollectionLayoutSection? in
-            guard let sections = self?.collectionViewDataSource.snapshot().sectionIdentifiers else { return nil }
+            guard let self = self else { return nil }
+            let sections = self.collectionViewDataSource.snapshot().sectionIdentifiers
             switch sections[sectionIndex] {
-            case .card: return CardDetailsView.createCollectionViewLayoutCardImagesSection()
+            case .card:
+                if self.isImagesCellFullyExpanded {
+                    return CardDetailsView.createCollectionViewLayoutCardImagesFullyExpandedSection()
+                } else {
+                    return CardDetailsView.createCollectionViewLayoutCardImagesSection()
+                }
             case .tags, .delete: return CardDetailsView.createCollectionViewLayoutDynamicSection()
             case .update: return CardDetailsView.createCollectionViewLayoutUpdateSection()
             default: return CardDetailsView.createCollectionViewLayoutDetailsSection()
@@ -196,13 +204,21 @@ private extension CardDetailsVC {
         )
         let alert = AppAlertController(title: title, message: message, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: NSLocalizedString("Update Card", comment: ""), style: .default) { _ in
-            self.viewModel.saveLocalizationUpdates()
+            self.isImagesCellFullyExpanded = false
+            self.contentView.collectionView.setCollectionViewLayout(self.makeCollectionViewLayout(), animated: true) { _ in
+                self.viewModel.saveLocalizationUpdates()
+            }
+            if let cell = self.cardImagesCell() {
+                cell.setExpandMode(.partial, animated: true)
+            }
         })
         alert.addCancelAction()
         present(alert, animated: true)
     }
 
     func didTapCloseButton() {
+        isImagesCellFullyExpanded = false
+        contentView.collectionView.setCollectionViewLayout(makeCollectionViewLayout(), animated: true)
         engine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
         guard let cell = cardImagesCell() else {
             self.mostRecentCardImagesCellSnapshot = prepareMockCardCell()
@@ -213,7 +229,7 @@ private extension CardDetailsVC {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             self.engine?.play()
         }
-        cell.condenseWithAnimation {
+        cell.setExpandMode(.none, animated: true) {
             self.mostRecentCardImagesCellSnapshot = cell.snapshotView(afterScreenUpdates: false)
             self.dismiss(animated: true)
         }
@@ -245,12 +261,25 @@ extension CardDetailsVC: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? CardDetailsView.CardImagesCell else { return }
-        if hasCompletedAppearanceAnimation.value {
-            cell.extend(animated: false)
+        if hasCompletedAppearanceAnimation.value && cell.expandMode == .none {
+            cell.setExpandMode(.partial, animated: false)
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let imagesCell = collectionView.cellForItem(at: indexPath) as? CardDetailsView.CardImagesCell {
+            isImagesCellFullyExpanded.toggle()
+            engine = HapticFeedbackEngine(sharpness: viewModel.hapticSharpness, intensity: 1)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                self.engine?.play()
+            }
+            collectionView.setCollectionViewLayout(makeCollectionViewLayout(), animated: true)
+            if isImagesCellFullyExpanded {
+                imagesCell.setExpandMode(.fully, animated: true)
+            } else {
+                imagesCell.setExpandMode(.partial, animated: true)
+            }
+        }
         collectionView.deselectItem(at: indexPath, animated: true)
         displayAlertController(with: viewModel.actions(for: indexPath), for: indexPath)
     }

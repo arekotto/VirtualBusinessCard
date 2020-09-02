@@ -71,6 +71,18 @@ extension CardDetailsView {
         return section
     }
 
+    static func createCollectionViewLayoutCardImagesFullyExpandedSection() -> NSCollectionLayoutSection {
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+                                            widthDimension: .fractionalWidth(1),
+                                            heightDimension: .fractionalHeight(1))
+        )
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute( 1.8 * ReceivedCardsView.CollectionCell.defaultHeight))
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: Self.contentInsetTop, leading: 0, bottom: 16, trailing: 0)
+        return section
+    }
+
     static func createCollectionViewLayoutDynamicSection() -> NSCollectionLayoutSection {
         let estimatedHeight = NSCollectionLayoutDimension.estimated(30)
         let itemSize = NSCollectionLayoutSize(
@@ -103,7 +115,7 @@ extension CardDetailsView {
     }
 
     static func createCollectionViewLayoutDetailsSection() -> NSCollectionLayoutSection {
-        let estimatedHeight = NSCollectionLayoutDimension.estimated(50)
+        let estimatedHeight = NSCollectionLayoutDimension.estimated(60)
 
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),

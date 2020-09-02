@@ -32,6 +32,7 @@ final class CardFrontBackView: AppView {
     }()
     
     private let sceneHeightAdjustMode: SceneHeightAdjustMode
+    private(set) var areSceneHeightsLocked = false
     
     var allSceneViews: [BusinessCardSceneView] {
         [backSceneView, frontSceneView]
@@ -94,6 +95,7 @@ final class CardFrontBackView: AppView {
     func lockScenesToCurrentHeights() {
         switch sceneHeightAdjustMode {
         case .flexible:
+            areSceneHeightsLocked = true
             frontSceneViewHeightConstraint.isActive = false
             frontSceneView.constrainHeight(constant: frontSceneView.frame.size.height)
 
