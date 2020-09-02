@@ -93,6 +93,14 @@ final class PersonalCardLocalizationsVC: AppViewController<PersonalCardLocalizat
         navController.presentationController?.delegate = languagesTVC
         present(navController, animated: true)
     }
+
+    private func presentDetailsVC(viewModel: CardDetailsVM) {
+        let detailsVC = CardDetailsVC(viewModel: viewModel)
+        detailsVC.hideCardDuringAppearanceAnimation = false
+        let navController = AppNavigationController(rootViewController: detailsVC)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true)
+    }
 }
 
 // MARK: - Actions
@@ -129,6 +137,10 @@ extension PersonalCardLocalizationsVC: UITableViewDelegate {
             guard let config = viewModel.actionConfigForLocalization(at: indexPath.row) else { return }
 
             let alert = AppAlertController(title: config.title, message: nil, preferredStyle: .actionSheet)
+            alert.addAction(UIAlertAction(title: NSLocalizedString("View", comment: ""), style: .default) { [self] _ in
+                guard let vm = viewModel.personalCardDetailsVM(for: indexPath) else { return }
+                presentDetailsVC(viewModel: vm)
+            })
             if !config.isDefault {
                 alert.addAction(UIAlertAction(title: NSLocalizedString("Make Default", comment: ""), style: .default) { _ in
                     self.viewModel.setDefaultLocalization(at: indexPath)

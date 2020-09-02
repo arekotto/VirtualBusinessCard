@@ -13,6 +13,8 @@ import Kingfisher
 
 final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
 
+    var hideCardDuringAppearanceAnimation = true
+
     private(set) var mostRecentCardImagesCellSnapshot: UIView?
 
     private typealias DataSource = UICollectionViewDiffableDataSource<CardDetailsVM.SectionType, CardDetailsVM.Item>
@@ -102,7 +104,7 @@ final class CardDetailsVC: AppViewController<CardDetailsView, CardDetailsVM> {
             case .cardImagesCell(let dataModel):
                 let cell: CardDetailsView.CardImagesCell = collectionView.dequeueReusableCell(indexPath: indexPath)
                 cell.dataModel = dataModel
-                cell.contentView.isHidden = !(self?.hasAppeared.value ?? false)
+                cell.contentView.isHidden = !(self?.hasAppeared.value ?? false) && (self?.hideCardDuringAppearanceAnimation ?? false)
                 if !cell.isExtended && self?.hasCompletedAppearanceAnimation.value == true {
                     cell.layoutIfNeeded()
                 }
@@ -286,7 +288,8 @@ extension CardDetailsVC: CardDetailsVMDelegate {
         present(navVC, animated: true)
     }
 
-    func presentEditCardNotesVC(viewModel: EditCardNotesVM) {
+    func presentEditCardNotesVC() {
+        guard let viewModel = viewModel.editCardNotesVM() else { return }
         let vc = EditCardNotesVC(viewModel: viewModel)
         let navVC = AppNavigationController(rootViewController: vc)
         navVC.presentationController?.delegate = vc

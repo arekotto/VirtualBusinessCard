@@ -46,42 +46,10 @@ final class EditReceivedBusinessCardMC {
         set { card.tagIDs = newValue }
     }
 
-    var ownerDisplayName: String {
-        if let firstName = displayedLocalization.name.first, let lastName = displayedLocalization.name.last {
-            return "\(firstName) \(lastName)"
-        }
-        return displayedLocalization.name.first ?? displayedLocalization.name.last ?? ""
-    }
-
-    var addressCondensed: String {
-        let addressData = displayedLocalization.address
-        var address = ""
-        if let street = addressData.street, !street.isEmpty {
-            address.append(street + ",")
-        }
-        if let city = addressData.city, !city.isEmpty {
-            address.append(city + ",")
-        }
-        if let postCode = addressData.postCode, !postCode.isEmpty {
-            address.append(postCode + ",")
-        }
-        if let country = addressData.country, !country.isEmpty {
-            address.append(country)
-        }
-        return address
-    }
-
-    var addressFormatted: String {
-
-        let addressData = displayedLocalization.address
-
-        let address = CNMutablePostalAddress()
-        address.street = addressData.street ?? ""
-        address.city = addressData.city ?? ""
-        address.country = addressData.country ?? ""
-        address.postalCode = addressData.postCode ?? ""
-
-        return CNPostalAddressFormatter.string(from: address, style: .mailingAddress)
+    var ownerShortDisplayName: String {
+        [displayedLocalization.name.first, displayedLocalization.name.last]
+            .compactMap { $0 }
+            .joined(separator: " ")
     }
 
     func receivedBusinessCardMC() -> ReceivedBusinessCardMC {

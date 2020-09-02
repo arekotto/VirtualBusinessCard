@@ -115,6 +115,17 @@ extension PersonalCardLocalizationsVM {
         )
     }
 
+    func personalCardDetailsVM(for indexPath: IndexPath) -> PersonalCardDetailsVM? {
+        guard let localization = card?.localization(withID: dataModels[indexPath.row].id) else { return nil }
+        let prefetchedDM = CardDetailsVM.PrefetchedData(
+            dataModel: sceneViewModel(for: localization),
+            hapticSharpness: localization.hapticFeedbackSharpness
+        )
+        let vm = PersonalCardDetailsVM(userID: userID, cardID: cardID, initialLoadDataModel: prefetchedDM)
+        vm.card = localization
+        return vm
+    }
+
     func newLocalizationLanguageVM() -> LanguagesVM {
         LanguagesVM(mode: .newLocalization, blacklistedCodes: blacklistedLanguageCodes())
     }
@@ -258,6 +269,17 @@ extension PersonalCardLocalizationsVM {
         } else {
             return NSLocalizedString("Universal", comment: "")
         }
+    }
+
+    private func sceneViewModel(for localization: BusinessCardLocalization) -> CardFrontBackView.URLDataModel {
+        CardFrontBackView.URLDataModel(
+            frontImageURL: localization.frontImage.url,
+            backImageURL: localization.backImage.url,
+            textureImageURL: localization.texture.image.url,
+            normal: CGFloat(localization.texture.normal),
+            specular: CGFloat(localization.texture.specular),
+            cornerRadiusHeightMultiplier: CGFloat(localization.cornerRadiusHeightMultiplier)
+        )
     }
 }
 

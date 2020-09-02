@@ -16,11 +16,11 @@ protocol CardDetailsVMDelegate: class {
     func dismissSelfWithSystemAnimation()
     func didUpdateMotionData(_ motion: CMDeviceMotion, over timeFrame: TimeInterval)
     func presentEditCardTagsVC()
-    func presentEditCardNotesVC(viewModel: EditCardNotesVM)
+    func presentEditCardNotesVC()
     func presentErrorAlert(message: String)
 }
 
-final class CardDetailsVM: PartialUserViewModel {
+class CardDetailsVM: PartialUserViewModel {
 
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionType, Item>
 
@@ -28,16 +28,14 @@ final class CardDetailsVM: PartialUserViewModel {
         didSet { didSetDelegate() }
     }
 
+    let cardID: BusinessCardID
+
+    var cardLocalization: BusinessCardLocalization? { nil }
+
     private(set) var mostRecentMotionData: CMDeviceMotion?
 
     private lazy var makeSectionsQueue = DispatchQueue(label: "makeSectionsQueue\(cardID)")
 
-    private let cardID: BusinessCardID
-    private var card: EditReceivedBusinessCardMC?
-    private var updates: (localizations: [BusinessCardLocalization], version: Int)?
-
-    private var tags = [BusinessCardTagMC]()
-        
     private let prefetchedData: PrefetchedData
     
     private lazy var sections = [Section(type: .card, item: Item(itemNumber: 0, dataModel: .cardImagesCell(prefetchedData.dataModel), actions: []))]
@@ -52,6 +50,48 @@ final class CardDetailsVM: PartialUserViewModel {
         self.cardID = cardID
         self.prefetchedData = initialLoadDataModel
         super.init(userID: userID)
+    }
+
+    func fetchData() {
+        // override
+    }
+
+    func saveLocalizationUpdates() {
+        // Override in subclass
+    }
+
+    func deleteCard() {
+        // Override in subclass
+    }
+
+    func editCardTagsVM() -> EditCardTagsVM? {
+        // Override in subclass
+        return nil
+    }
+
+    func editCardNotesVM() -> EditCardNotesVM? {
+        // Override in subclass
+        return nil
+    }
+
+    func sectionFactory() -> CardDetailsSectionFactory? {
+        // Override in subclass
+        nil
+    }
+
+    final func makeSections() {
+        guard let factory = sectionFactory() else { return }
+        makeSectionsQueue.async {
+            let newSections = factory.makeSections()
+            DispatchQueue.main.async {
+                self.sections = newSections
+                self.delegate?.reloadData()
+            }
+        }
+    }
+
+    final func clearSections() {
+        sections = []
     }
     
     private func didSetDelegate() {
@@ -78,7 +118,7 @@ final class CardDetailsVM: PartialUserViewModel {
     }
 
     private func performAction(_ action: Action, actionValue: String) {
-        guard let card = self.card else { return }
+        guard let card = self.cardLocalization else { return }
 
         switch action {
         case .call: Self.openPhone(with: actionValue)
@@ -86,12 +126,8 @@ final class CardDetailsVM: PartialUserViewModel {
         case .visitWebsite: Self.openBrowser(with: actionValue)
         case .navigate: Self.openMaps(card: card)
         case .copy: UIPasteboard.general.string = actionValue
-        case .editNotes:
-            let vm = EditCardNotesVM(notes: card.notes)
-            vm.editingDelegate = self
-            delegate?.presentEditCardNotesVC(viewModel: vm)
-        case .editTags:
-            delegate?.presentEditCardTagsVC()
+        case .editNotes: delegate?.presentEditCardNotesVC()
+        case .editTags: delegate?.presentEditCardTagsVC()
         }
     }
 }
@@ -100,7 +136,7 @@ final class CardDetailsVM: PartialUserViewModel {
 
 extension CardDetailsVM {
     var titleImageURL: URL? {
-        card?.displayedLocalization.frontImage.url
+        cardLocalization?.frontImage.url
     }
 
     var closeButtonImage: UIImage {
@@ -108,16 +144,12 @@ extension CardDetailsVM {
         return UIImage(systemName: "xmark", withConfiguration: config)!
     }
 
-    var hasLocalizationUpdates: Bool {
-        !(updates?.localizations ?? []).isEmpty
-    }
-
     var hapticSharpness: Float {
-        card?.displayedLocalization.hapticFeedbackSharpness ?? prefetchedData.hapticSharpness
+        cardLocalization?.hapticFeedbackSharpness ?? prefetchedData.hapticSharpness
     }
 
     var cardCornerRadiusHeightMultiplier: CGFloat {
-        CGFloat(card?.displayedLocalization.cornerRadiusHeightMultiplier ?? 0)
+        CGFloat(cardLocalization?.cornerRadiusHeightMultiplier ?? 0)
     }
 
     func dataSnapshot() -> Snapshot {
@@ -141,27 +173,6 @@ extension CardDetailsVM {
         
         performAction(action, actionValue: actionValue)
     }
-
-    func saveLocalizationUpdates() {
-        guard let card = self.card else { return }
-        guard let updates = self.updates, !updates.localizations.isEmpty else { return }
-        card.localizations = updates.localizations
-        card.version = updates.version
-        card.save(in: receivedCardCollectionReference)
-    }
-
-    func deleteCard() {
-        guard let card = self.card else { return }
-        card.delete(in: receivedCardCollectionReference)
-        delegate?.dismissSelfWithSystemAnimation()
-    }
-
-    func editCardTagsVM() -> EditCardTagsVM? {
-        guard let card = card else { return nil }
-        let vm = EditCardTagsVM(userID: userID, selectedTagIDs: card.tagIDs)
-        vm.selectionDelegate = self
-        return vm
-    }
 }
 
 // MARK: - Static Action Performers
@@ -169,12 +180,29 @@ extension CardDetailsVM {
 extension CardDetailsVM {
     private static func openPhone(with actionValue: String) {
         guard !actionValue.isEmpty else { return }
-        guard let number = URL(string: "tel://" + actionValue) else { return }
+        guard let number = URL(string: "tel://" + actionValue.replacingOccurrences(of: " ", with: "")) else { return }
         UIApplication.shared.open(number)
     }
 
-    private static func openMaps(card: EditReceivedBusinessCardMC) {
-        let address = card.addressCondensed
+    private static func condenseAddress(_ addressData: BusinessCardLocalization.Address) -> String {
+        var address = ""
+        if let street = addressData.street, !street.isEmpty {
+            address.append(street + ",")
+        }
+        if let city = addressData.city, !city.isEmpty {
+            address.append(city + ",")
+        }
+        if let postCode = addressData.postCode, !postCode.isEmpty {
+            address.append(postCode + ",")
+        }
+        if let country = addressData.country, !country.isEmpty {
+            address.append(country)
+        }
+        return address
+    }
+
+    private static func openMaps(card: BusinessCardLocalization) {
+        let address = condenseAddress(card.address)
         guard !address.isEmpty else { return }
         guard let addressEncoded = address.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return }
         guard let url = URL(string: "http://maps.apple.com/?address=" + addressEncoded) else { return }
@@ -205,164 +233,6 @@ extension CardDetailsVM {
         case .editNotes: return UIImage(systemName: "square.and.pencil", withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .bold))
         case .editTags: return UIImage(systemName: "tag.fill", withConfiguration: Self.defaultImageConfig)
         }
-    }
-
-    private func makeSections() {
-        guard let card = self.card else { return }
-        makeSectionsQueue.async {
-            let selectedTags = self.tags.filter { card.tagIDs.contains($0.id) }
-            let newSections = CardDetailsSectionFactory(
-                card: card.receivedBusinessCardMC(),
-                tags: selectedTags,
-                isUpdateAvailable: self.hasLocalizationUpdates,
-                imageProvider: Self.iconImage
-            ).makeRows()
-            DispatchQueue.main.async {
-                self.sections = newSections
-                self.delegate?.reloadData()
-            }
-        }
-    }
-}
-
-// MARK: - Firebase fetch
-
-extension CardDetailsVM {
-
-    private var tagsCollectionReference: CollectionReference {
-        userPublicDocumentReference.collection(BusinessCardTag.collectionName)
-    }
-    
-    private var receivedCardCollectionReference: CollectionReference {
-        userPublicDocumentReference.collection(ReceivedBusinessCard.collectionName)
-    }
-
-    private var directCardExchangeReference: CollectionReference {
-        db.collection(DirectCardExchange.collectionName)
-    }
-    
-    func fetchData() {
-        receivedCardCollectionReference.document(cardID).addSnapshotListener { [weak self] documentSnapshot, error in
-            self?.cardDidChange(documentSnapshot, error)
-        }
-        tagsCollectionReference.addSnapshotListener { [weak self] querySnapshot, error in
-            self?.cardTagsDidChange(querySnapshot, error)
-        }
-    }
-    
-    private func cardDidChange(_ document: DocumentSnapshot?, _ error: Error?) {
-        guard let doc = document else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching received card changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-        DispatchQueue.global().async {
-            guard let card = EditReceivedBusinessCardMC(documentSnapshot: doc) else {
-                print(#file, "Error mapping received card:", error?.localizedDescription ?? "No error info available.")
-                DispatchQueue.main.async {
-                    self.card = nil
-                    self.sections = []
-                    self.delegate?.reloadData()
-                }
-                return
-            }
-
-            if let exchangeID = card.exchangeID {
-                self.directCardExchangeReference.document(exchangeID).addSnapshotListener { [weak self] documentSnapshot, error in
-                    self?.exchangeDidChange(documentSnapshot, error)
-                }
-            }
-
-            DispatchQueue.main.async {
-                self.card = card
-                self.makeSections()
-            }
-        }
-    }
-
-    private func exchangeDidChange(_ documentSnapshot: DocumentSnapshot?, _ error: Error?) {
-
-        guard let card = self.card else { return }
-
-        guard let document = documentSnapshot else {
-            // TODO: HANDLE ERROR
-            print(#file, "Error fetching exchange changed:", error?.localizedDescription ?? "No error info available.")
-            return
-        }
-
-        guard let exchange = DirectCardExchangeMC(exchangeDocument: document) else {
-            print(#file, "Error mapping exchange:", document.documentID)
-            return
-        }
-
-        if exchange.ownerID == userID && exchange.guestCardVersion > card.version, let localizations = exchange.guestCardLocalizations, !localizations.isEmpty {
-            self.updates = (localizations, exchange.guestCardVersion)
-        } else if exchange.ownerCardVersion > card.version, !exchange.ownerCardLocalizations.isEmpty {
-            self.updates = (exchange.ownerCardLocalizations, exchange.ownerCardVersion)
-        } else {
-            self.updates = nil
-        }
-        self.makeSections()
-    }
-
-    private func cardTagsDidChange(_ querySnapshot: QuerySnapshot?, _ error: Error?) {
-        guard let querySnap = querySnapshot else {
-            print(#file, error?.localizedDescription ?? "")
-            return
-        }
-
-        DispatchQueue.global().async {
-            var newTags: [BusinessCardTagMC] = querySnap.documents.compactMap {
-                guard let tag = BusinessCardTag(queryDocumentSnapshot: $0) else {
-                    print(#file, "Error mapping tag:", $0.documentID)
-                    return nil
-                }
-                return BusinessCardTagMC(tag: tag)
-            }
-            newTags.sort(by: BusinessCardTagMC.sortByPriority)
-            DispatchQueue.main.async {
-                self.tags = newTags
-                self.makeSections()
-            }
-        }
-    }
-}
-
-// MARK: - EditCardTagsVMSelectionDelegate
-
-extension CardDetailsVM: EditCardTagsVMSelectionDelegate {
-    func didChangeSelectedTags(to tags: [BusinessCardTagMC]) {
-        guard let card = self.card else { return }
-        card.tagIDs = tags.map(\.id)
-        card.save(in: receivedCardCollectionReference, fields: [.tagIDs]) { [weak self] result in
-            switch result {
-            case .success: return
-            case .failure(let error):
-                print(error.localizedDescription)
-                let errorMessage = AppError.localizedUnknownErrorDescription
-                self?.delegate?.presentErrorAlert(message: errorMessage)
-            }
-        }
-        makeSections()
-    }
-}
-
-// MARK: - EditCardNotesVMEditingDelegate
-
-extension CardDetailsVM: EditCardNotesVMEditingDelegate {
-    func didEditNotes(to editedNotes: String) {
-        guard let card = self.card else { return }
-        card.notes = editedNotes
-        card.save(in: receivedCardCollectionReference, fields: [.notes]) { [weak self] result in
-            switch result {
-            case .success: return
-            case .failure(let error):
-                print(error.localizedDescription)
-                let errorMessage = AppError.localizedUnknownErrorDescription
-                self?.delegate?.presentErrorAlert(message: errorMessage)
-            }
-        }
-        makeSections()
     }
 }
 

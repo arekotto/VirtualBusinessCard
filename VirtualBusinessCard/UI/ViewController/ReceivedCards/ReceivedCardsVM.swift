@@ -111,13 +111,13 @@ extension ReceivedCardsVM {
         return snapshot
     }
 
-    func detailsViewModel(for indexPath: IndexPath) -> CardDetailsVM {
+    func detailsViewModel(for indexPath: IndexPath) -> ReceivedCardDetailsVM {
         let card = cards[displayedCardIndexes[indexPath.item]]
         let prefetchedDM = CardDetailsVM.PrefetchedData(
             dataModel: sceneViewModel(for: card.displayedLocalization),
             hapticSharpness: card.displayedLocalization.hapticFeedbackSharpness
         )
-        return CardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: prefetchedDM)
+        return ReceivedCardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: prefetchedDM)
     }
 
     func hasUpdatesForCard(at indexPath: IndexPath) -> Bool {

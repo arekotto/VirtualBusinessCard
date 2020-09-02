@@ -178,6 +178,8 @@
 		45C25D64249F4CD300945F29 /* GroupedCardsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */; };
 		45C25D68249F5EC900945F29 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */; };
 		45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D69249F85E500945F29 /* IndexPath.swift */; };
+		45C65F6D24FE88DF001570D3 /* ReceivedCardDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C65F6C24FE88DF001570D3 /* ReceivedCardDetailsVM.swift */; };
+		45C65F6F24FE95F1001570D3 /* PersonalCardDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C65F6E24FE95F1001570D3 /* PersonalCardDetailsVM.swift */; };
 		45CF2F5724CC59F5003F9F91 /* EditCardTagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CF2F5624CC59F5003F9F91 /* EditCardTagsVC.swift */; };
 		45CF2F5924CC5A4C003F9F91 /* EditCardTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CF2F5824CC5A4C003F9F91 /* EditCardTagsView.swift */; };
 		45CF2F5B24CC5A5E003F9F91 /* EditCardTagsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CF2F5A24CC5A5E003F9F91 /* EditCardTagsVM.swift */; };
@@ -403,6 +405,8 @@
 		45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedCardsVM.swift; sourceTree = "<group>"; };
 		45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
 		45C25D69249F85E500945F29 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
+		45C65F6C24FE88DF001570D3 /* ReceivedCardDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedCardDetailsVM.swift; sourceTree = "<group>"; };
+		45C65F6E24FE95F1001570D3 /* PersonalCardDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardDetailsVM.swift; sourceTree = "<group>"; };
 		45CF2F5624CC59F5003F9F91 /* EditCardTagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardTagsVC.swift; sourceTree = "<group>"; };
 		45CF2F5824CC5A4C003F9F91 /* EditCardTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardTagsView.swift; sourceTree = "<group>"; };
 		45CF2F5A24CC5A5E003F9F91 /* EditCardTagsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardTagsVM.swift; sourceTree = "<group>"; };
@@ -1043,6 +1047,8 @@
 				45B25F202493B32C006DD0F7 /* CardDetailsVM.swift */,
 				45B25F222493B33B006DD0F7 /* CardDetailsView.swift */,
 				45944B0D24AF70530005CAF1 /* CardDetailsSectionFactory.swift */,
+				45C65F6C24FE88DF001570D3 /* ReceivedCardDetailsVM.swift */,
+				45C65F6E24FE95F1001570D3 /* PersonalCardDetailsVM.swift */,
 			);
 			path = CardDetails;
 			sourceTree = "<group>";
@@ -1492,6 +1498,7 @@
 				45AF8B0824DF1D9500070707 /* UIViewController.swift in Sources */,
 				45139C5024979C3800DE1E9F /* ReceivedCardsVC.swift in Sources */,
 				451B799724D80A9E00EDC2B6 /* SingleSliderEditingView.swift in Sources */,
+				45C65F6F24FE95F1001570D3 /* PersonalCardDetailsVM.swift in Sources */,
 				4558F1F12423B0CE00D44526 /* LoginWithMicrosoftButton.swift in Sources */,
 				451C972024F6F2FD006E20D7 /* UpdateAvailableCell.swift in Sources */,
 				452CEE8324AF2A5100B3D3ED /* TitleValueImageCollectionViewCell.swift in Sources */,
@@ -1621,6 +1628,7 @@
 				4511A12D246D617800AE3306 /* CreateAccountNameView.swift in Sources */,
 				45B5E31D241FED0700028B0A /* LoginWithAppleButton.swift in Sources */,
 				45B5E317241FA09900028B0A /* LoginViewModel.swift in Sources */,
+				45C65F6D24FE88DF001570D3 /* ReceivedCardDetailsVM.swift in Sources */,
 				454CF7DE24A9F27E00074E0D /* AuthErrorCode.swift in Sources */,
 				457F071424E01CB500F95148 /* PersonalCardLocalizationsVM.swift in Sources */,
 				45C1601124852E2900806718 /* AppView.swift in Sources */,
