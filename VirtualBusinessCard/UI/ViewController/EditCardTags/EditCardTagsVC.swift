@@ -77,9 +77,8 @@ private extension EditCardTagsVC {
     }
 
     func didTapAddButton() {
-        let editTagVC = EditTagVC(viewModel: viewModel.editTagVM())
-        let navVC = AppNavigationController(rootViewController: editTagVC)
-        navVC.presentationController?.delegate = editTagVC
+        let navVC = EditTagNC(editTagVM: viewModel.editTagVM())
+        navVC.presentationController?.delegate = navVC.rootViewController
         present(navVC, animated: true)
     }
 }
@@ -87,6 +86,7 @@ private extension EditCardTagsVC {
 // MARK: - EditCardTagsVMDelegate
 
 extension EditCardTagsVC: EditCardTagsVMDelegate {
+
     func refreshData() {
         tableViewDataSource.apply(viewModel.dataSnapshot(), animatingDifferences: hasAppearedAtLeastOnce.value)
     }
@@ -104,6 +104,6 @@ extension EditCardTagsVC: UIAdaptivePresentationControllerDelegate {
     }
 
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-        viewModel.didAttemptDismiss()
+        presentDismissAlert(dismissAnimated: true)
     }
 }

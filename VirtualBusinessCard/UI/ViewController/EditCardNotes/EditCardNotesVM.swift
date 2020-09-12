@@ -9,7 +9,6 @@
 import Foundation
 
 protocol EditCardNotesVMDelegate: class {
-    func presentDismissAlert()
     func dismissSelf()
 }
 
@@ -25,7 +24,7 @@ final class EditCardNotesVM: AppViewModel {
     private let originalNotes: String
     var notes: String
 
-    private var hasMadeChanges: Bool {
+    var hasMadeChanges: Bool {
         notes != originalNotes
     }
 
@@ -38,14 +37,6 @@ final class EditCardNotesVM: AppViewModel {
 extension EditCardNotesVM {
     var title: String {
         NSLocalizedString("Add Notes", comment: "")
-    }
-    
-    var isAllowedDragToDismiss: Bool {
-        !hasMadeChanges
-    }
-
-    func didAttemptDismiss() {
-        delegate?.presentDismissAlert()
     }
 
     func didApproveEdit() {

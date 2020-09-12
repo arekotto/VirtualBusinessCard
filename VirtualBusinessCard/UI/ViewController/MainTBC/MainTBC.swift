@@ -9,7 +9,11 @@
 import UIKit
 
 class MainTBC: UITabBarController {
-        
+
+    private var didAppear = false
+
+    private var selectedApplicationShortcut: ApplicationShortcut?
+
     private(set) lazy var personalCardsVC = PersonalCardsVC(viewModel: PersonalCardsVM(userID: userID))
     private(set) lazy var groupedCardsVC = GroupedCardsVC(viewModel: GroupedCardsVM(userID: userID))
     
@@ -39,6 +43,23 @@ class MainTBC: UITabBarController {
         
         setupTabBarStyle()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        didAppear = true
+        if let shortcut = selectedApplicationShortcut {
+            handleShortcut(shortcut)
+            selectedApplicationShortcut = nil
+        }
+    }
+
+    func setApplicationShortcut(_ shortcut: ApplicationShortcut) {
+        if didAppear {
+            handleShortcut(shortcut)
+        } else {
+            selectedApplicationShortcut = shortcut
+        }
+    }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
@@ -53,6 +74,36 @@ class MainTBC: UITabBarController {
         tabBar.layer.shadowOffset = CGSize(width: 0.0, height: -3.0)
         tabBar.layer.shadowRadius = 5
         tabBar.layer.shadowOpacity = 0.1
+    }
+
+    private func handleShortcut(_ shortcut: ApplicationShortcut) {
+        if let presentedAppNavigationController = presentedViewController as? AppNavigationController {
+            presentedAppNavigationController.dismissIfAppropriate(animated: false) { [unowned self] didDismiss in
+                guard didDismiss else { return }
+                self.executeShortcut(shortcut)
+            }
+        } else if let presentedVC = presentedViewController {
+            presentedVC.dismiss(animated: false) { [unowned self] in
+                self.executeShortcut(shortcut)
+            }
+        } else {
+            executeShortcut(shortcut)
+        }
+    }
+
+    private func executeShortcut(_ shortcut: ApplicationShortcut) {
+        switch shortcut {
+        case .search:
+            guard let groupVCIndex = allViewControllers.firstIndex(of: groupedCardsVC) else { return }
+            selectedIndex = groupVCIndex
+            groupedCardsVC.navigationController?.popToRootViewController(animated: false)
+            let vc = ReceivedCardsVC(viewModel: ReceivedCardsVM(userID: userID))
+            vc.makeSearchFirstResponderOnNextAppearance = true
+            if let selectedNC = selectedViewController as? UINavigationController {
+                selectedNC.popToRootViewController(animated: false)
+                selectedNC.pushViewController(vc, animated: true)
+            }
+        }
     }
 }
 

@@ -18,6 +18,17 @@ final class EditTagVC: AppViewController<EditTagView, EditTagVM> {
         contentView.setTagColor(viewModel.selectedColor)
         viewModel.delegate = self
     }
+
+    func attemptDismiss(completion: ((_: Bool) -> Void)? = nil) {
+        contentView.endEditing(true)
+        if viewModel.hasUnsavedChanges {
+            presentDismissAlert(dismissAnimated: true, completion: completion)
+        } else {
+            dismiss(animated: true) {
+                completion?(true)
+            }
+        }
+    }
     
     private func setupCollectionView() {
         contentView.colorsCollectionView.delegate = self
@@ -40,7 +51,7 @@ final class EditTagVC: AppViewController<EditTagView, EditTagVM> {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = viewModel.title
         navigationItem.rightBarButtonItem = UIBarButtonItem.done(target: self, action: #selector(didTapDoneEditingButton))
-        navigationItem.leftBarButtonItem = UIBarButtonItem.cancel(target: self, action: #selector(didTapCancelEditingButton))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.cancel(target: self, action: #selector(didTapCancelButton))
     }
 }
 
@@ -52,10 +63,9 @@ private extension EditTagVC {
         contentView.endEditing(true)
         viewModel.didSelectDone()
     }
-    
-    func didTapCancelEditingButton() {
-        contentView.endEditing(true)
-        viewModel.didSelectCancel()
+
+    func didTapCancelButton() {
+        attemptDismiss()
     }
     
     func didTapDeleteButton() {
@@ -158,10 +168,10 @@ extension EditTagVC: UITextFieldDelegate {
 
 extension EditTagVC: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        viewModel.isAllowedDragToDismiss
+        !viewModel.hasUnsavedChanges
     }
     
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-        viewModel.didAttemptDismiss()
+        presentDismissAlert(dismissAnimated: true)
     }
 }

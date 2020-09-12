@@ -69,4 +69,22 @@ class AppNavigationController: UINavigationController {
             navigationBar.shadowImage = Asset.Colors.barSeparator.color.as1ptImage()
         }
     }
+
+    func dismissIfAppropriate(animated: Bool, completion: ((Bool) -> Void)? = nil) {
+        if let presentedAppNC = presentedViewController as? AppNavigationController {
+            presentedAppNC.dismissIfAppropriate(animated: false) { [unowned self] didDismiss in
+                if didDismiss {
+                    self.dismiss(animated: animated) {
+                        completion?(true)
+                    }
+                } else {
+                    completion?(false)
+                }
+            }
+        } else {
+            dismiss(animated: animated) {
+                completion?(true)
+            }
+        }
+    }
 }

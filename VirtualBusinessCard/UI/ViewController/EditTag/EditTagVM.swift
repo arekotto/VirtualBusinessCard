@@ -11,7 +11,6 @@ import Firebase
 
 protocol NewTagVMDelegate: class {
     func applyNewTagColor(_ color: UIColor)
-    func presentDismissAlert()
     func presentDeleteAlert()
     func presentErrorAlert(message: String)
     func presentErrorAlert(title: String?, message: String)
@@ -69,8 +68,8 @@ extension EditTagVM {
         tag.displayColor
     }
     
-    var isAllowedDragToDismiss: Bool {
-        !hasMadeChanges.value
+    var hasUnsavedChanges: Bool {
+        hasMadeChanges.value
     }
     
     func numberOfItems() -> Int {
@@ -86,10 +85,6 @@ extension EditTagVM {
         tag.tagColor = selectableTagColors[indexPath.item]
         delegate?.applyNewTagColor(tag.displayColor)
         hasMadeChanges.toggle()
-    }
-    
-    func didAttemptDismiss() {
-        delegate?.presentDismissAlert()
     }
     
     func didSelectDelete() {
@@ -110,14 +105,6 @@ extension EditTagVM {
             }
             self.deleteTag(taggedCardIDs: snap.documents.map(\.documentID))
         }
-    }
-    
-    func didSelectCancel() {
-        guard !hasMadeChanges.value else {
-            delegate?.presentDismissAlert()
-            return
-        }
-        delegate?.dismissSelf()
     }
     
     func didSelectDone() {

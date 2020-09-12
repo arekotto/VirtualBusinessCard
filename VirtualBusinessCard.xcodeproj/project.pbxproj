@@ -86,6 +86,7 @@
 		4543D2D9249BD6BA003B1439 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */; };
 		4543D2DB249CA6F7003B1439 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4543D2DA249CA6F7003B1439 /* Colors.xcassets */; };
 		4543F1C824D46C52006F30A5 /* TOCropViewController in Frameworks */ = {isa = PBXBuildFile; productRef = 4543F1C724D46C52006F30A5 /* TOCropViewController */; };
+		4544D0882507CC8C0081E2C1 /* ApplicationShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4544D0872507CC8C0081E2C1 /* ApplicationShortcut.swift */; };
 		454625E024A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625DF24A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift */; };
 		454625E224A0C0EF000D1D25 /* AppCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */; };
 		454625E424A0C10C000D1D25 /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454625E324A0C10C000D1D25 /* Reusable.swift */; };
@@ -178,6 +179,7 @@
 		45C25D64249F4CD300945F29 /* GroupedCardsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */; };
 		45C25D68249F5EC900945F29 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */; };
 		45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C25D69249F85E500945F29 /* IndexPath.swift */; };
+		45C543A52507BDAC00A853CD /* ReceivedCardSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C543A42507BDAC00A853CD /* ReceivedCardSearch.swift */; };
 		45C65F6D24FE88DF001570D3 /* ReceivedCardDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C65F6C24FE88DF001570D3 /* ReceivedCardDetailsVM.swift */; };
 		45C65F6F24FE95F1001570D3 /* PersonalCardDetailsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45C65F6E24FE95F1001570D3 /* PersonalCardDetailsVM.swift */; };
 		45CF2F5724CC59F5003F9F91 /* EditCardTagsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CF2F5624CC59F5003F9F91 /* EditCardTagsVC.swift */; };
@@ -195,6 +197,7 @@
 		45E21C2C24CC95F400013E9E /* EditCardNotesVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */; };
 		45E21C2E24CC960300013E9E /* EditCardNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C2D24CC960300013E9E /* EditCardNotesView.swift */; };
 		45E21C3124CCBFEB00013E9E /* TitleTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E21C3024CCBFEB00013E9E /* TitleTableCell.swift */; };
+		45E4E5832508D70F0099C853 /* EditTagNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E4E5822508D70F0099C853 /* EditTagNC.swift */; };
 		45E62CFC24BCD1B500B96B17 /* DirectCardExchangeMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */; };
 		45E64C562419390B00FECFC9 /* LoginWithEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */; };
 		45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */; };
@@ -313,6 +316,7 @@
 		4543D2D6249BBDCC003B1439 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		4543D2D8249BD6BA003B1439 /* AppNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
 		4543D2DA249CA6F7003B1439 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		4544D0872507CC8C0081E2C1 /* ApplicationShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationShortcut.swift; sourceTree = "<group>"; };
 		454625DF24A0BA4B000D1D25 /* ScrollableSegmentedControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControlDelegate.swift; sourceTree = "<group>"; };
 		454625E124A0C0EF000D1D25 /* AppCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCollectionViewCell.swift; sourceTree = "<group>"; };
 		454625E324A0C10C000D1D25 /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
@@ -405,6 +409,7 @@
 		45C25D63249F4CD300945F29 /* GroupedCardsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedCardsVM.swift; sourceTree = "<group>"; };
 		45C25D67249F5EC900945F29 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
 		45C25D69249F85E500945F29 /* IndexPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexPath.swift; sourceTree = "<group>"; };
+		45C543A42507BDAC00A853CD /* ReceivedCardSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedCardSearch.swift; sourceTree = "<group>"; };
 		45C65F6C24FE88DF001570D3 /* ReceivedCardDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceivedCardDetailsVM.swift; sourceTree = "<group>"; };
 		45C65F6E24FE95F1001570D3 /* PersonalCardDetailsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardDetailsVM.swift; sourceTree = "<group>"; };
 		45CF2F5624CC59F5003F9F91 /* EditCardTagsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardTagsVC.swift; sourceTree = "<group>"; };
@@ -422,6 +427,7 @@
 		45E21C2B24CC95F400013E9E /* EditCardNotesVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesVM.swift; sourceTree = "<group>"; };
 		45E21C2D24CC960300013E9E /* EditCardNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCardNotesView.swift; sourceTree = "<group>"; };
 		45E21C3024CCBFEB00013E9E /* TitleTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableCell.swift; sourceTree = "<group>"; };
+		45E4E5822508D70F0099C853 /* EditTagNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTagNC.swift; sourceTree = "<group>"; };
 		45E62CFB24BCD1B400B96B17 /* DirectCardExchangeMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectCardExchangeMC.swift; sourceTree = "<group>"; };
 		45E64C552419390B00FECFC9 /* LoginWithEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailView.swift; sourceTree = "<group>"; };
 		45E64C572419391400FECFC9 /* LoginWithEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWithEmailViewModel.swift; sourceTree = "<group>"; };
@@ -533,6 +539,7 @@
 				45174CE524B9DEC3009BFE58 /* EditTagVC.swift */,
 				45174CE924B9E342009BFE58 /* EditTagVM.swift */,
 				45174CE724B9E32F009BFE58 /* EditTagView.swift */,
+				45E4E5822508D70F0099C853 /* EditTagNC.swift */,
 			);
 			path = EditTag;
 			sourceTree = "<group>";
@@ -981,6 +988,8 @@
 				4552F22824D45F580062FC2B /* CardImagePicker.swift */,
 				45B25F262493B7AF006DD0F7 /* SampleBCUploadTask.swift */,
 				451C972324F79279006E20D7 /* UserTestingManager.swift */,
+				45C543A42507BDAC00A853CD /* ReceivedCardSearch.swift */,
+				4544D0872507CC8C0081E2C1 /* ApplicationShortcut.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1234,7 +1243,7 @@
 				4537CEDC23F6D259003602EA /* Frameworks */,
 				4537CEDD23F6D259003602EA /* Resources */,
 				45B01C1924D16A85009BDABC /* Run SwiftLint */,
-				660F24BB2F4D7B525A8B63B1 /* [CP] Copy Pods Resources */,
+				4DA7E45845CD2297C9502093 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1277,7 +1286,7 @@
 				4537CEFC23F6D25A003602EA /* Sources */,
 				4537CEFD23F6D25A003602EA /* Frameworks */,
 				4537CEFE23F6D25A003602EA /* Resources */,
-				72EE83084F4C800F7F4C2373 /* [CP] Copy Pods Resources */,
+				F106F192E3D7FB768447425A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1408,7 +1417,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		660F24BB2F4D7B525A8B63B1 /* [CP] Copy Pods Resources */ = {
+		4DA7E45845CD2297C9502093 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1423,23 +1432,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard/Pods-VirtualBusinessCard-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		72EE83084F4C800F7F4C2373 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E67E55F3EA3855E921F0CBD9 /* [CP] Check Pods Manifest.lock */ = {
@@ -1462,6 +1454,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F106F192E3D7FB768447425A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VirtualBusinessCard-VirtualBusinessCardUITests/Pods-VirtualBusinessCard-VirtualBusinessCardUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FABF9221331430B4855B9D4B /* [CP] Check Pods Manifest.lock */ = {
@@ -1496,6 +1505,7 @@
 				4539A09E24E082DC0063C267 /* LanguagesView.swift in Sources */,
 				4558F1F92423E75D00D44526 /* DeviceDisplay.swift in Sources */,
 				45AF8B0824DF1D9500070707 /* UIViewController.swift in Sources */,
+				45C543A52507BDAC00A853CD /* ReceivedCardSearch.swift in Sources */,
 				45139C5024979C3800DE1E9F /* ReceivedCardsVC.swift in Sources */,
 				451B799724D80A9E00EDC2B6 /* SingleSliderEditingView.swift in Sources */,
 				45C65F6F24FE95F1001570D3 /* PersonalCardDetailsVM.swift in Sources */,
@@ -1574,8 +1584,10 @@
 				458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */,
 				45174CE124B8B7D6009BFE58 /* TitleAccessoryImageCollectionCell.swift in Sources */,
 				4532CDD424D723FB00ACB597 /* TextureEditingView.swift in Sources */,
+				45E4E5832508D70F0099C853 /* EditTagNC.swift in Sources */,
 				45E64C582419391400FECFC9 /* LoginWithEmailViewModel.swift in Sources */,
 				45C160302486535700806718 /* ActivityIndicator.swift in Sources */,
+				4544D0882507CC8C0081E2C1 /* ApplicationShortcut.swift in Sources */,
 				452B33C7248E4FCB006E6A7D /* SettingsVM.swift in Sources */,
 				454625E424A0C10C000D1D25 /* Reusable.swift in Sources */,
 				4510341C249267D5009C4B26 /* ImageAndTextureFetchTask.swift in Sources */,

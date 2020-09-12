@@ -208,8 +208,7 @@ extension GroupedCardsVM {
     }
     
     func didTapSeeAll() {
-        let title = NSLocalizedString("All Cards", comment: "")
-        let vm = ReceivedCardsVM(userID: userID, dataFetchMode: .allReceivedCards, title: title)
+        let vm = ReceivedCardsVM(userID: userID)
         delegate?.presentReceivedCards(with: vm)
     }
     

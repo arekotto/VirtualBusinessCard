@@ -32,6 +32,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             window.makeKeyAndVisible()
         }
+
+        if let shortcutItem = connectionOptions.shortcutItem, let shortcut = ApplicationShortcut(rawValue: shortcutItem.type) {
+            (window?.rootViewController as? MainTBC)?.setApplicationShortcut(shortcut)
+        }
+    }
+
+    func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        if let shortcut = ApplicationShortcut(rawValue: shortcutItem.type) {
+            (window?.rootViewController as? MainTBC)?.setApplicationShortcut(shortcut)
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

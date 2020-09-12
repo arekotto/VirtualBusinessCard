@@ -47,7 +47,7 @@ final class ReceivedCardsVM: PartialUserViewModel, MotionDataSource {
     
     private let sortActions = defaultSortActions()
 
-    init(userID: UserID, dataFetchMode: DataFetchMode, title: String) {
+    init(userID: UserID, dataFetchMode: DataFetchMode = .allReceivedCards, title: String = NSLocalizedString("All Cards", comment: "")) {
         self.title = title
         self.dataFetchMode = dataFetchMode
         super.init(userID: userID)
@@ -120,9 +120,8 @@ extension ReceivedCardsVM {
         return ReceivedCardDetailsVM(userID: userID, cardID: card.id, initialLoadDataModel: prefetchedDM)
     }
 
-    func hasUpdatesForCard(at indexPath: IndexPath) -> Bool {
-        let cardID = card(for: indexPath).id
-        return updatesForCards[cardID] ?? false
+    func hasUpdatesForCard(withID cardID: BusinessCardID) -> Bool {
+        updatesForCards[cardID] ?? false
     }
     
     func toggleCellSizeMode() {
@@ -145,7 +144,7 @@ extension ReceivedCardsVM {
                 newDisplayedCardIndexes = Array(0 ..< self.cards.count)
             } else {
                 newDisplayedCardIndexes = self.cards.enumerated()
-                    .filter { _, card in Self.shouldDisplayCard(card, forQuery: query) }
+                    .filter { _, card in ReceivedCardSearch.receivedCard(localization: card.displayedLocalization, matchesQuery: query) }
                     .map { idx, _ in idx }
             }
             if newDisplayedCardIndexes != self.displayedCardIndexes {
@@ -309,12 +308,6 @@ extension ReceivedCardsVM {
             }
             return ReceivedBusinessCardMC(card: bc)
         }
-    }
-    
-    private static func shouldDisplayCard(_ card: ReceivedBusinessCardMC, forQuery query: String) -> Bool {
-        let name = card.displayedLocalization.name
-        let names = [name.first ?? "", name.last ?? "", name.middle ?? "" ]
-        return names.contains(where: { $0.contains(query) })
     }
 }
 

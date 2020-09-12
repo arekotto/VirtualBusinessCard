@@ -102,9 +102,8 @@ private extension TagsVC {
     
 extension TagsVC: TagsVMDelegate {
     func presentNewTagVC(with viewModel: EditTagVM) {
-        let editTagVC = EditTagVC(viewModel: viewModel)
-        let navVC = AppNavigationController(rootViewController: editTagVC)
-        navVC.presentationController?.delegate = editTagVC
+        let navVC = EditTagNC(editTagVM: viewModel)
+        navVC.presentationController?.delegate = navVC.rootViewController
         present(navVC, animated: true)
     }
     

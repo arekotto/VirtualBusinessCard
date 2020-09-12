@@ -100,10 +100,10 @@ private extension EditCardNotesVC {
 
 extension EditCardNotesVC: UIAdaptivePresentationControllerDelegate {
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        viewModel.isAllowedDragToDismiss
+        !viewModel.hasMadeChanges
     }
 
     func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
-        viewModel.didAttemptDismiss()
+        presentDismissAlert(dismissAnimated: true)
     }
 }

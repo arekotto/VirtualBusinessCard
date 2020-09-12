@@ -11,17 +11,19 @@ import CoreMotion
 
 final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsVM> {
 
+    var makeSearchFirstResponderOnNextAppearance = false
+
+    var selectedCell: UICollectionViewCell? {
+        guard let indexPath = viewModel.presentedIndexPath else { return nil }
+        return contentView.collectionView.cellForItem(at: indexPath)
+    }
+
     private typealias View = ReceivedCardsView
     private typealias DataSource = UICollectionViewDiffableDataSource<ReceivedCardsVM.Section, View.CollectionCell.DataModel>
 
     private lazy var collectionViewDataSource = makeTableViewDataSource()
 
     private var animator: DetailsTransitionAnimator?
-    
-    var selectedCell: UICollectionViewCell? {
-        guard let indexPath = viewModel.presentedIndexPath else { return nil }
-        return contentView.collectionView.cellForItem(at: indexPath)
-    }
 
     private var isSearchActive = false
 
@@ -44,6 +46,10 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         super.viewDidAppear(animated)
         selectedCell?.isHidden = false
         viewModel.presentedIndexPath = nil
+        if makeSearchFirstResponderOnNextAppearance {
+            navigationItem.searchController?.isActive = true
+            makeSearchFirstResponderOnNextAppearance = false
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -75,6 +81,7 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
         navigationItem.searchController = {
             let controller = UISearchController()
             controller.searchResultsUpdater = self
+            controller.delegate = self
             controller.obscuresBackgroundDuringPresentation = false
             return controller
         }()
@@ -89,15 +96,20 @@ final class ReceivedCardsVC: AppViewController<ReceivedCardsView, ReceivedCardsV
     }
 
     private func makeTableViewDataSource() -> DataSource {
-        let dataSource = DataSource(collectionView: contentView.collectionView) { [weak self] collectionView, indexPath, dataModel in
+        let dataSource = DataSource(collectionView: contentView.collectionView) { [unowned self] collectionView, indexPath, dataModel in
             let cell: View.CollectionCell = collectionView.dequeueReusableCell(indexPath: indexPath)
             cell.setDataModel(dataModel)
-            cell.isHidden = self?.viewModel.presentedIndexPath == indexPath
+            cell.isHidden = viewModel.presentedIndexPath == indexPath
             return cell
         }
-        dataSource.supplementaryViewProvider = { [weak self] cv, kind, indexPath in
+        
+        dataSource.supplementaryViewProvider = { [unowned self] cv, kind, indexPath in
             let view: View.UpdateAvailableIndicator = cv.dequeueReusableSupplementaryView(elementKind: kind, indexPath: indexPath)
-            view.isHidden = !(self?.viewModel.hasUpdatesForCard(at: indexPath) ?? false)
+            if let cardID = dataSource.snapshot().itemIdentifiers(inSection: .main)[optional: indexPath.item]?.cardID {
+                view.isHidden = !viewModel.hasUpdatesForCard(withID: cardID)
+            } else {
+                view.isHidden = true
+            }
             return view
         }
         return dataSource
@@ -161,9 +173,12 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
 
     func refreshUpdateIndicators() {
         let supplementaryViewKind = View.SupplementaryView.updateAvailableIndicator.rawValue
-        let supplementaryItemsIndexPaths = contentView.collectionView.indexPathsForVisibleSupplementaryElements(ofKind: supplementaryViewKind)
-        supplementaryItemsIndexPaths.forEach {
-            contentView.collectionView.supplementaryView(forElementKind: supplementaryViewKind, at: $0)?.isHidden = !viewModel.hasUpdatesForCard(at: $0)
+        let cv = contentView.collectionView
+        let supplementaryItemsIndexPaths = cv.indexPathsForVisibleSupplementaryElements(ofKind: supplementaryViewKind)
+        supplementaryItemsIndexPaths.forEach { indexPath in
+            let dataModels = collectionViewDataSource.snapshot().itemIdentifiers(inSection: .main)
+            guard let cardID = dataModels[optional: indexPath.item]?.cardID else { return }
+            cv.supplementaryView(forElementKind: supplementaryViewKind, at: indexPath)?.isHidden = !viewModel.hasUpdatesForCard(withID: cardID)
         }
     }
     
@@ -182,9 +197,15 @@ extension ReceivedCardsVC: ReceivedBusinessCardsVMDelegate {
 
 // MARK: - UISearchResultsUpdating, UISearchControllerDelegate
 
-extension ReceivedCardsVC: UISearchResultsUpdating {
+extension ReceivedCardsVC: UISearchResultsUpdating, UISearchControllerDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.beginSearch(for: searchController.searchBar.text ?? "")
+    }
+
+    func didPresentSearchController(_ searchController: UISearchController) {
+        DispatchQueue.main.async {
+            searchController.searchBar.becomeFirstResponder()
+        }
     }
 }
 

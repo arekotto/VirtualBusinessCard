@@ -12,7 +12,6 @@ import UIKit
 
 protocol EditCardTagsVMDelegate: class {
     func refreshData()
-    func presentDismissAlert()
     func dismiss()
 }
 
@@ -91,10 +90,6 @@ extension EditCardTagsVM {
 
     func editTagVM() -> EditTagVM {
         EditTagVM(userID: userID, estimatedLowestPriorityIndex: tags.count)
-    }
-
-    func didAttemptDismiss() {
-        delegate?.presentDismissAlert()
     }
 
     func didDiscardSelection() {

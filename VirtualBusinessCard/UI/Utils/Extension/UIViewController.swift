@@ -27,13 +27,17 @@ extension UIViewController {
         present(vc, animated: true)
     }
 
-    func presentDismissAlert() {
+    func presentDismissAlert(dismissAnimated: Bool, completion: ((_: Bool) -> Void)? = nil ) {
         let title = NSLocalizedString("Are you sure you want to discard?", comment: "")
         let alert = AppAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "Discard Changes", style: .destructive) { _ in
-            self.dismiss(animated: true)
+        alert.addAction(UIAlertAction(title: "Discard Changes", style: .destructive) { [unowned self] _ in
+            self.dismiss(animated: dismissAnimated) {
+                completion?(true)
+            }
         })
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Keep Editing", comment: ""), style: .cancel))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Keep Editing", comment: ""), style: .cancel) { _ in
+            completion?(false)
+        })
         present(alert, animated: true)
     }
 }
