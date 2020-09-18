@@ -61,7 +61,7 @@ extension PersonalCardLocalizationsVM {
 
     var pushChangesEnabled: Bool {
         guard let card = self.card else { return false }
-        return card.currentVersion > card.mostRecentVersionPushed
+        return card.currentVersion > card.mostRecentVersionPushed && !(user?.committedExchanges(for: cardID) ?? []).isEmpty
     }
 
     func actionConfigForLocalization(at index: Int) -> ActionConfiguration? {

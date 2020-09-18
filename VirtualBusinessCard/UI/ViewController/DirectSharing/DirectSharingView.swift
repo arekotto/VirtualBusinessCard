@@ -18,12 +18,9 @@ final class DirectSharingView: AppView {
         return this
     }()
 
-    let businessCardImageView: UIImageView = {
-        let this = UIImageView()
-        this.layer.shadowRadius = 5
-        this.layer.shadowOpacity = 0.15
-        this.layer.shadowOffset = CGSize(width: 0, height: 0)
-        this.contentMode = .scaleAspectFit
+    let businessCardView: CardFrontBackView = {
+        let this = CardFrontBackView(sceneHeightAdjustMode: .flexible(multiplayer: 1))
+        this.backSceneView.isHidden = true
         return this
     }()
 
@@ -89,7 +86,7 @@ final class DirectSharingView: AppView {
     }()
 
     private lazy var shareCardView: UIStackView = {
-        let this = UIStackView(arrangedSubviews: [businessCardImageView, qrCodeImageView])
+        let this = UIStackView(arrangedSubviews: [businessCardView, qrCodeImageView])
         this.axis = .horizontal
         this.spacing = 16
         return this
@@ -133,7 +130,7 @@ final class DirectSharingView: AppView {
         cameraPreviewView.constrainTop(to: dividerStackView.bottomAnchor, constant: 16)
 
         qrCodeImageView.constrainWidthEqualTo(qrCodeImageView.heightAnchor)
-        businessCardImageView.constrainHeight(to: businessCardImageView.widthAnchor, multiplier: CGSize.businessCardHeightToWidthRatio)
+        businessCardView.constrainHeight(to: businessCardView.widthAnchor, multiplier: CGSize.businessCardHeightToWidthRatio)
 
         qrCodeActivityIndicator.constrainCenter(toView: qrCodeImageView)
 

@@ -53,7 +53,7 @@ final class DirectSharingVC: AppViewController<DirectSharingView, DirectSharingV
     
     private func setupContentView() {
         contentView.goToSettingsButton.addTarget(self, action: #selector(didTapGoToSettingsButton), for: .touchUpInside)
-        contentView.businessCardImageView.kf.setImage(with: viewModel.businessCardFrontImageURL)
+        contentView.businessCardView.setDataModel(viewModel.cardDataModel)
         contentView.cancelButtonView.button.addTarget(self, action: #selector(didTapCancelButton), for: .touchUpInside)
         contentView.qrCodeActivityIndicator.startAnimating()
     }
@@ -99,11 +99,11 @@ extension DirectSharingVC: DirectSharingVMDelegate {
         switch orientation {
         case .horizontal:
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-                self.contentView.businessCardImageView.transform = CGAffineTransform.identity.rotated(by: .pi)
+                self.contentView.businessCardView.transform = CGAffineTransform.identity.rotated(by: .pi)
             })
         case .vertical:
             UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
-                self.contentView.businessCardImageView.transform = CGAffineTransform.identity
+                self.contentView.businessCardView.transform = CGAffineTransform.identity
             })
         }
     }

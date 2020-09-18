@@ -86,8 +86,15 @@ extension DirectSharingVM {
         NSLocalizedString("Cancel", comment: "")
     }
 
-    var businessCardFrontImageURL: URL? {
-        card.frontImage.url
+    var cardDataModel: CardFrontBackView.URLDataModel {
+        CardFrontBackView.URLDataModel(
+            frontImageURL: card.frontImage.url,
+            backImageURL: card.backImage.url,
+            textureImageURL: card.texture.image.url,
+            normal: CGFloat(card.texture.normal),
+            specular: CGFloat(card.texture.specular),
+            cornerRadiusHeightMultiplier: CGFloat(card.cornerRadiusHeightMultiplier)
+        )
     }
 
     var hasPerformedInitialFetch: Bool {
@@ -169,7 +176,7 @@ extension DirectSharingVM {
 
         user.addCardExchangeAccessToken(exchange.accessToken)
 
-        directCardExchangeReference.firestore.runTransaction { transaction, errorPointer in
+        directCardExchangeReference.firestore.runTransaction { transaction, _ in
             user.save(using: transaction)
             return nil
         } completion: { [weak self] _, error in
