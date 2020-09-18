@@ -160,8 +160,13 @@ extension ScrollableSegmentedControl {
         }
         
         func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-            guard cell.isSelected else { return }
+            guard collectionView.indexPathsForSelectedItems?.contains(indexPath) == true else { return }
             moveSelectionIndicator(to: cell)
+        }
+
+        func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+            guard collectionView.indexPathsForSelectedItems?.contains(indexPath) == true else { return }
+            selectionIndicator.isHidden = true
         }
             
         func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

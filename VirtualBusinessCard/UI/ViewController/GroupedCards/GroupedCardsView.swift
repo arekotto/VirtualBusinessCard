@@ -11,10 +11,6 @@ import Kingfisher
 
 final class GroupedCardsView: AppBackgroundView {
 
-    static let segmentedControlHeight: CGFloat = 58
-
-    private var segmentedControlAppliedInsets: CGFloat = 0
-    
     let scrollableSegmentedControl = ScrollableSegmentedControl()
 
     let emptyStateView = EmptyStateView(
@@ -29,8 +25,6 @@ final class GroupedCardsView: AppBackgroundView {
         this.rowHeight = 110
         this.separatorStyle = .none
         this.registerReusableCell(TableCell.self)
-        scrollableSegmentedControl.frame = CGRect(x: 0, y: 0, width: 0, height: Self.segmentedControlHeight)
-        this.tableHeaderView = scrollableSegmentedControl
         this.isScrollEnabled = true
         this.alwaysBounceVertical = true
         return this
@@ -53,44 +47,5 @@ final class GroupedCardsView: AppBackgroundView {
         super.layoutSubviews()
         tableView.backgroundColor = Asset.Colors.appBackground.color
         scrollableSegmentedControl.backgroundColor = Asset.Colors.appBackground.color
-        let layoutInset = layoutMargins.left
-        if layoutInset != segmentedControlAppliedInsets {
-            segmentedControlAppliedInsets = layoutInset
-            scrollableSegmentedControl.setInsets(sideInsets: layoutInset, bottomInset: 8)
-        }
-    }
-}
-
-// MARK: - GroupedCardsView
-
-extension GroupedCardsView {
-    enum SupplementaryElementKind: String {
-        case collectionViewHeader
-        case sectionHeader
-        case sectionFooter
-    }
-}
-
-// MARK: - SegmentedControlHeader
-
-extension GroupedCardsView {
-    final class CollectionHeader: AppCollectionViewCell, Reusable {
-        
-        let mainStackView = UIStackView()
-        
-        override func layoutSubviews() {
-            super.layoutSubviews()
-            backgroundColor = Asset.Colors.appBackground.color
-        }
-        
-        override func configureSubviews() {
-            super.configureSubviews()
-            contentView.addSubview(mainStackView)
-        }
-        
-        override func configureConstraints() {
-            super.configureConstraints()
-            mainStackView.constrainToEdgesOfSuperview()
-        }
     }
 }

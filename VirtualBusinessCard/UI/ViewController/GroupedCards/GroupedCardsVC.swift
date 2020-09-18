@@ -49,7 +49,6 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: NSLocalizedString("Edit Tags", comment: ""), style: .plain, target: self, action: #selector(didTapTagsButton))
         navigationItem.searchController = {
             let controller = UISearchController()
-            controller.delegate = self
             controller.searchResultsUpdater = self
             controller.obscuresBackgroundDuringPresentation = false
             controller.searchBar.placeholder = viewModel.searchPlaceholder
@@ -66,9 +65,20 @@ final class GroupedCardsVC: AppViewController<GroupedCardsView, GroupedCardsVM> 
     }
 }
 
+// MARK: - UITableViewDelegate
+
 extension GroupedCardsVC: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelectItem(at: indexPath)
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        contentView.scrollableSegmentedControl
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        58
     }
 }
 
@@ -106,6 +116,7 @@ extension GroupedCardsVC: GroupedCardsVMDelegate {
 // MARK: - TabBarDisplayable
 
 extension GroupedCardsVC: TabBarDisplayable {
+
     var tabBarIconImage: UIImage {
         viewModel.tabBarIconImage
     }
@@ -114,6 +125,7 @@ extension GroupedCardsVC: TabBarDisplayable {
 // MARK: - ScrollableSegmentedControlDelegate
 
 extension GroupedCardsVC: ScrollableSegmentedControlDelegate {
+
     func scrollableSegmentedControl(_ control: ScrollableSegmentedControl, didSelectItemAt index: Int) {
         viewModel.didSelectGroupingMode(at: index)
     }
@@ -121,22 +133,7 @@ extension GroupedCardsVC: ScrollableSegmentedControlDelegate {
 
 // MARK: - UISearchResultsUpdating
 
-extension GroupedCardsVC: UISearchResultsUpdating, UISearchControllerDelegate {
-
-    func willPresentSearchController(_ searchController: UISearchController) {
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            let frame = self.contentView.scrollableSegmentedControl.frame
-            self.contentView.scrollableSegmentedControl.frame = CGRect(origin: frame.origin, size: CGSize(width: frame.size.width, height: 0))
-        })
-    }
-
-    func willDismissSearchController(_ searchController: UISearchController) {
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseOut, animations: {
-            let frame = self.contentView.scrollableSegmentedControl.frame
-            let newSize = CGSize(width: frame.size.width, height: GroupedCardsView.segmentedControlHeight)
-            self.contentView.scrollableSegmentedControl.frame = CGRect(origin: frame.origin, size: newSize)
-        })
-    }
+extension GroupedCardsVC: UISearchResultsUpdating {
 
     func updateSearchResults(for searchController: UISearchController) {
         viewModel.didSearch(for: searchController.searchBar.text ?? "")

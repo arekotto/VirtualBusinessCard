@@ -77,12 +77,32 @@ final class GroupedCardsVM: PartialUserViewModel {
             }
         }
     }
+
+    private func filterGroups(for query: String, animated: Bool) {
+        searchedQuery = query
+        if query.isEmpty {
+            displayedGroupIndexes = Array(0 ..< groups.count)
+            delegate?.refreshData(animated: true)
+        } else {
+            groupingQueue.async {
+                let displayedGroupIndexes = self.groups
+                    .enumerated()
+                    .filter { _, group in self.shouldDisplayGroup(group, forQuery: query) }
+                    .map { idx, _ in idx }
+
+                DispatchQueue.main.async {
+                    self.displayedGroupIndexes = displayedGroupIndexes
+                    self.delegate?.refreshData(animated: animated)
+                }
+            }
+        }
+    }
     
     private func didSetGroupingProperty() {
         groupingQueue.async {
             self.updateGrouping()
             DispatchQueue.main.async {
-                self.delegate?.refreshData(animated: false)
+                self.searchIfActiveAndRefresh()
             }
         }
     }
@@ -213,23 +233,7 @@ extension GroupedCardsVM {
     }
     
     func didSearch(for query: String) {
-        searchedQuery = query
-        if query.isEmpty {
-            displayedGroupIndexes = Array(0 ..< groups.count)
-            delegate?.refreshData(animated: true)
-        } else {
-            groupingQueue.async {
-                let displayedGroupIndexes = self.groups
-                    .enumerated()
-                    .filter { _, group in self.shouldDisplayGroup(group, forQuery: query) }
-                    .map { idx, _ in idx }
-                
-                DispatchQueue.main.async {
-                    self.displayedGroupIndexes = displayedGroupIndexes
-                    self.delegate?.refreshData(animated: true)
-                }
-            }
-        }
+        filterGroups(for: query, animated: true)
     }
 
     func tagsVM() -> TagsVM {
@@ -323,11 +327,11 @@ extension GroupedCardsVM {
         }
     }
 
-    private func searchIfActiveAndRefresh() {
+    private func searchIfActiveAndRefresh(animated: Bool = false) {
         if !searchedQuery.isEmpty {
-            didSearch(for: searchedQuery)
+            filterGroups(for: searchedQuery, animated: animated)
         } else {
-            self.delegate?.refreshData(animated: false)
+            self.delegate?.refreshData(animated: animated)
         }
     }
 }
