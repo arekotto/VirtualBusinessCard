@@ -8,10 +8,17 @@
 
 import Foundation
 import Kingfisher
-
 import UIKit
 import SceneKit
 import CoreMotion
+
+func deg2rad(_ number: Double) -> Double {
+    return number * .pi / 180
+}
+
+func rad2deg(_ number: Double) -> Double {
+    return number * 180 / .pi
+}
 
 class BusinessCardSceneView: AppView {
     

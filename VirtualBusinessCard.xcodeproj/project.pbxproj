@@ -121,13 +121,11 @@
 		4577CC7D248906FE0012EDC8 /* UserPrivate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC7C248906FE0012EDC8 /* UserPrivate.swift */; };
 		4577CC84248908530012EDC8 /* UserMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC83248908530012EDC8 /* UserMC.swift */; };
 		4577CC8724890B900012EDC8 /* SingletonFirestoreable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4577CC8624890B900012EDC8 /* SingletonFirestoreable.swift */; };
-		457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B4E7A24531B6800761A90 /* SceneVC.swift */; };
 		457B4E7D24531BC700761A90 /* SceneKitAssets.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */; };
 		457F071024E01C6000F95148 /* PersonalCardLocalizationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F070F24E01C6000F95148 /* PersonalCardLocalizationsVC.swift */; };
 		457F071224E01CA100F95148 /* PersonalCardLocalizationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F071124E01CA100F95148 /* PersonalCardLocalizationsView.swift */; };
 		457F071424E01CB500F95148 /* PersonalCardLocalizationsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457F071324E01CB500F95148 /* PersonalCardLocalizationsVM.swift */; };
 		4580E995243B084000184AA4 /* ReceiveVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E994243B084000184AA4 /* ReceiveVC.swift */; };
-		4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4580E999243B6A7500184AA4 /* DisplayVC.swift */; };
 		458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */; };
 		458EF405248B9B6D00EC76D6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 458EF404248B9B6D00EC76D6 /* Kingfisher */; };
 		458EF40A248BC7A000EC76D6 /* PersonalBusinessCardMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 458EF409248BC7A000EC76D6 /* PersonalBusinessCardMC.swift */; };
@@ -138,7 +136,6 @@
 		459DC58A23FEA4CB002F03DD /* UserPublic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58923FEA4CB002F03DD /* UserPublic.swift */; };
 		459DC58C23FEA515002F03DD /* UserPublic+Firestorable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */; };
 		459DC58F23FEBE6A002F03DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */; };
-		45AA873324499A5B004ACDDD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AA873224499A5B004ACDDD /* CardView.swift */; };
 		45AF8B0224DE961300070707 /* AppTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF8B0124DE961300070707 /* AppTableViewController.swift */; };
 		45AF8B0824DF1D9500070707 /* UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF8B0724DF1D9500070707 /* UIViewController.swift */; };
 		45AF8B0A24DF246600070707 /* NavigationTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45AF8B0924DF246600070707 /* NavigationTitleView.swift */; };
@@ -205,7 +202,6 @@
 		45F1EDA024BC488100AE1322 /* DirectSharingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1ED9F24BC488100AE1322 /* DirectSharingView.swift */; };
 		45F1EDA224BC489700AE1322 /* DirectSharingVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F1EDA124BC489700AE1322 /* DirectSharingVM.swift */; };
 		45F41FA324600D0A002BC37F /* BusinessCardSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */; };
-		45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F41FA424600E79002BC37F /* BusinessCardTVC.swift */; };
 		45F5660D24B35C630018EF42 /* DetailsTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */; };
 		901137D438BACAE742FED96B /* libPods-VirtualBusinessCardTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 225F8F5404FE01F560E6FC74 /* libPods-VirtualBusinessCardTests.a */; };
 		AB274D7CEDDE0E7FEF6FD181 /* libPods-VirtualBusinessCard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5077CB5120F204AB7021B9BA /* libPods-VirtualBusinessCard.a */; };
@@ -351,14 +347,12 @@
 		4577CC7C248906FE0012EDC8 /* UserPrivate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrivate.swift; sourceTree = "<group>"; };
 		4577CC83248908530012EDC8 /* UserMC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserMC.swift; sourceTree = "<group>"; };
 		4577CC8624890B900012EDC8 /* SingletonFirestoreable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingletonFirestoreable.swift; sourceTree = "<group>"; };
-		457B4E7A24531B6800761A90 /* SceneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneVC.swift; sourceTree = "<group>"; };
 		457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = SceneKitAssets.scnassets; sourceTree = "<group>"; };
 		457F070F24E01C6000F95148 /* PersonalCardLocalizationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardLocalizationsVC.swift; sourceTree = "<group>"; };
 		457F071124E01CA100F95148 /* PersonalCardLocalizationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardLocalizationsView.swift; sourceTree = "<group>"; };
 		457F071324E01CB500F95148 /* PersonalCardLocalizationsVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardLocalizationsVM.swift; sourceTree = "<group>"; };
 		4580E98F2437FD1400184AA4 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
 		4580E994243B084000184AA4 /* ReceiveVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReceiveVC.swift; sourceTree = "<group>"; };
-		4580E999243B6A7500184AA4 /* DisplayVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVC.swift; sourceTree = "<group>"; };
 		458EF401248B98B500EC76D6 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		458EF409248BC7A000EC76D6 /* PersonalBusinessCardMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalBusinessCardMC.swift; sourceTree = "<group>"; };
 		459102F224B708A60064B12C /* PersonalCardsCompactVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalCardsCompactVC.swift; sourceTree = "<group>"; };
@@ -368,7 +362,6 @@
 		459DC58923FEA4CB002F03DD /* UserPublic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPublic.swift; sourceTree = "<group>"; };
 		459DC58B23FEA515002F03DD /* UserPublic+Firestorable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserPublic+Firestorable.swift"; sourceTree = "<group>"; };
 		459DC58E23FEBE6A002F03DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		45AA873224499A5B004ACDDD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		45AF8B0124DE961300070707 /* AppTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTableViewController.swift; sourceTree = "<group>"; };
 		45AF8B0724DF1D9500070707 /* UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewController.swift; sourceTree = "<group>"; };
 		45AF8B0924DF246600070707 /* NavigationTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationTitleView.swift; sourceTree = "<group>"; };
@@ -435,7 +428,6 @@
 		45F1ED9F24BC488100AE1322 /* DirectSharingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectSharingView.swift; sourceTree = "<group>"; };
 		45F1EDA124BC489700AE1322 /* DirectSharingVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectSharingVM.swift; sourceTree = "<group>"; };
 		45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardSceneView.swift; sourceTree = "<group>"; };
-		45F41FA424600E79002BC37F /* BusinessCardTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessCardTVC.swift; sourceTree = "<group>"; };
 		45F5660C24B35C630018EF42 /* DetailsTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsTransitionAnimator.swift; sourceTree = "<group>"; };
 		5077CB5120F204AB7021B9BA /* libPods-VirtualBusinessCard.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VirtualBusinessCard.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD0FC3D399E2E0AA70D611B /* Pods-VirtualBusinessCardTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VirtualBusinessCardTests.debug.xcconfig"; path = "Target Support Files/Pods-VirtualBusinessCardTests/Pods-VirtualBusinessCardTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -594,7 +586,6 @@
 				45C25D66249F5EB900945F29 /* Component */,
 				45C1600A24852D4A00806718 /* UserSetup */,
 				457B4E7924531AE900761A90 /* scene */,
-				45AA873124499A47004ACDDD /* scratch */,
 				4580E998243B6A4900184AA4 /* Utils */,
 				4580E997243B6A2700184AA4 /* Components */,
 				4580E996243B69B200184AA4 /* Sharing */,
@@ -937,10 +928,8 @@
 		457B4E7924531AE900761A90 /* scene */ = {
 			isa = PBXGroup;
 			children = (
-				457B4E7A24531B6800761A90 /* SceneVC.swift */,
 				457B4E7C24531BC700761A90 /* SceneKitAssets.scnassets */,
 				45F41FA224600D0A002BC37F /* BusinessCardSceneView.swift */,
-				45F41FA424600E79002BC37F /* BusinessCardTVC.swift */,
 			);
 			path = scene;
 			sourceTree = "<group>";
@@ -1024,15 +1013,6 @@
 				45C1603324865DB400806718 /* InitialUserSetupTask.swift */,
 			);
 			path = User;
-			sourceTree = "<group>";
-		};
-		45AA873124499A47004ACDDD /* scratch */ = {
-			isa = PBXGroup;
-			children = (
-				4580E999243B6A7500184AA4 /* DisplayVC.swift */,
-				45AA873224499A5B004ACDDD /* CardView.swift */,
-			);
-			path = scratch;
 			sourceTree = "<group>";
 		};
 		45B0F4C824AA1507007277BB /* View */ = {
@@ -1517,7 +1497,6 @@
 				45E21C3124CCBFEB00013E9E /* TitleTableCell.swift in Sources */,
 				453384A224CB0D080020AEF6 /* QRCodeGenerator.swift in Sources */,
 				45E21C2A24CC95CC00013E9E /* EditCardNotesVC.swift in Sources */,
-				4580E99A243B6A7500184AA4 /* DisplayVC.swift in Sources */,
 				45F1EDA024BC488100AE1322 /* DirectSharingView.swift in Sources */,
 				4543D2D7249BBDCC003B1439 /* UIImage.swift in Sources */,
 				45C160092485103600806718 /* FIRDocumentReference.swift in Sources */,
@@ -1548,7 +1527,6 @@
 				45174CDD24B898CB009BFE58 /* TagsView.swift in Sources */,
 				45D445A924C05D7800630C72 /* AcceptCardView.swift in Sources */,
 				4532CDCE24D5C81800ACB597 /* HorizontalOrDivider.swift in Sources */,
-				45F41FA524600E79002BC37F /* BusinessCardTVC.swift in Sources */,
 				45AF8B0A24DF246600070707 /* NavigationTitleView.swift in Sources */,
 				458EF402248B98B500EC76D6 /* UICollectionView+Extensions.swift in Sources */,
 				4558826824A4BEEF001C763B /* BusinessCardTag.swift in Sources */,
@@ -1612,7 +1590,6 @@
 				4542A7CF24D563F700B0DA99 /* EditCardPhysicalVM.swift in Sources */,
 				45C1601E2485333F00806718 /* UserSetupViewModel.swift in Sources */,
 				453B5F1E24197171009E3AB2 /* ButtonStyle.swift in Sources */,
-				45AA873324499A5B004ACDDD /* CardView.swift in Sources */,
 				451C972424F79279006E20D7 /* UserTestingManager.swift in Sources */,
 				45174CE624B9DEC3009BFE58 /* EditTagVC.swift in Sources */,
 				4576994124CC8216008D3778 /* LoadingPopoverVM.swift in Sources */,
@@ -1626,7 +1603,6 @@
 				45B0F4C524AA0A39007277BB /* TitleValueCollectionCell.swift in Sources */,
 				45139C5224979CA300DE1E9F /* ReceivedCardsVM.swift in Sources */,
 				4558F1F52423CD4800D44526 /* AppSwiftUIView.swift in Sources */,
-				457B4E7B24531B6800761A90 /* SceneVC.swift in Sources */,
 				451B799F24D83E4600EDC2B6 /* EditCardInfoView.swift in Sources */,
 				451B79A124D83E5E00EDC2B6 /* EditCardInfoVM.swift in Sources */,
 				45C25D6A249F85E500945F29 /* IndexPath.swift in Sources */,
