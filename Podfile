@@ -11,9 +11,6 @@ target 'VirtualBusinessCard' do
   pod 'Firebase/Firestore'
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
-  pod "TouchVisualizer"
-  #  pod 'GoogleSignIn'
-#  pod 'SwiftMessages'
 
   target 'VirtualBusinessCardTests' do
     inherit! :search_paths
