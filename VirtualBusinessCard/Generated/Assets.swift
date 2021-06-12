@@ -31,7 +31,6 @@ internal enum Asset {
     internal static let appWhite = ColorAsset(name: "AppWhite")
     internal static let barSeparator = ColorAsset(name: "BarSeparator")
     internal static let cardPlaceholder = ColorAsset(name: "CardPlaceholder")
-    internal static let defaultText = ColorAsset(name: "DefaultText")
     internal static let googleBlue = ColorAsset(name: "GoogleBlue")
     internal static let microsoftBlue = ColorAsset(name: "MicrosoftBlue")
     internal static let roundedTableViewCellBackground = ColorAsset(name: "RoundedTableViewCellBackground")
@@ -40,6 +39,7 @@ internal enum Asset {
     internal static let secondaryText = ColorAsset(name: "SecondaryText")
     internal static let selectedCellBackgroundLight = ColorAsset(name: "SelectedCellBackgroundLight")
     internal static let selectedCellBackgroundStrong = ColorAsset(name: "SelectedCellBackgroundStrong")
+    internal static let defaultText = ColorAsset(name: "defaultText")
   }
   internal enum Images {
     internal static let appLogo = ImageAsset(name: "AppLogo")
@@ -50,8 +50,6 @@ internal enum Asset {
       internal static let texture4 = ImageAsset(name: "BundledTexture/Texture4")
     }
     internal static let businessCard = ImageAsset(name: "BusinessCard")
-    internal static let exampleBC = ImageAsset(name: "ExampleBC")
-    internal static let exampleBCBack = ImageAsset(name: "ExampleBCBack")
     internal enum Icon {
       internal static let collection = ImageAsset(name: "Icon/Collection")
       internal static let personalCards = ImageAsset(name: "Icon/PersonalCards")
@@ -146,7 +144,11 @@ internal extension ImageAsset.Image {
 // swiftlint:disable convenience_type
 private final class BundleToken {
   static let bundle: Bundle = {
-    Bundle(for: BundleToken.self)
+    #if SWIFT_PACKAGE
+    return Bundle.module
+    #else
+    return Bundle(for: BundleToken.self)
+    #endif
   }()
 }
 // swiftlint:enable convenience_type
